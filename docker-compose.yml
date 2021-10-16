@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: frontend
+    build: .
+    command: ng serve --host 0.0.0.0
+    volumes:
+      - ./frontend:/data/frontend/
+      - ./node_modules:/data/frontend/node_modules
+    ports:
+      - 4200:4200
+    depends_on:
+      - backend
+    links:
+      - backend
+
+  backend:
+    container_name: backend
+    build: ./backend
+    command: node server.js
+    volumes:
+      - ./backend:/data/backend
+      - ./backend/node_modules:/data/backend/node_modules
+      - ./backend/keys:/data/backend/keys
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    environment:
+      NODE_ENV: development
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - ./backend/database:/data/db
+    ports:
+      - 27017:27017
