@@ -1,0 +1,22 @@
+<div *ngIf="complete">
+    <ul>
+        <li>
+            <a style="color: white ; background-color: black"> StreamNotFound </a>
+        </li>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </ul>
+</div>
+
+
+
+<div *ngIf="!complete">
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li style="float:right"><a class="active" href="#about">About</a></li>
+    </ul>
+</div>
