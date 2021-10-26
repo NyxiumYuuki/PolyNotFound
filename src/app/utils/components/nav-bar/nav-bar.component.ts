@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class NavBarComponent implements OnInit
 {
-  @Input() complete = false;
+  @Input() pour = "3roles";
 
   constructor() { }
 

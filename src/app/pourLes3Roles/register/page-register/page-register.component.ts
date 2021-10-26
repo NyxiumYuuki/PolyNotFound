@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from "../../../utils/message/message.service";
+import {MessageService} from "../../../utils/services/message/message.service";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupConfirmationComponent} from "../popup-confirmation/popup-confirmation.component";

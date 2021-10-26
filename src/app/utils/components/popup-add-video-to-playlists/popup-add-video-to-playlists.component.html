@@ -1,0 +1,41 @@
+<h3> Ajouter dans </h3>
+
+
+<mat-divider></mat-divider><!------------------------------------------------------------------------------------------------------------->
+
+
+<div class="conteneurPlaylists">
+    <div *ngFor="let playlist of tabPlaylistAndBool" style="margin-left: 10px">
+        <mat-checkbox [(ngModel)]="playlist.isSelected"> {{playlist.name}} </mat-checkbox>
+    </div>
+</div>
+
+
+<mat-divider></mat-divider><!------------------------------------------------------------------------------------------------------------->
+
+
+<div class="conteneurBtnCreerPlaylist" *ngIf="!goToCreatePlaylist">
+    <button mat-button (click)="goToCreatePlaylist=true">
+        <mat-label>Creer une playlist</mat-label>
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<div class="conteneurInputNewPlaylist" *ngIf="goToCreatePlaylist">
+    <mat-form-field>
+        <mat-label> Nom playlist </mat-label>
+        <input matInput type="text" [(ngModel)]="newPlaylistName">
+    </mat-form-field>
+    <button mat-icon-button (click)="goToCreatePlaylist=false">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+
+<mat-divider></mat-divider><!------------------------------------------------------------------------------------------------------------->
+
+
+<mat-dialog-actions style="justify-content: flex-end;">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onValider">Valider</button>
+</mat-dialog-actions>
