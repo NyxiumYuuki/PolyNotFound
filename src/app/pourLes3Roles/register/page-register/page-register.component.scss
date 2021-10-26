@@ -6,13 +6,17 @@ h1 {
 .boite {
   margin-left: auto;
   margin-right: auto;
-  width: 25%;
+  width: 550px;
   margin-top: 50vh;
-  transform: translateY(-60%);
+  transform: translateY(-100%);
   border: solid 3px black;
   border-radius: 10px;
-  padding: 20px 10px 20px 10px;
+  padding: 20px 40px 20px 40px;
   background-color: #dcdcdc;
+}
+
+input {
+  width: 100%;
 }
 
 .row {
@@ -31,14 +35,8 @@ h1 {
 }
 
 button {
-  width: 90%
-}
-
-.col-6 {
-  text-align: center;
-}
-
-.lien {
-  text-decoration: underline;
-  color: black;
+  width: 100%;
+  margin-right: 0px;
+  background-color: #969696;
+  border: solid 2px black;
 }

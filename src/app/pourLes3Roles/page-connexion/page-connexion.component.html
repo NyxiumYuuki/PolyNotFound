@@ -5,32 +5,35 @@
     <div class="boite">
         <h1> Connexion </h1>
 
+        <!-- Email -->
         <div class="row">
             <div class="col-4 label"> Email: &nbsp; </div>
             <div class="col-8 champ">
-                <input type="text" size="20">
+                <input type="text" [(ngModel)]="email">
             </div>
         </div>
 
+        <!-- Mot de passe -->
         <div class="row">
             <div class="col-4 label"> Mot de passe: &nbsp; </div>
             <div class="col-8 champ">
-                <input type="text" size="20">
+                <input type="text" [(ngModel)]="password">
             </div>
         </div>
 
+        <!-- Boutons -->
         <div class="row">
             <div class="col-6">
-                <button> Se connecter </button>
+                <button (click)="onSeConnecter()"> Se connecter </button>
             </div>
-            <div class="col-6 justify-content-center">
-                <button> S'inscrire </button>
+            <div class="col-6" style="text-align: right">
+                <button routerLink="/register"> S'inscrire </button>
             </div>
         </div>
 
+        <!-- Mot de passe oublié -->
         <div style="text-align: right">
-            <a routerLink="/register" class="lien"> Mot de passe oublié ? </a>
+            <a class="lien" href="https://pixar.fandom.com/wiki/Sadness"> Mot de passe oublié ? </a>
         </div>
-
     </div>
 </div>

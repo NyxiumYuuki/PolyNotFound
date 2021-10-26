@@ -1,12 +1,13 @@
 <div *ngIf="complete">
     <ul>
         <li>
-            <a style="color: white ; background-color: black"> StreamNotFound </a>
+            <a routerLink="/connexion" style="color: white ; background-color: black">
+                StreamNotFound
+            </a>
         </li>
-        <label class="switch">
-            <input type="checkbox">
-            <span class="slider round"></span>
-        </label>
+        <li style="float:right; margin-right: 20px;">
+            <mat-slide-toggle></mat-slide-toggle>
+        </li>
     </ul>
 </div>
 
