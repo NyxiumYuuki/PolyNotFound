@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from "../../outils/message/message.service";
+import {MessageService} from "../../../utils/message/message.service";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupConfirmationComponent} from "../popup-confirmation/popup-confirmation.component";
@@ -27,6 +27,13 @@ export class PageRegisterComponent implements OnInit
     ngOnInit(): void {}
 
 
+    isValidEmail(email)
+    {
+        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+
     verifierChamps(): void
     {
         if(this.pseudo.length === 0) {
@@ -36,6 +43,11 @@ export class PageRegisterComponent implements OnInit
         else if(this.email.length === 0)
         {
             this.errorMessage = "Veuillez remplir le champ 'email'"
+            this.hasError = true;
+        }
+        else if(!this.isValidEmail(this.email))
+        {
+            this.errorMessage = "Email invalide"
             this.hasError = true;
         }
         else if(this.password.length === 0)
@@ -80,5 +92,4 @@ export class PageRegisterComponent implements OnInit
                 .subscribe(result => this.router.navigateByUrl( '/connexion' ));
         }
     }
-
 }
