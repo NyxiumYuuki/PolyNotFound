@@ -1,0 +1,38 @@
+<!-- pour les 3 roles -->
+<div *ngIf="pour === '3roles'">
+    <ul>
+        <li>
+            <a routerLink="/connexion" class="StreamNotFound"> StreamNotFound </a>
+        </li>
+        <li style="float:right; margin-right: 20px;">
+            <mat-slide-toggle></mat-slide-toggle>
+        </li>
+    </ul>
+</div>
+
+
+<!-- pour User -->
+<div *ngIf="pour === 'user'">
+    <ul>
+        <li>
+            <a routerLink="/search" class="StreamNotFound"> StreamNotFound </a>
+        </li>
+        <li class="cliquable">
+            <a routerLink="/search"> Rechercher </a>
+        </li>
+        <li class="cliquable">
+            <a routerLink="/search"> Mes playlists </a>
+        </li>
+        <li class="cliquable">
+            <a routerLink="/search"> Historique </a>
+        </li>
+        <li style="float:right; margin-right: 20px;">
+            <a routerLink="/search">
+                <mat-icon>settings</mat-icon>
+            </a>
+        </li>
+        <li style="float:right; margin-right: 20px;">
+            <mat-slide-toggle></mat-slide-toggle>
+        </li>
+    </ul>
+</div>
