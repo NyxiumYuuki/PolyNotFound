@@ -24,6 +24,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { IframeTrackerDirective } from './utils/directive/iframe-tracker/iframe-tracker.directive';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     VideoCellComponent,
     VideoGridComponent,
     PopupAddVideoToPlaylistsComponent,
+    IframeTrackerDirective,
   ],
     imports: [
         BrowserModule,

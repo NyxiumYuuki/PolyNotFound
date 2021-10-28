@@ -1,18 +1,11 @@
 import {
     Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
     Input,
     OnInit,
-    Output,
-    Renderer2,
-    ViewChild
 } from '@angular/core';
 import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
 import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
-
 
 @Component({
   selector: 'app-video-cell',
@@ -24,20 +17,20 @@ export class VideoCellComponent implements OnInit
     @Input() video: Video;
     safeUrl;
 
-
     constructor( private videoUrlService: VideoUrlService,
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService ) {}
-
 
     ngOnInit(): void
     {
         this.safeUrl = this.videoUrlService.safeUrl(this.video.url);
     }
 
-
     onAdd(): void
     {
         this.addVideoToPlaylistsService.run(this.video);
     }
 
+  onIframeClick(videoUrl: string) {
+    console.log("test click iframe "+ videoUrl);
+  }
 }
