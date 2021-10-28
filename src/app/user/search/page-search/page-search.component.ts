@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../../utils/services/message/message.service";
 import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
-import {PlaylistService} from "../../../utils/services/playlist/playlist.service";
+import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
 
 
@@ -31,8 +31,8 @@ export class PageSearchComponent implements OnInit
 
     ngOnInit(): void
     {
-        // --- DONNEES FICTIVES ---
-        this.tabVideo = this.fictitiousDatasService.load_pageSeach(7);
+        // --- FAUX CODE ---
+        this.tabVideo = this.fictitiousDatasService.getTabVideo(7);
 
 
         // --- VRAI CODE ---
@@ -52,11 +52,9 @@ export class PageSearchComponent implements OnInit
 
     onSearch()
     {
-        // --- DONNEES FICTIVES ---
-        console.log(this.tabPlateform)
+        // --- FAUX CODE ---
         this.tabVideo = [];
-        console.log(this.tabVideo)
-            //this.fictitiousDatasService.load_pageSeach(4);
+            //this.fictitiousDatasService.getTabVideo(4);
 
 
         // --- VRAI CODE ---
@@ -66,7 +64,7 @@ export class PageSearchComponent implements OnInit
         {
             if(plateform.isSelected) tabPlateformName.push(plateform.name);
         }
-        let data = { search: "", plaateforms: tabPlateformName };
+        let data = { "search": this.search, "plateforms": tabPlateformName };
         this.messageService
             .sendMessage("user/searchVideo", data)
             .subscribe(retour => {

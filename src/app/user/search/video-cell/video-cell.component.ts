@@ -1,6 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    Renderer2,
+    ViewChild
+} from '@angular/core';
 import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
-import {PlaylistService} from "../../../utils/services/playlist/playlist.service";
+import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
 
 
@@ -16,7 +26,7 @@ export class VideoCellComponent implements OnInit
 
 
     constructor( private videoUrlService: VideoUrlService,
-                 private playlistService: PlaylistService ) {}
+                 private addVideoToPlaylistsService: AddVideoToPlaylistsService ) {}
 
 
     ngOnInit(): void
@@ -27,7 +37,7 @@ export class VideoCellComponent implements OnInit
 
     onAdd(): void
     {
-        this.playlistService.addVideoToPlaylists(this.video)
-        console.log("onAdd:" + this.video.title);
+        this.addVideoToPlaylistsService.run(this.video);
     }
+
 }

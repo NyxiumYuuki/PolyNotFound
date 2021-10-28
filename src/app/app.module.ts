@@ -23,6 +23,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     PubComponent,
     VideoCellComponent,
     VideoGridComponent,
-    PopupAddVideoToPlaylistsComponent
+    PopupAddVideoToPlaylistsComponent,
   ],
     imports: [
         BrowserModule,
@@ -51,7 +52,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
         MatInputModule,
         MatDividerModule,
         MatCheckboxModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatSnackBarModule
     ],
   providers: [],
   bootstrap: [AppComponent]

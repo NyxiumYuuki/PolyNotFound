@@ -10,7 +10,7 @@ export class FictitiousDatasService
     constructor() { }
 
 
-    load_pageSeach(n: number): Video[]
+    getTabVideo(n: number): Video[]
     {
         let tabVideo = [];
 
@@ -34,16 +34,16 @@ export class FictitiousDatasService
     }
 
 
-    getTabPlaylist()
+    getTabPlaylist(n: number)
     {
         let tabTabPlaylist: Playlist[] = [];
 
-        for (let i = 0; i < 4; i++)
+        for (let i = 0; i < n; i++)
         {
             let playlist: Playlist = {
                 _id: i.toString(),
                 user: null,
-                name: "name_"+i.toString(),
+                name: "playlist_"+i.toString(),
                 count: 3,
                 videos: []
             }
