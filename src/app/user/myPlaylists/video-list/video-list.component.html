@@ -1,0 +1,74 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Bordure haute -->
+        <div class="row" style="margin: 0px; padding: 0px">
+            <div class="topBorder">
+
+                <!-- Playlist existe ? -->
+                <div *ngIf="(playlist !== null) && (playlist !== undefined); then ok1 else nope1"></div>
+
+                <!-- oui -->
+                <ng-template #ok1>
+                    <span class="spanPlayListTitle"> {{playlist.name}} </span>
+                </ng-template>
+
+                <!-- non -->
+                <ng-template #nope1>
+                    <span class="spanPlayListTitle"> Aucune playlist selectionnée </span>
+                </ng-template>
+
+            </div>
+        </div>
+
+
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- Liste des videos -->
+        <div class="row" style="margin: 0px; padding: 0px">
+            <div class="listVideoContainer">
+
+                <!-- Playlist existe ? -->
+                <div *ngIf="(playlist !== null) && (playlist !== undefined); then ok2 else nope2"></div>
+
+                <!-- oui -->
+                <ng-template #ok2>
+                    <div *ngFor="let video of playlist.videos ; let i = index" class="videoContainer">
+                        <!-- bouton add -->
+                        <button mat-icon-button (click)="onAdd(video)">
+                            <mat-icon > add_circle </mat-icon>
+                        </button>
+                        <!-- video -->
+                        <iframe appIframeTracker
+                                [src]=videoUrlService.safeUrl(this.video.url)
+                                allowfullscreen
+                                (iframeClick)="onIframeClick(this.video.url)"></iframe>
+                        <!-- bouton delete -->
+                        <button mat-icon-button (click)="onDelete(video, i)">
+                            <mat-icon>delete</mat-icon>
+                        </button><br/>
+                        <!-- titre video -->
+                        <span>{{video.title}}</span>
+                    </div>
+                </ng-template>
+
+                <!-- non -->
+                <ng-template #nope2>
+                    <div></div>
+                </ng-template>
+
+            </div>
+        </div>
+
+
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- Bordure basse -->
+        <div class="row" style="margin: 0px; padding: 0px">
+            <div class="bottomBorder"></div>
+        </div>
+
+    </div>
+</div>

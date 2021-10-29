@@ -1,0 +1,75 @@
+.myContainer {
+  background-color: white ;
+  text-align: center;
+  width: 35vw;
+  height: 79vh;
+  margin: 3vh 0vh 3vh 0vh;
+  padding: 0px;
+  border: solid 2px black;
+}
+
+// SearchBar -----------------------------------------------------------
+
+.searchBarContainer {
+  background-color: #dcdcdc;
+  border-bottom: solid 2px black;
+  height: 5vh;
+  padding: 15px;
+}
+
+.inputSearchBar {
+  width: 50%;
+}
+.btnRechercher {
+  border: solid black 1px;
+  border-radius: 5px;
+}
+
+// Liste des playlists -------------------------------------------------
+
+.playlistListContainer {
+  max-width: 100%;
+  height: 70vh;
+  overflow-y: scroll;
+  padding: 0px;
+}
+
+.playlistContainer {
+  max-width: 100%;
+  padding: 0px;
+}
+
+.btnPlaylist {
+  background-color: white;
+  padding: 20px;
+  border-bottom: solid 2px black;
+  width: 100%;
+}
+.btnPlaylist:hover {
+  background-color: #f0f0f0;
+}
+
+.playListCount {
+  color: gray;
+  font-style: italic;
+}
+
+// Bouton creer playlist -------------------------------------------------
+
+.btnCreerPlaylistContainer {
+  height: 4vh;
+  margin: 0px;
+  padding: 0px;
+}
+
+.btnCreerPlaylist {
+  background-color: #dcdcdc;
+  border-top: solid 2px black;
+  border-bottom: solid 2px black;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+.btnCreerPlaylist:hover {
+  background-color: #969696;
+}

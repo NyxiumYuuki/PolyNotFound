@@ -26,22 +26,31 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { IframeTrackerDirective } from './utils/directives/iframe-tracker/iframe-tracker.directive';
 import {MatGridListModule} from "@angular/material/grid-list";
+import { PageMyPlaylistsComponent } from './user/myPlaylists/page-my-playlists/page-my-playlists.component';
+import { PlaylistListComponent } from './user/myPlaylists/playlist-list/playlist-list.component';
+import {VideoListComponent} from "./user/myPlaylists/video-list/video-list.component";
+import { PopupCreatePlaylistComponent } from './utils/components/popup-create-playlist/popup-create-playlist.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PageConnexionComponent,
-    PageRegisterComponent,
-    NavBarComponent,
-    PageSearchComponent,
-    PopupConfirmationComponent,
-    AdvertComponent,
-    VideoCellComponent,
-    VideoGridComponent,
-    PopupAddVideoToPlaylistsComponent,
-    IframeTrackerDirective,
-  ],
+    declarations: [
+        AppComponent,
+        PageConnexionComponent,
+        PageRegisterComponent,
+        NavBarComponent,
+        PageSearchComponent,
+        PopupConfirmationComponent,
+        AdvertComponent,
+        VideoCellComponent,
+        VideoGridComponent,
+        PopupAddVideoToPlaylistsComponent,
+        IframeTrackerDirective,
+        PageMyPlaylistsComponent,
+        VideoListComponent,
+        PlaylistListComponent,
+        VideoListComponent,
+        PopupCreatePlaylistComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,

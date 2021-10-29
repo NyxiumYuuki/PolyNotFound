@@ -26,7 +26,7 @@ export class AddVideoToPlaylistsService
         this._video = video0;
         const retour = {
             status: "success",
-            data: this.fictitiousDatasService.getTabPlaylist(4),
+            data: this.fictitiousDatasService.getTabPlaylist(4, 5),
         }
         this.afterReceivingPlaylists(retour)
     }

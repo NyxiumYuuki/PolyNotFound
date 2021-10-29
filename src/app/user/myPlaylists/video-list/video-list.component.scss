@@ -1,0 +1,52 @@
+.myContainer {
+  background-color: white ;
+  text-align: center;
+  width: 35vw;
+  height: 79vh;
+  margin: 3vh 0vh 3vh 0vh;
+  padding: 0px;
+  border: solid 1px black;
+}
+
+// TopBorder --------------------------------------------------------
+
+.topBorder {
+  height: 4vh;
+  background-color: #dcdcdc;
+  text-align: left;
+  padding: 7px;
+  display: inline-block;
+  border-bottom: solid 1px black;
+}
+
+.spanPlayListTitle {
+  height: 100%;
+  padding: 0px;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+
+
+// Liste des videos ------------------------------------------------
+
+.listVideoContainer {
+  height: 73vh;
+  background-color: white;
+  padding: 0px;
+  overflow-y: scroll;
+}
+
+.videoContainer {
+  border-bottom: solid 2px black;
+  padding: 25px;
+}
+
+// BottomBorder --------------------------------------------------------
+
+.bottomBorder {
+  height: 2vh;
+  background-color: #dcdcdc;
+  border-top: solid 1px black;
+  border-bottom: solid 1px black;
+}

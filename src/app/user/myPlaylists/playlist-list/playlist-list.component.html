@@ -1,0 +1,36 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Search bar -->
+        <div class="row" style="margin: 0px">
+            <div class="searchBarContainer">
+                <input type="search" placeholder="recherche..." class="inputSearchBar" [(ngModel)]="search" (ngModelChange)="whileSearch()"> &nbsp;
+                <!--
+                <button class="btnRechercher" (click)="onSearch()"> Rechercher </button>
+                -->
+            </div>
+        </div>
+
+
+        <!-- Liste des playlist -->
+        <div class="row" style="margin: 0px">
+            <div class="playlistListContainer">
+                <div *ngFor="let playlist of tabPlaylist" class="playlistContainer">
+                    <button class="btnPlaylist" (click)="eventEmitter.emit(playlist)">
+                        <span class="playlistName"> {{playlist.name}} </span><br>
+                        <span class="playListCount"> {{playlist.videos.length}} vidéos </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bouton creer playlist-->
+        <div class="row" style="margin: 0px">
+            <div class="btnCreerPlaylistContainer">
+                <button class="btnCreerPlaylist" (click)="onCreatePlaylist()"> Creer playlist </button>
+            </div>
+        </div>
+
+    </div>
+</div>

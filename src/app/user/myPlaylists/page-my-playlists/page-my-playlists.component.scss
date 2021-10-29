@@ -1,9 +1,7 @@
 .lightTheme {
-  color: black;
   border-color: black;
 }
 .darkTheme {
-  color: white;
   border-color: white;
 }
 .myContainer {
@@ -13,37 +11,22 @@
   overflow-x: hidden;
 }
 
+// Liste des vidéos -------------------------------------------------
 
-.inputSearchBar {
-  width: 50%;
-  font-size: x-large;
-}
-.btnRechercher {
-  border: solid black 1px;
-  border-radius: 5px;
-  font-size: x-large;
+.celluleListeVideo {
+  margin: 0px;
 }
 
+// Liste des playlists ---------------------------------------------
 
-.celluleGrilleVideo {
-  border: solid 4px;
-  border-radius: 5px;
-  width: 100%;
-}
-.lightTheme .celluleGrilleVideo{
-  border-color: black;
-  background-color: #f0f0f0;
-}
-.darkTheme .celluleGrilleVideo{
-  border-color: white;
-  background-color: #646464;
+.celluleListePlaylist {
+  margin: 0px;
 }
 
-
-.conteneurVideosGrid {
-  height: 75vh;
-  width: 100%;
+.playlistListContainer {
 }
+
+// Pub -------------------------------------------------------------
 
 .cellulePub {
   padding: 0px 10px 0px 10px;
@@ -53,7 +36,7 @@
 }
 
 .conteneurPub {
-  height: 75vh;
+  height: 85vh;
   text-align: center;
   justify-content: center;
   vertical-align: middle;

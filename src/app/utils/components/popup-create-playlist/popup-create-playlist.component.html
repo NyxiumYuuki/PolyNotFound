@@ -1,0 +1,16 @@
+<div style="text-align: center; margin: 0px; padding: 0px">
+
+    <div style="margin: 0px; padding: 0px">
+        <mat-form-field appearance="fill" style="margin: 0px; padding: 0px">
+            <mat-label> Nom de la playlist </mat-label>
+            <input matInput [(ngModel)]="name" style="width: 100%">
+        </mat-form-field>
+        <span *ngIf="hasError" class="mat-error"> {{errorMessage}} </span>
+    </div>
+
+    <div style="text-align: right ; margin: 0px; padding: 0px">
+        <button mat-button (click)="onAnnuler()">Annuler</button>
+        <button mat-button (click)="onValider()">Creer</button>
+    </div>
+
+</div>
