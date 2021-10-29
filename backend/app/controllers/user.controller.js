@@ -1,11 +1,13 @@
 const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
+const checkFormat = require("../config/checkFormat.config");
 const sessionJWT = require('../config/sessionJWT.config');
+const {checkLogin} = require("../config/sessionJWT.config");
 const User = db.users;
-
 
 // Authenticate an User
 exports.auth = (req, res) => {
+  checkFormat(req, res);
   // Validate request
   if (!req.body.mail || !req.body.hashPass) {
     sendError(res, 400,-1,"Content can not be empty ! (mail and hashPass needed)");
@@ -19,7 +21,7 @@ exports.auth = (req, res) => {
           return sendMessage(res, 1, true);
         } else {
           sessionJWT.setSessionCookie(req, res, { mail: -1 });
-          return sendError(res, -1, "Invalid mail or password.");
+          return sendError(res, 500, -1, "Invalid mail or password.");
         }
       })
       .catch(err => {
@@ -28,8 +30,19 @@ exports.auth = (req, res) => {
   }
 };
 
+// Disconnect an User
+exports.disconnect = (req, res) => {
+  let token;
+  if(checkFormat(req, res) && (token = checkLogin(req, res))) {
+    console.log(token);
+    sessionJWT.setSessionCookie(req, res, {mail: -1});
+    return sendMessage(res, 1, {message: "User disconnected"});
+  }
+};
+
 // Create and Save a new User
 exports.create = (req, res) => {
+    checkFormat(req, res);
   // Validate request
   if (!req.body.login || !req.body.hashPass || !req.body.mail || !req.body.role) {
     sendError(res, 400,-1,"Content can not be empty ! (login, hashPass,  mail and role needed");
@@ -67,20 +80,25 @@ exports.create = (req, res) => {
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-  const login = req.query.login;
-  let condition = login ? { login: { $regex: new RegExp(login), $options: "i" } } : {};
+  let token;
+  if(checkFormat(req, res) && (token = checkLogin(req, res))){
+    console.log(token);
+    const login = req.query.login;
+    let condition = login ? { login: { $regex: new RegExp(login), $options: "i" } } : {};
 
-  User.find(condition, {hashPass: false})
-    .then(data => {
-      sendMessage(res, 1, data)
-    })
-    .catch(err => {
-      sendError(res,500,-1,err.message || "Some error occurred while retrieving users.");
-    });
+    User.find(condition, {hashPass: false})
+      .then(data => {
+        sendMessage(res, 1, data)
+      })
+      .catch(err => {
+        sendError(res,500,-1,err.message || "Some error occurred while retrieving users.");
+      });
+  }
 };
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
+  checkFormat(req, res);
   const id = req.params.id;
 
   User.findById(id, {hashPass: false})
@@ -98,6 +116,7 @@ exports.findOne = (req, res) => {
 
 // Update a User by the id in the request
 exports.update = (req, res) => {
+  checkFormat(req, res);
   if (!req.body) {
     sendError(res,400,-1,"Data to update can not be empty!");
   } else{
@@ -119,6 +138,7 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
+  checkFormat(req, res);
   const id = req.params.id;
 
   User.findByIdAndRemove(id)
@@ -136,6 +156,7 @@ exports.delete = (req, res) => {
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
+  checkFormat(req, res);
   User.deleteMany({})
     .then(data => {
       sendMessage(res, 1,{

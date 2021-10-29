@@ -1,6 +1,6 @@
 const sessionJWTConfig = require ('jsonwebtoken');
 require('dotenv').config({ path: './app/.env' });
-const {sendError, sendMessage} = require ("./response.config");
+const {sendError} = require ("./response.config");
 
 if(process.env.JWTRS256_PRIVATE_KEY === undefined || process.env.JWTRS256_PUBLIC_KEY === undefined){
   console.log('Error Env Variables');
@@ -8,8 +8,9 @@ if(process.env.JWTRS256_PRIVATE_KEY === undefined || process.env.JWTRS256_PUBLIC
 }
 
 console.log('Env variables received');
-const JWTRS256_PRIVATE_KEY = Buffer.from(process.env.JWTRS256_PRIVATE_KEY, 'base64');
-const JWTRS256_PUBLIC_KEY = Buffer.from(process.env.JWTRS256_PUBLIC_KEY, 'base64');
+const JWTRS256_PRIVATE_KEY = Buffer.from(process.env.JWTRS256_PRIVATE_KEY, 'base64').toString('utf-8');
+const JWTRS256_PUBLIC_KEY = Buffer.from(process.env.JWTRS256_PUBLIC_KEY, 'base64').toString('utf-8');
+
 
 function createSessionJWT (mail) {
   return sessionJWTConfig.sign(
@@ -37,31 +38,50 @@ function createSessionCookie(req, res, payload) {
   }
   res.cookie('SESSIONID', jwtToken, {httpOnly:true, secure:false});
 }
-module.exports.createSessionCookie = createSessionCookie;
 
-function decodeSessionCookie(sessionid, res) {
+function decodeSessionCookie(sessionid) {
   if (typeof sessionid === 'undefined') {
-    return { mail: -1 };
+    return {mail: -1};
   }
   try {
     const token = sessionJWTConfig.verify(
       sessionid,
       JWTRS256_PUBLIC_KEY,
       {algorithms: ['RS256']});
-    return sendMessage(res,1,{token: token});
+    return {token: token};
   }
   catch (err) {
-    return sendError(res,-1,{mail: -1});
+    return {mail: -1};
   }
 }
-module.exports.decodeSessionCookie = decodeSessionCookie;
 
-function getSession (sessionid, res) {
-  return decodeSessionCookie(sessionid, res);
+function getSession(sessionid) {
+  return decodeSessionCookie(sessionid);
 }
-module.exports.getSession = getSession;
+module.exports.getSession = getSession
 
 function setSessionCookie (req, res, session) {
   createSessionCookie(req, res, session);
 }
 module.exports.setSessionCookie = setSessionCookie;
+
+function getMail(session) {
+  if (typeof session === 'undefined' || typeof session.token === 'undefined') return -1;
+  return session.token;
+}
+module.exports.getMail = getMail;
+
+function checkLogin(req, res){
+  if(typeof req.cookies !== 'undefined'){
+    const session = getSession(req.cookies.SESSIONID);
+    const token = getMail(session);
+    if(token.mail === 'undefined' || token.mail === -1){
+      return sendError(res, 500, -1, "User not authenticated.");
+    } else{
+      return token;
+    }
+  } else {
+    return sendError(res, 500, -1, "Cookies don't exist.");
+  }
+}
+module.exports.checkLogin = checkLogin;

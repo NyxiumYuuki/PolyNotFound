@@ -23,5 +23,8 @@ module.exports = app => {
   // Authenticate a User
   router.post("/auth", users.auth);
 
+  // Disconnect a User
+  router.delete("/auth/disconnect", users.disconnect);
+
   app.use('/api/users', router);
 };
