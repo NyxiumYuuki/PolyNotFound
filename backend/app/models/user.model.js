@@ -3,7 +3,10 @@ module.exports = mongoose => {
       login: String,
       hashPass: String,     // WARNING: We don't want to send back the hashPass
       mail: String,
-      role: Object
+      role: {
+        type: Number,
+        default: 0
+      }
     },
     { timestamps: true }
   );

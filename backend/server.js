@@ -27,7 +27,6 @@ db.mongoose
   });
 
 require("./app/config/sessionJWT.config");
-require("./app/routes/tutorial.routes")(app);
 require("./app/routes/user.routes")(app);
 
 app.listen(port, '0.0.0.0',() => {

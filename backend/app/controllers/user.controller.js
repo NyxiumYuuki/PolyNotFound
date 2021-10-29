@@ -1,27 +1,26 @@
 const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
 const checkFormat = require("../config/checkFormat.config");
-const sessionJWT = require('../config/sessionJWT.config');
-const {checkLogin} = require("../config/sessionJWT.config");
+const {checkLogin, setSessionCookie} = require("../config/sessionJWT.config");
 const User = db.users;
 
 // Authenticate an User
 exports.auth = (req, res) => {
   checkFormat(req, res);
   // Validate request
-  if (!req.body.mail || !req.body.hashPass) {
-    sendError(res, 400,-1,"Content can not be empty ! (mail and hashPass needed)");
+  if (!req.body.login || !req.body.hashPass) {
+    sendError(res, 400,-1,"Content can not be empty ! (login and hashPass needed)");
   } else{
     // Check User in the database
     User
-      .findOne({mail: req.body.mail, hashPass: req.body.hashPass}, [{count: {$size: "$_id"}}])
+      .findOne({login: req.body.login, hashPass: req.body.hashPass}, {role: true})
       .then(data => {
         if (data !== null){
-          sessionJWT.setSessionCookie(req, res, { mail: req.body.mail });
+          setSessionCookie(req, res, { login: req.body.login, role: data.role});
           return sendMessage(res, 1, true);
         } else {
-          sessionJWT.setSessionCookie(req, res, { mail: -1 });
-          return sendError(res, 500, -1, "Invalid mail or password.");
+          setSessionCookie(req, res, { login: -1, role: -1 });
+          return sendError(res, 500, -1, "Invalid login or password.");
         }
       })
       .catch(err => {
@@ -35,17 +34,17 @@ exports.disconnect = (req, res) => {
   let token;
   if(checkFormat(req, res) && (token = checkLogin(req, res))) {
     console.log(token);
-    sessionJWT.setSessionCookie(req, res, {mail: -1});
-    return sendMessage(res, 1, {message: "User disconnected"});
+    setSessionCookie(req, res, {login: -1});
+    return sendMessage(res, 1, {message: "User disconnected"}, token);
   }
 };
 
 // Create and Save a new User
 exports.create = (req, res) => {
-    checkFormat(req, res);
+  checkFormat(req, res);
   // Validate request
-  if (!req.body.login || !req.body.hashPass || !req.body.mail || !req.body.role) {
-    sendError(res, 400,-1,"Content can not be empty ! (login, hashPass,  mail and role needed");
+  if (!req.body.login || !req.body.hashPass || !req.body.mail) {
+    sendError(res, 400,-1,"Content can not be empty ! (login, hashPass and mail needed");
   }
   else{
     User.exists({login: req.body.login}, function (err, docs){
@@ -81,17 +80,17 @@ exports.create = (req, res) => {
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
   let token;
-  if(checkFormat(req, res) && (token = checkLogin(req, res))){
+  if(checkFormat(req, res) && (token = checkLogin(req, res, 10))){
     console.log(token);
     const login = req.query.login;
     let condition = login ? { login: { $regex: new RegExp(login), $options: "i" } } : {};
 
     User.find(condition, {hashPass: false})
       .then(data => {
-        sendMessage(res, 1, data)
+        sendMessage(res, 1, data, token)
       })
       .catch(err => {
-        sendError(res,500,-1,err.message || "Some error occurred while retrieving users.");
+        sendError(res,500,-1,err.message || "Some error occurred while retrieving users.", token);
       });
   }
 };
