@@ -14,7 +14,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { PopupConfirmationComponent } from './pourLes3Roles/register/popup-confirmation/popup-confirmation.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from "@angular/material/button";
-import { PubComponent } from './utils/components/pub/pub.component';
+import { AdvertComponent } from './utils/components/advert/advert.component';
 import { VideoCellComponent } from './user/search/video-cell/video-cell.component';
 import { VideoGridComponent } from './user/search/video-grid/video-grid.component';
 import {MatIconModule} from "@angular/material/icon";
@@ -24,7 +24,8 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { IframeTrackerDirective } from './utils/directive/iframe-tracker/iframe-tracker.directive';
+import { IframeTrackerDirective } from './utils/directives/iframe-tracker/iframe-tracker.directive';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { IframeTrackerDirective } from './utils/directive/iframe-tracker/iframe-
     NavBarComponent,
     PageSearchComponent,
     PopupConfirmationComponent,
-    PubComponent,
+    AdvertComponent,
     VideoCellComponent,
     VideoGridComponent,
     PopupAddVideoToPlaylistsComponent,
@@ -55,7 +56,8 @@ import { IframeTrackerDirective } from './utils/directive/iframe-tracker/iframe-
         MatDividerModule,
         MatCheckboxModule,
         MatFormFieldModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatGridListModule
     ],
   providers: [],
   bootstrap: [AppComponent]

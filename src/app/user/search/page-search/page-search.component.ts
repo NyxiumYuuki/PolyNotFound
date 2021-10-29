@@ -3,6 +3,8 @@ import {MessageService} from "../../../utils/services/message/message.service";
 import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
+import {Advert} from "../../../utils/interfaces/advert";
+import {ThemeService} from "../../../utils/services/theme/theme.service";
 
 
 
@@ -23,17 +25,21 @@ export class PageSearchComponent implements OnInit
     tabPlateform = TAB_PLATEFORM;
     tabVideo: Video[] = [];
     search: string = "";
+    ad1: Advert;
+    ad2: Advert;
 
 
     constructor( private messageService: MessageService,
-                 private fictitiousDatasService: FictitiousDatasService) { }
+                 private fictitiousDatasService: FictitiousDatasService,
+                 public themeService: ThemeService ) { }
 
 
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousDatasService.getTabVideo(7);
-
+        this.tabVideo = this.fictitiousDatasService.getTabVideo(11);
+        this.ad1 = this.fictitiousDatasService.getAdvert();
+        this.ad2 = this.fictitiousDatasService.getAdvert();
 
         // --- VRAI CODE ---
         /*
@@ -42,9 +48,13 @@ export class PageSearchComponent implements OnInit
         let data = { search: "", plaateforms: tabPlateformName };
         this.messageService
             .sendMessage("user/searchVideo", data)
-            .subscribe(retour => {
+            .subscribe( retour => {
                 if(retour.status === "error") console.log(retour.data);
-                else this.tabVideo = retour.data;
+                else {
+                    this.tabVideo = retour.data.videos;
+                    this.ad1 = retour.data.ad1;
+                    this.ad2 = retour.data.ad2;
+                }
             });
         */
     }
@@ -53,9 +63,7 @@ export class PageSearchComponent implements OnInit
     onSearch()
     {
         // --- FAUX CODE ---
-        this.tabVideo = [];
-            //this.fictitiousDatasService.getTabVideo(4);
-
+        this.tabVideo = this.fictitiousDatasService.getTabVideo(4);
 
         // --- VRAI CODE ---
         /*
@@ -69,9 +77,20 @@ export class PageSearchComponent implements OnInit
             .sendMessage("user/searchVideo", data)
             .subscribe(retour => {
                 if(retour.status === "error") console.log(retour.data);
-                else this.tabVideo = retour.data;
+                else {
+                    this.tabVideo = retour.data.videos;
+                    this.ad1 = retour.data.ad1;
+                    this.ad2 = retour.data.ad2;
+                }
             });
         */
     }
+
+
+    tiles = [
+        {text: 'One', cols: 2, rows: 1, color: 'lightblue'},
+        {text: 'Two', cols: 7, rows: 1, color: 'lightgreen'},
+        {text: 'Three', cols: 2, rows: 1, color: 'lightpink'},
+    ];
 
 }

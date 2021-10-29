@@ -1,8 +1,11 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div class="conteneur">
-    <iframe appIframeTracker [src]=safeUrl allowfullscreen (iframeClick)="onIframeClick(this.video.url)"></iframe><br/>
-    <span>{{video.title}}</span>
-    <button mat-icon-button (click)="onAdd()">
-        <mat-icon > add_circle </mat-icon>
-    </button>
+
+<div [class]="themeService.getClassTheme()">
+    <div class="conteneur">
+        <iframe appIframeTracker [src]=safeUrl allowfullscreen (iframeClick)="onIframeClick(this.video.url)"></iframe><br/>
+        <span>{{video.title}}</span>
+        <button mat-icon-button (click)="onAdd()">
+            <mat-icon > add_circle </mat-icon>
+        </button>
+    </div>
 </div>

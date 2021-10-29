@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../utils/services/message/message.service";
 import {Router} from "@angular/router";
+import {ThemeService} from "../../utils/services/theme/theme.service";
 
 
 @Component({
@@ -14,7 +15,8 @@ export class PageConnexionComponent implements OnInit
     password: string = ""
 
     constructor( private messageService: MessageService,
-                 private router: Router) { }
+                 private router: Router,
+                 public themeService: ThemeService ) { }
 
 
     ngOnInit(): void {}

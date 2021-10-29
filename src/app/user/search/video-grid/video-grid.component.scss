@@ -1,11 +1,12 @@
 .conteneur {
-  border: solid black 2px;
+  height: 100%;
 }
 
 nav ul {
   overflow: hidden;
   overflow-y: scroll;
-  height: 66vh;
+  height: 75vh;
+  padding: 30px;
 }
 
 .ligne {

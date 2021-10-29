@@ -6,6 +6,7 @@ import {
 import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
 import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
+import {ThemeService} from "../../../utils/services/theme/theme.service";
 
 @Component({
   selector: 'app-video-cell',
@@ -18,7 +19,8 @@ export class VideoCellComponent implements OnInit
     safeUrl;
 
     constructor( private videoUrlService: VideoUrlService,
-                 private addVideoToPlaylistsService: AddVideoToPlaylistsService ) {}
+                 private addVideoToPlaylistsService: AddVideoToPlaylistsService,
+                 public themeService: ThemeService) {}
 
     ngOnInit(): void
     {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Video} from "../../interfaces/video";
 import {Playlist} from "../../interfaces/playlist";
+import {Advert} from "../../interfaces/advert";
 
 @Injectable({
     providedIn: 'root'
@@ -51,6 +52,24 @@ export class FictitiousDatasService
         }
 
         return tabTabPlaylist
+    }
+
+
+    getAdvert(): Advert
+    {
+        return {
+            _id: "monId",
+            advertiser: "nutella",
+            images: [
+                { url: "nutella_v_1.jpeg", description: "image nutella 1" },
+                { url: "nutella_v_2.png", description: "image nutella 2" },
+                { url: "nutella_v_3.jpg", description: "image nutella 3" }
+            ],
+            text: "Voici du bon nutella",
+            subjectTarget: [],
+            seen: 4,
+            date: new Date(),
+        }
     }
 
 }

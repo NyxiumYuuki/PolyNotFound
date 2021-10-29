@@ -1,39 +1,41 @@
-<div class="conteneur">
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
 
-    <app-nav-bar pour="3roles"></app-nav-bar>
+        <app-nav-bar pour="3roles"></app-nav-bar>
 
-    <div class="boite">
-        <h1> Connexion </h1>
+        <div class="boite">
+            <h1> Connexion </h1>
 
-        <!-- Email -->
-        <div class="row">
-            <div class="col-4 label"> Email: &nbsp; </div>
-            <div class="col-8 champ">
-                <input type="text" [(ngModel)]="email">
+            <!-- Email -->
+            <div class="row">
+                <div class="col-4 label"> Email: &nbsp; </div>
+                <div class="col-8 champ">
+                    <input type="text" [(ngModel)]="email">
+                </div>
             </div>
-        </div>
 
-        <!-- Mot de passe -->
-        <div class="row">
-            <div class="col-4 label"> Mot de passe: &nbsp; </div>
-            <div class="col-8 champ">
-                <input type="text" [(ngModel)]="password">
+            <!-- Mot de passe -->
+            <div class="row">
+                <div class="col-4 label"> Mot de passe: &nbsp; </div>
+                <div class="col-8 champ">
+                    <input type="text" [(ngModel)]="password">
+                </div>
             </div>
-        </div>
 
-        <!-- Boutons -->
-        <div class="row">
-            <div class="col-6">
-                <button (click)="onSeConnecter()"> Se connecter </button>
+            <!-- Boutons -->
+            <div class="row">
+                <div class="col-6">
+                    <button (click)="onSeConnecter()"> Se connecter </button>
+                </div>
+                <div class="col-6" style="text-align: right">
+                    <button routerLink="/register"> S'inscrire </button>
+                </div>
             </div>
-            <div class="col-6" style="text-align: right">
-                <button routerLink="/register"> S'inscrire </button>
-            </div>
-        </div>
 
-        <!-- Mot de passe oublié -->
-        <div style="text-align: right">
-            <a class="lien" href="https://pixar.fandom.com/wiki/Sadness"> Mot de passe oublié ? </a>
+            <!-- Mot de passe oublié -->
+            <div style="text-align: right">
+                <a class="lien" href="https://pixar.fandom.com/wiki/Sadness"> Mot de passe oublié ? </a>
+            </div>
         </div>
     </div>
 </div>

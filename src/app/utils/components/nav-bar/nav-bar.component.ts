@@ -1,17 +1,19 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ThemeService} from "../../services/theme/theme.service";
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit
+export class NavBarComponent
 {
   @Input() pour = "3roles";
 
-  constructor() { }
+  constructor(public themeService: ThemeService) { }
 
-  ngOnInit(): void {
+  onClick(): void {
+      this.themeService.isLightTheme = !this.themeService.isLightTheme
   }
 
 }

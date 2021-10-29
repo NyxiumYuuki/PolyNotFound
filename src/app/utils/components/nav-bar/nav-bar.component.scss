@@ -24,6 +24,7 @@ ul {
   background-color: black;
   height: 70px;
   color: white;
+  border-bottom: solid 2px white;
 }
 
 
@@ -52,11 +53,11 @@ li a {
 
 
 ::ng-deep .mat-slide-toggle-thumb {
-  background-color: #ffffff;
+  background-color: #c8c8c8;
 }
 
 ::ng-deep .mat-slide-toggle-bar {
-  background-color: #c8c8c8;
+  background-color: #ffffff;
 }
 
 ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {

@@ -3,6 +3,7 @@ import {MessageService} from "../../../utils/services/message/message.service";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupConfirmationComponent} from "../popup-confirmation/popup-confirmation.component";
+import {ThemeService} from "../../../utils/services/theme/theme.service";
 
 @Component({
   selector: 'app-page-register',
@@ -21,7 +22,8 @@ export class PageRegisterComponent implements OnInit
 
     constructor( private messageService: MessageService,
                  private router: Router,
-                 public dialog: MatDialog ) { }
+                 public dialog: MatDialog,
+                 public themeService: ThemeService ) { }
 
 
     ngOnInit(): void {}
