@@ -1,0 +1,21 @@
+table {
+  margin: 0 auto;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.lightTheme td {
+  padding: 10px 30px 5px 5px;
+}
+
+.darkTheme td {
+  background-color: #646464;
+  color: white;
+  padding: 10px 30px 5px 5px;
+}
+
+input {
+  width: 25%;
+}

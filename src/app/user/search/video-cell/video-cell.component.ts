@@ -7,20 +7,26 @@ import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.servic
 import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
+import {WatchedVideo} from "../../../utils/interfaces/watchedVideo";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {HistoriqueService} from "../../../utils/services/historique/historique.service";
 
 @Component({
-  selector: 'app-video-cell',
-  templateUrl: './video-cell.component.html',
-  styleUrls: ['./video-cell.component.scss']
+    selector: 'app-video-cell',
+    templateUrl: './video-cell.component.html',
+    styleUrls: ['./video-cell.component.scss']
 })
 export class VideoCellComponent implements OnInit
 {
     @Input() video: Video;
     safeUrl;
+    tabVideoUrlClicked: string[] = [];
 
     constructor( private videoUrlService: VideoUrlService,
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService,
-                 public themeService: ThemeService) {}
+                 public themeService: ThemeService,
+                 private messageService: MessageService,
+                 private historiqueService: HistoriqueService ) {}
 
     ngOnInit(): void
     {
@@ -32,7 +38,10 @@ export class VideoCellComponent implements OnInit
         this.addVideoToPlaylistsService.run(this.video);
     }
 
-  onIframeClick(videoUrl: string) {
-    console.log("test click iframe "+ videoUrl);
-  }
+    onIframeClick()
+    {
+        console.log("onIframeClick: " + this.video.title);
+        this.historiqueService.addVideoToHistoque(this.video);
+    }
+
 }

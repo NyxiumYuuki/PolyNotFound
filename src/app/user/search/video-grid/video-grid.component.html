@@ -2,8 +2,8 @@
     <nav>
         <ul>
             <li class="row ligne" *ngFor="let triplet of tabTriplet">
-                <div class="col-4" *ngFor="let video0 of triplet">
-                    <app-video-cell [video]="video0"></app-video-cell>
+                <div class="col-4" *ngFor="let video of triplet">
+                    <app-video-cell [video]="video"></app-video-cell>
                 </div>
             </li>
         </ul>

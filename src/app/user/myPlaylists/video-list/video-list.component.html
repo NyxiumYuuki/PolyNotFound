@@ -37,13 +37,13 @@
                     <div *ngFor="let video of playlist.videos ; let i = index" class="videoContainer">
                         <!-- bouton add -->
                         <button mat-icon-button (click)="onAdd(video)">
-                            <mat-icon > add_circle </mat-icon>
+                            <mat-icon> add_circle </mat-icon>
                         </button>
                         <!-- video -->
                         <iframe appIframeTracker
                                 [src]=videoUrlService.safeUrl(this.video.url)
                                 allowfullscreen
-                                (iframeClick)="onIframeClick(this.video.url)"></iframe>
+                                (iframeClick)="onIframeClick(this.video)"></iframe>
                         <!-- bouton delete -->
                         <button mat-icon-button (click)="onDelete(video, i)">
                             <mat-icon>delete</mat-icon>

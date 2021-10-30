@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Video} from "../../interfaces/video";
 import {Playlist} from "../../interfaces/playlist";
 import {Advert} from "../../interfaces/advert";
+import {WatchedVideo} from "../../interfaces/watchedVideo";
 
 
 
@@ -145,4 +146,25 @@ export class FictitiousDatasService
         }
     }
 
+
+    getTabWatchedVideo(n): WatchedVideo[]
+    {
+        let tabWatchedVideo = [];
+        const l = TAB_VIDEO.length;
+
+        for(let i=0 ; i<n ; i++)
+        {
+            const idx = Math.floor(Math.random() * l);
+            const video: Video = TAB_VIDEO[idx];
+            const watchedVideo: WatchedVideo = {
+                _id: video._id,
+                url: video.url,
+                title: video.title,
+                date: new Date()
+            };
+            tabWatchedVideo.push(watchedVideo);
+        }
+
+        return tabWatchedVideo;
+    }
 }

@@ -30,6 +30,8 @@ import { PageMyPlaylistsComponent } from './user/myPlaylists/page-my-playlists/p
 import { PlaylistListComponent } from './user/myPlaylists/playlist-list/playlist-list.component';
 import {VideoListComponent} from "./user/myPlaylists/video-list/video-list.component";
 import { PopupCreatePlaylistComponent } from './utils/components/popup-create-playlist/popup-create-playlist.component';
+import { PageHistoriqueComponent } from './user/historique/page-historique/page-historique.component';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -50,6 +52,7 @@ import { PopupCreatePlaylistComponent } from './utils/components/popup-create-pl
         PlaylistListComponent,
         VideoListComponent,
         PopupCreatePlaylistComponent,
+        PageHistoriqueComponent,
     ],
     imports: [
         BrowserModule,
@@ -66,7 +69,8 @@ import { PopupCreatePlaylistComponent } from './utils/components/popup-create-pl
         MatCheckboxModule,
         MatFormFieldModule,
         MatSnackBarModule,
-        MatGridListModule
+        MatGridListModule,
+        MatTableModule
     ],
   providers: [],
   bootstrap: [AppComponent]

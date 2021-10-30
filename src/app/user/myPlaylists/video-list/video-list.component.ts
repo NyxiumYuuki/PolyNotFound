@@ -7,6 +7,7 @@ import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlay
 import {MessageService} from "../../../utils/services/message/message.service";
 import {Playlist} from "../../../utils/interfaces/playlist";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {HistoriqueService} from "../../../utils/services/historique/historique.service";
 
 
 
@@ -25,7 +26,8 @@ export class VideoListComponent
                  private fictitiousDatasService: FictitiousDatasService,
                  public videoUrlService: VideoUrlService,
                  private addVideoToPlaylistService: AddVideoToPlaylistsService,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private historiqueService: HistoriqueService  ) { }
 
 
     onAdd(video: Video): void
@@ -61,9 +63,10 @@ export class VideoListComponent
     }
 
 
-    onIframeClick(videoUrl: string): void
+    onIframeClick(video: Video): void
     {
-        console.log(videoUrl)
+        console.log("onIframeClick: " + video.title);
+        this.historiqueService.addVideoToHistoque(video);
     }
 
 }

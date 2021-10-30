@@ -37,7 +37,7 @@ export class PageSearchComponent implements OnInit
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousDatasService.getTabVideo(11);
+        this.tabVideo = this.fictitiousDatasService.getTabVideo(5);
         this.ad1 = this.fictitiousDatasService.getAdvert();
         this.ad2 = this.fictitiousDatasService.getAdvert();
 
@@ -63,7 +63,7 @@ export class PageSearchComponent implements OnInit
     onSearch()
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousDatasService.getTabVideo(4);
+        this.tabVideo = this.fictitiousDatasService.getTabVideo(2);
 
         // --- VRAI CODE ---
         /*
@@ -85,12 +85,5 @@ export class PageSearchComponent implements OnInit
             });
         */
     }
-
-
-    tiles = [
-        {text: 'One', cols: 2, rows: 1, color: 'lightblue'},
-        {text: 'Two', cols: 7, rows: 1, color: 'lightgreen'},
-        {text: 'Three', cols: 2, rows: 1, color: 'lightpink'},
-    ];
 
 }
