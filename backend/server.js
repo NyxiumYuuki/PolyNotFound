@@ -28,6 +28,9 @@ db.mongoose
 
 require("./app/config/sessionJWT.config");
 require("./app/routes/user.routes")(app);
+require("./app/routes/playlist.routes")(app);
+require("./app/routes/video.routes")(app);
+require("./app/routes/ad.routes")(app);
 
 app.listen(port, '0.0.0.0',() => {
   console.log (`listening on port ${port}`);

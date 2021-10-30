@@ -3,28 +3,28 @@ module.exports = app => {
   let router = require("express").Router();
 
   // Create a new User
-  router.post("/", users.create);
+  router.post("/user", users.create);
 
   // Retrieve all Users
-  router.get("/", users.findAll);
+  router.get("/users", users.findAll);
 
   // Retrieve a single User with id
-  router.get("/:id", users.findOne);
+  router.get("/user/:id", users.findOne);
 
   // Update a User with id
-  router.put("/:id", users.update);
+  router.put("/user/:id", users.update);
 
   // Delete a User with id
-  router.delete("/:id", users.delete);
+  router.delete("/user/:id", users.delete);
 
   // Delete all Users
-  router.delete("/", users.deleteAll);
+  router.delete("/users", users.deleteAll);
 
   // Authenticate a User
-  router.post("/auth", users.auth);
+  router.post("/user/auth", users.auth);
 
-  // Disconnect a User
-  router.delete("/auth/disconnect", users.disconnect);
+  // Logout a User
+  router.delete("/user/logout", users.disconnect);
 
-  app.use('/api/users', router);
+  app.use('/api', router);
 };

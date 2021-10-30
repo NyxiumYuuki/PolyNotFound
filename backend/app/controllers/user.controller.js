@@ -1,12 +1,11 @@
 const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
-const checkFormat = require("../config/checkFormat.config");
 const {checkLogin, setSessionCookie} = require("../config/sessionJWT.config");
+const roles = require("../config/role.config");
 const User = db.users;
 
-// Authenticate an User
+// Authenticate a User
 exports.auth = (req, res) => {
-  checkFormat(req, res);
   // Validate request
   if (!req.body.login || !req.body.hashPass) {
     sendError(res, 400,-1,"Content can not be empty ! (login and hashPass needed)");
@@ -16,10 +15,10 @@ exports.auth = (req, res) => {
       .findOne({login: req.body.login, hashPass: req.body.hashPass}, {role: true})
       .then(data => {
         if (data !== null){
-          setSessionCookie(req, res, { login: req.body.login, role: data.role});
+          setSessionCookie(req, res, {id: data._id, login: req.body.login, role: data.role});
           return sendMessage(res, 1, true);
         } else {
-          setSessionCookie(req, res, { login: -1, role: -1 });
+          setSessionCookie(req, res, {id: -1, login: -1, role: -1 });
           return sendError(res, 500, -1, "Invalid login or password.");
         }
       })
@@ -29,19 +28,18 @@ exports.auth = (req, res) => {
   }
 };
 
-// Disconnect an User
+// Logout a User
 exports.disconnect = (req, res) => {
-  let token;
-  if(checkFormat(req, res) && (token = checkLogin(req, res))) {
+  const token = checkLogin(req, res);
+  if(token){
     console.log(token);
-    setSessionCookie(req, res, {login: -1});
+    setSessionCookie(req, res, {id: -1, login: -1, role: -1});
     return sendMessage(res, 1, {message: "User disconnected"}, token);
   }
 };
 
 // Create and Save a new User
 exports.create = (req, res) => {
-  checkFormat(req, res);
   // Validate request
   if (!req.body.login || !req.body.hashPass || !req.body.mail) {
     sendError(res, 400,-1,"Content can not be empty ! (login, hashPass and mail needed");
@@ -77,10 +75,10 @@ exports.create = (req, res) => {
   }
 };
 
-// Retrieve all Users from the database.
+// Retrieve all Users from the database if admin.
 exports.findAll = (req, res) => {
-  let token;
-  if(checkFormat(req, res) && (token = checkLogin(req, res, 10))){
+  const token = checkLogin(req, res, [roles.Admin]);
+  if(token){
     console.log(token);
     const login = req.query.login;
     let condition = login ? { login: { $regex: new RegExp(login), $options: "i" } } : {};
@@ -95,27 +93,34 @@ exports.findAll = (req, res) => {
   }
 };
 
-// Find a single User with an id
+// Find a single User with login if admin or login from cookie session
 exports.findOne = (req, res) => {
-  checkFormat(req, res);
-  const id = req.params.id;
+  const token = checkLogin(req, res);
+  if(token){
+    let login;
+    if(token.role === [roles.Admin]){
+      login = req.params.login;
 
-  User.findById(id, {hashPass: false})
-    .then(data => {
-      if (data){
-        sendMessage(res, 1, data);
-      } else {
-        sendError(res,404,-1,"Not found User with id " + id );
-      }
-    })
-    .catch(err => {
-      sendError(res,500,-1,err.message || "Error retrieving User with id=" + id );
-    });
+    } else{
+      login = token.login;
+    }
+    console.log(token.role, login);
+    User.find({login: login}, {hashPass: false})
+      .then(data => {
+        if (data){
+          sendMessage(res, 1, data);
+        } else {
+          sendError(res,404,-1,"Not found User with login " + login );
+        }
+      })
+      .catch(err => {
+        sendError(res,500,-1,err.message || "Error retrieving User with login=" + login );
+      });
+  }
 };
 
 // Update a User by the id in the request
 exports.update = (req, res) => {
-  checkFormat(req, res);
   if (!req.body) {
     sendError(res,400,-1,"Data to update can not be empty!");
   } else{
@@ -137,7 +142,6 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-  checkFormat(req, res);
   const id = req.params.id;
 
   User.findByIdAndRemove(id)
@@ -155,14 +159,17 @@ exports.delete = (req, res) => {
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
-  checkFormat(req, res);
-  User.deleteMany({})
-    .then(data => {
-      sendMessage(res, 1,{
-        message: `${data.deletedCount} Users were deleted successfully!`
+  const token = checkLogin(req, res, [roles.Admin]);
+  if(token) {
+    console.log(token);
+    User.deleteMany({})
+      .then(data => {
+        sendMessage(res, 1, {
+          message: `${data.deletedCount} Users were deleted successfully!`
+        });
+      })
+      .catch(err => {
+        sendError(res, 500, -1, err.message || "Some error occurred while removing all Users.");
       });
-    })
-    .catch(err => {
-      sendError(res,500,-1,err.message || "Some error occurred while removing all Users.");
-    });
+  }
 };

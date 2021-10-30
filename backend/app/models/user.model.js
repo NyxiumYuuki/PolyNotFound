@@ -1,3 +1,5 @@
+const roles = require("../config/role.config");
+
 module.exports = mongoose => {
   let schema = mongoose.Schema({
       login: String,
@@ -5,8 +7,9 @@ module.exports = mongoose => {
       mail: String,
       role: {
         type: Number,
-        default: 0
-      }
+        default: roles.User
+      },
+      playlists: []
     },
     { timestamps: true }
   );

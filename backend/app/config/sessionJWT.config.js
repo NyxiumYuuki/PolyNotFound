@@ -12,9 +12,10 @@ const JWTRS256_PRIVATE_KEY = Buffer.from(process.env.JWTRS256_PRIVATE_KEY, 'base
 const JWTRS256_PUBLIC_KEY = Buffer.from(process.env.JWTRS256_PUBLIC_KEY, 'base64').toString('utf-8');
 
 
-function createSessionJWT (login, role) {
+function createSessionJWT (id, login, role) {
   return sessionJWTConfig.sign(
     {
+      id: id,
       login: login,
       role: role,
       midExp: Math.floor(Date.now() / 1000) + 1800
@@ -29,21 +30,22 @@ function createSessionJWT (login, role) {
 
 function createSessionCookie(req, res, payload) {
   let jwtToken;
-  if (typeof payload.login !== 'undefined' &&
+  if (typeof payload.id !== 'undefined' &&
+    typeof payload.login !== 'undefined' &&
     typeof payload.role !== 'undefined' &&
     typeof payload.midExp !== 'undefined' &&
     (Math.floor(Date.now() / 1000) <= payload.midExp)) {
     jwtToken = req.headers.cookie;
   }
   else {
-    jwtToken = createSessionJWT(payload.login, payload.role);
+    jwtToken = createSessionJWT(payload.id, payload.login, payload.role);
   }
   res.cookie('SESSIONID', jwtToken, {httpOnly:true, secure:false});
 }
 
 function decodeSessionCookie(sessionid) {
   if (typeof sessionid === 'undefined') {
-    return {login: -1, role: -1};
+    return {id: -1, login: -1, role: -1};
   }
   try {
     const token = sessionJWTConfig.verify(
@@ -53,7 +55,7 @@ function decodeSessionCookie(sessionid) {
     return {token: token};
   }
   catch (err) {
-    return {login: -1, role: -1};
+    return {id: -1, login: -1, role: -1};
   }
 }
 
@@ -83,7 +85,7 @@ function checkLogin(req, res, role=null){
       if(role === null){
         return token;
       } else{
-        if(token.role !== 'undefined' && token.role === role){
+        if(token.role !== 'undefined' && role.includes(token.role)){
           return token;
         } else{
           return sendError(res, 500, -1, "User doesn't have permission.", token);
