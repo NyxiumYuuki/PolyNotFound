@@ -26,7 +26,6 @@ db.mongoose
     }
   });
 
-require("./app/config/sessionJWT.config");
 require("./app/routes/user.routes")(app);
 require("./app/routes/playlist.routes")(app);
 require("./app/routes/video.routes")(app);
