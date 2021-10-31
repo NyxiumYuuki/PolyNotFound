@@ -8,12 +8,16 @@ import {ThemeService} from "../../services/theme/theme.service";
 })
 export class NavBarComponent
 {
-  @Input() pour = "3roles";
+    @Input() pour = "3roles";
 
-  constructor(public themeService: ThemeService) { }
+    constructor(public themeService: ThemeService) { }
 
-  onClick(): void {
-      this.themeService.isLightTheme = !this.themeService.isLightTheme
-  }
+    onClick(): void {
+      this.themeService.isLightTheme = !this.themeService.isLightTheme;
+    }
+
+    onDeconnexion(): void {
+
+    }
 
 }

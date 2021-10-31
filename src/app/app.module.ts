@@ -32,6 +32,9 @@ import {VideoListComponent} from "./user/myPlaylists/video-list/video-list.compo
 import { PopupCreatePlaylistComponent } from './utils/components/popup-create-playlist/popup-create-playlist.component';
 import { PageHistoriqueComponent } from './user/historique/page-historique/page-historique.component';
 import {MatTableModule} from '@angular/material/table';
+import { PageMyProfilComponent } from './user/myProfil/page-my-profil/page-my-profil.component';
+import { PopupPictureProfilUrlComponent } from './user/myProfil/popup-picture-profil-url/popup-picture-profil-url.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -53,6 +56,8 @@ import {MatTableModule} from '@angular/material/table';
         VideoListComponent,
         PopupCreatePlaylistComponent,
         PageHistoriqueComponent,
+        PageMyProfilComponent,
+        PopupPictureProfilUrlComponent,
     ],
     imports: [
         BrowserModule,
@@ -70,7 +75,8 @@ import {MatTableModule} from '@angular/material/table';
         MatFormFieldModule,
         MatSnackBarModule,
         MatGridListModule,
-        MatTableModule
+        MatTableModule,
+        NgbModule
     ],
   providers: [],
   bootstrap: [AppComponent]

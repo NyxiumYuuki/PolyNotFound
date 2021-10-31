@@ -3,6 +3,7 @@ import {Video} from "../../interfaces/video";
 import {Playlist} from "../../interfaces/playlist";
 import {Advert} from "../../interfaces/advert";
 import {WatchedVideo} from "../../interfaces/watchedVideo";
+import {User} from "../../interfaces/user";
 
 
 
@@ -167,4 +168,18 @@ export class FictitiousDatasService
 
         return tabWatchedVideo;
     }
+
+
+    getUser(): User
+    {
+        return {
+            _id: "blablablaId",
+            login: "yoyo",
+            hashPass: "agourgroou",
+            mail: "yoyo@gmail.com",
+            role: "user",
+            profilePictureUrl: "https://ih1.redbubble.net/image.945612860.1330/flat,750x1000,075,f.jpg"
+        }
+    }
+
 }

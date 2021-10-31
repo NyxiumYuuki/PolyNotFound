@@ -1,0 +1,9 @@
+<div class="myContainer">
+    <img [src]="profilePictureUrl"
+         onerror="this.onerror=null; this.src='https://www.qualibre-formations.fr/wp-content/uploads/2020/02/icon_single.png'"
+         routerLink="/advertiser/myProfil"
+         alt="???">
+    <br>
+    <input [(ngModel)]="profilePictureUrl" placeholder="url de l'image"><br>
+    <button mat-button (click)="onValider()"> Valider </button>
+</div>

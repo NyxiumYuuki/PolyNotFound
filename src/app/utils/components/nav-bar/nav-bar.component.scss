@@ -1,55 +1,66 @@
-.StreamNotFound {
-  font-style: oblique;
-  font-family: cursive;
-  font-size: xx-large;
-}
-
-
-mat-icon {
-  margin-top: 2px;
-  font-size: xx-large;
-}
-
-
-mat-slide-toggle {
-  margin-top: 20px;
-}
-
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+.navbar {
   background-color: black;
-  height: 70px;
-  color: white;
-  border-bottom: solid 2px white;
-}
-
-
-li {
-  float: left;
+  height: 75px;
   font-size: x-large;
-  background-color: black;
-}
-
-
-li a {
-  display: block;
   color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  background-color: black;
 }
 
 
-.cliquable a:hover:not(.active)  {
-  background-color: #c8c8c8;
+.navbar-expand-lg {
+  border-bottom: solid;
+  border-color: white;
+  border-bottom-width: 2px;
 }
 
 
+// PolyNotFound
+.navbar-brand {
+  font-family: "Lucida Console";
+  font-weight: bold;
+  font-style: oblique 90deg;
+  font-size: xx-large;
+  margin-left: 30px;
+  color: white;
+}
+
+
+// Recherche, Mes Playlists, Historique
+.nav-link {
+  color: white;
+}
+.nav-link:hover {
+  color: grey;
+}
+
+
+// Bonton deconnexion
+.btnDeconnexion {
+  font-size: x-large;
+  margin: 0px 10px 0px 10px
+}
+.btnDeconnexion:hover {
+  color: grey;
+}
+
+
+.monLi {
+  margin: 0px 10px 0px 10px;
+}
+
+
+img {
+  border: solid 2px white;
+  border-radius: 50px;
+  margin: 0px 10px 0px 15px;
+  width: 50px;
+  height: 50px;
+}
+img:hover {
+  cursor: pointer;
+}
+
+
+// --------------------------------------------------------------------
 
 
 ::ng-deep .mat-slide-toggle-thumb {
