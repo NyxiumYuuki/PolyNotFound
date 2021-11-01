@@ -44,7 +44,7 @@ export class PageSearchComponent implements OnInit
         // --- VRAI CODE ---
         /*
         let tabPlateformName = [];
-        for(let plateform of this.tabPlateform) tabPlateformName.push(plateform.name);
+        for(let plateform of this.tabPlateform) tabPlateformName.push(plateform.title);
         let data = { search: "", plaateforms: tabPlateformName };
         this.messageService
             .sendMessage("user/searchVideo", data)
@@ -70,7 +70,7 @@ export class PageSearchComponent implements OnInit
         let tabPlateformName = [];
         for(let plateform of this.tabPlateform)
         {
-            if(plateform.isSelected) tabPlateformName.push(plateform.name);
+            if(plateform.isSelected) tabPlateformName.push(plateform.title);
         }
         let data = { "search": this.search, "plateforms": tabPlateformName };
         this.messageService

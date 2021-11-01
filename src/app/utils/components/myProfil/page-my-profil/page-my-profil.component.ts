@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from "../../../utils/services/message/message.service";
-import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
+import {MessageService} from "../../../services/message/message.service";
+import {ThemeService} from "../../../services/theme/theme.service";
+import {FictitiousDatasService} from "../../../services/fictitiousDatas/fictitious-datas.service";
 import {MatDialog} from "@angular/material/dialog";
-import {PopupAddVideoToPlaylistsComponent} from "../../../utils/components/popup-add-video-to-playlists/popup-add-video-to-playlists.component";
+import {PopupAddVideoToPlaylistsComponent} from "../../popup-add-video-to-playlists/popup-add-video-to-playlists.component";
 import {PopupPictureProfilUrlComponent} from "../popup-picture-profil-url/popup-picture-profil-url.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
 
 
 
@@ -27,20 +28,34 @@ export class PageMyProfilComponent implements OnInit
     confirmNewPassword: string = "" ;
     changePassword: boolean = false ;
     hasError: boolean = false;
-    errorMessage: string = ""
+    errorMessage: string = "" ;
+    forNavbar: string = "" ;
 
 
     constructor( private messageService: MessageService,
                  public themeService: ThemeService,
                  private fictitiousDatasService: FictitiousDatasService,
                  public dialog: MatDialog,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private router: Router ) { }
 
 
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        const profil = this.fictitiousDatasService.getUser();
+        let profil ;
+        if(this.router.url.startsWith("/user")) {
+            profil = this.fictitiousDatasService.getUser();
+            this.forNavbar = "user";
+        }
+        else if(this.router.url.startsWith("/advertiser")) {
+            profil = this.fictitiousDatasService.getAdvertiser();
+            this.forNavbar = "advertiser";
+        }
+        else if(this.router.url.startsWith("/admin")) {
+            profil = this.fictitiousDatasService.getAdmin();
+            this.forNavbar = "admin";
+        }
         this.model._id = profil._id;
         this.model.profilePictureUrl = profil.profilePictureUrl;
         this.model.login = profil.login;

@@ -1,13 +1,16 @@
 export interface Advert
 {
     _id: string,
+    title: string,
     advertiser: string,
     images: {
         url: string,
         description: string,
-    }[]
-    text: string,
-    subjectTarget: any[]
-    seen: number,
-    date: Date,
+    }[],
+    tags: string[],
+    comment: string,
+    views: number,
+    createdAt: Date,
+    lastUpdate: Date,
+    isVisible: boolean,
 }

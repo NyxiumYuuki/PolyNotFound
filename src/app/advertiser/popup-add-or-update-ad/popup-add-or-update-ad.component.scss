@@ -1,0 +1,60 @@
+.lightTheme, .darkTheme {
+  background-image: none;
+}
+
+h1 {
+  text-align: center;
+  font-size: xx-large;
+  padding-bottom: 10px;
+}
+
+
+// -------------------------------------------------------------------------
+
+
+mat-dialog-content {
+  overflow-y: hidden;
+  //padding: 20px 20px 20px 20px;
+}
+
+.commentContainer {
+  width: 100%;
+}
+
+
+// -------------------------------------------------------------------------
+// --- LightTheme ---
+
+// aura
+.lightTheme ::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+.lightTheme ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+.lightTheme ::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border-color: black !important;
+  background-color: white !important;
+}
+
+// --- DarkTheme ---
+
+// aura
+.darTheme ::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+.darkTheme ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+.darkTheme ::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border-color: white !important;
+  //background-color: white !important;
+}

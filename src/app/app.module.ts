@@ -8,7 +8,7 @@ import { PageRegisterComponent } from './pourLes3Roles/register/page-register/pa
 import { NavBarComponent } from './utils/components/nav-bar/nav-bar.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { PageSearchComponent } from './user/search/page-search/page-search.component';
 import {HttpClientModule} from "@angular/common/http";
 import { PopupConfirmationComponent } from './pourLes3Roles/register/popup-confirmation/popup-confirmation.component';
@@ -30,11 +30,22 @@ import { PageMyPlaylistsComponent } from './user/myPlaylists/page-my-playlists/p
 import { PlaylistListComponent } from './user/myPlaylists/playlist-list/playlist-list.component';
 import {VideoListComponent} from "./user/myPlaylists/video-list/video-list.component";
 import { PopupCreatePlaylistComponent } from './utils/components/popup-create-playlist/popup-create-playlist.component';
-import { PageHistoriqueComponent } from './user/historique/page-historique/page-historique.component';
+import { PageHistoryUserComponent } from './user/history/page-history-user/page-history-user.component';
 import {MatTableModule} from '@angular/material/table';
-import { PageMyProfilComponent } from './user/myProfil/page-my-profil/page-my-profil.component';
-import { PopupPictureProfilUrlComponent } from './user/myProfil/popup-picture-profil-url/popup-picture-profil-url.component';
+import { PageMyProfilComponent } from './utils/components/myProfil/page-my-profil/page-my-profil.component';
+import { PopupPictureProfilUrlComponent } from './utils/components/myProfil/popup-picture-profil-url/popup-picture-profil-url.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {MatSortModule} from "@angular/material/sort";
+import { PageAdvertiserComponent } from './advertiser/page-advertiser/page-advertiser.component';
+import { PopupDeleteAdComponent } from './advertiser/popup-delete-ad/popup-delete-ad.component';
+import { PopupAddOrUpdateAdComponent } from './advertiser/popup-add-or-update-ad/popup-add-or-update-ad.component';
+import { PopupVisualizeAdComponent } from './advertiser/popup-visualize-ad/popup-visualize-ad.component';
+import { BarTagsComponent } from './advertiser/bar-tags/bar-tags.component';
+import {MatChipsModule} from "@angular/material/chips";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatSelectModule} from "@angular/material/select";
+import { PopupVisualizeImagesComponent } from './advertiser/popup-visualize-images/popup-visualize-images.component';
+import {IvyCarouselModule} from "angular-responsive-carousel";
 
 
 @NgModule({
@@ -55,9 +66,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         PlaylistListComponent,
         VideoListComponent,
         PopupCreatePlaylistComponent,
-        PageHistoriqueComponent,
+        PageHistoryUserComponent,
         PageMyProfilComponent,
         PopupPictureProfilUrlComponent,
+        PageAdvertiserComponent,
+        PopupDeleteAdComponent,
+        PopupAddOrUpdateAdComponent,
+        PopupVisualizeAdComponent,
+        BarTagsComponent,
+        PopupVisualizeImagesComponent,
     ],
     imports: [
         BrowserModule,
@@ -76,7 +93,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         MatSnackBarModule,
         MatGridListModule,
         MatTableModule,
-        NgbModule
+        NgbModule,
+        MatSortModule,
+        MatChipsModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        IvyCarouselModule
     ],
   providers: [],
   bootstrap: [AppComponent]

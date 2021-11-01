@@ -1,0 +1,74 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <app-nav-bar [pour]="forNavbar"></app-nav-bar><br><br>
+
+        <div class="boite">
+
+            <!-- Photo de profil -->
+            <div style="text-align: center">
+                <img [src]="model.profilePictureUrl"
+                     onerror="this.onerror=null; this.src='assets/profil.png'"
+                     alt="">
+                <br>
+                <button mat-button  (click)="onChangePP()"> Changer photo de profil</button>
+            </div>
+            <br>
+
+            <!-- Pseudo -->
+            <mat-form-field appearance="fill">
+                <mat-label>Pseudo</mat-label>
+                <input matInput type="text" [(ngModel)]="model.login">
+            </mat-form-field>
+            <br>
+
+            <!-- Email -->
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="text" [(ngModel)]="model.mail">
+            </mat-form-field>
+            <br>
+
+            <!-- Role -->
+            <mat-form-field appearance="fill">
+                <mat-label>Type de compte</mat-label>
+                <input matInput type="text" *ngIf="model.role==='user'" value="Utilisateur" disabled>
+                <input matInput type="text" *ngIf="model.role==='advertiser'" value="Annonceur" disabled>
+                <input matInput type="text" *ngIf="model.role==='admin'" value="Admin" disabled>
+            </mat-form-field>
+            <br>
+
+            <!-- Modifier mot de passe -->
+            Modifier mot de passe:
+            <mat-checkbox [(ngModel)]="changePassword"></mat-checkbox>
+            <br>
+
+            <!-- Nouveau mot de passe -->
+            <div *ngIf="changePassword">
+                <!-- Nouveau mot de passe -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Nouveau mot de passe</mat-label>
+                    <input matInput type="password" [(ngModel)]="model.newPassword">
+                </mat-form-field>
+                <br>
+                <!-- Confirmation npuveau mot de passe -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Confirmation nouveau mot de passe</mat-label>
+                    <input matInput type="password" [(ngModel)]="confirmNewPassword">
+                </mat-form-field>
+            </div>
+            <br>
+
+            <!-- Bouton valider -->
+            <div style="width: 100%; text-align: center">
+                <button mat-button (click)="onEnregistrer()"> Enregistrer </button>
+            </div>
+
+            <!-- Message d'erreur -->
+            <div *ngIf="hasError" style="text-align: center; margin-top: 10px;">
+                <span class="mat-error"> {{errorMessage}} </span>
+            </div>
+
+        </div>
+    </div>
+</div>

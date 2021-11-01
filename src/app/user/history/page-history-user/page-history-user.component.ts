@@ -6,43 +6,43 @@ import {WatchedVideo} from "../../../utils/interfaces/watchedVideo";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
-import {HistoriqueService} from "../../../utils/services/historique/historique.service";
+import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
 
 
 
 
 @Component({
-    selector: 'app-page-historique',
-    templateUrl: './page-historique.component.html',
-    styleUrls: ['./page-historique.component.scss']
+    selector: 'app-page-history-user',
+    templateUrl: './page-history-user.component.html',
+    styleUrls: ['./page-history-user.component.scss']
 })
-export class PageHistoriqueComponent implements OnInit
+export class PageHistoryUserComponent implements OnInit
 {
-    displayedColumns: string[] = [ 'aperçu', 'titre', 'date', 'source', 'effacer' ];
+    displayedColumns: string[] = [ 'aperçu', 'titre', 'date', 'source', 'action' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
 
 
     constructor( public themeService: ThemeService,
                  private messageService: MessageService,
-                 private fictitiousDataService: FictitiousDatasService,
+                 private fictitiousDatasService: FictitiousDatasService,
                  public videoUrlService: VideoUrlService,
-                 private historiqueService: HistoriqueService ) { }
+                 private userHistoryService: UserHistoryService ) { }
 
 
     ngOnInit(): void
     {
-        this.historiqueService.clearTabVideoUrlClicked();
+        this.userHistoryService.clearTabVideoUrlClicked();
 
         // --- FAUX CODE ---
-        const tabWatchedVideo = this.fictitiousDataService.getTabWatchedVideo(8);
+        const tabWatchedVideo = this.fictitiousDatasService.getTabWatchedVideo(8);
         this.dataSource = new MatTableDataSource(tabWatchedVideo);
         this.dataSource.sort = this.sort;
 
         // --- VRAI CODE ---
         /*
         this.messageService
-            .sendMessage( "user/get/historique", null )
+            .sendMessage( "user/get/history", null )
             .subscribe( retour => {
 
                 if(retour.status === "error") console.log(retour);
@@ -99,7 +99,7 @@ export class PageHistoriqueComponent implements OnInit
     onIframeClick(watchedVideo: WatchedVideo)
     {
         console.log("onIframeClick: " + watchedVideo.title);
-        this.historiqueService.addWatchedVideoToHistorique(watchedVideo);
+        this.userHistoryService.addWatchedVideoToHistorique(watchedVideo);
     }
 
 }

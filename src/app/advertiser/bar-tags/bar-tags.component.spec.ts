@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageHistoriqueComponent } from './page-historique.component';
+import { BarTagsComponent } from './bar-tags.component';
 
-describe('PageHistoriqueComponent', () => {
-  let component: PageHistoriqueComponent;
-  let fixture: ComponentFixture<PageHistoriqueComponent>;
+describe('BarTagsComponent', () => {
+  let component: BarTagsComponent;
+  let fixture: ComponentFixture<BarTagsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageHistoriqueComponent ]
+      declarations: [ BarTagsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageHistoriqueComponent);
+    fixture = TestBed.createComponent(BarTagsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

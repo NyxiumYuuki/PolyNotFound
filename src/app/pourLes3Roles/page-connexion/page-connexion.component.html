@@ -1,41 +1,40 @@
 <div [class]="themeService.getClassTheme()">
     <div class="myContainer">
+        <div class="bg">
 
-        <app-nav-bar pour="3roles"></app-nav-bar>
 
-        <div class="boite">
-            <h1> Connexion </h1>
+            <app-nav-bar pour="login"></app-nav-bar>
 
-            <!-- Email -->
-            <div class="row">
-                <div class="col-4 label"> Email: &nbsp; </div>
-                <div class="col-8 champ">
-                    <input type="text" [(ngModel)]="email">
+
+            <div class="wrapper fadeInDown">
+                <div id="formContent">
+
+                    <!-- Icon -->
+                    <div class="fadeIn first">
+                        <h1 style="font-family: cursive; font-size: 45px; margin-top: 60px; margin-bottom: 20px">StreamNotFound</h1>
+                        <img src="assets/logo.png" id="icon" alt="User Icon" style="margin-top: 20px"/>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form>
+                        <input [(ngModel)]="pseudo" type="text" id="login" class="fadeIn second" name="login" placeholder="Login">
+                        <input [(ngModel)]="password" type="password" id="password" class="fadeIn third" name="login" placeholder="Mot de passe">
+                        <!-- Message d'erreur -->
+                        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
+                            <span class="mat-error"> {{errorMessage}} </span>
+                        </div>
+                        <input type="submit" class="fadeIn fourth" value="Se connecter" (click)="onSeConnecter()">
+                    </form>
+
+                    <!-- Oubli mot de passe -->
+                    <div id="formFooter">
+                        <a class="underlineHover" href="https://disney.fandom.com/fr/wiki/Tristesse">J'ai oublié mon mot de passe</a>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Mot de passe -->
-            <div class="row">
-                <div class="col-4 label"> Mot de passe: &nbsp; </div>
-                <div class="col-8 champ">
-                    <input type="password" [(ngModel)]="password">
-                </div>
-            </div>
 
-            <!-- Boutons -->
-            <div class="row">
-                <div class="col-6">
-                    <button (click)="onSeConnecter()"> Se connecter </button>
-                </div>
-                <div class="col-6" style="text-align: right">
-                    <button routerLink="/register"> S'inscrire </button>
-                </div>
-            </div>
-
-            <!-- Mot de passe oublié -->
-            <div style="text-align: right">
-                <a class="lien" href="https://pixar.fandom.com/wiki/Sadness"> Mot de passe oublié ? </a>
-            </div>
         </div>
     </div>
 </div>

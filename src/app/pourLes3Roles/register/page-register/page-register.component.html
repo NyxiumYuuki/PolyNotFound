@@ -1,53 +1,72 @@
 <div [class]="themeService.getClassTheme()">
     <div class="myContainer">
+        <div class="bg">
 
-        <app-nav-bar pour="3roles"></app-nav-bar>
 
-        <div class="boite">
-            <h1> Inscription </h1>
+            <app-nav-bar pour="register"></app-nav-bar>
 
-            <!-- Pseudo -->
-            <div class="row">
-                <div class="col-6 label"> Pseudo: &nbsp; </div>
-                <div class="col-6 champ">
-                    <input type="text" [(ngModel)]="pseudo">
+
+            <div class="wrapper">
+                <div id="formContent">
+
+                    <!-- Icon -->
+                    <div style="margin: 10px 0px 20px 0px">
+                        <img src="assets/logo.png" id="icon" alt="User Icon" style="margin-top: 20px"/>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form>
+                        <!-- Login -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Login</mat-label>
+                            <input matInput type="text" [(ngModel)]="pseudo">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Email -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" [(ngModel)]="email">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Role -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Type de compte</mat-label>
+                            <mat-select [(ngModel)]="role">
+                                <mat-option value="user"> Utilisateur </mat-option>
+                                <mat-option value="advertiser"> Annonceur </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Mot de passe -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Mot de passe</mat-label>
+                            <input matInput type="password" [(ngModel)]="password">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Confirmation mot de passe -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Confirmation mot de passe</mat-label>
+                            <input matInput type="password" [(ngModel)]="confirmPassword">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Message d'erreur -->
+                        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
+                            <span class="mat-error"> {{errorMessage}} </span>
+                        </div>
+
+                        <!-- Valider -->
+                        <input type="submit" class="fadeIn fourth" value="S'inscrire" (click)="onRegister()">
+                    </form>
+
                 </div>
             </div>
 
-            <!-- Email -->
-            <div class="row">
-                <div class="col-6 label"> Email: &nbsp; </div>
-                <div class="col-6 champ">
-                    <input type="email" [(ngModel)]="email">
-                </div>
-            </div>
 
-            <!-- Mot de passe -->
-            <div class="row">
-                <div class="col-6 label"> Mot de passe: &nbsp; </div>
-                <div class="col-6 champ">
-                    <input type="password" [(ngModel)]="password">
-                </div>
-            </div>
-
-            <!-- Confirmation mot de passe -->
-            <div class="row">
-                <div class="col-6 label"> Confirmer le mot de passe: &nbsp; </div>
-                <div class="col-6 champ">
-                    <input type="password" [(ngModel)]="confirmPassword">
-                </div>
-            </div>
-
-            <!-- Bouton valider -->
-            <div style="width: 100%; margin-top: 30px">
-                <button (click)="onValider()"> Valider </button>
-            </div>
-
-            <!-- Message d'erreur -->
-            <div *ngIf="hasError" style="text-align: center">
-                <span class="mat-error"> {{errorMessage}} </span>
-            </div>
         </div>
-
     </div>
 </div>

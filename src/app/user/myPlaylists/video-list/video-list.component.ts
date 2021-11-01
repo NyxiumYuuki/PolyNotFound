@@ -7,7 +7,7 @@ import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlay
 import {MessageService} from "../../../utils/services/message/message.service";
 import {Playlist} from "../../../utils/interfaces/playlist";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {HistoriqueService} from "../../../utils/services/historique/historique.service";
+import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
 
 
 
@@ -27,7 +27,7 @@ export class VideoListComponent
                  public videoUrlService: VideoUrlService,
                  private addVideoToPlaylistService: AddVideoToPlaylistsService,
                  private snackBar: MatSnackBar,
-                 private historiqueService: HistoriqueService  ) { }
+                 private historiqueService: UserHistoryService  ) { }
 
 
     onAdd(video: Video): void

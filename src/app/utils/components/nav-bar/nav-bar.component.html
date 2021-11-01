@@ -1,8 +1,36 @@
 <!-- --------------------------------------------------------------------------------------------------------- -->
 
 
-<!-- 3 Roles -->
-<div *ngIf="pour === '3roles'">
+<!-- Login -->
+<div *ngIf="pour === 'login'">
+    <nav class="navbar navbar-expand-lg">
+
+        <!-- PolyNotFound -->
+        <a class="navbar-brand" routerLink=""> StreamNotFound </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Rien -->
+        <div class="collapse navbar-collapse"></div>
+
+        <!-- Slide -->
+        <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 50px 0px 10px;"></mat-slide-toggle>
+
+        <!-- S'inscrire -->
+        <button mat-button class="btnDeconnexion" routerLink="/register">
+            S'inscrire
+        </button>
+
+    </nav>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Register -->
+<div *ngIf="pour === 'register'">
     <nav class="navbar navbar-expand-lg">
 
         <!-- PolyNotFound -->
@@ -53,8 +81,8 @@
         <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 10px 0px 10px;"></mat-slide-toggle>
 
         <!-- Mon profil -->
-        <img src="https://ih1.redbubble.net/image.945612860.1330/flat,750x1000,075,f.jpg"
-             onerror="this.onerror=null; this.src='https://www.qualibre-formations.fr/wp-content/uploads/2020/02/icon_single.png'"
+        <img [src]=urlImage
+             onerror="this.onerror=null; this.src='assets/profil.png'"
              routerLink="/user/myProfil"
              alt="">
 
@@ -75,32 +103,20 @@
     <nav class="navbar navbar-expand-lg">
 
         <!-- PolyNotFound -->
-        <a class="navbar-brand" routerLink="/advertiser/search"> StreamNotFound </a>
+        <a class="navbar-brand" routerLink="/advertiser"> StreamNotFound </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- [Recherche] [Mes Playlists] [Historique] -->
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav">
-                <li class="nav-item active monLi">
-                    <a class="nav-link" routerLink="/advertiser/addAd"> Ajouter une pub </a>
-                </li>
-                <li class="nav-item active monLi">
-                    <a class="nav-link" routerLink="/advertiser/adList"> Liste des pubs </a>
-                </li>
-                <li class="nav-item active monLi">
-                    <a class="nav-link" routerLink="/advertiser/history"> Historique des pubs </a>
-                </li>
-            </ul>
-        </div>
+        <!-- Vide -->
+        <div class="collapse navbar-collapse"></div>
 
         <!-- Slide -->
         <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 10px 0px 10px;"></mat-slide-toggle>
 
         <!-- Mon profil -->
-        <img src="https://ih1.redbubble.net/image.945612860.1330/flat,750x1000,075,f.jpg"
-             onerror="this.onerror=null; this.src='https://www.qualibre-formations.fr/wp-content/uploads/2020/02/icon_single.png'"
+        <img [src]=urlImage
+             onerror="this.onerror=null; this.src='assets/profil.png'"
              routerLink="/advertiser/myProfil"
              alt="">
 
@@ -145,8 +161,8 @@
         <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 10px 0px 10px;"></mat-slide-toggle>
 
         <!-- Mon profil -->
-        <img src="https://ih1.redbubble.net/image.945612860.1330/flat,750x1000,075,f.jpg"
-             onerror="this.onerror=null; this.src='https://www.qualibre-formations.fr/wp-content/uploads/2020/02/icon_single.png'"
+        <img [src]=urlImage
+             onerror="this.onerror=null; this.src='assets/profil.png'"
              routerLink="/admin/myProfil"
              alt="">
 
