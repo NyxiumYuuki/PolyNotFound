@@ -3,6 +3,7 @@ import {Video} from "../../interfaces/video";
 import {Playlist} from "../../interfaces/playlist";
 import {Advert} from "../../interfaces/advert";
 import {WatchedVideo} from "../../interfaces/watchedVideo";
+import {User} from "../../interfaces/user";
 
 
 
@@ -87,25 +88,75 @@ const TAB_VIDEO = [
 ]
 
 
+
+const TAB_ADVERT = [
+    {
+        _id: "idNutella",
+        title: "pot de nutella XXL",
+        advertiser: "nutella",
+        images: [
+            { url: "nutella_v_1.jpeg", description: "image nutella 1" },
+            { url: "nutella_v_2.png", description: "image nutella 2" },
+            { url: "nutella_v_3.jpg", description: "image nutella 3" }
+        ],
+        tags: [ "bon", "petit-déjeuner", "chocolat" ],
+        comment: "pub pour vacances de noêl",
+        views: 5,
+        createdAt: new Date(),
+        lastUpdate: new Date(),
+        isVisible: true
+    },
+    {
+        _id: "idRolex",
+        title: "Rolex",
+        advertiser: "rolex",
+        images: [
+            { url: "rolex_v_1.jpg", description: "rolex 1" },
+            { url: "rolex_v_2.png", description: "rolex 2" },
+        ],
+        tags: [ "montre", "luxe", "suisse" ],
+        comment: "pub pour cette année",
+        views: 2,
+        createdAt: new Date(),
+        lastUpdate: new Date(),
+        isVisible: true
+    },
+]
+
+
+
+
 @Injectable({
     providedIn: 'root'
 })
 export class FictitiousDatasService
 {
-    constructor() { }
 
+    private makeid(length)
+    {
+        let res = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for( let i = 0; i < length; i++ )
+        {
+            const k = Math.floor(Math.random() * characters.length);
+            res += characters.charAt(k);
+        }
+        return res;
+    }
+
+
+    getVideo(): Video
+    {
+        const idx = Math.floor(Math.random() * TAB_VIDEO.length);
+        let video = Object.assign({}, TAB_VIDEO[idx]);
+        video._id = video._id + this.makeid(5);
+        return video;
+    }
 
     getTabVideo(n: number): Video[]
     {
         let tabVideo = [];
-        const l = TAB_VIDEO.length;
-
-        for(let i=0 ; i<n ; i++)
-        {
-            const idx = Math.floor(Math.random() * l);
-            tabVideo.push(TAB_VIDEO[idx]);
-        }
-
+        for(let i=0 ; i<n ; i++) tabVideo.push(this.getVideo());
         return tabVideo;
     }
 
@@ -131,40 +182,83 @@ export class FictitiousDatasService
 
     getAdvert(): Advert
     {
-        return {
-            _id: "monId",
-            advertiser: "nutella",
-            images: [
-                { url: "nutella_v_1.jpeg", description: "image nutella 1" },
-                { url: "nutella_v_2.png", description: "image nutella 2" },
-                { url: "nutella_v_3.jpg", description: "image nutella 3" }
-            ],
-            text: "Voici du bon nutella",
-            subjectTarget: [],
-            seen: 4,
-            date: new Date(),
-        }
+        const idx = Math.floor(Math.random() * TAB_ADVERT.length);
+        let advert = Object.assign({}, TAB_ADVERT[idx]);
+        advert._id = advert._id + this.makeid(5);
+        advert.tags = advert.tags.slice();
+        advert.isVisible = (Math.random() < 0.5);
+        return advert;
+    }
+
+    getTabAdvert(n: number): Advert[]
+    {
+        let tabAdvert = [];
+        for(let i=0 ; i<n ; i++) tabAdvert.push(this.getAdvert());
+        return tabAdvert;
     }
 
 
-    getTabWatchedVideo(n): WatchedVideo[]
+    getWatchedVideo(): WatchedVideo
+    {
+        const idx = Math.floor(Math.random() * TAB_VIDEO.length);
+        const video: Video = TAB_VIDEO[idx];
+        const watchedVideo: WatchedVideo = {
+            _id: video._id,
+            url: video.url,
+            title: video.title,
+            date: new Date()
+        };
+        return watchedVideo ;
+    }
+
+    getTabWatchedVideo(n: number): WatchedVideo[]
     {
         let tabWatchedVideo = [];
-        const l = TAB_VIDEO.length;
-
-        for(let i=0 ; i<n ; i++)
-        {
-            const idx = Math.floor(Math.random() * l);
-            const video: Video = TAB_VIDEO[idx];
-            const watchedVideo: WatchedVideo = {
-                _id: video._id,
-                url: video.url,
-                title: video.title,
-                date: new Date()
-            };
-            tabWatchedVideo.push(watchedVideo);
-        }
-
+        for(let i=0 ; i<n ; i++) tabWatchedVideo.push(this.getWatchedVideo());
         return tabWatchedVideo;
     }
+
+
+    getUser(): User
+    {
+        return {
+            _id: "ririId",
+            login: "Riri",
+            hashPass: "agourgroou",
+            mail: "riri@gmail.com",
+            role: "user",
+            profilePictureUrl: "https://www.figurines-goodies.com/1185-thickbox_default/huey-duck-tales-disney-funko-pop.jpg"
+        }
+    }
+
+    getAdvertiser(): User
+    {
+        return {
+            _id: "fifiId",
+            login: "Fifi",
+            hashPass: "agourgroou",
+            mail: "fifi@gmail.com",
+            role: "advertiser",
+            profilePictureUrl: "https://www.figurines-goodies.com/1188-large_default/dewey-duck-tales-disney-funko-pop.jpg"
+        }
+    }
+
+    getAdmin(): User
+    {
+        return {
+            _id: "loulouId",
+            login: "Loulou",
+            hashPass: "agourgroou",
+            mail: "loulou@gmail.com",
+            role: "advertiser",
+            profilePictureUrl: "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530"
+        }
+    }
+
+
+    getTags(): string[]
+    {
+        return [ "musique", "rap", "rock", "sport", "foot", "basket", "tennis", "film", "action", "aventure", "horreur", "romance", "comedie"];
+    }
+
 }

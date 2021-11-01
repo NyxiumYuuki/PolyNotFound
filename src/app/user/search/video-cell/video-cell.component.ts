@@ -9,7 +9,7 @@ import {Video} from "../../../utils/interfaces/video";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {WatchedVideo} from "../../../utils/interfaces/watchedVideo";
 import {MessageService} from "../../../utils/services/message/message.service";
-import {HistoriqueService} from "../../../utils/services/historique/historique.service";
+import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
 
 @Component({
     selector: 'app-video-cell',
@@ -26,7 +26,7 @@ export class VideoCellComponent implements OnInit
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService,
                  public themeService: ThemeService,
                  private messageService: MessageService,
-                 private historiqueService: HistoriqueService ) {}
+                 private historiqueService: UserHistoryService ) {}
 
     ngOnInit(): void
     {

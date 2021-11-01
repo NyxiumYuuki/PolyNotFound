@@ -1,11 +1,6 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {Video} from "../../../utils/interfaces/video";
-import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
-import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
-import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {MessageService} from "../../../utils/services/message/message.service";
-import {WatchedVideo} from "../../../utils/interfaces/watchedVideo";
-import {HistoriqueService} from "../../../utils/services/historique/historique.service";
+import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
 
 
 @Component({
@@ -19,7 +14,7 @@ export class VideoGridComponent implements OnChanges
     tabTriplet = [];
 
 
-    constructor(private historiqueService: HistoriqueService) {}
+    constructor(private historiqueService: UserHistoryService) {}
 
 
     ngOnChanges(): void

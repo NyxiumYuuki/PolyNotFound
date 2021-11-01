@@ -15,6 +15,7 @@ export class PageRegisterComponent implements OnInit
     pseudo: string = "";
     email: string = "" ;
     password: string = "";
+    role: string = "";
     confirmPassword: string = "";
     hasError: boolean = false;
     errorMessage: string = "";
@@ -36,45 +37,57 @@ export class PageRegisterComponent implements OnInit
     }
 
 
-    verifierChamps(): void
+    checkField(): void
     {
         if(this.pseudo.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'pseudo'"
+            this.errorMessage = "Veuillez remplir le champ 'pseudo'";
             this.hasError = true;
         }
         else if(this.email.length === 0)
         {
-            this.errorMessage = "Veuillez remplir le champ 'email'"
+            this.errorMessage = "Veuillez remplir le champ 'email'";
             this.hasError = true;
         }
         else if(!this.isValidEmail(this.email))
         {
-            this.errorMessage = "Email invalide"
+            this.errorMessage = "Email invalide";
+            this.hasError = true;
+        }
+        else if(this.role === "")
+        {
+            this.errorMessage = "Veuillez selectionner un type de compte";
             this.hasError = true;
         }
         else if(this.password.length === 0)
         {
-            this.errorMessage = "Veuillez remplir le champ 'mot de passe'"
+            this.errorMessage = "Veuillez remplir le champ 'mot de passe'";
             this.hasError = true;
         }
         else if(this.password !== this.confirmPassword)
         {
-            this.errorMessage = "Le mot de passe est différent de sa confirmation"
+            this.errorMessage = "Le mot de passe est différent de sa confirmation";
             this.hasError = true;
         }
         else {
+            this.errorMessage = "" ;
             this.hasError = false;
         }
+        console.log(this.errorMessage);
     }
 
 
-    onValider(): void
+    onRegister(): void
     {
-        this.verifierChamps()
-        console.log(this.hasError)
+        console.log(this.role);
+        this.checkField();
         if(!this.hasError)
         {
-            let data = { "pseudo": this.pseudo, "email": this.email, "password": this.password }
+            let data = {
+                "pseudo": this.pseudo,
+                "email": this.email,
+                "role": this.role,
+                "password": this.password
+            };
             this.messageService
                 .sendMessage('register', data)
                 .subscribe(retour => this.maCallback(retour))
@@ -94,4 +107,5 @@ export class PageRegisterComponent implements OnInit
                 .subscribe(result => this.router.navigateByUrl( '/connexion' ));
         }
     }
+
 }

@@ -1,41 +1,178 @@
-<div [class]="themeService.getClassTheme()">
+<!-- --------------------------------------------------------------------------------------------------------- -->
 
-    <!-- pour les 3 roles -->
-    <div *ngIf="pour === '3roles'">
-        <ul>
-            <li>
-                <a routerLink="/connexion" class="StreamNotFound"> StreamNotFound </a>
-            </li>
-            <li style="float:right; margin-right: 20px;">
-                <mat-slide-toggle (click)="onClick()"></mat-slide-toggle>
-            </li>
-        </ul>
-    </div>
 
-    <!-- pour User -->
-    <div *ngIf="pour === 'user'">
-        <ul>
-            <li>
-                <a routerLink="/search" class="StreamNotFound"> StreamNotFound </a>
-            </li>
-            <li class="cliquable">
-                <a routerLink="/search"> Rechercher </a>
-            </li>
-            <li class="cliquable">
-                <a routerLink="/myPlaylists"> Mes playlists </a>
-            </li>
-            <li class="cliquable">
-                <a routerLink="/historique"> Historique </a>
-            </li>
-            <li style="float:right; margin-right: 20px;">
-                <a routerLink="/search">
-                    <mat-icon>settings</mat-icon>
-                </a>
-            </li>
-            <li style="float:right; margin-right: 20px;">
-                <mat-slide-toggle (click)="onClick()"></mat-slide-toggle>
-            </li>
-        </ul>
-    </div>
+<!-- Login -->
+<div *ngIf="pour === 'login'">
+    <nav class="navbar navbar-expand-lg">
 
+        <!-- PolyNotFound -->
+        <a class="navbar-brand" routerLink=""> StreamNotFound </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Rien -->
+        <div class="collapse navbar-collapse"></div>
+
+        <!-- Slide -->
+        <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 50px 0px 10px;"></mat-slide-toggle>
+
+        <!-- S'inscrire -->
+        <button mat-button class="btnDeconnexion" routerLink="/register">
+            S'inscrire
+        </button>
+
+    </nav>
 </div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Register -->
+<div *ngIf="pour === 'register'">
+    <nav class="navbar navbar-expand-lg">
+
+        <!-- PolyNotFound -->
+        <a class="navbar-brand" routerLink=""> StreamNotFound </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Rien -->
+        <div class="collapse navbar-collapse"></div>
+
+        <!-- Slide -->
+        <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 50px 0px 10px;"></mat-slide-toggle>
+
+    </nav>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- User -->
+<div *ngIf="pour === 'user'">
+    <nav class="navbar navbar-expand-lg">
+
+        <!-- PolyNotFound -->
+        <a class="navbar-brand" routerLink="/user/search"> StreamNotFound </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- [Recherche] [Mes Playlists] [Historique] -->
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item active monLi">
+                    <a class="nav-link" routerLink="/user/search"> Rechercher </a>
+                </li>
+                <li class="nav-item active monLi">
+                    <a class="nav-link" routerLink="/user/myPlaylists"> Mes playlists </a>
+                </li>
+                <li class="nav-item active monLi">
+                    <a class="nav-link" routerLink="/user/history"> Historique </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide -->
+        <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 10px 0px 10px;"></mat-slide-toggle>
+
+        <!-- Mon profil -->
+        <img [src]=urlImage
+             onerror="this.onerror=null; this.src='assets/profil.png'"
+             routerLink="/user/myProfil"
+             alt="">
+
+        <!-- Deconnexion -->
+        <button mat-button class="btnDeconnexion" (click)="onDeconnexion()" routerLink="/">
+            Deconnexion
+        </button>
+
+    </nav>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Advertiser -->
+<div *ngIf="pour === 'advertiser'">
+    <nav class="navbar navbar-expand-lg">
+
+        <!-- PolyNotFound -->
+        <a class="navbar-brand" routerLink="/advertiser"> StreamNotFound </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Vide -->
+        <div class="collapse navbar-collapse"></div>
+
+        <!-- Slide -->
+        <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 10px 0px 10px;"></mat-slide-toggle>
+
+        <!-- Mon profil -->
+        <img [src]=urlImage
+             onerror="this.onerror=null; this.src='assets/profil.png'"
+             routerLink="/advertiser/myProfil"
+             alt="">
+
+        <!-- Deconnexion -->
+        <button mat-button class="btnDeconnexion" (click)="onDeconnexion()" routerLink="/">
+            Deconnexion
+        </button>
+
+    </nav>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Admin -->
+<div *ngIf="pour === 'admin'">
+    <nav class="navbar navbar-expand-lg">
+
+        <!-- PolyNotFound -->
+        <a class="navbar-brand" routerLink="/admin/userList"> StreamNotFound </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- [Recherche] [Mes Playlists] [Historique] -->
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item active monLi">
+                    <a class="nav-link" routerLink="/admin/userList"> Liste des utillisateurs </a>
+                </li>
+                <li class="nav-item active monLi">
+                    <a class="nav-link" routerLink="/admin/addUser"> Ajouter un utilisateur </a>
+                </li>
+                <li class="nav-item active monLi">
+                    <a class="nav-link" routerLink="/admin/adList"> Liste des pubs </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide -->
+        <mat-slide-toggle (click)="onClick()" style="font-size: x-large; margin: 0px 10px 0px 10px;"></mat-slide-toggle>
+
+        <!-- Mon profil -->
+        <img [src]=urlImage
+             onerror="this.onerror=null; this.src='assets/profil.png'"
+             routerLink="/admin/myProfil"
+             alt="">
+
+        <!-- Deconnexion -->
+        <button mat-button class="btnDeconnexion" (click)="onDeconnexion()" routerLink="/">
+            Deconnexion
+        </button>
+
+    </nav>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------- -->

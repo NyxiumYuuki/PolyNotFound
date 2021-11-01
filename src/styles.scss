@@ -6,14 +6,24 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
 .lightTheme {
-  background-color: white;
+  background: url("assets/lightBackground.jpg") no-repeat center center fixed;
   font-color: black;
   border-color: black;
 }
 
+
 .darkTheme {
-  background-color: #323232;
+  background: url("assets/darkBackground.webp") no-repeat center center fixed;
   font-color: white;
   border-color: white;
+}
+
+
+.lightTheme, .darkTheme {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

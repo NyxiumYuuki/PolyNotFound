@@ -6,7 +6,7 @@ import {MessageService} from "../message/message.service";
 @Injectable({
     providedIn: 'root'
 })
-export class HistoriqueService
+export class UserHistoryService
 {
     private tabVideoUrlClicked: string[] = [];
 
