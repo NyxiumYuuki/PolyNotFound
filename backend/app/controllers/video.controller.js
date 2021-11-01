@@ -3,7 +3,15 @@ const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const Video = db.video;
 
-// Search Video
+// Search Video + ads
+exports.search = (req, res) => {
+  const token = checkLogin(req, res);
+  if(token){
+    return sendError(res, 501, -1, "Video.search not Implemented", token);
+  }
+};
+
+// History
 exports.search = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
@@ -19,7 +27,7 @@ exports.create = (req, res) => {
   }
 };
 
-// Retrieve all Videos
+// Retrieve all Videos + ads
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){

@@ -81,13 +81,15 @@ function checkLogin(req, res, role=null){
     const token = getToken(session);
     if(token.login === 'undefined' || token.login === -1){
       return sendError(res, 500, -1, "User not authenticated.");
-    } else{
+    } else {
       if(role === null){
         return token;
-      } else{
-        if(token.role !== 'undefined' && role.includes(token.role)){
+      } else {
+        if(token.role !== 'undefined' &&
+          ((Array.isArray(role) && role.includes(token.role)) ||
+            ( typeof role === 'object' && token.role.permission >= role.permission))){
           return token;
-        } else{
+        } else {
           return sendError(res, 500, -1, "User doesn't have permission.", token);
         }
       }

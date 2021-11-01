@@ -3,25 +3,25 @@ module.exports = app => {
   let router = require("express").Router();
 
   // Search Video
-  router.post("/videos", videos.search);
+  router.post("/video/search", videos.search);
 
   // Create a new Video
-  router.post("/video", videos.create);
+  router.post("/video/create", videos.create);
 
   // Retrieve all Videos
-  router.get("/videos", videos.findAll);
+  router.get("/video/findAll", videos.findAll);
 
   // Retrieve a single Video with id
-  router.get("/video/:id", videos.findOne);
+  router.get("/video/findOne/:id", videos.findOne);
 
   // Update a Video with id
-  router.put("/video/:id", videos.update);
+  router.put("/video/update/:id", videos.update);
 
   // Delete a Video with id
-  router.delete("/video/:id", videos.delete);
+  router.delete("/video/delete/:id", videos.delete);
 
   // Delete all Videos
-  router.delete("/videos", videos.deleteAll);
+  router.delete("/video/deleteAll", videos.deleteAll);
 
   app.use('/api', router);
 };

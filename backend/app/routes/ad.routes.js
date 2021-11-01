@@ -3,22 +3,22 @@ module.exports = app => {
   let router = require("express").Router();
 
   // Create a new Ad
-  router.post("/user/ad", ads.create);
+  router.post("/ad/create", ads.create);
 
   // Retrieve all Ads
-  router.get("/user/ad", ads.findAll);
+  router.get("/ad/findAll", ads.findAll);
 
   // Retrieve a single Ad with id
-  router.get("/user/ad/:id", ads.findOne);
+  router.get("/ad/findOne/:id", ads.findOne);
 
   // Update an Ad with id
-  router.put("/user/ad/:id", ads.update);
+  router.put("/ad/update/:id", ads.update);
 
   // Delete an Ad with id
-  router.delete("/user/ad/:id", ads.delete);
+  router.delete("/ad/delete/:id", ads.delete);
 
   // Delete all Ads
-  router.delete("/user/ad", ads.deleteAll);
+  router.delete("/ad/deleteAll", ads.deleteAll);
 
   app.use('/api', router);
 };

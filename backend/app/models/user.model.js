@@ -6,7 +6,7 @@ module.exports = mongoose => {
       hashPass: String,     // WARNING: We don't want to send back the hashPass
       mail: String,
       role: {
-        type: Number,
+        type: Object,
         default: roles.User
       },
       playlists: []
