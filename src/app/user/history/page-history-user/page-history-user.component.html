@@ -49,9 +49,9 @@
                 </td>
             </ng-container>
 
-            <!-- Supprimer Column -->
-            <ng-container matColumnDef="effacer">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Effacer </th>
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
                 <td mat-cell *matCellDef="let watchedVideo">
                     <button mat-icon-button (click)="onDelete(watchedVideo)">
                         <mat-icon >delete</mat-icon>

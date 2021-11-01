@@ -51,7 +51,7 @@ export class PopupCreatePlaylistComponent implements OnInit
         if(!this.hasError)
         {
             this.messageService
-                .sendMessage("user/create/playlist", {name: this.data.name})
+                .sendMessage("user/create/playlist", {title: this.data.title})
                 .subscribe(retour => {
 
                     if (retour.status === "error") {

@@ -1,0 +1,67 @@
+.myContainer {
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.boite {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  margin-top: 20px;
+  border: solid 3px;
+  border-radius: 10px;
+  padding: 20px 40px 20px 40px;
+  background-color: #ffffff;
+  text-align: center;
+  box-shadow: 10px 5px 5px black;
+}
+.lightTheme .boite {
+  border-color: black;
+}
+.darkTheme .boite {
+  border-color: white;
+}
+
+img {
+  margin: 0px 0px 10px 0px;
+  width: 5vw;
+  height: 5vw;
+  border: solid 2px black;
+  border-radius: 50%;
+  font-size: xxx-large;
+}
+
+mat-form-field {
+  padding: 2px 0px 2px 0px;
+  width: 70%;
+}
+
+button {
+  border: solid 1px black;
+}
+
+
+// -------------------------------------------------------------------------
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border-color: black !important;
+  background-color: white !important;
+}
