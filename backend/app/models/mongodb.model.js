@@ -8,8 +8,8 @@ db.mongoose = mongoose;
 db.url = dbConfig.url;
 db.users = require("./user.model")(mongoose);
 db.playlists = require("./playlist.model")(mongoose);
-db.videos = require("./video.model")(mongoose);
 db.ads = require("./ad.model")(mongoose);
-db.images = require("./image.model")(mongoose);
+db.histories = require("./history.model")(mongoose);
+
 
 module.exports = db;

@@ -4,6 +4,7 @@ const {checkLogin, setSessionCookie, getSession, getToken} = require("../config/
 const ObjectId = require('mongoose').Types.ObjectId;
 const roles = require("../config/role.config");
 const User = db.users;
+const History = db.histories;
 
 // Authenticate a User
 exports.auth = (req, res) => {
@@ -13,7 +14,7 @@ exports.auth = (req, res) => {
   } else{
     // Check User in the database
     User
-      .findOne({login: req.body.login, hashPass: req.body.hashPass}, {role: true})
+      .findOne({login: req.body.login, hashPass: req.body.hashPass, active: true}, {role: true})
       .then(data => {
         if (data !== null){
           setSessionCookie(req, res, {id: data._id, login: req.body.login, role: data.role});
@@ -53,39 +54,34 @@ exports.create = (req, res) => {
           let user;
           const session = getSession(req.cookies.SESSIONID);
           const token = getToken(session);
-          if(token.login === 'undefined' || token.login === -1){
-            if(req.body.role === 'undefined'){
-              sendError(res, 500, -1, "Must be connected to set role of a User.");
-            } else{
-              user = new User({
-                login: req.body.login,
-                hashPass: req.body.hashPass,
-                mail: req.body.mail
-              });
-            }
+          if((typeof token.login === 'undefined' || token.login === -1) && typeof req.body.role === 'undefined'){
+            user = new User({
+              login: req.body.login,
+              hashPass: req.body.hashPass,
+              mail: req.body.mail
+            });
+          } else if(typeof token.role !== 'undefined' &&
+              typeof req.body.role !== 'undefined' &&
+            typeof req.body.role.permission !== 'undefined' &&
+            token.role.permission > req.body.role.permission) {
+            user = new User({
+              login: req.body.login,
+              hashPass: req.body.hashPass,
+              mail: req.body.mail,
+              role: req.body.role
+            });
           } else {
-            if(token.role !== 'undefined' &&
-              req.body.role !== 'undefined' &&
-              req.body.role.permission !== 'undefined' &&
-              token.role.permission >= req.body.role.permission){
-              user = new User({
-                login: req.body.login,
-                hashPass: req.body.hashPass,
-                mail: req.body.mail,
-                role: req.body.role
-              });
-            } else {
-              user = new User({
-                login: req.body.login,
-                hashPass: req.body.hashPass,
-                mail: req.body.mail
-              });
-            }
+            user = new User({
+              login: req.body.login,
+              hashPass: req.body.hashPass,
+              mail: req.body.mail
+            });
           }
           // Save User in the database
           user
             .save(user)
             .then(data => {
+              data.active = undefined;
               data.hashPass = undefined; // Hiding hashPass on return
               sendMessage(res, 1, data)
             })
@@ -100,12 +96,31 @@ exports.create = (req, res) => {
   }
 };
 
-// Retrieve all Users from the database if admin.
+// Retrieve all Users from the database if at least admin.
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res, roles.Admin);
   if(token){
     const login = req.query.login;
-    let condition = login ? { login: { $regex: new RegExp(login), $options: "i" } } : {};
+    let condition;
+    let active = null;
+    let ids = null;
+    if(typeof req.body.ids !== 'undefined' && typeof req.body.ids === 'object'){
+      ids = {$in: req.body.ids};
+    }
+    if(typeof req.query.active !== 'undefined'){
+      active = req.query.active !== 'false';
+    }
+
+    if(ids !== null && active !== null){
+      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }, _id: ids, active: active} : {_id: ids, active: active};
+    } else if(ids !== null){
+      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }, _id: ids} : {_id: ids};
+    } else if(active !== null){
+      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }, active: active} : {active: active};
+    } else{
+      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }} : {};
+    }
+
     User.find(condition, {hashPass: false})
       .then(data => {
         sendMessage(res, 1, data, token)
@@ -116,81 +131,157 @@ exports.findAll = (req, res) => {
   }
 };
 
-// Find a single User by session id or by id if admin
+// Find a single User by session id
 exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    let id;
-    if([roles.Admin, roles.SuperAdmin].includes(token.role)){
-      if(typeof req.params.id === 'undefined'){
-        id = token.id;
-      } else{
+  if(token && typeof req.params.id !== 'undefined') {
+    let id = null;
+    if(typeof token.id !== 'undefined' && req.params.id === token.id){
+      id = req.params.id;
+    } else {
+      if (typeof token.role !== 'undefined' &&
+        typeof token.role.permission !== 'undefined' &&
+        token.role.permission >= roles.Admin.permission) {
         id = req.params.id;
+      } else {
+        sendError(res, 500, -1, `Cannot find User with id=${id}. User do not have the permission`, token);
       }
-    } else{
-      id = token.id;
     }
-    User.findById(new ObjectId(id), {hashPass: false})
-      .then(data => {
-        if(data){
-          sendMessage(res, 1, data, token);
-        } else {
-          sendError(res,404,-1,"User not found with id " + id, token);
-        }
-      })
-      .catch(err => {
-        sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
-      });
+    if(id){
+      User.findById(id, {hashPass: false})
+        .then(data => {
+          if(data){
+            sendMessage(res, 1, data, token);
+          } else {
+            sendError(res,404,-1,"User not found with id " + id, token);
+          }
+        })
+        .catch(err => {
+          sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
+        });
+    }
+  } else {
+    sendError(res, 500, -1, `No id given`, token);
   }
 };
 
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const token = checkLogin(req, res);
-  if(req.body && token) {
-    let id;
-    if ([roles.Admin, roles.SuperAdmin].includes(token.role)) {
+  if(token && typeof req.params.id !== 'undefined') {
+    let id = null;
+    if(typeof token.id !== 'undefined' && req.params.id === token.id){
       id = req.params.id;
     } else {
-      id = token.id;
+      if (typeof token.role !== 'undefined' &&
+        typeof token.role.permission !== 'undefined' &&
+        token.role.permission >= roles.Admin.permission) {
+        id = req.params.id;
+      } else {
+        sendError(res, 500, -1, `Cannot update User with id=${id}. User do not have the permission`, token);
+      }
     }
-    User.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
-      .then(data => {
-        if (data) {
-          sendMessage(res, 1, {message: "User was updated successfully."});
-        } else {
-          sendError(res, 404, -1, `Cannot update User with id=${id}. Maybe User was not found.`);
-        }
-      })
-      .catch(err => {
-        sendError(res, 500, -1, err.message || "Error updating User with id=" + id);
-      });
+    if(id){
+      User.findById(id, {hashPass: false})
+        .then(user => {
+          if(user){
+            const history = new History({update: user});
+            history
+              .save(history)
+              .then(data => {
+                if(data) {
+                  User.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
+                    .then(data => {
+                      data.hashPass = undefined;
+                      console.log(data);
+                      if (data) {
+                        sendMessage(res, 1, {message: "User was updated successfully."}, token);
+                      } else {
+                        sendError(res, 404, -1, `Cannot update User with id=${id}. Maybe User was not found.`, token);
+                      }
+                    })
+                    .catch(err => {
+                      sendError(res, 500, -1, err.message || "Error updating User with id=" + id, token);
+                    });
+                }
+              })
+              .catch(err => {
+                sendError(res, 500,-1,err.message || "Some error occurred while creating the User.");
+              });
+          } else {
+            sendError(res,404,-1,"User not found with id " + id, token);
+          }
+        })
+        .catch(err => {
+          sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
+        });
+    }
   } else {
-    sendError(res, 400, -1, "Data to update can not be empty.");
+    sendError(res, 500, -1, `No id given`, token);
   }
 };
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.params.id;
-  User.findByIdAndRemove(id)
-    .then(data => {
-      if (data) {
-        sendMessage(res, 1, { message: "User was deleted successfully." });
+  const token = checkLogin(req, res);
+  if(token && typeof req.params.id !== 'undefined') {
+    let id = null;
+    if(typeof token.id !== 'undefined' && req.params.id === token.id){
+      id = req.params.id;
+    } else {
+      if (typeof token.role !== 'undefined' &&
+        typeof token.role.permission !== 'undefined' &&
+        token.role.permission >= roles.Admin.permission) {
+        id = req.params.id;
       } else {
-        sendError(res,404,-1,`Cannot delete User with id=${id}. Maybe User was not found.`);
+        sendError(res, 500, -1, `Cannot delete User with id=${id}. User do not have the permission`, token);
       }
-    })
-    .catch(err => {
-      sendError(res,500,-1,err.message || "Could not delete User with id=" + id);
-    });
+    }
+    if(id && ObjectId.isValid(id)){
+      User.findById(id, {hashPass: false})
+        .then(user => {
+          if(user){
+            const history = new History({delete: user});
+            history
+              .save(history)
+              .then(data => {
+                if(data) {
+                  User.findByIdAndRemove(id)
+                    .then(data => {
+                      if (data) {
+                        sendMessage(res, 1, {message: `User ${id} was deleted successfully.`}, token);
+                      } else {
+                        sendError(res, 404, -1, `Cannot delete User with id=${id}. Maybe User was not found.`, token);
+                      }
+                    })
+                    .catch(err => {
+                      sendError(res, 500, -1, err.message || "Could not delete User with id=" + id, token);
+                    });
+                }
+              })
+              .catch(err => {
+                sendError(res, 500,-1,err.message || "Some error occurred while creating the User.");
+              });
+          } else {
+            sendError(res,404,-1,"User not found with id " + id, token);
+          }
+        })
+        .catch(err => {
+          sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
+        });
+    } else {
+      sendError(res, 500, -1, `Error id is not valid`, token);
+    }
+  } else {
+    sendError(res, 500, -1, `No id given`, token);
+  }
 };
 
-// Delete all Users from the database.
+// Delete all Users from the database except superAdmin
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res, roles.SuperAdmin);
   if(token) {
-    User.deleteMany({})
+    User.deleteMany({login: {$ne: "superAdmin"}})
       .then(data => {
         sendMessage(res, 1, {
           message: `${data.deletedCount} Users were deleted successfully.`

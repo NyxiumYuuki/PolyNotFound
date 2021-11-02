@@ -9,7 +9,11 @@ module.exports = mongoose => {
         type: Object,
         default: roles.User
       },
-      playlists: []
+      playlists: [],
+      active: {
+        type: Boolean,
+        default: true
+      }
     },
     { timestamps: true }
   );

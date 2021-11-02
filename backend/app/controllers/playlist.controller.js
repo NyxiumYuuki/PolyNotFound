@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   }
 };
 
-// Retrieve all Playlists + ads
+// Retrieve all Playlists
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
