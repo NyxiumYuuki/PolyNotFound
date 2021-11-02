@@ -22,7 +22,7 @@ services:
     volumes:
       - ./backend:/data/backend
       - ./backend/node_modules:/data/backend/node_modules
-      - ./backend/keys:/data/backend/keys
+      - ./backend/app:/data/backend/app
     ports:
       - 3000:3000
     depends_on:
