@@ -13,6 +13,7 @@ const cors = require('cors');
 app.use(cors({origin: 'http://localhost:4200', credentials: true}));
 
 const db = require("./app/models/mongodb.model");
+console.log("Db Url: ",db.url);
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
