@@ -9,7 +9,22 @@ module.exports = mongoose => {
         type: Object,
         default: roles.User
       },
-      playlists: [],
+      profilePictureUrl: {
+        type: String,
+        default: null
+      },
+      dateOfBirth: {
+        type: Date,
+        default: null
+      },
+      gender: {
+        type: String,
+        default: null
+      },
+      interests: {
+        type: Array,
+        default: null
+      },
       active: {
         type: Boolean,
         default: true

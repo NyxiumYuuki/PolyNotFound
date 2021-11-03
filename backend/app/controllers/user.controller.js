@@ -58,7 +58,11 @@ exports.create = (req, res) => {
             user = new User({
               login: req.body.login,
               hashPass: req.body.hashPass,
-              mail: req.body.mail
+              mail: req.body.mail,
+              profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
+              dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
+              gender: req.body.gender ? req.body.gender : null,
+              interests: req.body.interests ? req.body.interests : null
             });
           } else if(typeof token.role !== 'undefined' &&
               typeof req.body.role !== 'undefined' &&
@@ -68,13 +72,21 @@ exports.create = (req, res) => {
               login: req.body.login,
               hashPass: req.body.hashPass,
               mail: req.body.mail,
-              role: req.body.role
+              role: req.body.role,
+              profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
+              dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
+              gender: req.body.gender ? req.body.gender : null,
+              interests: req.body.interests ? req.body.interests : null
             });
           } else {
             user = new User({
               login: req.body.login,
               hashPass: req.body.hashPass,
-              mail: req.body.mail
+              mail: req.body.mail,
+              profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
+              dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
+              gender: req.body.gender ? req.body.gender : null,
+              interests: req.body.interests ? req.body.interests : null
             });
           }
           // Save User in the database
@@ -100,26 +112,27 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res, roles.Admin);
   if(token){
-    const login = req.query.login;
-    let condition;
-    let active = null;
-    let ids = null;
-    if(typeof req.body.ids !== 'undefined' && typeof req.body.ids === 'object'){
-      ids = {$in: req.body.ids};
-    }
-    if(typeof req.query.active !== 'undefined'){
-      active = req.query.active !== 'false';
-    }
+    let query = {};
 
-    if(ids !== null && active !== null){
-      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }, _id: ids, active: active} : {_id: ids, active: active};
-    } else if(ids !== null){
-      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }, _id: ids} : {_id: ids};
-    } else if(active !== null){
-      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }, active: active} : {active: active};
-    } else{
-      condition = login ? { login: { $regex: new RegExp(login), $options: "i" }} : {};
-    }
+    const ids = req.query.ids;
+    let condition = ids ? {$in: ids} : {};
+    query._id = condition;
+
+    const login = req.query.login;
+    condition = login ? { $regex: new RegExp(login), $options: "i" } : undefined;
+    query.login = condition;
+
+    const mail = req.query.mail;
+    condition = mail ? { $regex: new RegExp(mail), $options: "i" } : undefined;
+    query.mail = condition;
+
+    const role = req.query.role;
+    condition = role ? { $regex: new RegExp(role), $options: "i" } : undefined;
+    query.role = condition;
+
+    const active = req.query.active;
+    condition = active ? active : undefined;
+    query.active = condition;
 
     User.find(condition, {hashPass: false})
       .then(data => {
