@@ -1,5 +1,7 @@
 .lightTheme, .darkTheme {
   background-image: none;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -12,13 +14,13 @@ h1 {
 // -------------------------------------------------------------------------
 
 
-mat-dialog-content {
-  overflow-y: hidden;
-  //padding: 20px 20px 20px 20px;
-}
 
 .commentContainer {
   width: 100%;
+}
+
+.imageContainer {
+  border: solid 1px grey;
 }
 
 
