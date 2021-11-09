@@ -29,6 +29,9 @@ export class PopupAddOrUpdateAdComponent implements OnInit
     advert: Advert;
     urlBackend: string = "" ;
     title: string = "" ;
+    tabWaitingFile: File[] = []; // fichiers selectionnés mais pas encore "validés"
+    tabSelectedFile: File[] = []; // fichier "validés"
+    _event;
 
 
     constructor( public dialogRef: MatDialogRef<PopupAddOrUpdateAdComponent>,
@@ -79,9 +82,34 @@ export class PopupAddOrUpdateAdComponent implements OnInit
     }
 
 
-    onEventBarTags(myTags: string[])
+    onEventBarTags(myTags: string[]): void
     {
         this.advert.tags = myTags;
+    }
+
+
+    // Lorsque l'annonceur selectionne des fichiers
+    onSelectFile(event)
+    {
+        const nbFileSelected = event.target.files.length ;
+        for(let i=0 ; i<nbFileSelected ; i++) this.tabWaitingFile.push(event.target.files[i]);
+        this._event = event;
+    }
+
+    // Lorsque l'annonceur "valide" sont choix de fichier selectionné
+    onValidateFiles(): void
+    {
+        const nbFile = this.tabWaitingFile.length;
+        for(let i=0 ; i<nbFile ; i++) this.tabSelectedFile.push(this.tabWaitingFile[i]);
+        this.tabWaitingFile = [];
+        this._event.target.value = "";
+    }
+
+    // Lorsque l'annonceur souhaite supprimer un fichier "validé"
+    onDeleteFile(file: File)
+    {
+        const index = this.tabSelectedFile.findIndex(x => file);
+        this.tabSelectedFile.splice(index, 1);
     }
 
 }

@@ -46,6 +46,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatSelectModule} from "@angular/material/select";
 import { PopupVisualizeImagesComponent } from './advertiser/popup-visualize-images/popup-visualize-images.component';
 import {IvyCarouselModule} from "angular-responsive-carousel";
+import { DragAndDropComponent } from './advertiser/drag-and-drop/drag-and-drop.component';
+import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-drop.directive';
 
 
 @NgModule({
@@ -75,6 +77,8 @@ import {IvyCarouselModule} from "angular-responsive-carousel";
         PopupVisualizeAdComponent,
         BarTagsComponent,
         PopupVisualizeImagesComponent,
+        DragAndDropComponent,
+        DragAndDropDirective,
     ],
     imports: [
         BrowserModule,

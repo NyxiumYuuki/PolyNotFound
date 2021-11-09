@@ -62,7 +62,8 @@ export class PageAdvertiserComponent implements OnInit
     onAdd(): void
     {
         const config = {
-            width: '50%',
+            width: '40%',
+            height: '80%',
             data: { action: "add", advert: null }
         };
         this.dialog
@@ -89,7 +90,8 @@ export class PageAdvertiserComponent implements OnInit
     onUpdate(advertToUpdate: Advert): void
     {
         const config = {
-            width: '50%',
+            width: '40%',
+            height: '80%',
             data: { action: "update", advert: advertToUpdate }
         };
         this.dialog

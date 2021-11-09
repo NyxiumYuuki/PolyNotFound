@@ -5,7 +5,7 @@
 
     <!-- --------------------------------------------------------------------------------------------- -->
 
-    <mat-dialog-content>
+    <div style="text-align: center; overflow-y: hidden">
 
         <!-- Title -->
         <mat-form-field appearance="fill">
@@ -15,9 +15,7 @@
 
         <!-- Images -->
         <br>
-        <mat-form-field appearance="fill">
-            <input matInput type="file" disabled>
-        </mat-form-field>
+        <app-drag-and-drop></app-drag-and-drop>
 
         <!-- Tags -->
         <app-bar-tags [myTags]="advert.tags" (eventEmitter)="onEventBarTags($event)"></app-bar-tags>
@@ -31,7 +29,7 @@
         <!-- IsVisible -->
         <mat-checkbox [(ngModel)]="advert.isVisible"> Visible </mat-checkbox>
 
-    </mat-dialog-content>
+    </div>
 
     <!-- --------------------------------------------------------------------------------------------- -->
 
