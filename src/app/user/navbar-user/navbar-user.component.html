@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg">
+
+    <!-- PolyNotFound -->
+    <a class="navbar-brand" routerLink="/user/search"> StreamNotFound </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- [Recherche] [Mes Playlists] [Historique] -->
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item active monLi">
+                <a class="nav-link" routerLink="/user/search"> Rechercher </a>
+            </li>
+            <li class="nav-item active monLi">
+                <a class="nav-link" routerLink="/user/myPlaylists"> Mes playlists </a>
+            </li>
+            <li class="nav-item active monLi">
+                <a class="nav-link" routerLink="/user/history"> Historique </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Mon profil -->
+    <img [src]=urlImage
+         onerror="this.onerror=null; this.src='assets/profil.png'"
+         routerLink="/user/myProfil"
+         alt="">
+
+    <!-- Deconnexion -->
+    <button mat-button class="btnDeconnexion" (click)="onDeconnexion()" routerLink="/">
+        Deconnexion
+    </button>
+
+</nav>

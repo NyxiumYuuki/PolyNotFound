@@ -1,0 +1,71 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+        <div class="bg">
+
+
+
+
+            <div class="wrapper">
+                <div id="formContent">
+
+                    <!-- Icon -->
+                    <div style="margin: 10px 0px 20px 0px">
+                        <img src="../../../../assets/logo.png" id="icon" alt="User Icon" style="margin-top: 20px"/>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form>
+                        <!-- Login -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Login</mat-label>
+                            <input matInput type="text" [(ngModel)]="pseudo">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Email -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" [(ngModel)]="email">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Role -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Type de compte</mat-label>
+                            <mat-select [(ngModel)]="role">
+                                <mat-option value="user"> Utilisateur </mat-option>
+                                <mat-option value="advertiser"> Annonceur </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Mot de passe -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Mot de passe</mat-label>
+                            <input matInput type="password" [(ngModel)]="password">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Confirmation mot de passe -->
+                        <mat-form-field appearance="fill">
+                            <mat-label>Confirmation mot de passe</mat-label>
+                            <input matInput type="password" [(ngModel)]="confirmPassword">
+                        </mat-form-field>
+                        <br>
+
+                        <!-- Message d'erreur -->
+                        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
+                            <span class="mat-error"> {{errorMessage}} </span>
+                        </div>
+
+                        <!-- Valider -->
+                        <input type="submit" class="fadeIn fourth" value="S'inscrire" (click)="onRegister()">
+                    </form>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

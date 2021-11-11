@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg">
+
+    <!-- PolyNotFound -->
+    <a class="navbar-brand" routerLink="/advertiser"> StreamNotFound </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Vide -->
+    <div class="collapse navbar-collapse"></div>
+
+    <!-- Mon profil -->
+    <img [src]=urlImage
+         onerror="this.onerror=null; this.src='assets/profil.png'"
+         routerLink="/advertiser/myProfil"
+         alt="">
+
+    <!-- Deconnexion -->
+    <button mat-button class="btnDeconnexion" (click)="onDeconnexion()" routerLink="/">
+        Deconnexion
+    </button>
+
+</nav>

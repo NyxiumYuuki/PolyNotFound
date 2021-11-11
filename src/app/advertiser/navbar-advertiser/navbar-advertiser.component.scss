@@ -1,0 +1,80 @@
+.navbar {
+  background-color: black;
+  height: 75px;
+  font-size: x-large;
+  color: white;
+}
+
+
+.navbar-expand-lg {
+  border-bottom: solid;
+  border-color: white;
+  border-bottom-width: 2px;
+}
+
+
+// PolyNotFound
+.navbar-brand {
+  font-family: cursive;
+  font-weight: bold;
+  //font-style: oblique 90deg;
+  font-size: xxx-large;
+  margin-left: 30px;
+  color: white;
+}
+
+
+// Recherche, Mes Playlists, Historique
+.nav-link {
+  color: white;
+}
+.nav-link:hover {
+  color: grey;
+}
+
+
+// Bonton deconnexion
+.btnDeconnexion {
+  font-size: x-large;
+  margin: 0px 10px 0px 10px
+}
+.btnDeconnexion:hover {
+  color: grey;
+}
+
+
+.monLi {
+  margin: 0px 10px 0px 10px;
+}
+
+
+img {
+  border: solid 2px white;
+  border-radius: 50px;
+  margin: 0px 10px 0px 15px;
+  width: 50px;
+  height: 50px;
+}
+img:hover {
+  cursor: pointer;
+}
+
+
+// --------------------------------------------------------------------
+
+
+::ng-deep .mat-slide-toggle-thumb {
+  background-color: #c8c8c8;
+}
+
+::ng-deep .mat-slide-toggle-bar {
+  background-color: #ffffff;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #ffffff;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #646464;
+}

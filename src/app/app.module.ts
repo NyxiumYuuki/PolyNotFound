@@ -3,15 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PageConnexionComponent } from './pourLes3Roles/page-connexion/page-connexion.component';
-import { PageRegisterComponent } from './pourLes3Roles/register/page-register/page-register.component';
-import { NavBarComponent } from './utils/components/nav-bar/nav-bar.component';
+import { PageLoginComponent } from './beforeConnexion/login/page-login/page-login.component';
+import { PageRegisterComponent } from './beforeConnexion/register/page-register/page-register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { PageSearchComponent } from './user/search/page-search/page-search.component';
 import {HttpClientModule} from "@angular/common/http";
-import { PopupConfirmationComponent } from './pourLes3Roles/register/popup-confirmation/popup-confirmation.component';
+import { PopupConfirmationComponent } from './beforeConnexion/register/popup-confirmation/popup-confirmation.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from "@angular/material/button";
 import { AdvertComponent } from './utils/components/advert/advert.component';
@@ -36,26 +35,35 @@ import { PageMyProfilComponent } from './utils/components/myProfil/page-my-profi
 import { PopupPictureProfilUrlComponent } from './utils/components/myProfil/popup-picture-profil-url/popup-picture-profil-url.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatSortModule} from "@angular/material/sort";
-import { PageAdvertiserComponent } from './advertiser/page-advertiser/page-advertiser.component';
-import { PopupDeleteAdComponent } from './advertiser/popup-delete-ad/popup-delete-ad.component';
-import { PopupAddOrUpdateAdComponent } from './advertiser/popup-add-or-update-ad/popup-add-or-update-ad.component';
-import { PopupVisualizeAdComponent } from './advertiser/popup-visualize-ad/popup-visualize-ad.component';
-import { BarTagsComponent } from './advertiser/bar-tags/bar-tags.component';
+import { PageAdvertiserComponent } from './advertiser/manageAds/page-advertiser/page-advertiser.component';
+import { PopupDeleteAdComponent } from './advertiser/manageAds/popup-delete-ad/popup-delete-ad.component';
+import { PopupAddOrUpdateAdComponent } from './advertiser/manageAds/popup-add-or-update-ad/popup-add-or-update-ad.component';
+import { PopupVisualizeAdComponent } from './advertiser/manageAds/popup-visualize-ad/popup-visualize-ad.component';
+import { InputTagsComponent } from './advertiser/manageAds/input-tags/input-tags.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatSelectModule} from "@angular/material/select";
-import { PopupVisualizeImagesComponent } from './advertiser/popup-visualize-images/popup-visualize-images.component';
+import { PopupVisualizeImagesComponent } from './advertiser/manageAds/popup-visualize-images/popup-visualize-images.component';
 import {IvyCarouselModule} from "angular-responsive-carousel";
-import { DragAndDropComponent } from './advertiser/drag-and-drop/drag-and-drop.component';
+import { DragAndDropComponent } from './advertiser/manageAds/drag-and-drop/drag-and-drop.component';
 import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-drop.directive';
+import { PageProfilUserComponent } from './user/myProfil/page-profil-user/page-profil-user.component';
+import { NavbarUserComponent } from './user/navbar-user/navbar-user.component';
+import { NavbarAdvertiserComponent } from './advertiser/navbar-advertiser/navbar-advertiser.component';
+import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.component';
+import { PageProfilAdvertiserComponent } from './advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component';
+import { PopupUpdateAdvertiserComponent } from './advertiser/myProfil/popup-update-advertiser/popup-update-advertiser.component';
+import { PopupUpdateUserComponent } from './user/myProfil/popup-update-user/popup-update-user.component';
+import { NavbarBeforeConnexionComponent } from './beforeConnexion/navbar-before-connexion/navbar-before-connexion.component';
+import {MatRadioModule} from "@angular/material/radio";
+import { InputInterestsComponent } from './user/myProfil/input-interests/input-interests.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        PageConnexionComponent,
+        PageLoginComponent,
         PageRegisterComponent,
-        NavBarComponent,
         PageSearchComponent,
         PopupConfirmationComponent,
         AdvertComponent,
@@ -75,10 +83,19 @@ import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-dr
         PopupDeleteAdComponent,
         PopupAddOrUpdateAdComponent,
         PopupVisualizeAdComponent,
-        BarTagsComponent,
+        InputTagsComponent,
         PopupVisualizeImagesComponent,
         DragAndDropComponent,
         DragAndDropDirective,
+        PageProfilUserComponent,
+        NavbarUserComponent,
+        NavbarAdvertiserComponent,
+        NavbarAdminComponent,
+        PageProfilAdvertiserComponent,
+        PopupUpdateAdvertiserComponent,
+        PopupUpdateUserComponent,
+        NavbarBeforeConnexionComponent,
+        InputInterestsComponent,
     ],
     imports: [
         BrowserModule,
@@ -103,7 +120,8 @@ import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-dr
         ReactiveFormsModule,
         MatAutocompleteModule,
         MatSelectModule,
-        IvyCarouselModule
+        IvyCarouselModule,
+        MatRadioModule
     ],
   providers: [],
   bootstrap: [AppComponent]

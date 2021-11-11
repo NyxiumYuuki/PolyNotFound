@@ -1,0 +1,81 @@
+<div class="myContainer">
+
+
+    <div class="boite">
+
+        <!-- profil login mail dateOfBirth gender interets -->
+
+        <!-- photo de profil -->
+        <div style="text-align: center">
+            <img [src]="userCopy.profilePictureUrl"
+                 onerror="this.onerror=null; this.src='assets/profil.png'">
+            <br>
+            <input matInput type="text" [(ngModel)]="userCopy.profilePictureUrl">
+        </div>
+        <br>
+
+        <!-- login -->
+        <mat-form-field appearance="fill">
+            <mat-label>Pseudo</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.login">
+        </mat-form-field>
+        <br>
+
+        <!-- email -->
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.mail">
+        </mat-form-field>
+        <br>
+
+        <!-- dateOfBirth -->
+        <mat-form-field appearance="fill">
+            <mat-label>Date de naissance</mat-label>
+            <input matInput type="date" [(ngModel)]="userCopy.mail">
+        </mat-form-field>
+        <br>
+
+        <!-- gender -->
+        <mat-radio-group [(ngModel)]="userCopy.gender">
+            <mat-radio-button value="man"> Homme </mat-radio-button>
+            <mat-radio-button value="woman"> Femme </mat-radio-button>
+        </mat-radio-group>
+
+
+        <!-- interets -->
+        <app-input-interests [myInterests]="userCopy.interests" (eventEmitter)="onEventInputInterests($event)"></app-input-interests>
+
+
+        <!-- Modifier mot de passe -->
+        Modifier mot de passe:
+        <mat-checkbox [(ngModel)]="changePassword"></mat-checkbox>
+        <br>
+
+        <!-- Nouveau mot de passe -->
+        <div *ngIf="changePassword">
+            <!-- Nouveau mot de passe -->
+            <mat-form-field appearance="fill">
+                <mat-label>Nouveau mot de passe</mat-label>
+                <input matInput type="password" [(ngModel)]="newPassword">
+            </mat-form-field>
+            <br>
+            <!-- Confirmation npuveau mot de passe -->
+            <mat-form-field appearance="fill">
+                <mat-label>Confirmation nouveau mot de passe</mat-label>
+                <input matInput type="password" [(ngModel)]="confirmNewPassword">
+            </mat-form-field>
+        </div>
+        <br>
+
+        <!-- Bouton valider -->
+        <div style="width: 100%; text-align: center">
+            <button mat-button (click)="onValider()"> Enregistrer </button>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div *ngIf="hasError" style="text-align: center; margin-top: 10px;">
+            <span class="mat-error"> {{errorMessage}} </span>
+        </div>
+
+    </div>
+</div>

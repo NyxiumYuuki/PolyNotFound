@@ -226,8 +226,17 @@ export class FictitiousDatasService
             login: "Riri",
             hashPass: "agourgroou",
             mail: "riri@gmail.com",
-            role: "user",
-            profilePictureUrl: "https://www.figurines-goodies.com/1185-thickbox_default/huey-duck-tales-disney-funko-pop.jpg"
+            role: {
+                name: "user",
+                permission: 0,
+            },
+            profilePictureUrl: "https://www.figurines-goodies.com/1185-thickbox_default/huey-duck-tales-disney-funko-pop.jpg",
+            dateOfBirth: new Date(),
+            gender: "man",
+            interests: ["foot", "jeux-vidéo"],
+            isActive: true,
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }
     }
 
@@ -238,8 +247,17 @@ export class FictitiousDatasService
             login: "Fifi",
             hashPass: "agourgroou",
             mail: "fifi@gmail.com",
-            role: "advertiser",
-            profilePictureUrl: "https://www.figurines-goodies.com/1188-large_default/dewey-duck-tales-disney-funko-pop.jpg"
+            role: {
+                name: "advertiser",
+                permission: 5,
+            },
+            profilePictureUrl: "https://www.figurines-goodies.com/1188-large_default/dewey-duck-tales-disney-funko-pop.jpg",
+            dateOfBirth: new Date(),
+            gender: "man",
+            interests: ["cuisine", "jeux-vidéo"],
+            isActive: true,
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }
     }
 
@@ -250,8 +268,17 @@ export class FictitiousDatasService
             login: "Loulou",
             hashPass: "agourgroou",
             mail: "loulou@gmail.com",
-            role: "advertiser",
-            profilePictureUrl: "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530"
+            role: {
+                name: "admin",
+                permission: 5,
+            },
+            profilePictureUrl: "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530",
+            dateOfBirth: new Date(),
+            gender: "man",
+            interests: ["musique", "jeux-vidéo"],
+            isActive: true,
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }
     }
 

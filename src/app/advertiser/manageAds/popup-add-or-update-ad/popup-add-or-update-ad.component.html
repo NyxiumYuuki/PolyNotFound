@@ -1,0 +1,42 @@
+<div [class]="themeService.getClassTheme()">
+
+    <!-- Navbar -->
+    <h1 mat-dialog-title>{{title}}</h1>
+
+    <!-- --------------------------------------------------------------------------------------------- -->
+
+    <div style="text-align: center; overflow-y: hidden">
+
+        <!-- Title -->
+        <mat-form-field appearance="fill">
+            <mat-label> Titre annonce </mat-label>
+            <input matInput type="text" [(ngModel)]="advert.title">
+        </mat-form-field>
+
+        <!-- Images -->
+        <br>
+        <app-drag-and-drop></app-drag-and-drop>
+
+        <!-- Tags -->
+        <app-input-tags [myTags]="advert.tags" (eventEmitter)="onEventInputTags($event)"></app-input-tags>
+
+        <!-- Comments -->
+        <mat-form-field class="commentContainer" appearance="fill">
+            <mat-label> Commentaire </mat-label>
+            <textarea matInput [(ngModel)]="advert.comment"></textarea>
+        </mat-form-field><br>
+
+        <!-- IsVisible -->
+        <mat-checkbox [(ngModel)]="advert.isVisible"> Visible </mat-checkbox>
+
+    </div>
+
+    <!-- --------------------------------------------------------------------------------------------- -->
+
+    <!-- Actions -->
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="dialogRef.close()">Annuler</button>
+        <button mat-button (click)="onValidate()" cdkFocusInitial>Valider</button>
+    </mat-dialog-actions>
+
+</div>
