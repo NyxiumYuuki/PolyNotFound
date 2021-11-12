@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,11 @@ db.mongoose
       console.log("Connected to the database!", db.url);
     }
   });
+
+app.use(express.static(__dirname + '/dist/frontend'));
+app.get('/*', function(req,res) {
+  res.sendFile(path.join(__dirname+ '/dist/frontend/index.html'));
+});
 
 require("./app-backend/routes/user.routes")(app);
 require("./app-backend/routes/playlist.routes")(app);
