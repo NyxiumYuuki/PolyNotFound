@@ -28,12 +28,13 @@
     "popper": "^1.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.11.3"
+    "zone.js": "~0.11.3",
+    "@angular/cli": "~12.2.11",
+    "@angular/compiler-cli": "~12.2.11",
+    "typescript": "~4.3.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.2.11",
-    "@angular/cli": "~12.2.11",
-    "@angular/compiler-cli": "~12.2.11",
     "@angular/localize": "^12.2.11",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
@@ -47,7 +48,6 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
-    "typescript": "~4.3.5"
+    "tslint": "~6.1.0"
   }
 }
