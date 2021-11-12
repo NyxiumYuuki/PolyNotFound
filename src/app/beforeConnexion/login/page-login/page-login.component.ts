@@ -46,8 +46,8 @@ export class PageLoginComponent implements OnInit
     maCallback(retour): void
     {
         console.log(retour.data)
-        if(retour.status === "error") {
-            this.errorMessage = retour.data.reason;
+        if(retour.status !== 200) {
+            this.errorMessage = retour.error.data.reason;
             this.hasError = true;
         }
         else {
