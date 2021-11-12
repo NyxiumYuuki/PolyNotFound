@@ -61,6 +61,7 @@ import { PageProfilAdminComponent } from './admin/myProfil/page-profil-admin/pag
 import { PopupUpdateAdminComponent } from './admin/myProfil/popup-update-admin/popup-update-admin.component';
 import {MatStepperModule} from "@angular/material/stepper";
 import { InputInterestsRegisterComponent } from './beforeConnexion/register/input-interests-register/input-interests-register.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -129,7 +130,8 @@ import { InputInterestsRegisterComponent } from './beforeConnexion/register/inpu
         MatSelectModule,
         IvyCarouselModule,
         MatRadioModule,
-        MatStepperModule
+        MatStepperModule,
+        MatPaginatorModule
     ],
   providers: [],
   bootstrap: [AppComponent]

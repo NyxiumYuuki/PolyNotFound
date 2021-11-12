@@ -2,17 +2,17 @@
   background-image: none;
   overflow-y: hidden;
   overflow-x: hidden;
+  font-size: small;
 }
 
 h1 {
   text-align: center;
-  font-size: xx-large;
+  font-size: large;
   padding-bottom: 10px;
 }
 
 
 // -------------------------------------------------------------------------
-
 
 
 .commentContainer {
@@ -21,6 +21,10 @@ h1 {
 
 .imageContainer {
   border: solid 1px grey;
+}
+
+button {
+  font-size: small;
 }
 
 

@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
-import {WatchedVideo} from "../../../utils/interfaces/watchedVideo";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
 import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
-
+import {Video} from "../../../utils/interfaces/video";
+import {MatPaginator} from "@angular/material/paginator";
 
 
 
@@ -16,11 +16,12 @@ import {UserHistoryService} from "../../../utils/services/userHistory/userHistor
     templateUrl: './page-history-user.component.html',
     styleUrls: ['./page-history-user.component.scss']
 })
-export class PageHistoryUserComponent implements OnInit
+export class PageHistoryUserComponent implements AfterViewInit
 {
-    displayedColumns: string[] = [ 'aperçu', 'titre', 'date', 'source', 'action' ];
+    displayedColumns: string[] = [ 'aperçu', 'title', 'date', 'source', 'action' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
     constructor( public themeService: ThemeService,
@@ -30,14 +31,32 @@ export class PageHistoryUserComponent implements OnInit
                  private userHistoryService: UserHistoryService ) { }
 
 
-    ngOnInit(): void
+    // charge la page
+    ngAfterViewInit(): void
     {
         this.userHistoryService.clearTabVideoUrlClicked();
 
         // --- FAUX CODE ---
-        const tabWatchedVideo = this.fictitiousDatasService.getTabWatchedVideo(8);
-        this.dataSource = new MatTableDataSource(tabWatchedVideo);
+        const tabVideo: Video[] = this.fictitiousDatasService.getTabVideo(8);
+
+        const tabVideoChanged = [];
+        for(let video of tabVideo)
+        {
+            tabVideoChanged.push({
+                _id: video._id,
+                url: video.url,
+                title: video.title,
+                description: video.description,
+                views: video.views,
+                watched: video.watched,
+                source: this.getSourceByUrl(video.url)
+            });
+        }
+
+        this.dataSource = new MatTableDataSource(tabVideoChanged);
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource = this.dataSource;
 
         // --- VRAI CODE ---
         /*
@@ -55,13 +74,15 @@ export class PageHistoryUserComponent implements OnInit
     }
 
 
-    applyFilter(event: Event)
+    // Applique le filtre
+    applyFilter(event: Event): void
     {
         const filterValue = (event.target as HTMLInputElement).value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
 
+    // Retourne la source de la video en fonction de l'url
     getSourceByUrl(url: string): string
     {
         if(url.includes("youtu")) return "Youtube" ;
@@ -70,10 +91,11 @@ export class PageHistoryUserComponent implements OnInit
     }
 
 
-    onDelete(watchedVideo: WatchedVideo): void
+    // Supprime la video
+    onDelete(video: Video): void
     {
         // --- FAUX CODE ---
-        const index = this.dataSource.data.indexOf(watchedVideo);
+        const index = this.dataSource.data.indexOf(video);
         this.dataSource.data.splice(index, 1);
         this.dataSource.data = this.dataSource.data;
         this.dataSource = this.dataSource;
@@ -96,10 +118,11 @@ export class PageHistoryUserComponent implements OnInit
     }
 
 
-    onIframeClick(watchedVideo: WatchedVideo)
+    // Ajoute la date actuelle dans watched.video
+    onIframeClick(video: Video): void
     {
-        console.log("onIframeClick: " + watchedVideo.title);
-        this.userHistoryService.addWatchedVideoToHistorique(watchedVideo);
+        console.log("onIframeClick: " + video.title);
+        this.userHistoryService.addVideoToHistoque(video);
     }
 
 }

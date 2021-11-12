@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import {Video} from "../../interfaces/video";
 import {Playlist} from "../../interfaces/playlist";
 import {Advert} from "../../interfaces/advert";
-import {WatchedVideo} from "../../interfaces/watchedVideo";
 import {User} from "../../interfaces/user";
 
 
 
-const TAB_VIDEO = [
+const TAB_VIDEO: Video[] = [
     {
         _id: "Mowgli",
         url: "https://www.youtube.com/watch?v=medPORJ8KO0",
         title: "PNL - Mowgli",
         description: "dans l'album Que la famille",
         views: 11,
+        watched: []
     },
     {
         _id: "Mexico",
@@ -21,6 +21,7 @@ const TAB_VIDEO = [
         title: "PNL - Mexico",
         description: "dans l'album Monde chico",
         views: 22,
+        watched: []
     },
     {
         _id: "Luz de luna",
@@ -28,6 +29,7 @@ const TAB_VIDEO = [
         title: "PNL - Luz de luna",
         description: "dans l'album Dans la legende",
         views: 33,
+        watched: []
     },
     {
         _id: "Blanka",
@@ -35,6 +37,7 @@ const TAB_VIDEO = [
         title: "PNL - Blanka",
         description: "dans l'album Deux frères",
         views: 44,
+        watched: []
     },
     {
         _id: "Mowgli 2",
@@ -42,6 +45,7 @@ const TAB_VIDEO = [
         title: "PNL - Mowgli",
         description: "exclu",
         views: 55,
+        watched: []
     },
     {
         _id: "Etre humain",
@@ -49,6 +53,7 @@ const TAB_VIDEO = [
         title: "Nekfeu - Etre humain",
         description: "dans l'album feu",
         views: 66,
+        watched: []
     },
     {
         _id: "Humanoide",
@@ -56,6 +61,7 @@ const TAB_VIDEO = [
         title: "Nekfeu - Humanoide",
         description: "dans l'album Cyborg",
         views: 77,
+        watched: []
     },
     {
         _id: "Dernier soupir",
@@ -63,6 +69,7 @@ const TAB_VIDEO = [
         title: "Nekfeu - Dernier soupir",
         description: "dans l'album Les etoiles vagabondes",
         views: 88,
+        watched: []
     },
     {
         _id: "Dernier soupir",
@@ -70,6 +77,7 @@ const TAB_VIDEO = [
         title: "Nekfeu - Dernier soupir",
         description: "dans l'album Les etoiles vagabondes",
         views: 99,
+        watched: []
     },
     {
         _id: "Les prélis",
@@ -77,6 +85,7 @@ const TAB_VIDEO = [
         title: "Columbine - Les prélis",
         description: "dans l'album Enfant terrible",
         views: 100,
+        watched: []
     },
     {
         _id: "Pierre feuille ciseau",
@@ -84,6 +93,7 @@ const TAB_VIDEO = [
         title: "Columbine - Pierre feuille ciseau",
         description: "exclu",
         views: 111,
+        watched: []
     },
 ]
 
@@ -136,20 +146,34 @@ export class FictitiousDatasService
     {
         let res = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for( let i = 0; i < length; i++ )
-        {
+        for( let i = 0; i < length; i++ ) {
             const k = Math.floor(Math.random() * characters.length);
             res += characters.charAt(k);
         }
         return res;
     }
 
+    private randomDate(start, end): Date
+    {
+        return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    }
+
 
     getVideo(): Video
     {
-        const idx = Math.floor(Math.random() * TAB_VIDEO.length);
-        let video = Object.assign({}, TAB_VIDEO[idx]);
+        const index = Math.floor(Math.random() * TAB_VIDEO.length);
+        let video: Video = Object.assign({}, TAB_VIDEO[index]);
+
+        // id
         video._id = video._id + this.makeid(5);
+
+        // watched
+        const nbWatched = 1 + Math.floor(Math.random() * 2);
+        const start = new Date(2021, 0, 1);
+        const end = new Date();
+        video.watched = [];
+        for(let i=0 ; i<nbWatched ; i++) video.watched.push(this.randomDate(start, end));
+
         return video;
     }
 
@@ -198,27 +222,6 @@ export class FictitiousDatasService
     }
 
 
-    getWatchedVideo(): WatchedVideo
-    {
-        const idx = Math.floor(Math.random() * TAB_VIDEO.length);
-        const video: Video = TAB_VIDEO[idx];
-        const watchedVideo: WatchedVideo = {
-            _id: video._id,
-            url: video.url,
-            title: video.title,
-            date: new Date()
-        };
-        return watchedVideo ;
-    }
-
-    getTabWatchedVideo(n: number): WatchedVideo[]
-    {
-        let tabWatchedVideo = [];
-        for(let i=0 ; i<n ; i++) tabWatchedVideo.push(this.getWatchedVideo());
-        return tabWatchedVideo;
-    }
-
-
     getUser(): User
     {
         return {
@@ -235,6 +238,7 @@ export class FictitiousDatasService
             gender: "man",
             interests: ["foot", "jeux-vidéo"],
             isActive: true,
+            isAccepted: true,
             createdAt: new Date(),
             updatedAt: new Date(),
         }
@@ -256,6 +260,7 @@ export class FictitiousDatasService
             gender: "",
             interests: [],
             isActive: true,
+            isAccepted: true,
             createdAt: new Date(),
             updatedAt: new Date(),
         }
@@ -277,6 +282,7 @@ export class FictitiousDatasService
             gender: "",
             interests: [],
             isActive: true,
+            isAccepted: true,
             createdAt: new Date(),
             updatedAt: new Date(),
         }

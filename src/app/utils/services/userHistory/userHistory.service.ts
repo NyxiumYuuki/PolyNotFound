@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Video} from "../../interfaces/video";
-import {WatchedVideo} from "../../interfaces/watchedVideo";
 import {MessageService} from "../message/message.service";
 
 @Injectable({
@@ -19,28 +18,15 @@ export class UserHistoryService
         if (!this.tabVideoUrlClicked.includes(video.url))
         {
             this.tabVideoUrlClicked.push(video.url);
+            video.watched.push(new Date());
 
-            const watchedVideo0: WatchedVideo = {
-                _id: video._id,
-                url: video.url,
-                title: video.title,
-                date: new Date()
-            };
-            console.log(watchedVideo0);
-
-            this.addWatchedVideoToHistorique(watchedVideo0);
+            // --- VRAI CODE ---
+            /*
+            this.messageService
+                .sendMessage("user/add/watchedVideo", {watchedVideo: watchedVideo0})
+                .subscribe(retour => {});
+            */
         }
-    }
-
-
-    public addWatchedVideoToHistorique(watchedVideo0: WatchedVideo): void
-    {
-        // --- VRAI CODE ---
-        /*
-        this.messageService
-            .sendMessage("user/add/watchedVideo", {watchedVideo: watchedVideo0})
-            .subscribe(retour => {});
-        */
     }
 
 

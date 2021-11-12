@@ -1,3 +1,11 @@
+.boite {
+  font-size: small;
+}
+
+button {
+  font-size: small;
+}
+
 img {
   margin: 0px 0px 10px 0px;
   width: 5vw;
@@ -5,4 +13,21 @@ img {
   border: solid 2px black;
   border-radius: 50%;
   font-size: xxx-large;
+}
+
+// -------------------------------------------------------------------------
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  background-color: white !important;
 }

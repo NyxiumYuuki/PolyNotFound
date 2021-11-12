@@ -33,7 +33,7 @@ export class PageProfilUserComponent implements OnInit
     onModifier()
     {
         const config = {
-            width: '25%',
+            width: '35%',
             data: { user: this.user }
         };
         this.dialog

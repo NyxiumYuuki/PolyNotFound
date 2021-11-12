@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
@@ -9,6 +9,7 @@ import {PopupAddOrUpdateAdComponent} from "../popup-add-or-update-ad/popup-add-o
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupDeleteAdComponent} from "../popup-delete-ad/popup-delete-ad.component";
 import {PopupVisualizeAdComponent} from "../popup-visualize-ad/popup-visualize-ad.component";
+import {MatPaginator} from "@angular/material/paginator";
 
 
 
@@ -17,11 +18,12 @@ import {PopupVisualizeAdComponent} from "../popup-visualize-ad/popup-visualize-a
   templateUrl: './page-advertiser.component.html',
   styleUrls: ['./page-advertiser.component.scss']
 })
-export class PageAdvertiserComponent implements OnInit
+export class PageAdvertiserComponent implements AfterViewInit
 {
     displayedColumns: string[] = [ 'title', 'tags', 'createdAt', 'lastUpdate', 'views', 'isVisible', 'update', 'delete', 'visualisation' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
     constructor( public themeService: ThemeService,
@@ -30,12 +32,14 @@ export class PageAdvertiserComponent implements OnInit
                  private snackBar: MatSnackBar ) { }
 
 
-    ngOnInit(): void
+    ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
         const tabAdvert = this.fictitiousDatasService.getTabAdvert(8);
         this.dataSource = new MatTableDataSource<Advert>(tabAdvert);
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource = this.dataSource;
     }
 
 

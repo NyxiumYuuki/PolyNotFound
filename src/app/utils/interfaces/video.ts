@@ -4,5 +4,6 @@ export interface Video
     url: string,
     title: string,
     description: string,
-    views: number
+    views: number,
+    watched: Date[]
 }

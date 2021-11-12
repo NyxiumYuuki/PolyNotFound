@@ -31,3 +31,17 @@ mat-stepper {
   padding: 0px 0px 0px 5px;
   margin: 0px;
 }
+
+
+// -------------------------------------------------------------------------
+
+
+::ng-deep .mat-radio-inner-circle {
+  color: black !important;
+  background-color: black !important;
+}
+
+::ng-deep .mat-radio-outer-circle{
+  color: black !important;
+  border: solid 1px gray !important;
+}

@@ -40,6 +40,7 @@ export class PopupUpdateUserComponent implements OnInit
             gender: user0.gender,
             interests: [],
             isActive: user0.isActive,
+            isAccepted: user0.isAccepted,
             createdAt: user0.createdAt,
             updatedAt: user0.updatedAt,
         };

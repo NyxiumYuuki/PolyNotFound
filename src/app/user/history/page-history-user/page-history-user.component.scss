@@ -5,23 +5,33 @@
 }
 
 table {
+  width: 80%;
   margin: 0 auto;
 }
+
+/*
+mat-paginator {
+  width: 30%;
+  text-align: center;
+}
+*/
 
 th.mat-sort-header-sorted {
   color: black;
 }
 
+/*
 .lightTheme td {
   padding: 10px 30px 5px 5px;
 }
-
 .darkTheme td {
   background-color: #646464;
   color: white;
   padding: 10px 30px 5px 5px;
 }
+*/
 
 input {
-  width: 25%;
+  width: 35%;
+  font-size: large;
 }

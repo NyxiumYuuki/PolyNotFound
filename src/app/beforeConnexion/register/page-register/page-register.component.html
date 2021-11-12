@@ -10,7 +10,7 @@
             <!-- Choix du role -->
             <mat-step>
                 <ng-template matStepLabel>Type de compte</ng-template>
-                <form>
+                <form style="margin-top: 10px">
                     <mat-radio-group [(ngModel)]="roleName">
                         <mat-radio-button value="user">Utilisateur standard</mat-radio-button>&nbsp; &nbsp;
                         <mat-radio-button value="advertiser">Annonceur</mat-radio-button>
@@ -24,7 +24,7 @@
             <!-- Infos personelles -->
             <mat-step>
                 <ng-template matStepLabel>Compte & Informations personelles</ng-template>
-                <form>
+                <form style="margin-top: 10px">
                     <ng-template *ngIf="roleName==='user'; then userBlock else advertiserBlock"></ng-template>
                     <div style="text-align: right;">
                         <button mat-button matStepperPrevious>Précédent</button>

@@ -38,6 +38,7 @@ export class PopupUpdateAdminComponent implements OnInit
             gender: admin0.gender,
             interests: [],
             isActive: admin0.isActive,
+            isAccepted: admin0.isisAccepted,
             createdAt: admin0.createdAt,
             updatedAt: admin0.updatedAt,
         };

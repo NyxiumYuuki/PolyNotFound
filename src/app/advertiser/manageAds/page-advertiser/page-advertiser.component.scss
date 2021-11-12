@@ -2,6 +2,7 @@
   max-width: 100vw;
   height: 100vh;
   overflow-x: hidden;
+  font-size: small;
 }
 
 
@@ -12,8 +13,8 @@
   margin-left: 3%;
   font-size: larger;
   padding: 5px 20px 5px 20px;
+  font-size: small;
 }
-
 .lightTheme .btnAjouter {
   border-top: solid 1px #dcdcdc;
   border-right: solid 1px #dcdcdc;
@@ -21,7 +22,6 @@
   color: black;
   background-color: white;
 }
-
 .darkTheme .btnAjouter {
   border-top: solid 1px white;
   border-right: solid 1px white;
@@ -41,6 +41,7 @@
 table {
   margin: 0 auto;
   width: 94%;
+  font-size: small;
 }
 .darkTheme table { border: solid 2px white; }
 
@@ -48,16 +49,12 @@ th.mat-sort-header-sorted {
   color: black;
 }
 
-.lightTheme td {
-
-}
-.darkTheme td {
-  background-color: #646464;
-  color: white;
+td {
+  font-size: small;
 }
 
 input {
-  width: 25%;
-  font-size: x-large;
+  width: 30%;
+  font-size: large;
   border-radius: 5px;
 }

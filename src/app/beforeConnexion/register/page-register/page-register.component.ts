@@ -34,6 +34,7 @@ export class PageRegisterComponent
         gender: "man",
         interests: [],
         isActive: false,
+        isAccepted: false,
         createdAt: new Date(),
         updatedAt: new Date(),
     };

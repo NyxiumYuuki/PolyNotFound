@@ -13,6 +13,7 @@ export interface User
     gender: string,
     interests: string[],
     isActive: boolean,
+    isAccepted: boolean,
     createdAt: Date,
     updatedAt: Date,
 }
