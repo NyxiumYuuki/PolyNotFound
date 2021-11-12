@@ -37,7 +37,7 @@ export class PageLoginComponent implements OnInit
                 "password": this.password
             };
             this.messageService
-                .sendMessage('connexion', data)
+                .sendMessage('user/auth', data)
                 .subscribe( retour => this.maCallback(retour))
         }
 	}
