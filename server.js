@@ -28,11 +28,6 @@ db.mongoose
     }
   });
 
-//app.use(express.static(__dirname + '/dist/frontend'));
-app.get('/*', function(req,res) {
-  res.sendFile(path.join(__dirname+ '/dist/frontend/index.html'));
-});
-
 require("./app-backend/routes/user.routes")(app);
 require("./app-backend/routes/playlist.routes")(app);
 require("./app-backend/routes/video.routes")(app);
@@ -68,6 +63,15 @@ User.exists({role: roles.SuperAdmin}, function (err, docs){
       console.log("superAdmin already exist !");
     }
   }
+});
+
+app.get('/*all', function(req,res) {
+  res.sendFile(path.join(__dirname+ '/dist/index.html'));
+});
+
+app.use(express.static(__dirname + '/dist/frontend'));
+app.get('/*', function(req,res) {
+  res.sendFile(path.join(__dirname+ '/dist/frontend/index.html'));
 });
 
 app.listen(port, '0.0.0.0',() => {
