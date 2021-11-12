@@ -1,5 +1,5 @@
 const sessionJWTConfig = require ('jsonwebtoken');
-require('dotenv').config({ path: './app/.env' });
+require('dotenv').config({ path: './app-backend/.env' });
 const {sendError} = require ("./response.config");
 
 if(process.env.JWTRS256_PRIVATE_KEY === undefined || process.env.JWTRS256_PUBLIC_KEY === undefined){
