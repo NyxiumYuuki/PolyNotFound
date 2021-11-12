@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "node server.js",
     "dev": "ng serve",
-    "heroku-postbuild": "./app-backend/jwtRS256.sh",
     "build": "ng build --configuration production",
     "test": "ng test",
     "lint": "ng lint",
