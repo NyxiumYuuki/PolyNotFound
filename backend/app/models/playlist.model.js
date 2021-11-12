@@ -1,7 +1,8 @@
 module.exports = mongoose => {
   let schema = mongoose.Schema({
+      userId: String,
       name: String,
-      videos: []
+      videos: Array
     },
     { timestamps: true }
   );
