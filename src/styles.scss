@@ -4,13 +4,14 @@
   --dark-color: #f0f0f0;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; }
 
 
 .lightTheme {
   background: url("assets/lightBackground.jpg") no-repeat center center fixed;
   font-color: black;
   border-color: black;
+  font-size: small;
 }
 
 
@@ -18,6 +19,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background: url("assets/darkBackground.webp") no-repeat center center fixed;
   font-color: white;
   border-color: white;
+  font-size: small;
 }
 
 

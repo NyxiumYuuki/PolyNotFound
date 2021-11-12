@@ -1,75 +1,33 @@
-body {
-  font-family: "Poppins", sans-serif;
-  height: 100vh;
-}
-
-
 .myContainer {
+  width: 100vw;
   height: 100vh;
-  width: 100vw;
-  overflow-y: hidden;
-  overflow-x: hidden;
 }
 
 
-.bg{
-  height: 80vh;
-  width: 100vw;
+mat-stepper {
+  width: 60%;
+  margin: 10vh auto;
+  border: solid 1px black;
+  border-radius: 20px;
 }
 
 
-.wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
-  padding: 20px;
+.leftCol {
+  border-right: solid 1px #dcdcdc;
 }
 
 
-#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  text-align: center;
+.myRow {
+  margin: 15px 0px 15px 0px;
 }
-
-
-#icon {
-  width:30%;
+.myLabel {
+  text-align: right;
+  padding: 0px 5px 0px 0px;
+  margin: 0px;
+  font-weight: bold;
 }
-
-
-mat-form-field {
-  width: 80%;
-}
-
-
-input[type=button], input[type=submit], input[type=reset]  {
-  background-color: #5E89FF;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  border-radius: 5px 5px 5px 5px;
-  margin: 5px 20px 40px 20px;
-}
-
-
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-  background-color: #39ace7;
+.myValue {
+  text-align: left;
+  padding: 0px 0px 0px 5px;
+  margin: 0px;
 }

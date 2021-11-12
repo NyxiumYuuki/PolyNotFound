@@ -1,71 +1,217 @@
 <div [class]="themeService.getClassTheme()">
     <div class="myContainer">
-        <div class="bg">
 
+        <!-- navbar -->
+        <app-navbar-before-connexion pour="register"></app-navbar-before-connexion>
 
+        <!-- stepper -->
+        <mat-stepper [linear]=true>
 
-
-            <div class="wrapper">
-                <div id="formContent">
-
-                    <!-- Icon -->
-                    <div style="margin: 10px 0px 20px 0px">
-                        <img src="../../../../assets/logo.png" id="icon" alt="User Icon" style="margin-top: 20px"/>
+            <!-- Choix du role -->
+            <mat-step>
+                <ng-template matStepLabel>Type de compte</ng-template>
+                <form>
+                    <mat-radio-group [(ngModel)]="roleName">
+                        <mat-radio-button value="user">Utilisateur standard</mat-radio-button>&nbsp; &nbsp;
+                        <mat-radio-button value="advertiser">Annonceur</mat-radio-button>
+                    </mat-radio-group>
+                    <div style="text-align: right;">
+                        <button mat-button matStepperNext>Suivant</button>
                     </div>
+                </form>
+            </mat-step>
 
-                    <!-- Login Form -->
-                    <form>
-                        <!-- Login -->
-                        <mat-form-field appearance="fill">
-                            <mat-label>Login</mat-label>
-                            <input matInput type="text" [(ngModel)]="pseudo">
-                        </mat-form-field>
-                        <br>
+            <!-- Infos personelles -->
+            <mat-step>
+                <ng-template matStepLabel>Compte & Informations personelles</ng-template>
+                <form>
+                    <ng-template *ngIf="roleName==='user'; then userBlock else advertiserBlock"></ng-template>
+                    <div style="text-align: right;">
+                        <button mat-button matStepperPrevious>Précédent</button>
+                        <button mat-button matStepperNext (click)="checkField()">Suivant</button>
+                    </div>
+                </form>
+            </mat-step>
 
-                        <!-- Email -->
-                        <mat-form-field appearance="fill">
-                            <mat-label>Email</mat-label>
-                            <input matInput type="email" [(ngModel)]="email">
-                        </mat-form-field>
-                        <br>
-
-                        <!-- Role -->
-                        <mat-form-field appearance="fill">
-                            <mat-label>Type de compte</mat-label>
-                            <mat-select [(ngModel)]="role">
-                                <mat-option value="user"> Utilisateur </mat-option>
-                                <mat-option value="advertiser"> Annonceur </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <br>
-
-                        <!-- Mot de passe -->
-                        <mat-form-field appearance="fill">
-                            <mat-label>Mot de passe</mat-label>
-                            <input matInput type="password" [(ngModel)]="password">
-                        </mat-form-field>
-                        <br>
-
-                        <!-- Confirmation mot de passe -->
-                        <mat-form-field appearance="fill">
-                            <mat-label>Confirmation mot de passe</mat-label>
-                            <input matInput type="password" [(ngModel)]="confirmPassword">
-                        </mat-form-field>
-                        <br>
-
-                        <!-- Message d'erreur -->
-                        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
-                            <span class="mat-error"> {{errorMessage}} </span>
-                        </div>
-
-                        <!-- Valider -->
-                        <input type="submit" class="fadeIn fourth" value="S'inscrire" (click)="onRegister()">
-                    </form>
-
+            <!-- Derniere étape -->
+            <mat-step>
+                <!-- label -->
+                <ng-template matStepLabel>
+                    <span (click)="checkField()">Dernière étape</span>
+                </ng-template>
+                <!-- texte affiché -->
+                <ng-template *ngIf="!hasError ; then derniereEtapeCorrecte else derniereEtapeErronee"></ng-template>
+                <!-- boutons -->
+                <div style="text-align: right;">
+                    <button mat-button matStepperPrevious>Précédent</button>
+                    <button *ngIf="hasError" mat-button (click)="onValider()" disabled>Valider</button>
+                    <button *ngIf="!hasError" mat-button (click)="onValider()">Valider</button>
                 </div>
-            </div>
+            </mat-step>
 
-
-        </div>
+        </mat-stepper>
     </div>
 </div>
+
+
+<!-- -------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Info personnelles user -->
+<ng-template #userBlock>
+    <br>
+    <div class="row">
+
+        <!-- Colonne gauche -->
+        <div class="col-5 leftCol">
+            <h4>Compte</h4>
+
+            <!-- Login -->
+            <mat-form-field appearance="fill">
+                <mat-label>Login</mat-label>
+                <input matInput type="text" [(ngModel)]="user.login" required>
+            </mat-form-field>
+            <br>
+
+            <!-- Mot de passe -->
+            <mat-form-field appearance="fill">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput type="password" [(ngModel)]="password" required>
+            </mat-form-field>
+            <br>
+
+            <!-- Confirmation mot de passe -->
+            <mat-form-field appearance="fill">
+                <mat-label>Confirmation mot de passe</mat-label>
+                <input matInput type="password" [(ngModel)]="confirmPassword" required>
+            </mat-form-field>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="col-7">
+            <h4>Informations personelles</h4>
+
+            <!-- Email -->
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="user.mail" required>
+            </mat-form-field>
+            <br>
+
+            <!-- gender -->
+            <mat-radio-group [(ngModel)]="user.gender">
+                <mat-radio-button value="man"> Homme </mat-radio-button>&nbsp; &nbsp;
+                <mat-radio-button value="woman"> Femme </mat-radio-button>
+            </mat-radio-group>
+            <br><br>
+
+            <!-- dateOfBirth -->
+            <mat-form-field appearance="fill">
+                <mat-label>Date de naissance</mat-label>
+                <input matInput type="date"
+                       [ngModel] ="user.dateOfBirth | date:'yyyy-MM-dd'"
+                       (ngModelChange)="user.dateOfBirth = $event">
+            </mat-form-field>
+
+            <!-- interests -->
+            <app-input-interests-profil
+                    [myInterests]="user.interests"
+                    (eventEmitter)="onEventInputInterests($event)"></app-input-interests-profil>
+        </div>
+
+    </div>
+</ng-template>
+
+
+<!-- -------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Info personnelles advertiser -->
+<ng-template #advertiserBlock>
+
+    <!-- Login -->
+    <mat-form-field appearance="fill">
+        <mat-label>Login</mat-label>
+        <input matInput type="text" [(ngModel)]="user.login" required>
+    </mat-form-field>
+    <br>
+
+    <!-- Email -->
+    <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="user.mail" required>
+    </mat-form-field>
+    <br>
+
+    <!-- Mot de passe -->
+    <mat-form-field appearance="fill">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput type="password" [(ngModel)]="password" required>
+    </mat-form-field>
+    <br>
+
+    <!-- Confirmation mot de passe -->
+    <mat-form-field appearance="fill">
+        <mat-label>Confirmation mot de passe</mat-label>
+        <input matInput type="password" [(ngModel)]="confirmPassword" required>
+    </mat-form-field>
+
+</ng-template>
+
+
+<!-- -------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Dernière étape correcte -->
+<ng-template #derniereEtapeCorrecte>
+
+    <!-- pour advertiser -->
+    <div *ngIf="roleName === 'advertiser'">
+        Cliquer sur valider pour soumettre l'inscription.
+    </div>
+
+    <!-- pour user -->
+    <div *ngIf="roleName === 'user'">
+        <br>
+        <!-- login -->
+        <div class="row myRow">
+            <div class="col-2 myLabel">Login:</div>
+            <div class="col-10 myValue"> {{user.login}} </div>
+        </div>
+        <!-- mail -->
+        <div class="row myRow">
+            <div class="col-2 myLabel">Mail:</div>
+            <div class="col-10 myValue"> {{user.mail}} </div>
+        </div>
+        <!-- dateOfBirth -->
+        <div class="row myRow">
+            <div class="col-2 myLabel">Date de naissance:</div>
+            <div class="col-10 myValue">{{ user.dateOfBirth | date:'dd/LL/YYYY' }}</div>
+        </div>
+        <!-- gender -->
+        <div class="row myRow">
+            <div class="col-2 myLabel">Sexe:</div>
+            <div class="col-10 myValue">
+                <span *ngIf="user.gender==='man'"> Homme </span>
+                <span *ngIf="user.gender==='woman'"> Femme </span>
+            </div>
+        </div>
+        <!-- interets -->
+        <div class="row myRow">
+            <div class="col-2 myLabel">Centres d'intérêt:</div>
+            <div class="col-10 myValue" style="border-left: solid 1px #e6e6e6">
+                <div *ngFor="let interest of user.interests">• {{interest}}</div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
+<!-- -------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Dernière étape érronée -->
+<ng-template #derniereEtapeErronee>
+    <mat-error>{{errorMessage}}</mat-error>
+</ng-template>
