@@ -2,16 +2,14 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {User} from "../../../utils/interfaces/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
-
-
 @Component({
-    selector: 'app-popup-update-advertiser',
-    templateUrl: './popup-update-advertiser.component.html',
-    styleUrls: ['./popup-update-advertiser.component.scss']
+    selector: 'app-popup-update-admin',
+    templateUrl: './popup-update-admin.component.html',
+    styleUrls: ['./popup-update-admin.component.scss']
 })
-export class PopupUpdateAdvertiserComponent implements OnInit
+export class PopupUpdateAdminComponent implements OnInit
 {
-    advertiserCopy: User;
+    adminCopy: User;
     newPassword: string = "";
     confirmNewPassword: string = "" ;
     changePassword: boolean = false ;
@@ -19,31 +17,31 @@ export class PopupUpdateAdvertiserComponent implements OnInit
     errorMessage: string = "" ;
 
 
-    constructor( public dialogRef: MatDialogRef<PopupUpdateAdvertiserComponent>,
+    constructor( public dialogRef: MatDialogRef<PopupUpdateAdminComponent>,
                  @Inject(MAT_DIALOG_DATA) public data) { }
 
 
     ngOnInit(): void
     {
-        const advertiser0 = this.data.advertiser;
-        this.advertiserCopy = {
-            _id: advertiser0._id,
-            login: advertiser0.login,
-            hashPass: advertiser0.hashPass,
-            mail: advertiser0.mail,
+        const admin0 = this.data.admin;
+        this.adminCopy = {
+            _id: admin0._id,
+            login: admin0.login,
+            hashPass: admin0.hashPass,
+            mail: admin0.mail,
             role: {
-                name: advertiser0.role.name,
-                permission: advertiser0.role.permission,
+                name: admin0.role.name,
+                permission: admin0.role.permission,
             },
-            profilePictureUrl: advertiser0.profilePictureUrl,
-            dateOfBirth: advertiser0.dateOfBirth,
-            gender: advertiser0.gender,
+            profilePictureUrl: admin0.profilePictureUrl,
+            dateOfBirth: admin0.dateOfBirth,
+            gender: admin0.gender,
             interests: [],
-            isActive: advertiser0.isActive,
-            createdAt: advertiser0.createdAt,
-            updatedAt: advertiser0.updatedAt,
+            isActive: admin0.isActive,
+            createdAt: admin0.createdAt,
+            updatedAt: admin0.updatedAt,
         };
-        for(let interest of advertiser0.interests) this.advertiserCopy.interests.push(interest);
+        for(let interest of admin0.interests) this.adminCopy.interests.push(interest);
     }
 
 
@@ -53,28 +51,28 @@ export class PopupUpdateAdvertiserComponent implements OnInit
         if(!this.hasError)
         {
             const data = {
-                user: this.advertiserCopy,
+                user: this.adminCopy,
                 newPassword: this.newPassword
             };
 
             // VRAI CODE: envoie au back ...
 
-            this.dialogRef.close(this.advertiserCopy);
+            this.dialogRef.close(this.adminCopy);
         }
     }
 
 
     checkField()
     {
-        if(this.advertiserCopy.login.length === 0) {
+        if(this.adminCopy.login.length === 0) {
             this.errorMessage = "Veuillez remplir le champ 'login'" ;
             this.hasError = true;
         }
-        else if(this.advertiserCopy.mail.length === 0) {
+        else if(this.adminCopy.mail.length === 0) {
             this.errorMessage = "Veuillez remplir le champ 'email'" ;
             this.hasError = true;
         }
-        else if(!this.isValidEmail(this.advertiserCopy.mail)) {
+        else if(!this.isValidEmail(this.adminCopy.mail)) {
             this.errorMessage = "Email invalide" ;
             this.hasError = true;
         }
@@ -103,7 +101,6 @@ export class PopupUpdateAdvertiserComponent implements OnInit
 
     onEventInputInterests(myInterets: string[])
     {
-        this.advertiserCopy.interests = myInterets;
+        this.adminCopy.interests = myInterets;
     }
-
 }

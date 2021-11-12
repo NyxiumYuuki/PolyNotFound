@@ -28,9 +28,7 @@
             <!-- dateOfBirth -->
             <div class="row myRow">
                 <div class="col-6 myLabel">Date de naissance:</div>
-                <div class="col-6 myValue">
-                    {{ user.dateOfBirth | date:'dd/LL/YYYY' }}
-                </div>
+                <div class="col-6 myValue">{{ user.dateOfBirth | date:'dd/LL/YYYY' }}</div>
             </div>
 
             <!-- gender -->
@@ -53,9 +51,7 @@
             <!-- createdAt -->
             <div class="row myRow">
                 <div class="col-6 myLabel">Date de création:</div>
-                <div class="col-6 myValue">
-                    {{ user.createdAt | date:'dd/LL/YYYY à HH:mm:ss' }}
-                </div>
+                <div class="col-6 myValue">{{ user.createdAt | date:'dd/LL/YYYY' }}</div>
             </div>
 
             <!-- Modifier profil -->

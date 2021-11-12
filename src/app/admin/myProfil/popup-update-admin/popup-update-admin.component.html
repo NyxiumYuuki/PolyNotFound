@@ -3,8 +3,8 @@
 
         <!-- photo de profil -->
         <div style="text-align: center">
-            <img [src]="advertiserCopy.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
-            <input title="lien vers image" type="text" [(ngModel)]="advertiserCopy.profilePictureUrl" style="width: 90%">
+            <img [src]="adminCopy.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
+            <input title="lien vers image" type="text" [(ngModel)]="adminCopy.profilePictureUrl" style="width: 90%">
         </div>
 
         <!-- divider -->
@@ -13,13 +13,13 @@
         <!-- login -->
         <mat-form-field appearance="fill">
             <mat-label>Pseudo</mat-label>
-            <input matInput type="text" [(ngModel)]="advertiserCopy.login">
+            <input matInput type="text" [(ngModel)]="adminCopy.login">
         </mat-form-field><br>
 
         <!-- email -->
         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
-            <input matInput type="text" [(ngModel)]="advertiserCopy.mail">
+            <input matInput type="text" [(ngModel)]="adminCopy.mail">
         </mat-form-field><br>
 
         <!-- divider -->

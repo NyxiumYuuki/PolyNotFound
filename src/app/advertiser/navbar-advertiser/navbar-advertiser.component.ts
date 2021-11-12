@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {ThemeService} from "../../utils/services/theme/theme.service";
+
+
 
 @Component({
   selector: 'app-navbar-advertiser',
@@ -8,10 +9,9 @@ import {ThemeService} from "../../utils/services/theme/theme.service";
 })
 export class NavbarAdvertiserComponent
 {
-    urlImage: string = "" ;
+    urlImage: string = "https://www.figurines-goodies.com/1188-large_default/dewey-duck-tales-disney-funko-pop.jpg" ;
 
-    constructor( public themeService: ThemeService ) { }
+    constructor() { }
 
     onDeconnexion(): void {}
-
 }

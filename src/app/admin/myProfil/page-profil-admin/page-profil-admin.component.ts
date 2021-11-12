@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from "../../../utils/interfaces/user";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
-import {User} from "../../../utils/interfaces/user";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PopupUpdateUserComponent} from "../popup-update-user/popup-update-user.component";
+import {PopupUpdateAdminComponent} from "../popup-update-admin/popup-update-admin.component";
 
 
 
 @Component({
-    selector: 'app-page-profil-user',
-    templateUrl: './page-profil-user.component.html',
-    styleUrls: ['./page-profil-user.component.scss']
+    selector: 'app-page-profil-admin',
+    templateUrl: './page-profil-admin.component.html',
+    styleUrls: ['./page-profil-admin.component.scss']
 })
-export class PageProfilUserComponent implements OnInit
+export class PageProfilAdminComponent implements OnInit
 {
-    user: User;
+
+    admin: User;
 
 
     constructor( public themeService: ThemeService,
@@ -26,7 +27,7 @@ export class PageProfilUserComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.user = this.fictitiousDatasService.getUser();
+        this.admin = this.fictitiousDatasService.getAdmin();
     }
 
 
@@ -34,10 +35,10 @@ export class PageProfilUserComponent implements OnInit
     {
         const config = {
             width: '25%',
-            data: { user: this.user }
+            data: { admin: this.admin }
         };
         this.dialog
-            .open(PopupUpdateUserComponent, config)
+            .open(PopupUpdateAdminComponent, config)
             .afterClosed()
             .subscribe(retour => {
 
@@ -48,7 +49,7 @@ export class PageProfilUserComponent implements OnInit
                 }
                 else
                 {
-                    this.user = retour;
+                    this.admin = retour;
                 }
             });
     }

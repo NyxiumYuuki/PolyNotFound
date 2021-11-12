@@ -8,28 +8,35 @@ import {PageHistoryUserComponent} from "./user/history/page-history-user/page-hi
 import {PageAdvertiserComponent} from "./advertiser/manageAds/page-advertiser/page-advertiser.component";
 import {PageProfilUserComponent} from "./user/myProfil/page-profil-user/page-profil-user.component";
 import {PageProfilAdvertiserComponent} from "./advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component";
+import {PageProfilAdminComponent} from "./admin/myProfil/page-profil-admin/page-profil-admin.component";
 
 
 const routes: Routes = [
+
+    // Before connexion
     { path: '', component: PageLoginComponent },
     { path: 'login', component: PageLoginComponent },
     { path: 'register', component: PageRegisterComponent },
 
+    // User
     { path: 'user', component: PageSearchComponent },
     { path: 'user/search', component: PageSearchComponent },
     { path: 'user/myPlaylists', component: PageMyPlaylistsComponent },
     { path: 'user/history', component: PageHistoryUserComponent },
     { path: 'user/myProfil', component:  PageProfilUserComponent },
 
+    // Advertiser
     { path: 'advertiser', component: PageAdvertiserComponent },
+    { path: 'advertiser/manageAds', component: PageAdvertiserComponent },
     { path: 'advertiser/myProfil', component: PageProfilAdvertiserComponent },
 
-    /*
-    { path: 'admin/userList', component: PageLoginComponent },
-    { path: 'admin/addUser', component: PageLoginComponent },
-    { path: 'admin/adList', component: PageLoginComponent },
+    // Admin
+    // { path: 'admin', component: PageLoginComponent }
+    // { path: 'admin/userList', component: PageLoginComponent },
+    // { path: 'admin/addUser', component: PageLoginComponent },
+    // { path: 'admin/adList', component: PageLoginComponent },
     { path: 'admin/myProfil', component: PageProfilAdminComponent }
-    */
+
 ];
 
 

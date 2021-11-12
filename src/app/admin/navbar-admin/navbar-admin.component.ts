@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {ThemeService} from "../../utils/services/theme/theme.service";
+import { Component } from '@angular/core';
+
+
 
 @Component({
   selector: 'app-navbar-admin',
@@ -8,11 +9,9 @@ import {ThemeService} from "../../utils/services/theme/theme.service";
 })
 export class NavbarAdminComponent
 {
-    urlImage: string = "" ;
+    urlImage: string = "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530" ;
 
-    constructor( public themeService: ThemeService ) { }
+    constructor() { }
 
-    onDeconnexion(): void {
-
-    }
+    onDeconnexion(): void {}
 }

@@ -57,6 +57,8 @@ import { PopupUpdateUserComponent } from './user/myProfil/popup-update-user/popu
 import { NavbarBeforeConnexionComponent } from './beforeConnexion/navbar-before-connexion/navbar-before-connexion.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { InputInterestsComponent } from './user/myProfil/input-interests/input-interests.component';
+import { PageProfilAdminComponent } from './admin/myProfil/page-profil-admin/page-profil-admin.component';
+import { PopupUpdateAdminComponent } from './admin/myProfil/popup-update-admin/popup-update-admin.component';
 
 
 @NgModule({
@@ -96,6 +98,8 @@ import { InputInterestsComponent } from './user/myProfil/input-interests/input-i
         PopupUpdateUserComponent,
         NavbarBeforeConnexionComponent,
         InputInterestsComponent,
+        PageProfilAdminComponent,
+        PopupUpdateAdminComponent,
     ],
     imports: [
         BrowserModule,

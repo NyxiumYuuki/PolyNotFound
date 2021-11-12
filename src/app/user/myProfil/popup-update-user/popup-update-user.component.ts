@@ -12,7 +12,7 @@ import {User} from "../../../utils/interfaces/user";
 export class PopupUpdateUserComponent implements OnInit
 {
     userCopy: User;
-    newPassword: string;
+    newPassword: string = "";
     confirmNewPassword: string = "" ;
     changePassword: boolean = false ;
     hasError: boolean = false;
@@ -52,11 +52,14 @@ export class PopupUpdateUserComponent implements OnInit
         this.checkField();
         if(!this.hasError)
         {
-            const retour = {
+            const data = {
                 user: this.userCopy,
                 newPassword: this.newPassword
             };
-            this.dialogRef.close(retour);
+
+            // VRAI CODE: envoie au back ...
+
+            this.dialogRef.close(this.userCopy);
         }
     }
 

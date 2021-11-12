@@ -1,18 +1,14 @@
 <div class="myContainer">
-
-
     <div class="boite">
-
-        <!-- profil login mail dateOfBirth gender interets -->
 
         <!-- photo de profil -->
         <div style="text-align: center">
-            <img [src]="userCopy.profilePictureUrl"
-                 onerror="this.onerror=null; this.src='assets/profil.png'">
-            <br>
-            <input matInput type="text" [(ngModel)]="userCopy.profilePictureUrl">
+            <img [src]="userCopy.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
+            <input title="lien vers image" type="text" [(ngModel)]="userCopy.profilePictureUrl" style="width: 90%">
         </div>
-        <br>
+
+        <!-- divider -->
+        <br><mat-divider></mat-divider><br>
 
         <!-- login -->
         <mat-form-field appearance="fill">
@@ -31,27 +27,32 @@
         <!-- dateOfBirth -->
         <mat-form-field appearance="fill">
             <mat-label>Date de naissance</mat-label>
-            <input matInput type="date" [(ngModel)]="userCopy.mail">
+            <input matInput type="date"
+                   [ngModel] ="userCopy.dateOfBirth | date:'yyyy-MM-dd'"
+                   (ngModelChange)="userCopy.dateOfBirth = $event">
         </mat-form-field>
         <br>
 
         <!-- gender -->
         <mat-radio-group [(ngModel)]="userCopy.gender">
-            <mat-radio-button value="man"> Homme </mat-radio-button>
+            <mat-radio-button value="man"> Homme </mat-radio-button>&nbsp; &nbsp;
             <mat-radio-button value="woman"> Femme </mat-radio-button>
         </mat-radio-group>
-
+        <br><br>
 
         <!-- interets -->
         <app-input-interests [myInterests]="userCopy.interests" (eventEmitter)="onEventInputInterests($event)"></app-input-interests>
 
+        <!-- divider -->
+        <br><mat-divider></mat-divider><br>
 
         <!-- Modifier mot de passe -->
-        Modifier mot de passe:
-        <mat-checkbox [(ngModel)]="changePassword"></mat-checkbox>
-        <br>
+        <div style="margin-bottom: 10px">
+            Modifier mot de passe:
+            <mat-checkbox [(ngModel)]="changePassword"></mat-checkbox>
+        </div>
 
-        <!-- Nouveau mot de passe -->
+        <!-- nouveau mot de passe -->
         <div *ngIf="changePassword">
             <!-- Nouveau mot de passe -->
             <mat-form-field appearance="fill">
@@ -65,16 +66,20 @@
                 <input matInput type="password" [(ngModel)]="confirmNewPassword">
             </mat-form-field>
         </div>
-        <br>
+        <div *ngIf="!changePassword"><br></div>
 
-        <!-- Bouton valider -->
-        <div style="width: 100%; text-align: center">
-            <button mat-button (click)="onValider()"> Enregistrer </button>
+        <!-- divider -->
+        <mat-divider></mat-divider><br>
+
+        <!-- message d'erreur -->
+        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
+            <span class="mat-error">{{errorMessage}}</span>
         </div>
 
-        <!-- Message d'erreur -->
-        <div *ngIf="hasError" style="text-align: center; margin-top: 10px;">
-            <span class="mat-error"> {{errorMessage}} </span>
+        <!-- boutons -->
+        <div style="width: 100%; text-align: right">
+            <button mat-button (click)="this.dialogRef.close(null)"> Annuler </button>
+            <button mat-button (click)="onValider()"> Enregistrer </button>
         </div>
 
     </div>
