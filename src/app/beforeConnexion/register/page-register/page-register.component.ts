@@ -4,21 +4,39 @@ import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupConfirmationComponent} from "../popup-confirmation/popup-confirmation.component";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
+import {User} from "../../../utils/interfaces/user";
+
+
 
 @Component({
   selector: 'app-page-register',
   templateUrl: './page-register.component.html',
   styleUrls: ['./page-register.component.scss']
 })
-export class PageRegisterComponent implements OnInit
+export class PageRegisterComponent
 {
-    pseudo: string = "";
-    email: string = "" ;
+    roleName: string = "user";
     password: string = "";
-    role: string = "";
     confirmPassword: string = "";
     hasError: boolean = false;
     errorMessage: string = "";
+    user: User = {
+        _id: "",
+        login: "",
+        hashPass: "",
+        mail: "",
+        role: {
+            name: "user",
+            permission: 0,
+        },
+        profilePictureUrl: "",
+        dateOfBirth: new Date(),
+        gender: "man",
+        interests: [],
+        isActive: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    };
 
 
     constructor( private messageService: MessageService,
@@ -27,85 +45,103 @@ export class PageRegisterComponent implements OnInit
                  public themeService: ThemeService ) { }
 
 
-    ngOnInit(): void {}
+    // Envoie de l'utilisateur au backend
+    onValider(): void
+    {
+        this.checkField();
+        if(!this.hasError)
+        {
+            if(this.roleName === "advertiser") this.user.role = { name: "advertiser", permission: 5 };
+            else this.user.role = { name: "user", permission: 0 };
+            this.user.hashPass = this.hashage(this.password);
+
+            // FAUX CODE
+            const retour = { status: "succes" };
+            this.myCallback(retour);
+
+            // VRAI CODE
+            /*
+            this.messageService
+                .sendMessage('register', this.user)
+                .subscribe(retour => this.myCallback(retour));
+            */
+        }
+    }
 
 
-    isValidEmail(email)
+    // Gestion de la réponde du backend
+    myCallback(retour): void
+    {
+        if(retour.status === "error")
+        {
+            console.log(retour);
+        }
+        else
+        {
+            const config = { width: '25%', data: { roleName: this.roleName} };
+            this.dialog
+                .open(PopupConfirmationComponent, config)
+                .afterClosed()
+                .subscribe(result => this.router.navigateByUrl( '/login' ));
+        }
+    }
+
+
+    // Indique si email a bien le format d'un email
+    isValidEmail(email): boolean
     {
         let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     }
 
 
+    // Check les champs saisies par l'utilisateur
     checkField(): void
     {
-        if(this.pseudo.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'pseudo'";
+        if(this.user.login.length === 0) {
+            this.errorMessage = "Veuillez remplir le champ 'login'.";
             this.hasError = true;
         }
-        else if(this.email.length === 0)
-        {
-            this.errorMessage = "Veuillez remplir le champ 'email'";
+        else if(this.user.mail.length === 0) {
+            this.errorMessage = "Veuillez remplir le champ 'email'.";
             this.hasError = true;
         }
-        else if(!this.isValidEmail(this.email))
-        {
+        else if(!this.isValidEmail(this.user.mail)) {
             this.errorMessage = "Email invalide";
             this.hasError = true;
         }
-        else if(this.role === "")
-        {
-            this.errorMessage = "Veuillez selectionner un type de compte";
+        else if(this.password.length === 0) {
+            this.errorMessage = "Veuillez remplir le champ 'mot de passe'.";
             this.hasError = true;
         }
-        else if(this.password.length === 0)
-        {
-            this.errorMessage = "Veuillez remplir le champ 'mot de passe'";
-            this.hasError = true;
-        }
-        else if(this.password !== this.confirmPassword)
-        {
-            this.errorMessage = "Le mot de passe est différent de sa confirmation";
+        else if(this.password !== this.confirmPassword) {
+            this.errorMessage = "Le mot de passe est différent de sa confirmation.";
             this.hasError = true;
         }
         else {
             this.errorMessage = "" ;
             this.hasError = false;
         }
-        console.log(this.errorMessage);
     }
 
 
-    onRegister(): void
+    // Récupère la liste des centres d'intérets (car celle-ci est remplie à l'aide d'un component intermédiaire)
+    onEventInputInterests(myInterets: string[]): void
     {
-        console.log(this.role);
-        this.checkField();
-        if(!this.hasError)
-        {
-            let data = {
-                "pseudo": this.pseudo,
-                "email": this.email,
-                "role": this.role,
-                "password": this.password
-            };
-            this.messageService
-                .sendMessage('register', data)
-                .subscribe(retour => this.maCallback(retour))
-        }
+        this.user.interests = myInterets;
     }
 
 
-    maCallback(retour): void
+    // Fonction de hashage (faible)
+    hashage(input: string): string
     {
-        if(retour.status === "error") console.log(retour.data)
-        else
-        {
-            const config = { width: '25%', data: {} }
-            this.dialog
-                .open(PopupConfirmationComponent, config )
-                .afterClosed()
-                .subscribe(result => this.router.navigateByUrl( '/connexion' ));
+        let hash = 0;
+        for (let i = 0; i < input.length; i++) {
+            let ch = input.charCodeAt(i);
+            hash = ((hash << 5) - hash) + ch;
+            hash = hash & hash;
         }
+        return hash.toString();
     }
 
 }

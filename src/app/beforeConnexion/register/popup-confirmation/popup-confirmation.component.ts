@@ -11,8 +11,4 @@ export class PopupConfirmationComponent
     constructor( public dialogRef: MatDialogRef<PopupConfirmationComponent>,
                  @Inject(MAT_DIALOG_DATA) public data) {}
 
-    onClick(): void
-    {
-        this.dialogRef.close();
-    }
 }

@@ -41,7 +41,9 @@
         <br><br>
 
         <!-- interets -->
-        <app-input-interests [myInterests]="userCopy.interests" (eventEmitter)="onEventInputInterests($event)"></app-input-interests>
+        <app-input-interests-profil
+                [myInterests]="userCopy.interests"
+                (eventEmitter)="onEventInputInterests($event)"></app-input-interests-profil>
 
         <!-- divider -->
         <br><mat-divider></mat-divider><br>

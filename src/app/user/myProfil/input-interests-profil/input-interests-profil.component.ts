@@ -10,11 +10,11 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 
 @Component({
-  selector: 'app-input-interests',
-  templateUrl: './input-interests.component.html',
-  styleUrls: ['./input-interests.component.scss']
+  selector: 'app-input-interests-profil',
+  templateUrl: './input-interests-profil.component.html',
+  styleUrls: ['./input-interests-profil.component.scss']
 })
-export class InputInterestsComponent implements OnInit
+export class InputInterestsProfilComponent implements OnInit
 {
     selectable = true;
     removable = true;

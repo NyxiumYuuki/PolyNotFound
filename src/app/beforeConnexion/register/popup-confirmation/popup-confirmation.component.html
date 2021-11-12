@@ -1,4 +1,11 @@
-<p> Votre inscription a bien été effectué. </p>
+<p *ngIf="data.roleName === 'user'">
+    Votre inscription a bien été effectuée.
+</p>
+
+<p *ngIf="data.roleName === 'advertiser'">
+    Votre inscription est en cours de validation.
+</p>
+
 <div style="text-align: right">
     <button mat-button mat-dialog-close> Continuer </button>
 </div>

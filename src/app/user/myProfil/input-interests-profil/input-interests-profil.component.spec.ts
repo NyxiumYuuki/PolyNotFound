@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputInterestsComponent } from './input-interests.component';
+import { InputInterestsProfilComponent } from './input-interests-profil.component';
 
 describe('InputInterestsComponent', () => {
-  let component: InputInterestsComponent;
-  let fixture: ComponentFixture<InputInterestsComponent>;
+  let component: InputInterestsProfilComponent;
+  let fixture: ComponentFixture<InputInterestsProfilComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InputInterestsComponent ]
+      declarations: [ InputInterestsProfilComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InputInterestsComponent);
+    fixture = TestBed.createComponent(InputInterestsProfilComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -56,9 +56,11 @@ import { PopupUpdateAdvertiserComponent } from './advertiser/myProfil/popup-upda
 import { PopupUpdateUserComponent } from './user/myProfil/popup-update-user/popup-update-user.component';
 import { NavbarBeforeConnexionComponent } from './beforeConnexion/navbar-before-connexion/navbar-before-connexion.component';
 import {MatRadioModule} from "@angular/material/radio";
-import { InputInterestsComponent } from './user/myProfil/input-interests/input-interests.component';
+import { InputInterestsProfilComponent } from './user/myProfil/input-interests-profil/input-interests-profil.component';
 import { PageProfilAdminComponent } from './admin/myProfil/page-profil-admin/page-profil-admin.component';
 import { PopupUpdateAdminComponent } from './admin/myProfil/popup-update-admin/popup-update-admin.component';
+import {MatStepperModule} from "@angular/material/stepper";
+import { InputInterestsRegisterComponent } from './beforeConnexion/register/input-interests-register/input-interests-register.component';
 
 
 @NgModule({
@@ -97,9 +99,10 @@ import { PopupUpdateAdminComponent } from './admin/myProfil/popup-update-admin/p
         PopupUpdateAdvertiserComponent,
         PopupUpdateUserComponent,
         NavbarBeforeConnexionComponent,
-        InputInterestsComponent,
+        InputInterestsProfilComponent,
         PageProfilAdminComponent,
         PopupUpdateAdminComponent,
+        InputInterestsRegisterComponent,
     ],
     imports: [
         BrowserModule,
@@ -125,7 +128,8 @@ import { PopupUpdateAdminComponent } from './admin/myProfil/popup-update-admin/p
         MatAutocompleteModule,
         MatSelectModule,
         IvyCarouselModule,
-        MatRadioModule
+        MatRadioModule,
+        MatStepperModule
     ],
   providers: [],
   bootstrap: [AppComponent]
