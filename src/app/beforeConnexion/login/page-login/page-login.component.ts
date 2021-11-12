@@ -33,8 +33,8 @@ export class PageLoginComponent implements OnInit
         if(!this.hasError)
         {
             let data = {
-                "pseudo": this.pseudo,
-                "password": this.password
+              login: this.pseudo,
+              hashPass: this.password
             };
             this.messageService
                 .sendMessage('user/auth', data)
