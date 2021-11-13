@@ -31,21 +31,19 @@ import {VideoListComponent} from "./user/myPlaylists/video-list/video-list.compo
 import { PopupCreatePlaylistComponent } from './utils/components/popup-create-playlist/popup-create-playlist.component';
 import { PageHistoryUserComponent } from './user/history/page-history-user/page-history-user.component';
 import {MatTableModule} from '@angular/material/table';
-import { PageMyProfilComponent } from './utils/components/myProfil/page-my-profil/page-my-profil.component';
-import { PopupPictureProfilUrlComponent } from './utils/components/myProfil/popup-picture-profil-url/popup-picture-profil-url.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatSortModule} from "@angular/material/sort";
-import { PageAdvertiserComponent } from './advertiser/manageAds/page-advertiser/page-advertiser.component';
-import { PopupDeleteAdComponent } from './advertiser/manageAds/popup-delete-ad/popup-delete-ad.component';
-import { PopupAddOrUpdateAdComponent } from './advertiser/manageAds/popup-add-or-update-ad/popup-add-or-update-ad.component';
-import { PopupVisualizeAdComponent } from './advertiser/manageAds/popup-visualize-ad/popup-visualize-ad.component';
-import { InputTagsComponent } from './advertiser/manageAds/input-tags/input-tags.component';
+import { PageAdListAdvertiserComponent } from './advertiser/adList/page-ad-list-advertiser/page-ad-list-advertiser.component';
+import { PopupDeleteAdAdvertiserComponent } from './advertiser/adList/popup-delete-ad-advertiser/popup-delete-ad-advertiser.component';
+import { PopupAddOrUpdateAdComponent } from './advertiser/adList/popup-add-or-update-ad/popup-add-or-update-ad.component';
+import { PopupVisualizeAdAdvertiserComponent } from './advertiser/adList/popup-visualize-ad-advertiser/popup-visualize-ad-advertiser.component';
+import { InputTagsComponent } from './advertiser/adList/input-tags/input-tags.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatSelectModule} from "@angular/material/select";
-import { PopupVisualizeImagesComponent } from './advertiser/manageAds/popup-visualize-images/popup-visualize-images.component';
+import { PopupVisualizeImagesAdvertiserComponent } from './advertiser/adList/popup-visualize-images-advertiser/popup-visualize-images-advertiser.component';
 import {IvyCarouselModule} from "angular-responsive-carousel";
-import { DragAndDropComponent } from './advertiser/manageAds/drag-and-drop/drag-and-drop.component';
+import { DragAndDropComponent } from './advertiser/adList/drag-and-drop/drag-and-drop.component';
 import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-drop.directive';
 import { PageProfilUserComponent } from './user/myProfil/page-profil-user/page-profil-user.component';
 import { NavbarUserComponent } from './user/navbar-user/navbar-user.component';
@@ -62,6 +60,13 @@ import { PopupUpdateAdminComponent } from './admin/myProfil/popup-update-admin/p
 import {MatStepperModule} from "@angular/material/stepper";
 import { InputInterestsRegisterComponent } from './beforeConnexion/register/input-interests-register/input-interests-register.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { PageAdListAdminComponent } from './admin/adList/page-ad-list-admin/page-ad-list-admin.component';
+import { PopupDeleteAdAdminComponent } from './admin/adList/popup-delete-ad-admin/popup-delete-ad-admin.component';
+import { PopupVisualizeAdAdminComponent } from './admin/adList/popup-visualize-ad-admin/popup-visualize-ad-admin.component';
+import { PopupVisualizeImagesAdminComponent } from './admin/adList/popup-visualize-images-admin/popup-visualize-images-admin.component';
+import { PageUserListComponent } from './admin/userList/page-user-list/page-user-list.component';
+import { PopupVisualizeUserComponent } from './admin/userList/popup-visualize-user/popup-visualize-user.component';
+import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/popup-delete-user.component';
 
 
 @NgModule({
@@ -82,14 +87,12 @@ import {MatPaginatorModule} from "@angular/material/paginator";
         VideoListComponent,
         PopupCreatePlaylistComponent,
         PageHistoryUserComponent,
-        PageMyProfilComponent,
-        PopupPictureProfilUrlComponent,
-        PageAdvertiserComponent,
-        PopupDeleteAdComponent,
+        PageAdListAdvertiserComponent,
+        PopupDeleteAdAdvertiserComponent,
         PopupAddOrUpdateAdComponent,
-        PopupVisualizeAdComponent,
+        PopupVisualizeAdAdvertiserComponent,
         InputTagsComponent,
-        PopupVisualizeImagesComponent,
+        PopupVisualizeImagesAdvertiserComponent,
         DragAndDropComponent,
         DragAndDropDirective,
         PageProfilUserComponent,
@@ -104,6 +107,13 @@ import {MatPaginatorModule} from "@angular/material/paginator";
         PageProfilAdminComponent,
         PopupUpdateAdminComponent,
         InputInterestsRegisterComponent,
+        PageAdListAdminComponent,
+        PopupDeleteAdAdminComponent,
+        PopupVisualizeAdAdminComponent,
+        PopupVisualizeImagesAdminComponent,
+        PageUserListComponent,
+        PopupVisualizeUserComponent,
+        PopupDeleteUserComponent,
     ],
     imports: [
         BrowserModule,

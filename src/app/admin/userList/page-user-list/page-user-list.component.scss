@@ -1,0 +1,67 @@
+.myContainer {
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  font-size: small;
+}
+
+// ----------------------------------------------------------
+
+.matRadioGroupContainer {
+  float:left;
+  background-color: white;
+  width: 15%;
+  margin-left: 3%;
+  padding: 10px 10px 10px 10px;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.btnAjouterContainer {
+  float:left;
+  margin-left: 67%;
+  padding-top: 20px;
+}
+
+.btnAjouter {
+  background-color: white;
+  border: solid 1px black;
+}
+
+// ----------------------------------------------------------
+
+input {
+  width: 30%;
+  font-size: large;
+  border-radius: 5px;
+}
+
+// ----------------------------------------------------------
+
+table {
+  margin: 0 auto;
+  width: 94%;
+  font-size: small;
+}
+.darkTheme table { border: solid 2px white; }
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+td {
+  font-size: small;
+}
+
+// -------------------------------------------------------------------------
+
+::ng-deep .mat-radio-inner-circle {
+  color: black !important;
+  background-color: black !important;
+}
+
+::ng-deep .mat-radio-outer-circle{
+  color: black !important;
+  border: solid 1px gray !important;
+}
+
+

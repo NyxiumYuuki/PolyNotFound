@@ -11,6 +11,6 @@ export interface Advert
     comment: string,
     views: number,
     createdAt: Date,
-    lastUpdate: Date,
+    updatedAt: Date,
     isVisible: boolean,
 }

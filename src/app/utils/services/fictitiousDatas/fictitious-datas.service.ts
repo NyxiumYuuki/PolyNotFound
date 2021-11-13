@@ -4,7 +4,7 @@ import {Playlist} from "../../interfaces/playlist";
 import {Advert} from "../../interfaces/advert";
 import {User} from "../../interfaces/user";
 
-
+// ------------------------------------------------------------------------------------------------------------------------------
 
 const TAB_VIDEO: Video[] = [
     {
@@ -95,11 +95,11 @@ const TAB_VIDEO: Video[] = [
         views: 111,
         watched: []
     },
-]
+];
 
+// ------------------------------------------------------------------------------------------------------------------------------
 
-
-const TAB_ADVERT = [
+const TAB_ADVERT: Advert[] = [
     {
         _id: "idNutella",
         title: "pot de nutella XXL",
@@ -113,7 +113,7 @@ const TAB_ADVERT = [
         comment: "pub pour vacances de noêl",
         views: 5,
         createdAt: new Date(),
-        lastUpdate: new Date(),
+        updatedAt: new Date(),
         isVisible: true
     },
     {
@@ -128,13 +128,71 @@ const TAB_ADVERT = [
         comment: "pub pour cette année",
         views: 2,
         createdAt: new Date(),
-        lastUpdate: new Date(),
+        updatedAt: new Date(),
         isVisible: true
     },
-]
+];
 
+// ------------------------------------------------------------------------------------------------------------------------------
 
+const USER: User = {
+    _id: "ririId",
+    login: "Riri",
+    hashPass: "agourgroou",
+    mail: "riri@gmail.com",
+    role: {
+        name: "user",
+        permission: 0,
+    },
+    profilePictureUrl: "https://www.figurines-goodies.com/1185-thickbox_default/huey-duck-tales-disney-funko-pop.jpg",
+    dateOfBirth: new Date(),
+    gender: "man",
+    interests: ["foot", "jeux-vidéo"],
+    isActive: true,
+    isAccepted: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+};
 
+const ADVERTISER: User = {
+    _id: "fifiId",
+    login: "Fifi",
+    hashPass: "agourgroou",
+    mail: "fifi@gmail.com",
+    role: {
+        name: "advertiser",
+        permission: 5,
+    },
+    profilePictureUrl: "https://www.figurines-goodies.com/1188-large_default/dewey-duck-tales-disney-funko-pop.jpg",
+    dateOfBirth: null,
+    gender: "",
+    interests: [],
+    isActive: true,
+    isAccepted: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+};
+
+const ADMIN: User = {
+    _id: "loulouId",
+    login: "Loulou",
+    hashPass: "agourgroou",
+    mail: "loulou@gmail.com",
+    role: {
+        name: "admin",
+        permission: 5,
+    },
+    profilePictureUrl: "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530",
+    dateOfBirth: null,
+    gender: "",
+    interests: [],
+    isActive: true,
+    isAccepted: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------
 
 @Injectable({
     providedIn: 'root'
@@ -158,6 +216,7 @@ export class FictitiousDatasService
         return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     }
 
+    // ------------------------------------------------------------------------------------------------
 
     getVideo(): Video
     {
@@ -184,6 +243,7 @@ export class FictitiousDatasService
         return tabVideo;
     }
 
+    // ------------------------------------------------------------------------------------------------
 
     getTabPlaylist(nbPlaylist: number, nbVideoMax: number)
     {
@@ -203,6 +263,7 @@ export class FictitiousDatasService
         return tabTabPlaylist
     }
 
+    // ------------------------------------------------------------------------------------------------
 
     getAdvert(): Advert
     {
@@ -221,73 +282,52 @@ export class FictitiousDatasService
         return tabAdvert;
     }
 
+    // ------------------------------------------------------------------------------------------------
 
-    getUser(): User
+    private getUserOrAdvertiserOrAdmin(modele: User): User
     {
-        return {
-            _id: "ririId",
-            login: "Riri",
-            hashPass: "agourgroou",
-            mail: "riri@gmail.com",
-            role: {
-                name: "user",
-                permission: 0,
-            },
-            profilePictureUrl: "https://www.figurines-goodies.com/1185-thickbox_default/huey-duck-tales-disney-funko-pop.jpg",
-            dateOfBirth: new Date(),
-            gender: "man",
-            interests: ["foot", "jeux-vidéo"],
-            isActive: true,
-            isAccepted: true,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        }
+        const res = Object.assign({}, modele);
+        res._id += this.makeid(5);
+        res.login += (Math.floor(Math.random() * 1000)).toString();
+        res.mail = res.login + "@gmail.com" ;
+        res.isAccepted = (Math.random() < 0.5);
+        return res;
     }
 
-    getAdvertiser(): User
-    {
-        return {
-            _id: "fifiId",
-            login: "Fifi",
-            hashPass: "agourgroou",
-            mail: "fifi@gmail.com",
-            role: {
-                name: "advertiser",
-                permission: 5,
-            },
-            profilePictureUrl: "https://www.figurines-goodies.com/1188-large_default/dewey-duck-tales-disney-funko-pop.jpg",
-            dateOfBirth: null,
-            gender: "",
-            interests: [],
-            isActive: true,
-            isAccepted: true,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        }
+    getUser(): User {
+        return this.getUserOrAdvertiserOrAdmin(USER);
     }
 
-    getAdmin(): User
-    {
-        return {
-            _id: "loulouId",
-            login: "Loulou",
-            hashPass: "agourgroou",
-            mail: "loulou@gmail.com",
-            role: {
-                name: "admin",
-                permission: 5,
-            },
-            profilePictureUrl: "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530",
-            dateOfBirth: null,
-            gender: "",
-            interests: [],
-            isActive: true,
-            isAccepted: true,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        }
+    getAdvertiser(): User {
+        return this.getUserOrAdvertiserOrAdmin(ADVERTISER);
     }
 
+    getAdmin(): User {
+        return this.getUserOrAdvertiserOrAdmin(ADMIN);
+    }
+
+    getTabUser(n: number): User[]
+    {
+        const res: User[] = [];
+        for(let i=0 ; i<n ; i++) res.push(this.getUser());
+        return res;
+    }
+
+    getTabAdvertiser(n: number): User[]
+    {
+        const res: User[] = [];
+        for(let i=0 ; i<n ; i++) res.push(this.getAdvertiser());
+        return res;
+    }
+
+    getTabAdmin(n: number): User[]
+    {
+        const res: User[] = [];
+        for(let i=0 ; i<n ; i++) res.push(this.getAdmin());
+        return res;
+    }
+
+    // ------------------------------------------------------------------------------------------------
 
     getTags(): string[]
     {

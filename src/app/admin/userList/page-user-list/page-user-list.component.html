@@ -1,0 +1,137 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+
+        <!-- Navbar -->
+        <app-navbar-admin></app-navbar-admin><br><br>
+
+
+        <!-- Filtre -->
+        <div style="text-align: center">
+            <input (keyup)="applyFilter($event)" placeholder="Filtre: saisir la valeur d'une colonne">
+        </div>
+
+
+        <div class="choixRoleEtbtnAjouerAdmin">
+
+            <!-- Choix role -->
+            <div class="matRadioGroupContainer">
+                <mat-radio-group [(ngModel)]="roleName">
+                    <mat-radio-button value="user" (click)="onChangeRoleSelected('user')">
+                        Utilisateur
+                    </mat-radio-button><br>
+                    <mat-radio-button value="advertiser" (click)="onChangeRoleSelected('advertiser')">
+                        Annonceur
+                    </mat-radio-button><br>
+                    <mat-radio-button value="admin" (click)="onChangeRoleSelected('admin')">
+                        Admin
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="btnAjouterContainer">
+                <button mat-button class="btnAjouter" (click)="onAddAdmin()">
+                    <mat-icon>add_circle</mat-icon> Ajouter un admin
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+            <!-- Login Column -->
+            <ng-container matColumnDef="login">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Login </th>
+                <td mat-cell *matCellDef="let user">
+                    {{user.login}}
+                </td>
+            </ng-container>
+
+            <!-- Mail Column -->
+            <ng-container matColumnDef="mail">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mail </th>
+                <td mat-cell *matCellDef="let user">
+                    {{user.mail}}
+                </td>
+            </ng-container>
+
+            <!-- DateOfBirth Column -->
+            <ng-container matColumnDef="dateOfBirth">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date de naissance </th>
+                <td mat-cell *matCellDef="let user">
+                    {{ user.dateOfBirth | date:'dd/LL/YYYY à HH:mm:ss' }}
+                </td>
+            </ng-container>
+
+            <!-- Interests Column -->
+            <ng-container matColumnDef="interests">
+                <th mat-header-cell *matHeaderCellDef> Centre d'intérêts </th>
+                <td mat-cell *matCellDef="let user">
+                    <span *ngFor="let interest of user.interests; let isLast = last;">
+                        <span *ngIf="!isLast"> {{interest}}, </span>
+                        <span *ngIf="isLast"> {{interest}} </span>
+                    </span>
+                </td>
+            </ng-container>
+
+            <!-- CreatedAt Column -->
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date de création </th>
+                <td mat-cell *matCellDef="let user">
+                    {{ user.createdAt | date:'dd/LL/YYYY à HH:mm:ss' }}
+                </td>
+            </ng-container>
+
+            <!-- UpdatedAt Column -->
+            <ng-container matColumnDef="updatedAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Dernière modification </th>
+                <td mat-cell *matCellDef="let user">
+                    {{ user.updatedAt | date:'dd/LL/YYYY à HH:mm:ss' }}
+                </td>
+            </ng-container>
+
+            <!-- IsAccepted Column -->
+            <ng-container matColumnDef="isAccepted">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activé </th>
+                <td mat-cell *matCellDef="let user">
+                    <span *ngIf="user.isAccepted"> <mat-icon>check</mat-icon> </span>
+                    <span *ngIf="!user.isAccepted"></span>
+                </td>
+            </ng-container>
+
+            <!-- Delete Column -->
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Supprimer </th>
+                <td mat-cell *matCellDef="let user">
+                    <button mat-icon-button (click)="onDelete(user)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Visualisation Column -->
+            <ng-container matColumnDef="visualisation">
+                <th mat-header-cell *matHeaderCellDef> Visualisation </th>
+                <td mat-cell *matCellDef="let user">
+                    <button mat-icon-button (click)="onVisualize(user)">
+                        <mat-icon>aspect_ratio</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Directives -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4"> Aucune vidéo ne correspond au filtre: "{{input.value}}" </td>
+            </tr>
+
+        </table>
+        <div style="width: 94%; margin: auto auto">
+            <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+        </div>
+        <br><br>
+
+    </div>
+</div>

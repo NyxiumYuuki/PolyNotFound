@@ -1,0 +1,59 @@
+.myContainer {
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  font-size: small;
+}
+
+
+// ----------------------------------------------------------
+
+
+.btnAjouter {
+  margin-left: 3%;
+  padding: 5px 20px 5px 20px;
+  font-size: small;
+}
+.lightTheme .btnAjouter {
+  border-top: solid 1px #dcdcdc;
+  border-right: solid 1px #dcdcdc;
+  border-left: solid 1px #dcdcdc;
+  color: black;
+  background-color: white;
+}
+.darkTheme .btnAjouter {
+  border-top: solid 1px white;
+  border-right: solid 1px white;
+  border-left: solid 1px white;
+  color: white;
+  background-color: black;
+}
+.darkTheme .btnAjouter:hover {
+  background-color: #646464;
+  color: black;
+}
+
+
+// ----------------------------------------------------------
+
+
+table {
+  margin: 0 auto;
+  width: 94%;
+  font-size: small;
+}
+.darkTheme table { border: solid 2px white; }
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+td {
+  font-size: small;
+}
+
+input {
+  width: 30%;
+  font-size: large;
+  border-radius: 5px;
+}

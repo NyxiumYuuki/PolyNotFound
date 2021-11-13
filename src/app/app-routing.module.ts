@@ -5,10 +5,12 @@ import {PageRegisterComponent} from "./beforeConnexion/register/page-register/pa
 import {PageSearchComponent} from "./user/search/page-search/page-search.component";
 import {PageMyPlaylistsComponent} from "./user/myPlaylists/page-my-playlists/page-my-playlists.component";
 import {PageHistoryUserComponent} from "./user/history/page-history-user/page-history-user.component";
-import {PageAdvertiserComponent} from "./advertiser/manageAds/page-advertiser/page-advertiser.component";
+import {PageAdListAdvertiserComponent} from "./advertiser/adList/page-ad-list-advertiser/page-ad-list-advertiser.component";
 import {PageProfilUserComponent} from "./user/myProfil/page-profil-user/page-profil-user.component";
 import {PageProfilAdvertiserComponent} from "./advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component";
 import {PageProfilAdminComponent} from "./admin/myProfil/page-profil-admin/page-profil-admin.component";
+import {PageAdListAdminComponent} from "./admin/adList/page-ad-list-admin/page-ad-list-admin.component";
+import {PageUserListComponent} from "./admin/userList/page-user-list/page-user-list.component";
 
 
 const routes: Routes = [
@@ -26,15 +28,14 @@ const routes: Routes = [
     { path: 'user/myProfil', component:  PageProfilUserComponent },
 
     // Advertiser
-    { path: 'advertiser', component: PageAdvertiserComponent },
-    { path: 'advertiser/manageAds', component: PageAdvertiserComponent },
+    { path: 'advertiser', component: PageAdListAdvertiserComponent },
+    { path: 'advertiser/adList', component: PageAdListAdvertiserComponent },
     { path: 'advertiser/myProfil', component: PageProfilAdvertiserComponent },
 
     // Admin
-    // { path: 'admin', component: PageLoginComponent }
-    // { path: 'admin/userList', component: PageLoginComponent },
-    // { path: 'admin/addUser', component: PageLoginComponent },
-    // { path: 'admin/adList', component: PageLoginComponent },
+    { path: 'admin', component: PageUserListComponent },
+    { path: 'admin/userList', component: PageUserListComponent },
+    { path: 'admin/adList', component: PageAdListAdminComponent },
     { path: 'admin/myProfil', component: PageProfilAdminComponent }
 
 ];
