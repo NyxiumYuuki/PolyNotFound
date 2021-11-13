@@ -16,4 +16,5 @@ export interface User
     isAccepted: boolean,
     createdAt: Date,
     updatedAt: Date,
+    lastConnexion: Date,
 }

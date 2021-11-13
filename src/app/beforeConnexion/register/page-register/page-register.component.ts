@@ -37,6 +37,7 @@ export class PageRegisterComponent
         isAccepted: false,
         createdAt: new Date(),
         updatedAt: new Date(),
+        lastConnexion: new Date()
     };
 
 
@@ -88,14 +89,6 @@ export class PageRegisterComponent
     }
 
 
-    // Indique si email a bien le format d'un email
-    isValidEmail(email): boolean
-    {
-        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    }
-
-
     // Check les champs saisies par l'utilisateur
     checkField(): void
     {
@@ -123,6 +116,14 @@ export class PageRegisterComponent
             this.errorMessage = "" ;
             this.hasError = false;
         }
+    }
+
+
+    // Indique si email a bien le format d'un email
+    isValidEmail(email): boolean
+    {
+        let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
     }
 
 

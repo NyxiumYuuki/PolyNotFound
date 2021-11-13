@@ -1,1 +1,76 @@
-<p>popup-visualize-user works!</p>
+<div class="myContainer">
+
+    <!-- Photo de profil -->
+    <div style="text-align: center">
+        <img [src]="user.profilePictureUrl"
+             onerror="this.onerror=null; this.src='assets/profil.png'">
+    </div>
+
+    <!-- login -->
+    <div class="row myRow">
+        <div class="col-6 myLabel">Login:</div>
+        <div class="col-6 myValue"> {{user.login}} </div>
+    </div>
+
+    <!-- mail -->
+    <div class="row myRow">
+        <div class="col-6 myLabel">Mail:</div>
+        <div class="col-6 myValue"> {{user.mail}} </div>
+    </div>
+
+    <div *ngIf="user.role.name === 'user'">
+
+        <!-- dateOfBirth -->
+        <div class="row myRow">
+            <div class="col-6 myLabel">Date de naissance:</div>
+            <div class="col-6 myValue">{{ user.dateOfBirth | date:'dd/LL/YYYY' }}</div>
+        </div>
+
+        <!-- age -->
+        <div class="row myRow">
+            <div class="col-6 myLabel">Âge:</div>
+            <div class="col-6 myValue">{{user.age}}</div>
+        </div>
+
+        <!-- gender -->
+        <div class="row myRow">
+            <div class="col-6 myLabel">Sexe:</div>
+            <div class="col-6 myValue">
+                <span *ngIf="user.gender==='man'"> Homme </span>
+                <span *ngIf="user.gender==='woman'"> Femme </span>
+            </div>
+        </div>
+
+        <!-- interets -->
+        <div class="row myRow">
+            <div class="col-6 myLabel">Centres d'intérêt:</div>
+            <div class="col-6 myValue" style="border-left: solid 1px #e6e6e6">
+                <div *ngFor="let interest of user.interests">• {{interest}}</div>
+            </div>
+        </div>
+
+        <!-- createdAt -->
+        <div class="row myRow">
+            <div class="col-6 myLabel">Date de création:</div>
+            <div class="col-6 myValue">{{ user.createdAt | date:'dd/LL/YYYY' }}</div>
+        </div>
+
+    </div>
+
+    <!-- Role -->
+    <div class="row myRow">
+        <div class="col-6 myLabel">Rôle:</div>
+        <div class="col-6 myValue">
+            <span *ngIf="user.role.name === 'user'">Utilisateur</span>
+            <span *ngIf="user.role.name === 'advertiser'">Annonceur</span>
+            <span *ngIf="user.role.name === 'admin'">Admin</span>
+        </div>
+    </div>
+    <br>
+
+    <!-- boutons -->
+    <div style="text-align: center">
+        <button mat-button (click)="this.dialogRef.close(null)"> Fermer </button>
+    </div>
+
+</div>

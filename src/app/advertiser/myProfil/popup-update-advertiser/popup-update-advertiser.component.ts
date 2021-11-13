@@ -43,6 +43,7 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             isAccepted: advertiser0.isAccepted,
             createdAt: advertiser0.createdAt,
             updatedAt: advertiser0.updatedAt,
+            lastConnexion: new Date()
         };
         for(let interest of advertiser0.interests) this.advertiserCopy.interests.push(interest);
     }
@@ -53,10 +54,8 @@ export class PopupUpdateAdvertiserComponent implements OnInit
         this.checkField();
         if(!this.hasError)
         {
-            const data = {
-                user: this.advertiserCopy,
-                newPassword: this.newPassword
-            };
+            if(this.changePassword) this.advertiserCopy.hashPass = this.hashage(this.newPassword);
+            const data = { user: this.advertiserCopy };
 
             // VRAI CODE: envoie au back ...
 
@@ -107,4 +106,16 @@ export class PopupUpdateAdvertiserComponent implements OnInit
         this.advertiserCopy.interests = myInterets;
     }
 
+
+    // Fonction de hashage (faible)
+    hashage(input: string): string
+    {
+        let hash = 0;
+        for (let i = 0; i < input.length; i++) {
+            let ch = input.charCodeAt(i);
+            hash = ((hash << 5) - hash) + ch;
+            hash = hash & hash;
+        }
+        return hash.toString();
+    }
 }

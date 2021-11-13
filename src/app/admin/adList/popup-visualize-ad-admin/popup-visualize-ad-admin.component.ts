@@ -1,8 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Advert} from "../../../utils/interfaces/advert";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 
 
 
@@ -15,34 +14,13 @@ export class PopupVisualizeAdAdminComponent implements OnInit
 {
     advert: Advert;
 
-
     constructor( public dialogRef: MatDialogRef<PopupVisualizeAdAdminComponent>,
                  @Inject(MAT_DIALOG_DATA) public data,
-                 public themeService: ThemeService,
-                 public dialog: MatDialog ) { }
-
+                 public themeService: ThemeService ) { }
 
     ngOnInit(): void
     {
         this.advert = this.data.advert;
-    }
-
-
-    onVisualizeImages(images: any[])
-    {
-        const config = {
-            width: '400px',
-            height: '950px',
-            data: {
-                images: images,
-                width: 300,
-                height: 800,
-            }
-        };
-        this.dialog
-            .open(PopupVisualizeImagesAdminComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
     }
 
 }

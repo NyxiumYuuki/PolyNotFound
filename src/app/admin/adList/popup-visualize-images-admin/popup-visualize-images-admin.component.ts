@@ -21,8 +21,8 @@ export class PopupVisualizeImagesAdminComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.width = this.data.width;
-        this.height = this.data.height;
+        this.width = this.data.width*0.8;
+        this.height = this.data.height*0.8;
 
         for(let couple of this.data.images)
         {

@@ -9,11 +9,11 @@
     <mat-chip-list #chipList aria-label="Fruit selection">
 
         <mat-chip
-                *ngFor="let tag of myTags"
+                *ngFor="let interest of myInterests"
                 [selectable]="selectable"
                 [removable]="removable"
-                (removed)="remove(tag)">
-            {{tag}}
+                (removed)="remove(interest)">
+            {{interest}}
             <button matChipRemove *ngIf="removable">
                 <mat-icon>cancel</mat-icon>
             </button>
@@ -33,8 +33,8 @@
     <!-- ------------------------------------------------------------------------------------ -->
 
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-            {{tag}}
+        <mat-option *ngFor="let interest of filteredInterests | async" [value]="interest">
+            {{interest}}
         </mat-option>
     </mat-autocomplete>
 

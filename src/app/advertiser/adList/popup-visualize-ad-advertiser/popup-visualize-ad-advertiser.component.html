@@ -9,11 +9,9 @@
 
         <!-- Images -->
         <div class="row myRow">
-            <div class="col-6 myLabel" style="padding-top: 10px"> Images: </div>
-            <div class="col-6">
-                <button mat-icon-button (click)="onVisualizeImages(advert.images)">
-                    <mat-icon>aspect_ratio</mat-icon>
-                </button>
+            <div class="col-6 myLabel"> Images: </div>
+            <div class="col-6 myValue" style="border-left: solid 1px #e6e6e6">
+                <div *ngFor="let image of advert.images"> {{image.url}} </div>
             </div>
         </div>
 

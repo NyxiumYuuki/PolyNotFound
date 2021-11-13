@@ -9,6 +9,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Advert} from "../../../utils/interfaces/advert";
 import {PopupVisualizeAdAdminComponent} from "../popup-visualize-ad-admin/popup-visualize-ad-admin.component";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
+import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 
 
 
@@ -19,7 +20,7 @@ import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete
 })
 export class PageAdListAdminComponent implements AfterViewInit
 {
-    displayedColumns: string[] = [ 'title', 'advertiser', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'delete', 'visualisation' ];
+    displayedColumns: string[] = [ 'title', 'advertiser', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -49,7 +50,25 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onVisualize(advert: Advert): void
+    onVisualizeImages(advert: Advert)
+    {
+        const config = {
+            width: '30%',
+            height: '90%',
+            data: {
+                images: advert.images,
+                width: 300,
+                height: 800,
+            }
+        };
+        this.dialog
+            .open(PopupVisualizeImagesAdminComponent, config)
+            .afterClosed()
+            .subscribe(retour => {});
+    }
+
+
+    onVisualizeInfo(advert: Advert): void
     {
         const config = {
             width: '50%',
@@ -82,7 +101,7 @@ export class PageAdListAdminComponent implements AfterViewInit
                     this.dataSource.data.splice(index, 1);
                     this.dataSource.data = this.dataSource.data;
                     this.dataSource = this.dataSource;
-                    message = "L'annonce a bien été supprimée ✔" ;
+                    message = advert.title + " a bien été supprimée ✔" ;
                 }
                 this.snackBar.open( message, "", config);
             });

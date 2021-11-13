@@ -41,6 +41,7 @@ export class PopupUpdateAdminComponent implements OnInit
             isAccepted: admin0.isisAccepted,
             createdAt: admin0.createdAt,
             updatedAt: admin0.updatedAt,
+            lastConnexion: admin0.lastConnexion
         };
         for(let interest of admin0.interests) this.adminCopy.interests.push(interest);
     }
@@ -51,10 +52,8 @@ export class PopupUpdateAdminComponent implements OnInit
         this.checkField();
         if(!this.hasError)
         {
-            const data = {
-                user: this.adminCopy,
-                newPassword: this.newPassword
-            };
+            if(this.changePassword) this.adminCopy.hashPass = this.hashage(this.newPassword);
+            const data = { user: this.adminCopy };
 
             // VRAI CODE: envoie au back ...
 
@@ -103,5 +102,18 @@ export class PopupUpdateAdminComponent implements OnInit
     onEventInputInterests(myInterets: string[])
     {
         this.adminCopy.interests = myInterets;
+    }
+
+
+    // Fonction de hashage (faible)
+    hashage(input: string): string
+    {
+        let hash = 0;
+        for (let i = 0; i < input.length; i++) {
+            let ch = input.charCodeAt(i);
+            hash = ((hash << 5) - hash) + ch;
+            hash = hash & hash;
+        }
+        return hash.toString();
     }
 }

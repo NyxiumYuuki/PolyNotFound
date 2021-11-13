@@ -9,6 +9,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {User} from "../../../utils/interfaces/user";
 import {PopupVisualizeUserComponent} from "../popup-visualize-user/popup-visualize-user.component";
 import {PopupDeleteUserComponent} from "../popup-delete-user/popup-delete-user.component";
+import {PopupCreateUserComponent} from "../popup-create-user/popup-create-user.component";
 
 
 
@@ -20,11 +21,11 @@ import {PopupDeleteUserComponent} from "../popup-delete-user/popup-delete-user.c
 export class PageUserListComponent implements AfterViewInit
 {
     displayedColumns: string[];
-    displayedColumnsUser: string[] = [ 'login', 'mail', 'dateOfBirth', 'interests', 'createdAt', 'updatedAt', 'delete', 'visualisation' ];
-    displayedColumnsAdvertiser: string[] = [ 'login', 'mail', 'createdAt', 'updatedAt', 'isAccepted', 'delete', 'visualisation' ];
-    displayedColumnsAdmin: string[] = [ 'login', 'mail', 'createdAt', 'updatedAt', 'delete', 'visualisation' ];
+    displayedColumnsUser: string[] = [ 'login', 'mail', 'dateOfBirth', 'age', 'sexe', 'interests', 'createdAt', 'lastConnexion', 'actions' ];
+    displayedColumnsAdvertiser: string[] = [ 'login', 'mail', 'createdAt', 'lastConnexion', 'isAccepted', 'actions' ];
+    displayedColumnsAdmin: string[] = [ 'login', 'mail', 'createdAt', 'lastConnexion', 'actions' ];
 
-    tabUser: User[] = [];
+    tabUser: any[] = [];
     tabAdvertiser: User[] = [];
     tabAdmin: User[] = [];
 
@@ -47,9 +48,11 @@ export class PageUserListComponent implements AfterViewInit
         this.tabAdvertiser = this.fictitiousDatasService.getTabAdvertiser(8);
         this.tabAdmin = this.fictitiousDatasService.getTabAdmin(4);
 
+        for(const user of this.tabUser) user.age = this.getAge(user.dateOfBirth);
+
         this.displayedColumns = this.displayedColumnsUser;
 
-        this.dataSource = new MatTableDataSource<User>(this.tabUser);
+        this.dataSource = new MatTableDataSource(this.tabUser);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource = this.dataSource;
@@ -114,14 +117,36 @@ export class PageUserListComponent implements AfterViewInit
                     this.dataSource.data.splice(index, 1);
                     this.dataSource.data = this.dataSource.data;
                     this.dataSource = this.dataSource;
-                    message = "L'annonce a bien été supprimée ✔" ;
+                    message = user.login + " a bien été supprimée ✔" ;
                 }
                 this.snackBar.open( message, "", config);
             });
     }
 
-    onAddAdmin(): void
-    {
 
+    onCreateUser(): void
+    {
+        const config = { width: '50%' };
+        this.dialog
+            .open(PopupCreateUserComponent, config)
+            .afterClosed()
+            .subscribe( retour => {
+
+                const config = { duration: 1000, panelClass: "custom-class" };
+                if((retour === null) || (retour === undefined)) {
+                    this.snackBar.open( "Opération annulée", "", config);
+                }
+                else {
+                    this.snackBar.open( "L'utilisateur a bien été créé", "", config);
+                }
+            });
+    }
+
+
+    getAge(date: Date): number
+    {
+        const diff = Date.now() - date.getTime();
+        const age = new Date(diff);
+        return Math.abs(age.getUTCFullYear() - 1970);
     }
 }

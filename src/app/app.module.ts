@@ -67,6 +67,8 @@ import { PopupVisualizeImagesAdminComponent } from './admin/adList/popup-visuali
 import { PageUserListComponent } from './admin/userList/page-user-list/page-user-list.component';
 import { PopupVisualizeUserComponent } from './admin/userList/popup-visualize-user/popup-visualize-user.component';
 import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/popup-delete-user.component';
+import { PopupCreateUserComponent } from './admin/userList/popup-create-user/popup-create-user.component';
+import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
 
 
 @NgModule({
@@ -114,6 +116,8 @@ import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/pop
         PageUserListComponent,
         PopupVisualizeUserComponent,
         PopupDeleteUserComponent,
+        PopupCreateUserComponent,
+        InputInterestsAdminComponent,
     ],
     imports: [
         BrowserModule,

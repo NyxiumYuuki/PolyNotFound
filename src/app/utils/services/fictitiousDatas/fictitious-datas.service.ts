@@ -152,6 +152,7 @@ const USER: User = {
     isAccepted: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    lastConnexion: new Date()
 };
 
 const ADVERTISER: User = {
@@ -171,6 +172,7 @@ const ADVERTISER: User = {
     isAccepted: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    lastConnexion: new Date()
 };
 
 const ADMIN: User = {
@@ -190,6 +192,7 @@ const ADMIN: User = {
     isAccepted: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    lastConnexion: new Date()
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------
