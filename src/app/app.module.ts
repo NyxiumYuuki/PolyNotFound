@@ -14,7 +14,6 @@ import { PopupConfirmationComponent } from './beforeConnexion/register/popup-con
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from "@angular/material/button";
 import { AdvertComponent } from './utils/components/advert/advert.component';
-import { VideoCellComponent } from './user/search/video-cell/video-cell.component';
 import { VideoGridComponent } from './user/search/video-grid/video-grid.component';
 import {MatIconModule} from "@angular/material/icon";
 import { PopupAddVideoToPlaylistsComponent } from './utils/components/popup-add-video-to-playlists/popup-add-video-to-playlists.component';
@@ -79,7 +78,6 @@ import { InputInterestsAdminComponent } from './admin/userList/input-interests-a
         PageSearchComponent,
         PopupConfirmationComponent,
         AdvertComponent,
-        VideoCellComponent,
         VideoGridComponent,
         PopupAddVideoToPlaylistsComponent,
         IframeTrackerDirective,

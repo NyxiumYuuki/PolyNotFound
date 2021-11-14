@@ -78,6 +78,10 @@ export class PopupUpdateUserComponent implements OnInit
             this.errorMessage = "Email invalide" ;
             this.hasError = true;
         }
+        else if((this.userCopy.dateOfBirth === undefined) || (this.userCopy.dateOfBirth === null)) {
+            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
+            this.hasError = true;
+        }
         else if(this.changePassword) {
             if (this.newPassword.length === 0) {
                 this.errorMessage = "Veuillez remplir le champ 'mot de passe'" ;

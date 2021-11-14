@@ -8,7 +8,7 @@
 .boite {
   margin-left: auto;
   margin-right: auto;
-  width: 25%;
+  width: 70%;
   margin-top: 10vh;
   border: solid 3px;
   border-radius: 10px;
@@ -24,6 +24,7 @@
   border-color: white;
 }
 
+// --------------------------------------------------------------------------------------------
 
 img {
   margin: 0px 0px 10px 0px;
@@ -34,6 +35,7 @@ img {
   font-size: xxx-large;
 }
 
+// --------------------------------------------------------------------------------------------
 
 .myRow {
   margin: 15px 0px 15px 0px;
@@ -50,6 +52,21 @@ img {
   margin: 0px;
 }
 
+// --------------------------------------------------------------------------------------------
+
+.interestsContainer {
+  width: 70%;
+  height: 15vh;
+  overflow-y: scroll;
+  border: 1px solid black;
+}
+
+.interest {
+  border-bottom: 1px solid #dcdcdc;
+  padding: 5px 5px 5px 5px;
+}
+
+// --------------------------------------------------------------------------------------------
 
 .btnContainer {
   text-align: center;
@@ -59,3 +76,5 @@ img {
   border: solid 1px black;
   background-color: white;
 }
+
+

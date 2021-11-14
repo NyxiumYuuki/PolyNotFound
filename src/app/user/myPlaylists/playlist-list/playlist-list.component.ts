@@ -3,7 +3,6 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {Playlist} from "../../../utils/interfaces/playlist";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatDialog} from "@angular/material/dialog";
-import {PopupAddVideoToPlaylistsComponent} from "../../../utils/components/popup-add-video-to-playlists/popup-add-video-to-playlists.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupCreatePlaylistComponent} from "../../../utils/components/popup-create-playlist/popup-create-playlist.component";
 
@@ -46,7 +45,7 @@ export class PlaylistListComponent implements OnInit
 
     onCreatePlaylist(): void
     {
-        const config = { width: '15%', data: this.tabPlaylist };
+        const config = { width: '30%', data: this.tabPlaylist };
         this.dialog
             .open(PopupCreatePlaylistComponent, config )
             .afterClosed()

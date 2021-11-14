@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../../utils/services/message/message.service";
 import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
-import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Video} from "../../../utils/interfaces/video";
 import {Advert} from "../../../utils/interfaces/advert";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
@@ -37,7 +36,7 @@ export class PageSearchComponent implements OnInit
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousDatasService.getTabVideo(5);
+        this.tabVideo = this.fictitiousDatasService.getTabVideo(11);
         this.ad1 = this.fictitiousDatasService.getAdvert();
         this.ad2 = this.fictitiousDatasService.getAdvert();
 

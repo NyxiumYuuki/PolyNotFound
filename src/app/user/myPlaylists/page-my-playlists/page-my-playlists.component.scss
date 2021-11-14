@@ -14,16 +14,13 @@
 // Liste des vidéos -------------------------------------------------
 
 .celluleListeVideo {
-  margin: 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 // Liste des playlists ---------------------------------------------
 
 .celluleListePlaylist {
-  margin: 0px;
-}
-
-.playlistListContainer {
+  margin: 0px 0px 0px 0px;
 }
 
 // Pub -------------------------------------------------------------
@@ -36,7 +33,7 @@
 }
 
 .conteneurPub {
-  height: 85vh;
+  //height: 85vh;
   text-align: center;
   justify-content: center;
   vertical-align: middle;

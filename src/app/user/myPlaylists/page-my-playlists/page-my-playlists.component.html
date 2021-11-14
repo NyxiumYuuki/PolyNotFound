@@ -2,9 +2,10 @@
     <div class="myContainer">
 
         <!-- Navbar -->
-        <div style="margin-bottom: 50px">
+        <div>
             <app-navbar-user></app-navbar-user>
         </div>
+        <br>
 
         <!-- --------------------------------------------------------------------- -->
 
@@ -13,16 +14,12 @@
 
             <!-- liste des videos -->
             <mat-grid-tile colspan="4" rowspan="1" class="celluleListeVideo">
-                <div class="videoListContainer">
-                    <app-video-list [playlist]="playlist"></app-video-list>
-                </div>
+                <app-video-list [playlist]="playlist"></app-video-list>
             </mat-grid-tile>
 
             <!-- liste des playlist -->
             <mat-grid-tile colspan="4" rowspan="1" class="celluleListePlaylist">
-                <div class="playlistListContainer">
-                    <app-playlist-list [allPlaylists]="allPlaylists" (eventEmitter)="transmitToVideoList($event)"></app-playlist-list>
-                </div>
+                <app-playlist-list [allPlaylists]="allPlaylists" (eventEmitter)="transmitToVideoList($event)"></app-playlist-list>
             </mat-grid-tile>
 
             <!-- pub -->

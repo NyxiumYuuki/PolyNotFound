@@ -72,6 +72,10 @@ export class PopupCreateUserComponent implements OnInit
             this.errorMessage = "Veuillez remplir le champ 'email'.";
             this.hasError = true;
         }
+        if((this.user.role.name === 'user') && ((this.user.dateOfBirth === undefined) || (this.user.dateOfBirth === null))) {
+            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
+            this.hasError = true;
+        }
         else if(!this.isValidEmail(this.user.mail)) {
             this.errorMessage = "Email invalide";
             this.hasError = true;

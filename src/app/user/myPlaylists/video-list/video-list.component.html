@@ -2,8 +2,7 @@
     <div class="myContainer">
 
         <!-- Bordure haute -->
-        <div class="row" style="margin: 0px; padding: 0px">
-            <div class="topBorder">
+        <div class="row topBorder">
 
                 <!-- Playlist existe ? -->
                 <div *ngIf="(playlist !== null) && (playlist !== undefined); then ok1 else nope1"></div>
@@ -18,7 +17,6 @@
                     <span class="spanPlayListTitle"> Aucune playlist selectionnée </span>
                 </ng-template>
 
-            </div>
         </div>
 
 
@@ -66,8 +64,8 @@
 
 
         <!-- Bordure basse -->
-        <div class="row" style="margin: 0px; padding: 0px">
-            <div class="bottomBorder"></div>
+        <div class="row bottomBorder">
+            <div style="visibility: hidden">a</div>
         </div>
 
     </div>

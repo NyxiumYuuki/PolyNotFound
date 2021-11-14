@@ -2,12 +2,9 @@
     <div class="myContainer">
 
         <!-- Search bar -->
-        <div class="row" style="margin: 0px">
-            <div class="searchBarContainer">
-                <input type="search" placeholder="recherche..." class="inputSearchBar" [(ngModel)]="search" (ngModelChange)="whileSearch()"> &nbsp;
-                <!--
-                <button class="btnRechercher" (click)="onSearch()"> Rechercher </button>
-                -->
+        <div class="row searchBarContainer">
+            <div style="text-align: center">
+                <input type="search" placeholder="recherche..." class="inputSearchBar" [(ngModel)]="search" (ngModelChange)="whileSearch()">
             </div>
         </div>
 
@@ -26,10 +23,8 @@
 
 
         <!-- Bouton creer playlist-->
-        <div class="row" style="margin: 0px">
-            <div class="btnCreerPlaylistContainer">
-                <button class="btnCreerPlaylist" (click)="onCreatePlaylist()"> Creer playlist </button>
-            </div>
+        <div class="row btnCreerPlaylistContainer" >
+            <button mat-button class="btnCreerPlaylist" (click)="onCreatePlaylist()"> Creer playlist </button>
         </div>
 
     </div>

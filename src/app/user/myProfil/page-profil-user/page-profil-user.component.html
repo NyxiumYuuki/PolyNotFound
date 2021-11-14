@@ -9,49 +9,13 @@
 
             <!-- Photo de profil -->
             <div style="text-align: center">
-                <img [src]="user.profilePictureUrl"
-                     onerror="this.onerror=null; this.src='assets/profil.png'">
+                <img [src]="user.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'">
             </div>
 
-            <!-- login -->
-            <div class="row myRow">
-                <div class="col-6 myLabel">Login:</div>
-                <div class="col-6 myValue"> {{user.login}} </div>
-            </div>
-
-            <!-- mail -->
-            <div class="row myRow">
-                <div class="col-6 myLabel">Mail:</div>
-                <div class="col-6 myValue"> {{user.mail}} </div>
-            </div>
-
-            <!-- dateOfBirth -->
-            <div class="row myRow">
-                <div class="col-6 myLabel">Date de naissance:</div>
-                <div class="col-6 myValue">{{ user.dateOfBirth | date:'dd/LL/YYYY' }}</div>
-            </div>
-
-            <!-- gender -->
-            <div class="row myRow">
-                <div class="col-6 myLabel">Sexe:</div>
-                <div class="col-6 myValue">
-                    <span *ngIf="user.gender==='man'"> Homme </span>
-                    <span *ngIf="user.gender==='woman'"> Femme </span>
-                </div>
-            </div>
-
-            <!-- interets -->
-            <div class="row myRow">
-                <div class="col-6 myLabel">Centres d'intérêt:</div>
-                <div class="col-6 myValue" style="border-left: solid 1px #e6e6e6">
-                    <div *ngFor="let interest of user.interests">• {{interest}}</div>
-                </div>
-            </div>
-
-            <!-- createdAt -->
-            <div class="row myRow">
-                <div class="col-6 myLabel">Date de création:</div>
-                <div class="col-6 myValue">{{ user.createdAt | date:'dd/LL/YYYY' }}</div>
+            <!-- Col gauche & droite -->
+            <div class="row">
+                <ng-template *ngIf="true; then leftCol"></ng-template>
+                <ng-template *ngIf="true; then rightCol"></ng-template>
             </div>
 
             <!-- Modifier profil -->
@@ -61,6 +25,68 @@
 
         </div>
 
-
     </div>
 </div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+
+<ng-template #leftCol>
+    <div class="col-6">
+
+        <!-- login -->
+        <div class="row myRow">
+            <div class="col-8 myLabel">Login:</div>
+            <div class="col-4 myValue"> {{user.login}} </div>
+        </div>
+
+        <!-- mail -->
+        <div class="row myRow">
+            <div class="col-8 myLabel">Mail:</div>
+            <div class="col-4 myValue"> {{user.mail}} </div>
+        </div>
+
+        <!-- gender -->
+        <div class="row myRow">
+            <div class="col-8 myLabel">Sexe:</div>
+            <div class="col-4 myValue">
+                <span *ngIf="user.gender==='man'"> Homme </span>
+                <span *ngIf="user.gender==='woman'"> Femme </span>
+            </div>
+        </div>
+
+        <!-- createdAt -->
+        <div class="row myRow">
+            <div class="col-8 myLabel">Date de création:</div>
+            <div class="col-4 myValue">{{ user.createdAt | date:'dd/LL/YYYY' }}</div>
+        </div>
+
+    </div>
+</ng-template>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+
+<ng-template #rightCol>
+    <div class="col-6" style="border-left: solid 1px #e6e6e6">
+
+        <!-- dateOfBirth -->
+        <div class="row myRow">
+            <div class="col-4 myLabel">Date de naissance:</div>
+            <div class="col-8 myValue">{{ user.dateOfBirth | date:'dd/LL/YYYY' }}</div>
+        </div>
+
+        <!-- interets -->
+        <div class="row myRow">
+            <div class="col-4 myLabel">Centres d'intérêt:</div>
+            <div class="col-8 myValue">
+                <div class="interestsContainer">
+                    <div *ngFor="let interest of user.interests" class="interest"> {{interest}} </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-template>

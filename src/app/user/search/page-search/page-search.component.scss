@@ -11,22 +11,23 @@
   max-width: 100vw;
   height: 100vh;
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 
 .inputSearchBar {
   width: 50%;
-  font-size: x-large;
+  font-size: large;
 }
 .btnRechercher {
   border: solid black 1px;
   border-radius: 5px;
-  font-size: x-large;
+  font-size: large;
 }
 
 
 .celluleGrilleVideo {
-  border: solid 4px;
+  border: solid 2px;
   border-radius: 5px;
   width: 100%;
 }

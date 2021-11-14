@@ -9,13 +9,12 @@ import {User} from "../../../utils/interfaces/user";
 
 
 @Component({
-  selector: 'app-page-register',
-  templateUrl: './page-register.component.html',
-  styleUrls: ['./page-register.component.scss']
+    selector: 'app-page-register',
+    templateUrl: './page-register.component.html',
+    styleUrls: ['./page-register.component.scss']
 })
 export class PageRegisterComponent
 {
-    roleName: string = "user";
     password: string = "";
     confirmPassword: string = "";
     hasError: boolean = false;
@@ -30,14 +29,14 @@ export class PageRegisterComponent
             permission: 0,
         },
         profilePictureUrl: "",
-        dateOfBirth: new Date(),
+        dateOfBirth: null,
         gender: "man",
         interests: [],
         isActive: false,
         isAccepted: false,
         createdAt: new Date(),
         updatedAt: new Date(),
-        lastConnexion: new Date()
+        lastConnexion: null
     };
 
 
@@ -48,13 +47,13 @@ export class PageRegisterComponent
 
 
     // Envoie de l'utilisateur au backend
-    onValider(): void
+    onEnregistrer(): void
     {
         this.checkField();
         if(!this.hasError)
         {
-            if(this.roleName === "advertiser") this.user.role = { name: "advertiser", permission: 5 };
-            else this.user.role = { name: "user", permission: 0 };
+            if(this.user.role.name === "user") this.user.role.permission = 0;
+            else this.user.role.permission = 5;
             this.user.hashPass = this.hashage(this.password);
 
             // FAUX CODE
@@ -80,7 +79,10 @@ export class PageRegisterComponent
         }
         else
         {
-            const config = { width: '25%', data: { roleName: this.roleName} };
+            const config = {
+                width: '25%',
+                data: {roleName: this.user.role.name}
+            };
             this.dialog
                 .open(PopupConfirmationComponent, config)
                 .afterClosed()
@@ -101,7 +103,7 @@ export class PageRegisterComponent
             this.hasError = true;
         }
         else if(!this.isValidEmail(this.user.mail)) {
-            this.errorMessage = "Email invalide";
+            this.errorMessage = "Email invalide.";
             this.hasError = true;
         }
         else if(this.password.length === 0) {
@@ -110,6 +112,10 @@ export class PageRegisterComponent
         }
         else if(this.password !== this.confirmPassword) {
             this.errorMessage = "Le mot de passe est différent de sa confirmation.";
+            this.hasError = true;
+        }
+        if((this.user.role.name === 'user') && ((this.user.dateOfBirth === undefined) || (this.user.dateOfBirth === null))) {
+            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
             this.hasError = true;
         }
         else {
