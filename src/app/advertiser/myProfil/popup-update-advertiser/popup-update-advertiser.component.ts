@@ -101,12 +101,6 @@ export class PopupUpdateAdvertiserComponent implements OnInit
     }
 
 
-    onEventInputInterests(myInterets: string[])
-    {
-        this.advertiserCopy.interests = myInterets;
-    }
-
-
     // Fonction de hashage (faible)
     hashage(input: string): string
     {

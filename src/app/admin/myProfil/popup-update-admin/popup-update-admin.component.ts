@@ -99,12 +99,6 @@ export class PopupUpdateAdminComponent implements OnInit
     }
 
 
-    onEventInputInterests(myInterets: string[])
-    {
-        this.adminCopy.interests = myInterets;
-    }
-
-
     // Fonction de hashage (faible)
     hashage(input: string): string
     {
