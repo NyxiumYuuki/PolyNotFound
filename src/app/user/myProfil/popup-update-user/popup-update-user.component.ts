@@ -67,15 +67,15 @@ export class PopupUpdateUserComponent implements OnInit
     checkField()
     {
         if(this.userCopy.login.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'login'" ;
+            this.errorMessage = "Veuillez remplir le champ 'login'." ;
             this.hasError = true;
         }
         else if(this.userCopy.mail.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'email'" ;
+            this.errorMessage = "Veuillez remplir le champ 'email'." ;
             this.hasError = true;
         }
         else if(!this.isValidEmail(this.userCopy.mail)) {
-            this.errorMessage = "Email invalide" ;
+            this.errorMessage = "Email invalide." ;
             this.hasError = true;
         }
         else if((this.userCopy.dateOfBirth === undefined) || (this.userCopy.dateOfBirth === null)) {
@@ -84,10 +84,10 @@ export class PopupUpdateUserComponent implements OnInit
         }
         else if(this.changePassword) {
             if (this.newPassword.length === 0) {
-                this.errorMessage = "Veuillez remplir le champ 'mot de passe'" ;
+                this.errorMessage = "Veuillez remplir le champ 'mot de passe'." ;
                 this.hasError = true;
             } else if (this.newPassword !== this.confirmNewPassword) {
-                this.errorMessage = "Le mot de passe est différent de sa confirmation" ;
+                this.errorMessage = "Le mot de passe est différent de sa confirmation." ;
                 this.hasError = true;
             }
         }

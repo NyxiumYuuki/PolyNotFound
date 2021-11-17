@@ -1,4 +1,4 @@
-.boite {
+.myContainer {
   font-size: small;
 }
 
@@ -13,6 +13,42 @@ img {
   border: solid 2px black;
   border-radius: 50%;
   font-size: xxx-large;
+}
+
+.inputUrlImage {
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  font-size: small;
+  border-radius: 5px;
+}
+
+input {
+  font-size: small;
+}
+
+// -------------------------------------------------------------------------
+
+.myRow {
+  margin: 15px 0px 15px 0px;
+}
+.myLeftLabel {
+  text-align: right;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  font-weight: bold;
+}
+.myRightLabel {
+  text-align: left;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  font-weight: bold;
+}
+.myValue {
+  text-align: left;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 // -------------------------------------------------------------------------
