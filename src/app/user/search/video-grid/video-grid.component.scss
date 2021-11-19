@@ -1,6 +1,7 @@
 mat-grid-list {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
+  border: none;
 }
 
 mat-grid-tile {
@@ -9,19 +10,47 @@ mat-grid-tile {
   border: solid 1px black;
 }
 
+.myCell {
+  margin: 0px 0px 0px 0px;
+  padding: 7px 0px 0px 0px;
+}
+
 
 // ---------------------------------------------------------------------------------------------
 
 
-.myCell {
-  margin: 0px 0px 0px 0px;
-  padding: 15px 0px 0px 0px;
+.imgsContainer {
+  width: 20vw;
+  height: 15vh;
 }
 
-iframe {
+.imgPlay {
+  position: absolute;
+  margin-left: 9vw;
+  width: 3vw;
+  margin-top: 5vh;
+  height: 6vh;
   padding: 0px 0px 0px 0px;
-  width: 85%;
+}
+
+.imgVideo {
+  border: solid 1px black;
+  width: 20vw;
   height: 15vh;
+  padding: 0px 0px 0px 0px;
+}
+
+
+// ---------------------------------------------------------------------------------------------
+
+
+.mat-grid-tile-info-video {
+  border: none;
+  font-size: x-small;
+}
+
+mat-icon {
+  text-align: right;
 }
 
 

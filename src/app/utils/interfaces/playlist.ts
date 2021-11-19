@@ -1,9 +1,10 @@
-import {Video} from "./video";
-
-export interface Playlist
+export interface PlaylistDB
 {
     _id: string,
-    user: any,
+    userId: string,
     name: string,
-    videos: Video[]
+    videoIds: string[],
+    isActive: boolean
+    createdAt: Date,
+    updatedAt: Date
 }

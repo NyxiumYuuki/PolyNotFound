@@ -3,11 +3,11 @@ const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const Playlist = db.playlists;
 
-// Create a new Playlist
+// Create a new PlaylistDB
 exports.create = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.create not Implemented", token);
+    return sendError(res, 501, -1, "PlaylistDB.create not Implemented", token);
   }
 };
 
@@ -15,31 +15,31 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.findAll not Implemented", token);
+    return sendError(res, 501, -1, "PlaylistDB.findAll not Implemented", token);
   }
 };
 
-// Retrieve a single Playlist with id
+// Retrieve a single PlaylistDB with id
 exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.findOne not Implemented", token);
+    return sendError(res, 501, -1, "PlaylistDB.findOne not Implemented", token);
   }
 };
 
-// Update a Playlist with id
+// Update a PlaylistDB with id
 exports.update = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.update not Implemented", token);
+    return sendError(res, 501, -1, "PlaylistDB.update not Implemented", token);
   }
 };
 
-// Delete a Playlist with id
+// Delete a PlaylistDB with id
 exports.delete = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.delete not Implemented", token);
+    return sendError(res, 501, -1, "PlaylistDB.delete not Implemented", token);
   }
 };
 
@@ -47,6 +47,6 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.deleteAll not Implemented", token);
+    return sendError(res, 501, -1, "PlaylistDB.deleteAll not Implemented", token);
   }
 };

@@ -1,13 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
-import {Video} from "../../../utils/interfaces/video";
-import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
-import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
+import {VideoAll, VideoDB} from "../../../utils/interfaces/video";
+import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {MessageService} from "../../../utils/services/message/message.service";
-import {Playlist} from "../../../utils/interfaces/playlist";
+import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
+import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
+import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
+import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 
 
 
@@ -16,31 +16,49 @@ import {UserHistoryService} from "../../../utils/services/userHistory/userHistor
     templateUrl: './video-list.component.html',
     styleUrls: ['./video-list.component.scss']
 })
-export class VideoListComponent
+export class VideoListComponent implements OnChanges
 {
-    @Input() playlist: Playlist;
+    @Input() playlist: PlaylistDB;
+    videosInPlaylist: VideoAll[] = [];
+    allUserVideos: VideoAll[] = this.fictitiousVideosService.getAllVideoAll();
 
 
     constructor( private messageService: MessageService,
                  public themeService: ThemeService,
-                 private fictitiousDatasService: FictitiousDatasService,
-                 public videoUrlService: VideoUrlService,
+                 private fictitiousUtilsService: FictitiousUtilsService,
                  private addVideoToPlaylistService: AddVideoToPlaylistsService,
                  private snackBar: MatSnackBar,
-                 private historiqueService: UserHistoryService  ) { }
+                 public fictitiousVideosService: FictitiousVideosService,
+                 private historiqueService: UserHistoryService ) { }
 
 
-    onAdd(video: Video): void
+    ngOnChanges(changes: SimpleChanges): void
+    {
+        if((this.playlist !== null) && (this.playlist !== undefined))
+        {
+            this.videosInPlaylist = [];
+            for(let _idVideo of this.playlist.videoIds)
+            {
+                const video = this.allUserVideos.find(video => video._id === _idVideo);
+                this.videosInPlaylist.push(video);
+            }
+        }
+    }
+
+
+    onAdd(video: VideoAll): void
     {
         this.addVideoToPlaylistService.run(video);
     }
 
 
-    onDelete(video0: Video, indexVideo: number): void
+    onDelete(video0: VideoAll, indexVideo: number): void
     {
         // --- FAUX CODE ---
-        let message = "La video a bien été supprimé de la playlist" ;
-        this.playlist.videos.splice(indexVideo, 1);
+        this.playlist.videoIds.splice(indexVideo, 1);
+        this.videosInPlaylist.splice(indexVideo, 1);
+
+        let message = "La video a bien été supprimé de la playlist";
         const config = { duration: 1000, panelClass: "custom-class" };
         this.snackBar.open( message, "", config);
 
@@ -60,13 +78,9 @@ export class VideoListComponent
                 this.snackBar.open( message, "", config);
             })
         */
-    }
 
-
-    onIframeClick(video: Video): void
-    {
-        console.log("onIframeClick: " + video.title);
-        this.historiqueService.addVideoToHistoque(video);
+        //Pour relier les collections "Videos" et "Playlists", on a mis l'attribut "playlistIds" dans "Videos"
+        // Mais en vrai, ça serai plus facile pour moi si on mettait plutot un attribut "videoIds" dans "Playlists"
     }
 
 }

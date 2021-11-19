@@ -7,15 +7,43 @@
         <mat-grid-tile colspan="1" rowspan="1" *ngFor="let k of [0,1,2,3,4,5,6,7,8]">
             <div class="myCell" *ngIf="indexPage+k < tabVideo.length" [title]="tabVideo[indexPage+k].title">
 
-                    <iframe appIframeTracker
-                            [src]=videoUrlService.safeUrl(tabVideo[indexPage+k].url)
-                            allowfullscreen
-                            (iframeClick)="onIframeClick(tabVideo[indexPage+k])"></iframe><br>
 
-                    <span> {{tronquage(tabVideo[indexPage+k].title)}} </span>
-                    <button mat-icon-button (click)="onAdd(tabVideo[indexPage+k])">
-                        <mat-icon> add_circle </mat-icon>
-                    </button>
+                <!-- Image video -->
+                <div class="imgsContainer">
+                    <img class="imgPlay" src="/assets/play7.png">
+                    <img class="imgVideo" [src]="tabVideo[indexPage+k].imageUrl">
+                </div>
+
+
+                <!-- Info video -->
+                <mat-grid-list cols="12" style="margin: 0px 0px 0px 0px; font-size: small">
+
+                    <!-- logo -->
+                    <mat-grid-tile [colspan]="2" [rowspan]="2" class="mat-grid-tile-info-video">
+                        <img *ngIf="tabVideo[indexPage+k].source==='youtube'" src="/assets/logo_plateforms/youtube.png" alt="ytb" width="20px" height="15px">
+                        <img *ngIf="tabVideo[indexPage+k].source==='dailymotion'" src="/assets/logo_plateforms/dailymotion.png" alt="dlm" width="20px" height="20px">
+                    </mat-grid-tile>
+
+                    <!-- title + views + publishedAt -->
+                    <mat-grid-tile [colspan]="8" [rowspan]="2" class="mat-grid-tile-info-video">
+                        <div style="position: absolute; left: 1px; text-align: left">
+                            {{tronquage(tabVideo[indexPage+k].title)}}
+                            <br>
+                            <span style="color: gray">
+                                {{tabVideo[indexPage+k].views | number: '1.0-0'}} vues. Il y a 2h.
+                            </span>
+                        </div>
+                    </mat-grid-tile>
+
+                    <!-- addButton -->
+                    <mat-grid-tile [colspan]="2" [rowspan]="2" class="mat-grid-tile-info-video">
+                        <button mat-icon-button (click)="onAdd(tabVideo[indexPage+k])">
+                            <mat-icon>add_circle</mat-icon>
+                        </button>
+                    </mat-grid-tile>
+
+                </mat-grid-list>
+
 
             </div>
         </mat-grid-tile>
@@ -23,8 +51,25 @@
 </div>
 
 
+
+
 <!-- Paginator -->
 <div class="btnContainer">
+
+    <!-- btn précédent -->
     <button mat-button class="btnPaginator" [disabled]="indexPage<=0" (click)="indexPage=indexPage-9"> < Précédent </button> &nbsp;
+
+    <!-- numeros de page -->
+    <span *ngFor="let page of [1,2,3,4,5,6,7,8,9,10]" (click)="indexPage=(page-1)*9">
+        <span *ngIf="page===((indexPage/9)+1)">
+            <span style="text-decoration: underline; cursor: pointer;font-weight: bold;">{{page}}</span>&nbsp;
+        </span>
+        <span *ngIf="page!==((indexPage/9)+1)">
+            <span style="text-decoration: underline; cursor: pointer;">{{page}}</span>&nbsp;
+        </span>
+    </span> &nbsp;
+
+    <!-- btn suivant -->
     <button mat-button class="btnPaginator" [disabled]="indexPage+9>=tabVideo.length" (click)="indexPage=indexPage+9"> Suivant > </button>
+
 </div>

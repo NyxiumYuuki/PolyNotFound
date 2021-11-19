@@ -2,12 +2,12 @@
 
     <!-- Photo de profil -->
     <div style="text-align: center; font-size: small">
-        <img [src]="userCopy.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
+        <img [src]="userCopy.profileImageUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
         <input title="lien vers image"
                type="text"
                class="form-control inputUrlImage"
                style="font-size: small"
-               [(ngModel)]="userCopy.profilePictureUrl">
+               [(ngModel)]="userCopy.profileImageUrl">
     </div><br>
 
     <!-- Col gauche & droite -->

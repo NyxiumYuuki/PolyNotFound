@@ -7,15 +7,17 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 
 const ADVERT_VIDE: Advert = {
     _id: "",
+    userId: "",
     title: "",
     advertiser: "",
     images: [],
     tags: [],
     comment: "",
     views: 0,
+    isVisible: true,
+    isActive: true,
     createdAt: new Date(),
     updatedAt: new Date(),
-    isVisible: true,
 }
 
 

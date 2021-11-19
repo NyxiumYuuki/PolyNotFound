@@ -19,7 +19,7 @@
 
             <!-- liste des playlist -->
             <mat-grid-tile colspan="4" rowspan="1" class="celluleListePlaylist">
-                <app-playlist-list [allPlaylists]="allPlaylists" (eventEmitter)="transmitToVideoList($event)"></app-playlist-list>
+                <app-playlist-list (eventEmitter)="transmitToVideoList($event)"></app-playlist-list>
             </mat-grid-tile>
 
             <!-- pub -->

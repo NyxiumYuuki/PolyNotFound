@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core';
-import {MessageService} from "../message/message.service";
+import {MessageService} from "../../../../utils/services/message/message.service";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupAddVideoToPlaylistsComponent} from "../../components/popup-add-video-to-playlists/popup-add-video-to-playlists.component";
-import {FictitiousDatasService} from "../fictitiousDatas/fictitious-datas.service";
-import {Video} from "../../interfaces/video";
+import {VideoDB} from "../../../../utils/interfaces/video";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {FictitiousVideosService} from "../../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
+
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class AddVideoToPlaylistsService
 {
-    private _video: Video;
+    private _video: VideoDB;
 
 
     constructor( private messageService: MessageService,
                  public dialog: MatDialog,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousVideosService: FictitiousVideosService,
                  private snackBar: MatSnackBar ) { }
 
 
     // --- FAUX CODE ---
-    run(video0: Video): void
+    run(video0: VideoDB): void
     {
         this._video = video0;
         const retour = {
             status: "success",
-            data: this.fictitiousDatasService.getTabPlaylist(4, 5),
+            data: this.fictitiousVideosService.getTabPlaylistDB(4, 5),
         }
         this.afterReceivingPlaylists(retour)
     }
@@ -34,7 +36,7 @@ export class AddVideoToPlaylistsService
 
     // --- VRAI CODE ---
     /*
-    run(video0: Video): void
+    run(video0: VideoDB): void
     {
         this._video = video0;
         this.messageService

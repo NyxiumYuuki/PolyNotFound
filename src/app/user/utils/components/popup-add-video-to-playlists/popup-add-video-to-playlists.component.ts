@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Video} from "../../interfaces/video";
-import {MessageService} from "../../services/message/message.service";
+import {VideoDB} from "../../../../utils/interfaces/video";
+import {MessageService} from "../../../../utils/services/message/message.service";
 
 
 
@@ -12,7 +12,7 @@ import {MessageService} from "../../services/message/message.service";
 })
 export class PopupAddVideoToPlaylistsComponent implements OnInit
 {
-    video: Video;
+    video: VideoDB;
     tabPlaylistAndBool = [];
     goToCreatePlaylist = false;
     newPlaylistName = "";

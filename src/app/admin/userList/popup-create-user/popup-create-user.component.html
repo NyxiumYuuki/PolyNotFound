@@ -41,8 +41,8 @@
 
     <!-- photo de profil -->
     <div style="text-align: center">
-        <img [src]="user.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
-        <input title="lien vers image" type="text" [(ngModel)]="user.profilePictureUrl" style="width: 90%">
+        <img [src]="user.profileImageUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
+        <input title="lien vers image" type="text" [(ngModel)]="user.profileImageUrl" style="width: 90%">
     </div><br>
 
     <div class="row">
@@ -53,7 +53,7 @@
             <!-- Email -->
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" [(ngModel)]="user.mail" required>
+                <input matInput type="email" [(ngModel)]="user.email" required>
             </mat-form-field><br>
 
             <!-- Login -->
@@ -113,14 +113,14 @@
 
         <!-- photo de profil -->
         <div style="text-align: center">
-            <img [src]="user.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
-            <input title="lien vers image" type="text" [(ngModel)]="user.profilePictureUrl" style="width: 90%">
+            <img [src]="user.profileImageUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
+            <input title="lien vers image" type="text" [(ngModel)]="user.profileImageUrl" style="width: 90%">
         </div><br>
 
         <!-- email -->
         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
-            <input matInput type="text" [(ngModel)]="user.mail">
+            <input matInput type="text" [(ngModel)]="user.email">
         </mat-form-field><br>
 
         <!-- login -->

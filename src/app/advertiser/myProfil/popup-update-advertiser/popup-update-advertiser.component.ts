@@ -30,12 +30,12 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             _id: advertiser0._id,
             login: advertiser0.login,
             hashPass: advertiser0.hashPass,
-            mail: advertiser0.mail,
+            email: advertiser0.mail,
             role: {
                 name: advertiser0.role.name,
                 permission: advertiser0.role.permission,
             },
-            profilePictureUrl: advertiser0.profilePictureUrl,
+            profileImageUrl: advertiser0.profileImageUrl,
             dateOfBirth: advertiser0.dateOfBirth,
             gender: advertiser0.gender,
             interests: [],
@@ -70,11 +70,11 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             this.errorMessage = "Veuillez remplir le champ 'login'" ;
             this.hasError = true;
         }
-        else if(this.advertiserCopy.mail.length === 0) {
+        else if(this.advertiserCopy.email.length === 0) {
             this.errorMessage = "Veuillez remplir le champ 'email'" ;
             this.hasError = true;
         }
-        else if(!this.isValidEmail(this.advertiserCopy.mail)) {
+        else if(!this.isValidEmail(this.advertiserCopy.email)) {
             this.errorMessage = "Email invalide" ;
             this.hasError = true;
         }

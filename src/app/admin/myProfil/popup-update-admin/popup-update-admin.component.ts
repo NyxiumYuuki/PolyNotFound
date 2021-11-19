@@ -2,6 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {User} from "../../../utils/interfaces/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
+
+
 @Component({
     selector: 'app-popup-update-admin',
     templateUrl: './popup-update-admin.component.html',
@@ -28,12 +30,12 @@ export class PopupUpdateAdminComponent implements OnInit
             _id: admin0._id,
             login: admin0.login,
             hashPass: admin0.hashPass,
-            mail: admin0.mail,
+            email: admin0.mail,
             role: {
                 name: admin0.role.name,
                 permission: admin0.role.permission,
             },
-            profilePictureUrl: admin0.profilePictureUrl,
+            profileImageUrl: admin0.profileImageUrl,
             dateOfBirth: admin0.dateOfBirth,
             gender: admin0.gender,
             interests: [],
@@ -68,11 +70,11 @@ export class PopupUpdateAdminComponent implements OnInit
             this.errorMessage = "Veuillez remplir le champ 'login'" ;
             this.hasError = true;
         }
-        else if(this.adminCopy.mail.length === 0) {
+        else if(this.adminCopy.email.length === 0) {
             this.errorMessage = "Veuillez remplir le champ 'email'" ;
             this.hasError = true;
         }
-        else if(!this.isValidEmail(this.adminCopy.mail)) {
+        else if(!this.isValidEmail(this.adminCopy.email)) {
             this.errorMessage = "Email invalide" ;
             this.hasError = true;
         }

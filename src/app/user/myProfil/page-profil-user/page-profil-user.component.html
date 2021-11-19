@@ -9,7 +9,7 @@
 
             <!-- Photo de profil -->
             <div style="text-align: center">
-                <img [src]="user.profilePictureUrl" onerror="this.onerror=null; this.src='assets/profil.png'">
+                <img [src]="user.profileImageUrl" onerror="this.onerror=null; this.src='assets/profil.png'">
             </div>
 
             <!-- Col gauche & droite -->
@@ -41,10 +41,10 @@
             <div class="col-4 myValue"> {{user.login}} </div>
         </div>
 
-        <!-- mail -->
+        <!-- email -->
         <div class="row myRow">
             <div class="col-8 myLabel">Mail:</div>
-            <div class="col-4 myValue"> {{user.mail}} </div>
+            <div class="col-4 myValue"> {{user.email}} </div>
         </div>
 
         <!-- gender -->

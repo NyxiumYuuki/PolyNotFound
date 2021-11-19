@@ -29,12 +29,12 @@ export class PopupCreateUserComponent implements OnInit
             _id: "",
             login: "",
             hashPass: "",
-            mail: "",
+            email: "",
             role: {
                 name: "",
                 permission: 0,
             },
-            profilePictureUrl: "",
+            profileImageUrl: "",
             dateOfBirth: null,
             gender: "man",
             interests: [],
@@ -68,7 +68,7 @@ export class PopupCreateUserComponent implements OnInit
             this.errorMessage = "Veuillez remplir le champ 'login'.";
             this.hasError = true;
         }
-        else if(this.user.mail.length === 0) {
+        else if(this.user.email.length === 0) {
             this.errorMessage = "Veuillez remplir le champ 'email'.";
             this.hasError = true;
         }
@@ -76,7 +76,7 @@ export class PopupCreateUserComponent implements OnInit
             this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
             this.hasError = true;
         }
-        else if(!this.isValidEmail(this.user.mail)) {
+        else if(!this.isValidEmail(this.user.email)) {
             this.errorMessage = "Email invalide";
             this.hasError = true;
         }

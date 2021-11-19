@@ -5,8 +5,8 @@ import {Observable} from "rxjs";
 import {map, startWith} from "rxjs/operators";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MessageService} from "../../../utils/services/message/message.service";
+import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 
 
 
@@ -28,7 +28,7 @@ export class InputTagsComponent implements OnInit
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
 
-    constructor( private fictitiousDatasService: FictitiousDatasService,
+    constructor( private fictitiousUtilsService: FictitiousUtilsService,
                  private messageService: MessageService ) {}
 
 
@@ -39,7 +39,7 @@ export class InputTagsComponent implements OnInit
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allTags.slice()));
 
         // --- FAUX CODE ---
-        this.allTags = this.fictitiousDatasService.getTags();
+        this.allTags = this.fictitiousUtilsService.getTags();
         this.allTags.sort();
     }
 

@@ -1,20 +1,20 @@
 export interface User
 {
     _id: string,
-    login: string,
+    email: string,
     hashPass: string,
-    mail: string,
+    login: string,
     role: {
         name: string,
         permission: number,
     },
-    profilePictureUrl: string,
+    profileImageUrl: string,
     dateOfBirth: Date,
     gender: string,
     interests: string[],
     isActive: boolean,
     isAccepted: boolean,
-    createdAt: Date,
-    updatedAt: Date,
     lastConnexion: Date,
+    createdAt: Date,
+    updatedAt: Date
 }

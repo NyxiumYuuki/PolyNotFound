@@ -9,7 +9,7 @@
 
             <!-- Photo de profil -->
             <div style="text-align: center">
-                <img [src]="admin.profilePictureUrl"
+                <img [src]="admin.profileImageUrl"
                      onerror="this.onerror=null; this.src='assets/profil.png'">
             </div>
 
@@ -19,10 +19,10 @@
                 <div class="col-6 myValue"> {{admin.login}} </div>
             </div>
 
-            <!-- mail -->
+            <!-- email -->
             <div class="row myRow">
                 <div class="col-6 myLabel">Mail:</div>
-                <div class="col-6 myValue"> {{admin.mail}} </div>
+                <div class="col-6 myValue"> {{admin.email}} </div>
             </div>
 
             <!-- createdAt -->

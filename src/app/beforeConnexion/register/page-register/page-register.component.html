@@ -11,7 +11,7 @@
             <mat-step label="Type de compte">
                 <form style="margin-top: 10px">
                     <!-- Choix du rôle -->
-                    <mat-radio-group [(ngModel)]="user.role.name">
+                    <mat-radio-group [(ngModel)]="user.role.name" (click)="hasError = false; errorMessage = '';">
                         <mat-radio-button value="user">Utilisateur standard</mat-radio-button>&nbsp; &nbsp;
                         <mat-radio-button value="advertiser">Annonceur</mat-radio-button>
                     </mat-radio-group>
@@ -89,7 +89,7 @@
             <!-- Email -->
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" [(ngModel)]="user.mail" required>
+                <input matInput type="email" [(ngModel)]="user.email" required>
             </mat-form-field>
             <br>
 
@@ -134,7 +134,7 @@
     <!-- Email -->
     <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
-        <input matInput type="email" [(ngModel)]="user.mail" required>
+        <input matInput type="email" [(ngModel)]="user.email" required>
     </mat-form-field>
     <br>
 

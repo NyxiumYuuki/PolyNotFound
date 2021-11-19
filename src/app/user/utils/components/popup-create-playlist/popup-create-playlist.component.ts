@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MessageService} from "../../services/message/message.service";
-import {Playlist} from "../../interfaces/playlist";
+import {MessageService} from "../../../../utils/services/message/message.service";
+import {PlaylistDB} from "../../../../utils/interfaces/playlist";
 
 
 
@@ -36,11 +36,14 @@ export class PopupCreatePlaylistComponent implements OnInit
         this.checkError();
         if(!this.hasError)
         {
-            const playlist: Playlist = {
-                _id: "monId",
-                user: null,
+            const playlist: PlaylistDB = {
+                _id: "",
+                userId: "userId",
                 name: this.name,
-                videos: [],
+                videoIds: [],
+                isActive: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
             };
             this.dialogRef.close(playlist);
         }

@@ -18,10 +18,13 @@
             <ng-container matColumnDef="aperçu">
                 <th mat-header-cell *matHeaderCellDef> Aperçu </th>
                 <td mat-cell *matCellDef="let video">
+                    <img [src]="video.imageUrl" width="200px" height="100px">
+                    <!--
                     <iframe appIframeTracker
-                            [src]=videoUrlService.safeUrl(video.url)
+                            [src]=videoUrlService.safeUrl(video.videoId)
                             (iframeClick)="onIframeClick(video)"
                             allowfullscreen></iframe>
+                            -->
                 </td>
             </ng-container>
 
@@ -35,9 +38,7 @@
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef> Date </th>
                 <td mat-cell *matCellDef="let video">
-                    <li *ngFor="let date0 of video.watched">
-                        {{date0 | date:'dd/LL/YYYY à HH:mm:ss'}}
-                    </li>
+                    {{video.watchedDates[video.watchedDates.length-1] | date:'dd/LL/YYYY à HH:mm:ss'}}
                 </td>
             </ng-container>
 

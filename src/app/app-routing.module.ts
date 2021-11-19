@@ -36,7 +36,7 @@ const routes: Routes = [
     { path: 'admin', component: PageUserListComponent },
     { path: 'admin/userList', component: PageUserListComponent },
     { path: 'admin/adList', component: PageAdListAdminComponent },
-    { path: 'admin/myProfil', component: PageProfilAdminComponent }
+    { path: 'admin/myProfil', component: PageProfilAdminComponent },
 
 ];
 

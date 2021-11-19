@@ -2,11 +2,12 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {FormControl} from "@angular/forms";
 import {Observable} from "rxjs";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {map, startWith} from "rxjs/operators";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
+import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
+
 
 
 @Component({
@@ -27,7 +28,7 @@ export class InputInterestsProfilComponent implements OnInit
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
 
-    constructor( private fictitiousDatasService: FictitiousDatasService,
+    constructor( private fictitiousUtilsService: FictitiousUtilsService,
                  private messageService: MessageService ) {}
 
 
@@ -38,7 +39,7 @@ export class InputInterestsProfilComponent implements OnInit
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allInterests.slice()));
 
         // --- FAUX CODE ---
-        this.allInterests = this.fictitiousDatasService.getTags();
+        this.allInterests = this.fictitiousUtilsService.getTags();
         this.allInterests.sort();
     }
 

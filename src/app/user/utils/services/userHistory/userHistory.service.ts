@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Video} from "../../interfaces/video";
-import {MessageService} from "../message/message.service";
+import {VideoDB} from "../../../../utils/interfaces/video";
+import {MessageService} from "../../../../utils/services/message/message.service";
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -13,12 +15,12 @@ export class UserHistoryService
     constructor(private messageService: MessageService) { }
 
 
-    public addVideoToHistoque(video: Video): void
+    public addVideoToHistoque(video: VideoDB): void
     {
-        if (!this.tabVideoUrlClicked.includes(video.url))
+        if (!this.tabVideoUrlClicked.includes(video.videoId))
         {
-            this.tabVideoUrlClicked.push(video.url);
-            video.watched.push(new Date());
+            this.tabVideoUrlClicked.push(video.videoId);
+            video.watchedDates.push(new Date());
 
             // --- VRAI CODE ---
             /*

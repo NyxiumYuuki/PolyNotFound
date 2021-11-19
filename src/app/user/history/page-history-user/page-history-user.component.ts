@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MessageService} from "../../../utils/services/message/message.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
-import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
-import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
-import {Video} from "../../../utils/interfaces/video";
+import {VideoUrlService} from "../../utils/services/videoUrl/video-url.service";
+import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {MatPaginator} from "@angular/material/paginator";
+import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
+import {VideoAll} from "../../../utils/interfaces/video";
 
 
 
@@ -26,7 +26,7 @@ export class PageHistoryUserComponent implements AfterViewInit
 
     constructor( public themeService: ThemeService,
                  private messageService: MessageService,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousVideosService: FictitiousVideosService,
                  public videoUrlService: VideoUrlService,
                  private userHistoryService: UserHistoryService ) { }
 
@@ -37,23 +37,8 @@ export class PageHistoryUserComponent implements AfterViewInit
         this.userHistoryService.clearTabVideoUrlClicked();
 
         // --- FAUX CODE ---
-        const tabVideo: Video[] = this.fictitiousDatasService.getTabVideo(8);
-
-        const tabVideoChanged = [];
-        for(let video of tabVideo)
-        {
-            tabVideoChanged.push({
-                _id: video._id,
-                url: video.url,
-                title: video.title,
-                description: video.description,
-                views: video.views,
-                watched: video.watched,
-                source: this.getSourceByUrl(video.url)
-            });
-        }
-
-        this.dataSource = new MatTableDataSource(tabVideoChanged);
+        const tabVideo: VideoAll[] = this.fictitiousVideosService.getTabVideoAll(8);
+        this.dataSource = new MatTableDataSource(tabVideo);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource = this.dataSource;
@@ -92,7 +77,7 @@ export class PageHistoryUserComponent implements AfterViewInit
 
 
     // Supprime la video
-    onDelete(video: Video): void
+    onDelete(video: VideoAll): void
     {
         // --- FAUX CODE ---
         const index = this.dataSource.data.indexOf(video);
@@ -118,11 +103,11 @@ export class PageHistoryUserComponent implements AfterViewInit
     }
 
 
-    // Ajoute la date actuelle dans watched.video
-    onIframeClick(video: Video): void
+    // Ajoute la date actuelle dans watchedDates.video
+    onIframeClick(video: VideoAll): void
     {
         console.log("onIframeClick: " + video.title);
-        this.userHistoryService.addVideoToHistoque(video);
+        //this.userHistoryService.addVideoToHistoque(video);
     }
 
 }

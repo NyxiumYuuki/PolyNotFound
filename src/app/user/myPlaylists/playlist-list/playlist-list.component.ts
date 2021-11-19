@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {Playlist} from "../../../utils/interfaces/playlist";
+import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PopupCreatePlaylistComponent} from "../../../utils/components/popup-create-playlist/popup-create-playlist.component";
+import {PopupCreatePlaylistComponent} from "../../utils/components/popup-create-playlist/popup-create-playlist.component";
+import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 
 
 
@@ -15,19 +16,21 @@ import {PopupCreatePlaylistComponent} from "../../../utils/components/popup-crea
 })
 export class PlaylistListComponent implements OnInit
 {
-    @Input() allPlaylists: Playlist[] = [];                  // toutes les playlists
-    @Output() eventEmitter = new EventEmitter<Playlist>();   // pour envoyer au parent la playlist selectionner
+    allPlaylists: PlaylistDB[] = [];                           // toutes les playlists
+    @Output() eventEmitter = new EventEmitter<PlaylistDB>();   // pour envoyer au parent la playlist selectionner
     search: string = "" ;                                    // contenu de la barre de recherche
-    tabPlaylist: Playlist[] = [];                            // playlist affichées
+    tabPlaylist: PlaylistDB[] = [];                            // playlist affichées
 
 
     constructor( public themeService: ThemeService,
                  public dialog: MatDialog,
-                 public snackBar: MatSnackBar ) { }
+                 public snackBar: MatSnackBar,
+                 private fictitiousVideosService: FictitiousVideosService ) { }
 
 
     ngOnInit(): void
     {
+        this.allPlaylists = this.fictitiousVideosService.getTabPlaylistDB(10, 10);
         this.tabPlaylist = [].concat(this.allPlaylists);
     }
 

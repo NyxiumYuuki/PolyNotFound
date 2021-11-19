@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {Advert} from "../../../utils/interfaces/advert";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MessageService} from "../../../utils/services/message/message.service";
-import {Playlist} from "../../../utils/interfaces/playlist";
+import {PlaylistDB} from "../../../utils/interfaces/playlist";
+import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
+
 
 
 @Component({
@@ -13,21 +14,19 @@ import {Playlist} from "../../../utils/interfaces/playlist";
 })
 export class PageMyPlaylistsComponent implements OnInit
 {
-    allPlaylists: Playlist[];   // toutes les playlists
     ad: Advert;                 // pub
-    playlist: Playlist;         // la playlist sélectionnée
+    playlist: PlaylistDB;         // la playlist sélectionnée
 
 
     constructor( public themeService: ThemeService,
                  private messageService: MessageService,
-                 private fictitioousData: FictitiousDatasService ) { }
+                 private fictitiousAdvertsService: FictitiousAdvertsService ) { }
 
 
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        this.allPlaylists = this.fictitioousData.getTabPlaylist(10, 10);
-        this.ad = this.fictitioousData.getAdvert();
+        this.ad = this.fictitiousAdvertsService.getAdvert();
 
         // --- VRAI CODE ---
         /*
@@ -44,7 +43,7 @@ export class PageMyPlaylistsComponent implements OnInit
         */
     }
 
-    transmitToVideoList(playlist: Playlist): void
+    transmitToVideoList(playlist: PlaylistDB): void
     {
         this.playlist = playlist;
     }

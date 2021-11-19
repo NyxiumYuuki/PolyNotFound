@@ -43,7 +43,7 @@ exports.logout = (req, res) => {
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.login || !req.body.hashPass || !req.body.mail) {
-    sendError(res, 400,-1,"Content can not be empty . (login, hashPass and mail needed");
+    sendError(res, 400,-1,"Content can not be empty . (login, hashPass and email needed");
   }
   else{
     User.exists({login: req.body.login}, function (err, docs){

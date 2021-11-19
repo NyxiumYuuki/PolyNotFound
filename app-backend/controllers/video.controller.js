@@ -3,11 +3,11 @@ const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const Video = db.video;
 
-// Search Video
+// Search VideoDB
 exports.search = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.search not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.search not Implemented", token);
   }
 };
 
@@ -15,15 +15,15 @@ exports.search = (req, res) => {
 exports.history = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.search not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.search not Implemented", token);
   }
 };
 
-// Create a new Video
+// Create a new VideoDB
 exports.create = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.create not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.create not Implemented", token);
   }
 };
 
@@ -31,31 +31,31 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.findAll not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.findAll not Implemented", token);
   }
 };
 
-// Retrieve a single Video with id
+// Retrieve a single VideoDB with id
 exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.findOne not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.findOne not Implemented", token);
   }
 };
 
-// Update a Video with id
+// Update a VideoDB with id
 exports.update = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.update not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.update not Implemented", token);
   }
 };
 
-// Delete a Video with id
+// Delete a VideoDB with id
 exports.delete = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.delete not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.delete not Implemented", token);
   }
 };
 
@@ -63,6 +63,6 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Video.deleteAll not Implemented", token);
+    return sendError(res, 501, -1, "VideoDB.deleteAll not Implemented", token);
   }
 };

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../../utils/services/message/message.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
-import {Video} from "../../../utils/interfaces/video";
+import {VideoAll} from "../../../utils/interfaces/video";
 import {Advert} from "../../../utils/interfaces/advert";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
+import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
+import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 
 
 
 let TAB_PLATEFORM = [
-    { name: "Youtube", isSelected: false },
-    { name: "Dailymotion", isSelected: false }
+    { name: "youtube", isSelected: false },
+    { name: "dailymotion", isSelected: false }
 ];
 
 
@@ -22,23 +23,24 @@ let TAB_PLATEFORM = [
 export class PageSearchComponent implements OnInit
 {
     tabPlateform = TAB_PLATEFORM;
-    tabVideo: Video[] = [];
+    tabVideo: VideoAll[] = [];
     search: string = "";
     ad1: Advert;
     ad2: Advert;
 
 
     constructor( private messageService: MessageService,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousVideosService: FictitiousVideosService,
+                 private fictitiousAdvertsService: FictitiousAdvertsService,
                  public themeService: ThemeService ) { }
 
 
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousDatasService.getTabVideo(11);
-        this.ad1 = this.fictitiousDatasService.getAdvert();
-        this.ad2 = this.fictitiousDatasService.getAdvert();
+        this.tabVideo = this.fictitiousVideosService.getTabVideoAll(90);
+        this.ad1 = this.fictitiousAdvertsService.getAdvert();
+        this.ad2 = this.fictitiousAdvertsService.getAdvert();
 
         // --- VRAI CODE ---
         /*
@@ -62,7 +64,7 @@ export class PageSearchComponent implements OnInit
     onSearch()
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousDatasService.getTabVideo(2);
+        this.tabVideo = this.fictitiousVideosService.getTabVideoAll(2);
 
         // --- VRAI CODE ---
         /*

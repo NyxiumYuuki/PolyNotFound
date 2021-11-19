@@ -37,7 +37,7 @@ const roles = require("./app-backend/config/role.config");
 const User = db.users;
 const login = 'superAdmin';
 const hashPass = 'hashPassSuperAdmin';
-const mail = 'superAdmin@mail.admin';
+const mail = 'superAdmin@email.admin';
 
 User.exists({role: roles.SuperAdmin}, function (err, docs){
   if(err){

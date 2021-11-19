@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../../utils/interfaces/user";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupUpdateAdminComponent} from "../popup-update-admin/popup-update-admin.component";
+import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
 
 
 
@@ -20,14 +20,14 @@ export class PageProfilAdminComponent implements OnInit
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
 
     ngOnInit(): void
     {
-        this.admin = this.fictitiousDatasService.getAdmin();
+        this.admin = this.fictitiousUsersService.getAdmin();
     }
 
 

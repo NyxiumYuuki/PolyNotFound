@@ -1,6 +1,7 @@
 export interface Advert
 {
     _id: string,
+    userId: string,
     title: string,
     advertiser: string,
     images: {
@@ -10,7 +11,8 @@ export interface Advert
     tags: string[],
     comment: string,
     views: number,
+    isVisible: boolean,
+    isActive: boolean,
     createdAt: Date,
     updatedAt: Date,
-    isVisible: boolean,
 }

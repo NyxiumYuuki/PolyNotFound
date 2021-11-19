@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
@@ -10,6 +9,7 @@ import {Advert} from "../../../utils/interfaces/advert";
 import {PopupVisualizeAdAdminComponent} from "../popup-visualize-ad-admin/popup-visualize-ad-admin.component";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
+import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 
 
 
@@ -27,7 +27,7 @@ export class PageAdListAdminComponent implements AfterViewInit
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousAdvertsService: FictitiousAdvertsService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -35,7 +35,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
-        const tabAdvert = this.fictitiousDatasService.getTabAdvert(8);
+        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
         this.dataSource = new MatTableDataSource<Advert>(tabAdvert);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;

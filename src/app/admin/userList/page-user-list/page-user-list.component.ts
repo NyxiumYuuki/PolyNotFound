@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
@@ -10,6 +9,7 @@ import {User} from "../../../utils/interfaces/user";
 import {PopupVisualizeUserComponent} from "../popup-visualize-user/popup-visualize-user.component";
 import {PopupDeleteUserComponent} from "../popup-delete-user/popup-delete-user.component";
 import {PopupCreateUserComponent} from "../popup-create-user/popup-create-user.component";
+import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
 
 
 
@@ -21,9 +21,9 @@ import {PopupCreateUserComponent} from "../popup-create-user/popup-create-user.c
 export class PageUserListComponent implements AfterViewInit
 {
     displayedColumns: string[];
-    displayedColumnsUser: string[] = [ 'login', 'mail', 'dateOfBirth', 'age', 'sexe', 'interests', 'createdAt', 'lastConnexion', 'actions' ];
-    displayedColumnsAdvertiser: string[] = [ 'login', 'mail', 'createdAt', 'lastConnexion', 'isAccepted', 'actions' ];
-    displayedColumnsAdmin: string[] = [ 'login', 'mail', 'createdAt', 'lastConnexion', 'actions' ];
+    displayedColumnsUser: string[] = [ 'login', 'email', 'dateOfBirth', 'age', 'sexe', 'interests', 'createdAt', 'lastConnexion', 'actions' ];
+    displayedColumnsAdvertiser: string[] = [ 'login', 'email', 'createdAt', 'lastConnexion', 'isAccepted', 'actions' ];
+    displayedColumnsAdmin: string[] = [ 'login', 'email', 'createdAt', 'lastConnexion', 'actions' ];
 
     tabUser: any[] = [];
     tabAdvertiser: User[] = [];
@@ -36,7 +36,7 @@ export class PageUserListComponent implements AfterViewInit
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -44,9 +44,9 @@ export class PageUserListComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
-        this.tabUser = this.fictitiousDatasService.getTabUser(32);
-        this.tabAdvertiser = this.fictitiousDatasService.getTabAdvertiser(8);
-        this.tabAdmin = this.fictitiousDatasService.getTabAdmin(4);
+        this.tabUser = this.fictitiousUsersService.getTabUser(32);
+        this.tabAdvertiser = this.fictitiousUsersService.getTabAdvertiser(8);
+        this.tabAdmin = this.fictitiousUsersService.getTabAdmin(4);
 
         for(const user of this.tabUser) user.age = this.getAge(user.dateOfBirth);
 

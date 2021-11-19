@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousDatasService} from "../../../utils/services/fictitiousDatas/fictitious-datas.service";
 import {User} from "../../../utils/interfaces/user";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupUpdateUserComponent} from "../popup-update-user/popup-update-user.component";
+import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
 
 
 
@@ -19,14 +19,14 @@ export class PageProfilUserComponent implements OnInit
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousDatasService: FictitiousDatasService,
+                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
 
     ngOnInit(): void
     {
-        this.user = this.fictitiousDatasService.getUser();
+        this.user = this.fictitiousUsersService.getUser();
     }
 
 

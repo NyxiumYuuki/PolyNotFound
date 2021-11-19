@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges } from '@angular/core';
-import {Video} from "../../../utils/interfaces/video";
-import {UserHistoryService} from "../../../utils/services/userHistory/userHistory.service";
-import {AddVideoToPlaylistsService} from "../../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
-import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.service";
+import {VideoAll} from "../../../utils/interfaces/video";
+import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
+import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
+import {VideoUrlService} from "../../utils/services/videoUrl/video-url.service";
 
 
 @Component({
@@ -12,7 +12,7 @@ import {VideoUrlService} from "../../../utils/services/videoUrl/video-url.servic
 })
 export class VideoGridComponent implements OnChanges
 {
-    @Input() tabVideo: Video[] = [];
+    @Input() tabVideo: VideoAll[] = [];
     indexPage: number = 0;
 
     constructor( private historiqueService: UserHistoryService,
@@ -25,21 +25,15 @@ export class VideoGridComponent implements OnChanges
         //this.historiqueService.clearTabVideoUrlClicked();
     }
 
-    onAdd(video: Video): void
+    onAdd(video: VideoAll): void
     {
         this.addVideoToPlaylistsService.run(video);
     }
 
-    onIframeClick(video: Video)
-    {
-        console.log("onIframeClick: " + video.title);
-        this.historiqueService.addVideoToHistoque(video);
-    }
-
     tronquage(str: string)
     {
-        if(str.length < 30) return str;
-        else return str.substring(0, 30) + "..." ;
+        if(str.length < 40) return str;
+        else return str.substring(0, 37) + "..." ;
     }
 
 }

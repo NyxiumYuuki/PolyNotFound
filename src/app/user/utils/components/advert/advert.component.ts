@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Advert} from "../../interfaces/advert";
-import {ThemeService} from "../../services/theme/theme.service";
+import {Advert} from "../../../../utils/interfaces/advert";
+import {ThemeService} from "../../../../utils/services/theme/theme.service";
 
 
 
