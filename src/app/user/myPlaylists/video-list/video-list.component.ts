@@ -8,6 +8,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
+import {Router} from "@angular/router";
 
 
 
@@ -29,7 +30,8 @@ export class VideoListComponent implements OnChanges
                  private addVideoToPlaylistService: AddVideoToPlaylistsService,
                  private snackBar: MatSnackBar,
                  public fictitiousVideosService: FictitiousVideosService,
-                 private historiqueService: UserHistoryService ) { }
+                 private historiqueService: UserHistoryService,
+                 private router: Router ) { }
 
 
     ngOnChanges(changes: SimpleChanges): void
@@ -81,6 +83,13 @@ export class VideoListComponent implements OnChanges
 
         //Pour relier les collections "Videos" et "Playlists", on a mis l'attribut "playlistIds" dans "Videos"
         // Mais en vrai, ça serai plus facile pour moi si on mettait plutot un attribut "videoIds" dans "Playlists"
+    }
+
+
+    onVideo(video: VideoDB): void
+    {
+        const url = "user/watching/fromMyPlaylists/" + video.videoId + '/' + this.playlist._id;
+        this.router.navigateByUrl(url);
     }
 
 }

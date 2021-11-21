@@ -19,3 +19,27 @@ input {
   width: 35%;
   font-size: large;
 }
+
+// -------------------------------------------------------
+
+.imgsContainer {
+  position: relative;
+  width: 20vw;
+  height: 15vh;
+}
+
+.imgPlay {
+  position: absolute;
+  margin-left: 9vw;
+  width: 3vw;
+  margin-top: 5vh;
+  height: 6vh;
+  padding: 0px 0px 0px 0px;
+}
+
+.imgVideo {
+  border: solid 1px black;
+  width: 20vw;
+  height: 15vh;
+  padding: 0px 0px 0px 0px;
+}

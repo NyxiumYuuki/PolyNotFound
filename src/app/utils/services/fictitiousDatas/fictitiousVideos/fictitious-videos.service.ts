@@ -8,7 +8,8 @@ import {FictitiousUtilsService} from "../fictitiousUtils/fictitious-utils.servic
 const TAB_VIDEO: VideoAll[] = [
     {
         _id: "Mowgli",
-        videoId: "https://www.youtube.com/watch?v=medPORJ8KO0",
+        //videoId: "https://www.youtube.com/watch?v=medPORJ8KO0",
+        videoId: "medPORJ8KO0",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -24,7 +25,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Mexico",
-        videoId: "https://www.youtube.com/watch?v=LZx6oeNeoWM",
+        //videoId: "https://www.youtube.com/watch?v=LZx6oeNeoWM",
+        videoId: "LZx6oeNeoWM",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -40,7 +42,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Luz de luna",
-        videoId: "https://www.youtube.com/watch?v=fGoPhSV2Jic",
+        //videoId: "https://www.youtube.com/watch?v=fGoPhSV2Jic",
+        videoId: "fGoPhSV2Jic",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -56,7 +59,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Blanka",
-        videoId: "https://www.youtube.com/watch?v=u8bHjdljyLw",
+        //videoId: "https://www.youtube.com/watch?v=u8bHjdljyLw",
+        videoId: "u8bHjdljyLw",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -72,7 +76,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Mowgli 2",
-        videoId: "https://www.dailymotion.com/video/x7ahxdn",
+        //videoId: "https://www.dailymotion.com/video/x7ahxdn",
+        videoId: "x7ahxdn",
         userId: "userId",
         source: "dailymotion",
         tags: [ "rap", "musique" ],
@@ -88,7 +93,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Etre humain",
-        videoId: "https://www.youtube.com/watch?v=gfVo39B92Ow",
+        //videoId: "https://www.youtube.com/watch?v=gfVo39B92Ow",
+        videoId: "gfVo39B92Ow",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -104,7 +110,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Humanoide",
-        videoId: "https://www.youtube.com/watch?v=MiyIg__WNOw",
+        //videoId: "https://www.youtube.com/watch?v=MiyIg__WNOw",
+        videoId: "MiyIg__WNOw",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -120,7 +127,8 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Dernier soupir",
-        videoId: "https://youtu.be/0GqjIF-4QQM?list=PLqeKQSn3LuAmpF-uIu39RIQRQkUzVol5l",
+        //videoId: "https://youtu.be/0GqjIF-4QQM?list=PLqeKQSn3LuAmpF-uIu39RIQRQkUzVol5l",
+        videoId: "0GqjIF-4QQM",
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
@@ -136,9 +144,10 @@ const TAB_VIDEO: VideoAll[] = [
     },
     {
         _id: "Les prélis",
-        videoId: "https://www.dailymotion.com/video/x4trtkd",
+        //videoId: "https://www.dailymotion.com/video/x4trtkd",
+        videoId: "x4trtkd",
         userId: "userId",
-        source: "youtube",
+        source: "dailymotion",
         tags: [ "rap", "musique" ],
         watchedDates: [new Date()],
         createdAt: new Date(),
@@ -147,12 +156,13 @@ const TAB_VIDEO: VideoAll[] = [
         title: "Columbine - Les prélis",
         views: 999999,
         publishedAt: new Date(),
-        imageUrl: "https://i.ytimg.com/an_webp/LfFI3bzMLU0/mqdefault_6s.webp?du=3000&sqp=CKq33owG&rs=AOn4CLDZmaPGWwcuo9yUWJ-xOzA69r2Qrw",
+        imageUrl: "https://s2.dmcdn.net/v/HPPjj1NtysAaAttYk/x240",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit. ",
     },
     {
         _id: "Pierre feuille ciseau",
-        videoId: "https://www.dailymotion.com/video/x6agl6i",
+        //videoId: "https://www.dailymotion.com/video/x6agl6i",
+        videoId: "x6agl6i",
         userId: "userId",
         source: "dailymotion",
         tags: [ "rap", "musique" ],
@@ -183,7 +193,12 @@ export class FictitiousVideosService
     {
         const index = Math.floor(Math.random() * TAB_VIDEO.length);
         return TAB_VIDEO[index];
-        //return Object.assign({}, TAB_VIDEO[index]);
+    }
+
+
+    getVideoByVideoId(videoId: string): VideoAll
+    {
+        return TAB_VIDEO.find(video => video.videoId === videoId);
     }
 
 
@@ -195,7 +210,14 @@ export class FictitiousVideosService
     }
 
 
-    getTabPlaylistDB(nbPlaylist: number, nbVideoMax: number): PlaylistDB[]
+    getAllVideoAll(): VideoAll[]
+    {
+        return TAB_VIDEO;
+    }
+
+    //----------------------------------------------------------------------------------------------------------------
+
+    getRandomTabPlaylistDB(nbPlaylist: number, nbVideoMax: number): PlaylistDB[]
     {
         let tabPlaylist: PlaylistDB[] = [];
 
@@ -218,9 +240,33 @@ export class FictitiousVideosService
     }
 
 
-    getAllVideoAll(): VideoAll[]
+    getNoRandomTabPlaylistDB(nbPlaylist: number): PlaylistDB[]
     {
-        return TAB_VIDEO;
+        let tabPlaylist: PlaylistDB[] = [];
+
+        for(let i = 0; i < nbPlaylist; i++)
+        {
+            const videoIds = [];
+            for(let j=0 ; j<i*2 ; j++) videoIds.push(TAB_VIDEO[j%TAB_VIDEO.length]._id);
+            tabPlaylist.push({
+                _id: i.toString(),
+                userId: "userId",
+                name: "playlist_"+i.toString(),
+                videoIds: videoIds,
+                isActive: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            });
+        }
+
+        return tabPlaylist;
+    }
+
+
+    getPlaylistBy_id(_id: string): PlaylistDB
+    {
+        const n = parseInt(_id)
+        return this.getNoRandomTabPlaylistDB(n+1)[n];
     }
 
 }

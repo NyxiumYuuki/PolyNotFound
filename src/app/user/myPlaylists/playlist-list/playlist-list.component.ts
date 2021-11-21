@@ -30,7 +30,8 @@ export class PlaylistListComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.allPlaylists = this.fictitiousVideosService.getTabPlaylistDB(10, 10);
+        //this.allPlaylists = this.fictitiousVideosService.getRandomTabPlaylistDB(10, 10);
+        this.allPlaylists = this.fictitiousVideosService.getNoRandomTabPlaylistDB(10);
         this.tabPlaylist = [].concat(this.allPlaylists);
     }
 

@@ -10,6 +10,15 @@ export class VideoUrlService
     constructor(private _sanitizer: DomSanitizer) { }
 
 
+    safeUrl(videoId: string, source: string): SafeResourceUrl
+    {
+        let videoUrl = "" ;
+        if(source === 'youtube') videoUrl = "https://www.youtube.com/embed/" + videoId;
+        else if(source === 'dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
+        return this._sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+    }
+
+    /*
     safeUrl(videoUrl: string): SafeResourceUrl
     {
         if(videoUrl.includes("youtu")) videoUrl = this.youtubeSafeUrl(videoUrl);
@@ -42,4 +51,6 @@ export class VideoUrlService
         const n = "https://www.dailymotion.com/".length;
         return videoUrl.slice(0, n) + "embed/" + videoUrl.slice(n);
     }
+    */
+
 }

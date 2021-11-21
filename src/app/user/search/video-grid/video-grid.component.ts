@@ -2,7 +2,8 @@ import {Component, Input, OnChanges } from '@angular/core';
 import {VideoAll} from "../../../utils/interfaces/video";
 import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
-import {VideoUrlService} from "../../utils/services/videoUrl/video-url.service";
+import {Router} from "@angular/router";
+
 
 
 @Component({
@@ -13,11 +14,12 @@ import {VideoUrlService} from "../../utils/services/videoUrl/video-url.service";
 export class VideoGridComponent implements OnChanges
 {
     @Input() tabVideo: VideoAll[] = [];
+    @Input() search: string = '';
     indexPage: number = 0;
 
     constructor( private historiqueService: UserHistoryService,
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService,
-                 private videoUrlService: VideoUrlService ) {}
+                 private router: Router) {}
 
 
     ngOnChanges(): void
@@ -36,4 +38,9 @@ export class VideoGridComponent implements OnChanges
         else return str.substring(0, 37) + "..." ;
     }
 
+    onVideo(video: VideoAll): void
+    {
+        const url = '/user/watching/fromSearch/'+video.videoId+'/'+video.source+'/'+this.search;
+        this.router.navigateByUrl(url);
+    }
 }

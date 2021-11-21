@@ -47,7 +47,7 @@
                             <mat-grid-tile [colspan]="10" [rowspan]="1">
                                 <div class="col-8">
                                     <div style="margin: auto; width: 20vw; height: 15vh;">
-                                        <div class="imgsContainer">
+                                        <div class="imgsContainer" (click)="onVideo(video)">
                                             <img class="imgPlay" src="/assets/play.png">
                                             <img class="imgVideo" [src]="video.imageUrl">
                                         </div>

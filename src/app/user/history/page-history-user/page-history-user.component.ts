@@ -8,6 +8,7 @@ import {UserHistoryService} from "../../utils/services/userHistory/userHistory.s
 import {MatPaginator} from "@angular/material/paginator";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 import {VideoAll} from "../../../utils/interfaces/video";
+import {Router} from "@angular/router";
 
 
 
@@ -28,7 +29,8 @@ export class PageHistoryUserComponent implements AfterViewInit
                  private messageService: MessageService,
                  private fictitiousVideosService: FictitiousVideosService,
                  public videoUrlService: VideoUrlService,
-                 private userHistoryService: UserHistoryService ) { }
+                 private userHistoryService: UserHistoryService,
+                 private router: Router ) { }
 
 
     // charge la page
@@ -102,12 +104,11 @@ export class PageHistoryUserComponent implements AfterViewInit
         */
     }
 
-
-    // Ajoute la date actuelle dans watchedDates.video
-    onIframeClick(video: VideoAll): void
+    
+    onVideo(video: VideoAll): void
     {
-        console.log("onIframeClick: " + video.title);
-        //this.userHistoryService.addVideoToHistoque(video);
+        const url = '/user/watching/fromHistory/'+video.videoId+'/'+video.source ;
+        this.router.navigateByUrl(url);
     }
 
 }

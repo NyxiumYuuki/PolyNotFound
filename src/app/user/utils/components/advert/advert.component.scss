@@ -6,23 +6,33 @@
   transform: translateY(-50%);
 }
 
-
-img {
+#imgFromSearchOrMyPlaylists {
   max-width: 100%;
   max-height: 100%;
-  border: solid 3px;
+  border: solid 3px black;
   vertical-align: middle;
 }
-.lightTheme img {
-  border-color: black;
-}
-.darkTheme img {
-  border-color: white;
-}
-
 
 .helper {
   display: inline-block;
   height: 100%;
   vertical-align: middle;
+}
+
+// ------------------------------------------------------------------------------
+
+#imgFromWatchingLeft {
+  width: 14vw;
+  height: 70vh;
+  border: solid 3px black;
+  position: fixed;
+  left: 1vw;
+}
+
+#imgFromWatchingRight {
+  width: 15vw;
+  height: 70vh;
+  border: solid 3px black;
+  position: fixed;
+  right: 1vw;
 }

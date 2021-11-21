@@ -1,0 +1,219 @@
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 1 -->
+
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Navbar -->
+        <div style="margin-bottom: 30px">
+            <app-navbar-user></app-navbar-user>
+        </div>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <!-- [Search bar] + [Site de streaming] -->
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8" style="margin-bottom: 10px">
+
+                <!-- Search bar -->
+                <div class="row" style="margin-bottom: 10px">
+                    <div>
+                        <input type="search" placeholder="recherche..." class="inputSearchBar" [(ngModel)]="search"> &nbsp;
+                        <button class="btnRechercher" (click)="onSearch()"> Rechercher </button>
+                    </div>
+                </div>
+
+                <!-- Site de streaming -->
+                <div class="row" style="margin-bottom: 10px">
+                    <div>
+                        <span *ngFor="let plateforme of tabPlateform">
+                            &nbsp;
+                            <input type="checkbox" [id]="plateforme.name" [name]="plateforme.name" style="margin-left: 5px" [(ngModel)]="plateforme.isSelected">
+                            <img [src]="'/assets/logo_plateforms/'+plateforme.name+'.png'" alt="image" width="25px" height="25px" style="margin-left: 5px">
+                            <label [for]="plateforme.name" style="margin-left: 5px"> {{plateforme.name}}</label>
+                            &nbsp;
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <!-- [pub gauche] + [video] + [pub droite] -->
+        <div *ngIf="from==='search' || from==='history'; then videoFromSearchOrHistory"></div>
+
+        <!-- [pub gauche] + [video] + [playlist] -->
+        <div *ngIf="from==='myPlaylists'; then videoFromMyPlaylists"></div>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <br><br>
+
+    </div>
+</div>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 2: videoFromSearchOrHistory -->
+
+<ng-template #videoFromSearchOrHistory>
+    <div class="row">
+
+        <!-- pub gauche -->
+        <div class="col-2">
+            <app-advert [ad]="ad1" from="watchingLeft"></app-advert>
+        </div>
+
+        <!-- video -->
+        <div class="col-8" style="background-color: white; border: solid 1px black;">
+            <div *ngIf="true then rectangleCentral"></div>
+        </div>
+
+        <!-- pub droite -->
+        <div class="col-2">
+            <app-advert [ad]="ad2" from="watchingRight"></app-advert>
+        </div>
+
+    </div>
+</ng-template>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 2: videoFromMyPlaylists -->
+
+<ng-template #videoFromMyPlaylists>
+    <div class="row">
+
+        <!-- pub gauche -->
+        <div class="col-2">
+            <app-advert [ad]="ad1" from="watchingLeft"></app-advert>
+        </div>
+
+        <!-- rectangle central -->
+        <div class="col-6" style="background-color: white; border: solid 1px black;">
+            <div *ngIf="true then rectangleCentral"></div>
+        </div>
+
+        <!-- playlist -->
+        <div class="col-4">
+            <div *ngIf="true; then playlistHTML"></div>
+        </div>
+
+    </div>
+</ng-template>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 3: rectangleCentral -->
+
+<ng-template #rectangleCentral>
+
+    <!-- btnRetour + btnAdd -->
+    <div class="row" style="margin: 10px 0px 40px 0px">
+
+        <!-- btnRetour -->
+        <div class="col-6" style="text-align: left;">
+            <button mat-button style="border: solid 1px black" (click)="onRetour()">
+                <mat-icon>arrow_back_ios</mat-icon> Retour
+            </button>
+        </div>
+
+        <!-- btnAdd -->
+        <div class="col-6" style="text-align: right;">
+            <button mat-button style="border: solid 1px black" (click)="onAdd()">
+                Ajouter à une playlist <mat-icon>add_circle</mat-icon>
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- logo + title + video + views + publishedAt + description -->
+    <div [style]=containerStyle>
+
+        <!-- logo + title -->
+        <div style="text-align: left">
+            <img *ngIf="video.source==='youtube'" src="/assets/logo_plateforms/youtube.png" alt="ytb" width="50px" height="30px" style="float: left">
+            <img *ngIf="video.source==='dailymotion'" src="/assets/logo_plateforms/dailymotion.png" alt="dlm" width="30px" height="30px" style="float: left">
+            <h5> &nbsp; {{video.title}}</h5>
+        </div>
+
+        <!-- video -->
+        <div style="width: 100%">
+            <iframe [src]="videoUrlService.safeUrl(video.videoId,video.source)"
+                    [style]="iframeStyle"
+                    allowfullscreen></iframe>
+        </div>
+
+        <!-- views -->
+        <div style="text-align: left; margin: 5px 0px 0px 1px">
+            <span style="font-weight: bold">  Vues: </span>
+            {{video.views | number: '1.0-0'}}
+        </div>
+
+        <!-- publishedAt -->
+        <div style="text-align: left; margin: 5px 0px 0px 1px">
+            <span style="font-weight: bold"> Date de publication: </span>
+            {{ video.publishedAt | date:'dd/LL/YYYY à HH:mm:ss' }}
+        </div>
+
+        <!-- description -->
+        <div style="text-align: left; margin: 5px 0px 20px 1px">
+            <div style="font-weight: bold; display: flex; align-items: center; cursor: pointer" (click)="hiddenDescription = !hiddenDescription">
+                Description
+                <mat-icon *ngIf="hiddenDescription">expand_more</mat-icon>
+                <mat-icon *ngIf="!hiddenDescription">expand_less</mat-icon>
+            </div>
+            <div style="margin-left: 25px; padding-left: 5px; border-left: solid 1px #e6e6e6" [hidden]="hiddenDescription">
+                {{video.description}}
+            </div>
+        </div>
+
+    </div>
+
+</ng-template>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 3: playlist -->
+
+<ng-template #playlistHTML>
+    <div class="playlistContainer">
+
+        <!-- Bordure haute -->
+        <div class="topBorder">
+            <span style="font-weight: bold"> {{playlist.name}} </span>
+        </div>
+
+
+        <!-- Liste des videos -->
+        <div class="listVideoContainer">
+            <div *ngFor="let video0 of videosInPlaylist; let i = index;">
+                <div class="videoCell">
+                    <div class="imgsContainer" (click)="this.video = video0">
+                        <img class="imgPlay" src="/assets/play.png">
+                        <img class="imgVideo" [src]="video0.imageUrl">
+                    </div>
+                    <div class="titleContainer">
+                        {{video0.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bordure basse -->
+        <div class="bottomBorder">
+            <div style="visibility: hidden">a</div>
+        </div>
+
+    </div>
+</ng-template>

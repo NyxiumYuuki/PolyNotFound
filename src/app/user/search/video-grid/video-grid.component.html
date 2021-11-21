@@ -10,8 +10,8 @@
 
                 <!-- Image video -->
                 <div class="imgsContainer">
-                    <img class="imgPlay" src="/assets/play.png">
-                    <img class="imgVideo" [src]="tabVideo[indexPage+k].imageUrl">
+                    <img class="imgPlay" src="/assets/play.png" (click)="onVideo(tabVideo[indexPage+k])">
+                    <img class="imgVideo" [src]="tabVideo[indexPage+k].imageUrl" (click)="onVideo(tabVideo[indexPage+k])">
                 </div>
 
 

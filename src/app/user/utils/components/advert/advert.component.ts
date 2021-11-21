@@ -12,6 +12,7 @@ import {ThemeService} from "../../../../utils/services/theme/theme.service";
 export class AdvertComponent implements OnInit
 {
     @Input() ad: Advert;
+    @Input() from: string = "search";
     idxImage: number = 0;
 
 
@@ -22,6 +23,8 @@ export class AdvertComponent implements OnInit
     {
         const nbImages = this.ad.images.length;
         this.idxImage = Math.floor(Math.random() * nbImages);
+
+
     }
 
 }

@@ -1,6 +1,20 @@
-<div [class]="themeService.getClassTheme()">
-    <div class="myContainer">
-        <span class="helper"></span>
-        <img [src]="'assets/pub/'+ad.images[idxImage].url" [alt]="ad.images[idxImage].url">
-    </div>
+<div *ngIf="from==='search' || from==='myPlaylists'" class="myContainer">
+    <span class="helper"></span>
+    <img [src]="'assets/pub/'+ad.images[idxImage].url"
+         [alt]="ad.images[idxImage].url"
+         id="imgFromSearchOrMyPlaylists">
 </div>
+
+<!-- --------------------------------------------------------------------- -->
+
+<img *ngIf="from === 'watchingLeft'"
+     [src]="'assets/pub/'+ad.images[idxImage].url"
+     [alt]="ad.images[idxImage].url"
+     id="imgFromWatchingLeft">
+
+<!-- --------------------------------------------------------------------- -->
+
+<img *ngIf="from === 'watchingRight'"
+     [src]="'assets/pub/'+ad.images[idxImage].url"
+     [alt]="ad.images[idxImage].url"
+     id="imgFromWatchingRight">
