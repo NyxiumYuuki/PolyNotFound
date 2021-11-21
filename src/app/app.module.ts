@@ -69,8 +69,6 @@ import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/pop
 import { PopupCreateUserComponent } from './admin/userList/popup-create-user/popup-create-user.component';
 import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
 import { PageWatchingVideoComponent } from './user/watching/page-watching-video/page-watching-video.component';
-import { RectangleWatchingVideoComponent } from './user/watching/rectangle-watching-video/rectangle-watching-video.component';
-import {MatExpansionModule} from "@angular/material/expansion";
 
 
 @NgModule({
@@ -120,7 +118,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
         PopupCreateUserComponent,
         InputInterestsAdminComponent,
         PageWatchingVideoComponent,
-        RectangleWatchingVideoComponent,
     ],
     imports: [
         BrowserModule,
@@ -149,7 +146,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
         MatRadioModule,
         MatStepperModule,
         MatPaginatorModule,
-        MatExpansionModule
     ],
   providers: [],
   bootstrap: [AppComponent]
