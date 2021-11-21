@@ -6,39 +6,96 @@
         <app-navbar-admin></app-navbar-admin><br><br>
 
 
-        <!-- Filtre -->
-        <div style="text-align: center">
-            <input (keyup)="applyFilter($event)" placeholder="Filtre...">
-        </div>
 
+        <!-- filtre + btnAddUser -->
+        <div class="row" style="margin: 20px 3% 20px 3%">
 
-        <div class="choixRoleEtbtnAjouerAdmin">
+            <!-- filtre -->
+            <div class="col-9" style="padding: 0px 0px 0px 0px;">
+                <div class="filtersContainer mat-elevation-z8">
 
-            <!-- Choix role -->
-            <div class="matRadioGroupContainer">
-                <mat-radio-group [(ngModel)]="roleName">
-                    <mat-radio-button value="user" (click)="onChangeRoleSelected('user')">
-                        Utilisateur
-                    </mat-radio-button><br>
-                    <mat-radio-button value="advertiser" (click)="onChangeRoleSelected('advertiser')">
-                        Annonceur
-                    </mat-radio-button><br>
-                    <mat-radio-button value="admin" (click)="onChangeRoleSelected('admin')">
-                        Admin
-                    </mat-radio-button>
-                </mat-radio-group>
+                    <!-- titre -->
+                    <div style="font-weight: bold; margin-bottom: 10px;">
+                        Filtre
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <!-- filtre textuelle-->
+                    <div style="margin: 10px 0px 20px 2%;">
+                        <input class="textFilter" (keyup)="applyFilter($event)" placeholder="filtre...">
+                    </div>
+
+                    <!-- role + actif + période -->
+                    <div class="row myRow">
+
+                        <!-- choix role -->
+                        <div class="col-2">
+                            <mat-radio-group [(ngModel)]="roleName">
+                                <mat-radio-button value="user" (click)="this.roleName = 'user'; onFilter()">
+                                    Utilisateur
+                                </mat-radio-button><br>
+                                <mat-radio-button value="advertiser" (click)="this.roleName = 'advertiser'; onFilter()">
+                                    Annonceur
+                                </mat-radio-button><br>
+                                <mat-radio-button value="admin" (click)="this.roleName = 'admin'; onFilter()">
+                                    Admin
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <!-- actif -->
+                        <div class="col-2">
+                            <mat-checkbox [(ngModel)]="active" (change)="onFilter()">actif</mat-checkbox><br>
+                            <mat-checkbox [(ngModel)]="noActive" (change)="onFilter()">non actif</mat-checkbox>
+                        </div>
+
+                        <!-- période -->
+                        <div class="col-8" style="text-align: right;">
+                            Période de dernière connexion: &nbsp;
+                            <mat-form-field appearance="fill" style="width: 140px;">
+                                <mat-label>Date de début</mat-label>
+                                <input matInput type="date"
+                                       [ngModel] ="startDate | date:'yyyy-MM-dd'"
+                                       (ngModelChange)="onNewStartDate($event); onFilter();">
+                            </mat-form-field>
+                            &nbsp; - &nbsp;
+                            <mat-form-field appearance="fill" style="width: 140px;">
+                                <mat-label>Date de fin</mat-label>
+                                <input matInput type="date"
+                                       [ngModel] ="endDate | date:'yyyy-MM-dd'"
+                                       (ngModelChange)="onNewEndDate($event); onFilter();">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
-            <div class="btnAjouterContainer">
-                <button mat-button class="btnAjouter" (click)="onCreateUser()">
+            <!-- btnAddUser -->
+            <div class="col-3" style="text-align: right; position: relative;">
+                <button mat-button class="btnAjouter" (click)="onCreateUser()" style="position: absolute; bottom: 0; right: 0;">
                     <mat-icon>add_circle</mat-icon> Ajouter un utilisateur
                 </button>
             </div>
 
         </div>
 
+
+
         <!-- Table -->
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+            <!-- IsActive Column -->
+            <ng-container matColumnDef="isActive">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-icon>power_settings_new</mat-icon>
+                </th>
+                <td mat-cell *matCellDef="let user">
+                    <mat-slide-toggle [(ngModel)]="user.isActive" (click)="onSliderIsActive(user)"></mat-slide-toggle>
+                </td>
+            </ng-container>
 
             <!-- Login Column -->
             <ng-container matColumnDef="login">
@@ -76,8 +133,8 @@
             <ng-container matColumnDef="sexe">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Sexe </th>
                 <td mat-cell *matCellDef="let user">
-                    <span *ngIf="user.gender === 'man'">Homme</span>
-                    <span *ngIf="user.gender === 'woman'">Femme</span>
+                    <span *ngIf="user.gender === 'man'">H</span>
+                    <span *ngIf="user.gender === 'woman'">F</span>
                 </td>
             </ng-container>
 
@@ -110,10 +167,9 @@
 
             <!-- IsAccepted Column -->
             <ng-container matColumnDef="isAccepted">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activé </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Accepté </th>
                 <td mat-cell *matCellDef="let user">
-                    <span *ngIf="user.isAccepted"> <mat-icon>check</mat-icon> </span>
-                    <span *ngIf="!user.isAccepted"></span>
+                    <mat-slide-toggle [(ngModel)]="user.isAccepted" (click)="onSlideIsAccepted(user)"></mat-slide-toggle>
                 </td>
             </ng-container>
 

@@ -1,38 +1,29 @@
 .myContainer {
-  max-width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
+  min-height: 100vh;
   font-size: small;
 }
 
 // ----------------------------------------------------------
 
-.matRadioGroupContainer {
-  float:left;
+.filtersContainer {
+  width: 85%;
   background-color: white;
-  width: 15%;
-  margin-left: 3%;
   padding: 10px 10px 10px 10px;
-  border-bottom: 1px solid #dcdcdc;
 }
 
-.btnAjouterContainer {
-  float:left;
-  margin-left: 65%;
-  padding-top: 20px;
+.myRow {
+  margin-left: 1%;
+}
+
+.textFilter {
+  width: 50%;
+  font-size: medium;
+  border-radius: 5px;
 }
 
 .btnAjouter {
   background-color: white;
   border: solid 1px black;
-}
-
-// ----------------------------------------------------------
-
-input {
-  width: 30%;
-  font-size: large;
-  border-radius: 5px;
 }
 
 // ----------------------------------------------------------
@@ -64,4 +55,45 @@ td {
   border: solid 1px gray !important;
 }
 
+// -------------------------------------------------------------------------
 
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: solid 1px black !important;
+  background-color: white !important;
+}
+
+
+// --------------------------------------------------------------------
+
+
+// rong gauche
+::ng-deep .mat-slide-toggle-thumb {
+  background-color: white !important;
+}
+
+// trait droite
+::ng-deep .mat-slide-toggle-bar {
+  background-color: gray !important;
+}
+
+// rond droite
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: white !important;
+}
+
+// trait gauche
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: cornflowerblue !important;
+}

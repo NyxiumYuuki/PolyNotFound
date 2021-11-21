@@ -21,9 +21,9 @@ import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fi
 export class PageUserListComponent implements AfterViewInit
 {
     displayedColumns: string[];
-    displayedColumnsUser: string[] = [ 'login', 'email', 'dateOfBirth', 'age', 'sexe', 'interests', 'createdAt', 'lastConnexion', 'actions' ];
-    displayedColumnsAdvertiser: string[] = [ 'login', 'email', 'createdAt', 'lastConnexion', 'isAccepted', 'actions' ];
-    displayedColumnsAdmin: string[] = [ 'login', 'email', 'createdAt', 'lastConnexion', 'actions' ];
+    displayedColumnsUser: string[] = [ 'isActive', 'login', 'email', 'dateOfBirth', 'age', 'sexe', 'interests', 'createdAt', 'lastConnexion' ];
+    displayedColumnsAdvertiser: string[] = [ 'isActive', 'login', 'email', 'createdAt', 'lastConnexion', 'isAccepted' ];
+    displayedColumnsAdmin: string[] = [ 'isActive', 'login', 'email', 'createdAt', 'lastConnexion' ];
 
     tabUser: any[] = [];
     tabAdvertiser: User[] = [];
@@ -33,6 +33,11 @@ export class PageUserListComponent implements AfterViewInit
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+
+    active: boolean = true;
+    noActive: boolean = false;
+    startDate: Date = null;
+    endDate: Date = null;
 
 
     constructor( public themeService: ThemeService,
@@ -50,30 +55,7 @@ export class PageUserListComponent implements AfterViewInit
 
         for(const user of this.tabUser) user.age = this.getAge(user.dateOfBirth);
 
-        this.displayedColumns = this.displayedColumnsUser;
-
-        this.dataSource = new MatTableDataSource(this.tabUser);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource = this.dataSource;
-    }
-
-
-    onChangeRoleSelected(roleName: string): void
-    {
-        if(roleName === "user") {
-            this.displayedColumns = this.displayedColumnsUser;
-            this.dataSource.data = this.tabUser;
-        }
-        else if(roleName === "advertiser") {
-            this.displayedColumns = this.displayedColumnsAdvertiser;
-            this.dataSource.data = this.tabAdvertiser;
-        }
-        else if(roleName === "admin") {
-            this.displayedColumns = this.displayedColumnsAdmin;
-            this.dataSource.data = this.tabAdmin;
-        }
-        this.dataSource = this.dataSource;
+        this.onFilter();
     }
 
 
@@ -143,10 +125,79 @@ export class PageUserListComponent implements AfterViewInit
     }
 
 
+    onSliderIsActive(user: User): void
+    {
+        // il faut envoyer la négation de user.isActive
+    }
+
+
+    onSlideIsAccepted(user: User): void
+    {
+        // il faut envoyer la négation de user.isActive
+    }
+
+
     getAge(date: Date): number
     {
         const diff = Date.now() - date.getTime();
         const age = new Date(diff);
         return Math.abs(age.getUTCFullYear() - 1970);
     }
+
+
+    onFilter(): void
+    {
+        let tab1 = [];
+        if(this.roleName === "user") {
+            this.displayedColumns = this.displayedColumnsUser;
+            tab1 = this.tabUser;
+        }
+        else if(this.roleName === "advertiser") {
+            this.displayedColumns = this.displayedColumnsAdvertiser;
+            tab1 = this.tabAdvertiser;
+        }
+        else if(this.roleName === "admin") {
+            this.displayedColumns = this.displayedColumnsAdmin;
+            tab1 = this.tabAdmin;
+        }
+
+        let tab2 = [];
+        for(let user of tab1)
+        {
+            let valide: boolean = true;
+
+            if(user.isActive && this.active) valide = true;
+            else if((!user.isActive) && this.noActive) valide = true;
+            else valide = false;
+            if(valide)
+            {
+                if ((user.lastConnexion === null) && (this.startDate !== null)) valide = false;
+                else if ((user.lastConnexion === null) && (this.endDate !== null)) valide = false;
+                else if (this.startDate !== null)
+                {
+                    if(this.startDate.getTime() > user.lastConnexion.getTime()) valide = false;
+                    else if (this.endDate !== null)
+                    {
+                        if(this.endDate.getTime() < user.lastConnexion.getTime()) valide = false;
+                    }
+                }
+            }
+
+            if(valide) tab2.push(user);
+        }
+
+        this.dataSource = new MatTableDataSource(tab2);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+    }
+
+
+    onNewStartDate(event): void {
+        this.startDate = new Date(event);
+    }
+
+    onNewEndDate(event): void {
+        this.endDate = new Date(event);
+    }
+
 }

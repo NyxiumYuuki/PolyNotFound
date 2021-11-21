@@ -109,37 +109,47 @@
 
 <!-- advertiserOrAdminBlock -->
 <ng-template #advertiserOrAdminBlock>
+
+
+    <!-- photo de profil -->
     <div style="text-align: center">
+        <img [src]="user.profileImageUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
+        <input title="lien vers image" type="text" [(ngModel)]="user.profileImageUrl" style="width: 100%">
+    </div><br>
 
-        <!-- photo de profil -->
-        <div style="text-align: center">
-            <img [src]="user.profileImageUrl" onerror="this.onerror=null; this.src='assets/profil.png'"><br>
-            <input title="lien vers image" type="text" [(ngModel)]="user.profileImageUrl" style="width: 90%">
-        </div><br>
 
-        <!-- email -->
-        <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput type="text" [(ngModel)]="user.email">
-        </mat-form-field><br>
+    <!-- email + login + mdp + confirmation -->
+    <div class="row">
 
-        <!-- login -->
-        <mat-form-field appearance="fill">
-            <mat-label>Login</mat-label>
-            <input matInput type="text" [(ngModel)]="user.login">
-        </mat-form-field><br>
+        <!-- email + login -->
+        <div class="col-6">
+            <!-- email -->
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="text" [(ngModel)]="user.email">
+            </mat-form-field><br>
+            <!-- login -->
+            <mat-form-field appearance="fill">
+                <mat-label>Login</mat-label>
+                <input matInput type="text" [(ngModel)]="user.login">
+            </mat-form-field><br>
+        </div>
 
-        <!-- mot de passe -->
-        <mat-form-field appearance="fill">
-            <mat-label>Mot de passe</mat-label>
-            <input matInput type="password" [(ngModel)]="password">
-        </mat-form-field><br>
-
-        <!-- confirmation mot de passe -->
-        <mat-form-field appearance="fill">
-            <mat-label>Confirmation nouveau mot de passe</mat-label>
-            <input matInput type="password" [(ngModel)]="confirmPassword">
-        </mat-form-field>
+        <!-- mdp + confirmation -->
+        <div class="col-6">
+            <!-- mot de passe -->
+            <mat-form-field appearance="fill">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput type="password" [(ngModel)]="password">
+            </mat-form-field><br>
+            <!-- confirmation mot de passe -->
+            <mat-form-field appearance="fill">
+                <mat-label>Confirmation nouveau mot de passe</mat-label>
+                <input matInput type="password" [(ngModel)]="confirmPassword">
+            </mat-form-field>
+        </div>
 
     </div>
+
+
 </ng-template>

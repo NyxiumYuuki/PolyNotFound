@@ -1,18 +1,80 @@
 <div [class]="themeService.getClassTheme()">
     <div class="myContainer">
 
-
+        <!-- Navbar -->
         <app-navbar-admin></app-navbar-admin><br><br>
 
-        <!-- ---------------------------------------------------------------------------------- -->
 
-        <div style="text-align: center">
-            <input (keyup)="applyFilter($event)" placeholder="Filtre...">
+
+        <!-- filtre -->
+        <div class="filtersContainer mat-elevation-z8">
+
+            <!-- titre -->
+            <div style="font-weight: bold; margin-bottom: 10px;">
+                Filtre
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- filtre textuelle-->
+            <div style="margin: 10px 0px 20px 2%;">
+                <input class="textFilter" (keyup)="applyFilter($event)" placeholder="filtre...">
+            </div>
+
+            <!-- visible + tags + période -->
+            <div class="row myRow">
+
+                <!-- visible -->
+                <div class="col-2">
+                    <mat-checkbox [(ngModel)]="visible" (change)="onFilter()">visible</mat-checkbox><br>
+                    <mat-checkbox [(ngModel)]="noVisible" (change)="onFilter()">non visible</mat-checkbox>
+                </div>
+
+                <!-- tags -->
+                <div class="col-4">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Tags</mat-label>
+                        <mat-select [formControl]="formControlTags" multiple>
+                            <mat-select-trigger>
+                                {{formControlTags.value ? formControlTags.value[0] : ''}}
+                                <span *ngIf="formControlTags.value?.length > 1">
+                                    (+{{formControlTags.value.length - 1}} {{formControlTags.value?.length === 2 ? 'autre' : 'autres'}})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let topping of allTags" [value]="topping">{{topping}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-icon-button (click)="onFilter()">
+                        <mat-icon>keyboard_tab</mat-icon>
+                    </button>
+                </div>
+
+                <!-- période -->
+                <div class="col-6" style="text-align: right;">
+                    Période de création: &nbsp;
+                    <mat-form-field appearance="fill" style="width: 140px; font-size: small;">
+                        <mat-label>Date de début</mat-label>
+                        <input matInput type="date"
+                               style="font-size: small; width: 140px;"
+                               [ngModel] ="startDate | date:'yyyy-MM-dd'"
+                               (ngModelChange)="onNewStartDate($event); onFilter();">
+                    </mat-form-field>
+                    &nbsp; - &nbsp;
+                    <mat-form-field appearance="fill" style="width: 140px; font-size: small;">
+                        <mat-label>Date de fin</mat-label>
+                        <input matInput type="date"
+                               style="font-size: small; width: 140px;"
+                               [ngModel] ="endDate | date:'yyyy-MM-dd'"
+                               (ngModelChange)="onNewEndDate($event); onFilter();">
+                    </mat-form-field>
+                </div>
+
+            </div>
         </div>
-        <br>
 
-        <!-- ---------------------------------------------------------------------------------- -->
 
+
+        <!-- table -->
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
             <!-- Title Column -->
@@ -82,9 +144,11 @@
                     <button mat-icon-button (click)="onVisualizeImages(advert)">
                         <mat-icon> insert_photo</mat-icon>
                     </button>
+                    <!--
                     <button mat-icon-button (click)="onVisualizeInfo(advert)">
                         <mat-icon>aspect_ratio</mat-icon>
                     </button>
+                    -->
                     <button mat-icon-button (click)="onDelete(advert)">
                         <mat-icon>delete</mat-icon>
                     </button>

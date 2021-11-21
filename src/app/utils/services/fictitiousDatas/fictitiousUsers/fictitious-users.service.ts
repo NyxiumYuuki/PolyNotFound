@@ -81,6 +81,9 @@ export class FictitiousUsersService
         res.login += (Math.floor(Math.random() * 1000)).toString();
         res.email = res.login + "@gmail.com" ;
         res.isAccepted = (Math.random() < 0.5);
+        res.isActive = (Math.random() < 0.5);
+        res.dateOfBirth = this.fictitiousUtilsService.randomDate(new Date(1900, 0, 1), new Date());
+        res.lastConnexion = this.fictitiousUtilsService.randomDate(new Date(2000, 0, 1), new Date());
         return res;
     }
 

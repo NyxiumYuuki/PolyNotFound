@@ -15,7 +15,7 @@ const TAB_ADVERT: Advert[] = [
             { url: "nutella_v_2.png", description: "image nutella 2" },
             { url: "nutella_v_3.jpg", description: "image nutella 3" }
         ],
-        tags: [ "bon", "petit-déjeuner", "chocolat" ],
+        tags: [ "rock", "basket" ],
         comment: "pub pour vacances de noêl",
         views: 5,
         isVisible: true,
@@ -32,7 +32,7 @@ const TAB_ADVERT: Advert[] = [
             { url: "rolex_v_1.jpg", description: "rolex 1" },
             { url: "rolex_v_2.png", description: "rolex 2" },
         ],
-        tags: [ "montre", "luxe", "suisse" ],
+        tags: [ "rock", "rap" ],
         comment: "pub pour cette année",
         views: 2,
         isVisible: true,

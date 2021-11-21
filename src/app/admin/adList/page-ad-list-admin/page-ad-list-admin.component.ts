@@ -10,6 +10,8 @@ import {PopupVisualizeAdAdminComponent} from "../popup-visualize-ad-admin/popup-
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
+import {FormControl} from "@angular/forms";
+import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 
 
 
@@ -20,14 +22,23 @@ import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/
 })
 export class PageAdListAdminComponent implements AfterViewInit
 {
+    tabAdvert: Advert[];
     displayedColumns: string[] = [ 'title', 'advertiser', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    visible: boolean = true;
+    noVisible: boolean = true;
+    startDate: Date = null;
+    endDate: Date = null;
+    formControlTags = new FormControl();
+    allTags: string[] = [];
+
 
     constructor( public themeService: ThemeService,
                  private fictitiousAdvertsService: FictitiousAdvertsService,
+                 private fictitiousUtilsService: FictitiousUtilsService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -35,11 +46,12 @@ export class PageAdListAdminComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
-        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.dataSource = new MatTableDataSource<Advert>(tabAdvert);
+        this.tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
+        this.dataSource = new MatTableDataSource<Advert>(this.tabAdvert);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource = this.dataSource;
+        this.allTags = this.fictitiousUtilsService.getTags();
     }
 
 
@@ -105,6 +117,61 @@ export class PageAdListAdminComponent implements AfterViewInit
                 }
                 this.snackBar.open( message, "", config);
             });
+    }
+
+
+    onFilter(): void
+    {
+        console.log("b:" + this.formControlTags.value);
+        this.dataSource.data = [];
+        for(let advert of this.tabAdvert)
+        {
+            let valide: boolean = true;
+
+            if(advert.isVisible && this.visible) valide = true;
+            else if((!advert.isVisible) && this.noVisible) valide = true;
+            else valide = false;
+
+            if(valide)
+            {
+                if ((advert.createdAt === null) && (this.startDate !== null)) valide = false;
+                else if ((advert.createdAt === null) && (this.endDate !== null)) valide = false;
+                else if (this.startDate !== null)
+                {
+                    if(this.startDate.getTime() > advert.createdAt.getTime()) valide = false;
+                    else if (this.endDate !== null)
+                    {
+                        if(this.endDate.getTime() < advert.createdAt.getTime()) valide = false;
+                    }
+                }
+            }
+
+            if(valide) {
+                if(this.formControlTags.value !== null) {
+                    for (let tag of this.formControlTags.value) {
+                        if (advert.tags.indexOf(tag) === -1) {
+                            valide = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(valide) this.dataSource.data.push(advert);
+        }
+
+        this.dataSource = new MatTableDataSource(this.dataSource.data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+    }
+
+
+    onNewStartDate(event): void {
+        this.startDate = new Date(event);
+    }
+
+    onNewEndDate(event): void {
+        this.endDate = new Date(event);
     }
 
 }

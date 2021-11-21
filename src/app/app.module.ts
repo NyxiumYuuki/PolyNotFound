@@ -69,6 +69,7 @@ import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/pop
 import { PopupCreateUserComponent } from './admin/userList/popup-create-user/popup-create-user.component';
 import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
 import { PageWatchingVideoComponent } from './user/watching/page-watching-video/page-watching-video.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 
 @NgModule({
@@ -146,6 +147,7 @@ import { PageWatchingVideoComponent } from './user/watching/page-watching-video/
         MatRadioModule,
         MatStepperModule,
         MatPaginatorModule,
+        MatDatepickerModule,
     ],
   providers: [],
   bootstrap: [AppComponent]
