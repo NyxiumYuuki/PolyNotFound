@@ -77,7 +77,7 @@ export class AddVideoToPlaylistsService
             case "annulation":
             case null:
             case undefined:
-                message = "Annulation de l'opération" ;
+                message = "Opération annulée" ;
                 break;
         }
         const config = { duration: 1000, panelClass: "custom-class" };

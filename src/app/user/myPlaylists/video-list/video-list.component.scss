@@ -5,6 +5,8 @@
   margin: 1vh 0vh 3vh 0vh;
   padding: 0px;
   border: solid 2px black;
+  border-radius: 10px;
+  box-shadow: 10px 5px 5px black;
 }
 
 // TopBorder --------------------------------------------------------
@@ -15,6 +17,8 @@
   text-align: left;
   padding: 5px 0px 5px 5px;
   border-bottom: solid 1px black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .spanPlayListTitle {
@@ -67,4 +71,6 @@
   border-top: solid 1px black;
   border-bottom: solid 1px black;
   font-size: large;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }

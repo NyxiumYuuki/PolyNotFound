@@ -17,13 +17,10 @@
 //--------------------------------------------------------------------------------------------
 
 .inputSearchBar {
-  width: 50%;
+  width: 40%;
   font-size: large;
-}
-.btnRechercher {
-  border: solid black 1px;
+  border-bottom: 10px;
   border-radius: 5px;
-  font-size: large;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -95,4 +92,24 @@
   border-top: solid 1px black;
   border-bottom: solid 1px black;
   font-size: large;
+}
+
+
+// -------------------------------------------------------------------------
+
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: solid 1px black !important;
+  background-color: white !important;
 }

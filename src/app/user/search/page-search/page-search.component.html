@@ -10,34 +10,39 @@
         <!-- --------------------------------------------------------------------- -->
 
 
-        <!-- [Search bar] + [Site de streaming] -->
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8" style="margin-bottom: 10px">
+        <!-- [Search bar] + [Sites de streaming] -->
+        <div style="width: 100%; margin: 0 auto;">
 
-                <!-- Search bar -->
-                <div class="row" style="margin-bottom: 10px">
-                    <div>
-                        <input type="search" placeholder="recherche..." class="inputSearchBar" [(ngModel)]="search"> &nbsp;
-                        <button class="btnRechercher" (click)="onSearch()"> Rechercher </button>
-                    </div>
+            <!-- Search bar -->
+            <div class="input-group" style="width: 100%; margin: 0 auto;">
+                <div class="form-outline" style="width: 100%; margin: 0 auto;">
+                    <input type="search" placeholder="recherche..." class="inputSearchBar"/>
+                    <button mat-icon-button (click)="onSearch()">
+                        <mat-icon>search</mat-icon>
+                    </button>
                 </div>
-
-                <!-- Site de streaming -->
-                <div class="row" style="margin-bottom: 10px">
-                    <div>
-                        <span *ngFor="let plateforme of tabPlateform">
-                            &nbsp;
-                            <input type="checkbox" [id]="plateforme.name" [name]="plateforme.name" style="margin-left: 5px" [(ngModel)]="plateforme.isSelected">
-                            <img [src]="'/assets/logo_plateforms/'+plateforme.name+'.png'" alt="image" width="25px" height="25px" style="margin-left: 5px">
-                            <label [for]="plateforme.name" style="margin-left: 5px"> {{plateforme.name}}</label>
-                            &nbsp;
-                        </span>
-                    </div>
-                </div>
-
             </div>
-            <div class="col-2"></div>
+
+            <!-- Sites de streaming -->
+            <div style="margin-bottom: 20px">
+                <!-- youtube -->
+                <span>
+                    &nbsp;
+                    <mat-checkbox id="youtube" name="youtube" style="margin-left: 5px" [(ngModel)]="tabPlateform[0].isSelected"></mat-checkbox>
+                    <img src="/assets/logo_plateforms/youtube.png" alt="logo" width="30px" height="25px" style="margin-left: 5px">
+                    <label for="youtube" style="margin-left: 5px">youtube</label>
+                    &nbsp;
+                </span>
+                <!-- dailymotion -->
+                <span>
+                    &nbsp;
+                    <mat-checkbox id="dailymotion" name="dailymotion" style="margin-left: 5px" [(ngModel)]="tabPlateform[1].isSelected"></mat-checkbox>
+                    <img src="/assets/logo_plateforms/dailymotion.png" alt="logo" width="25px" height="25px" style="margin-left: 5px">
+                    <label for="dailymotion" style="margin-left: 5px">dailymotion</label>
+                    &nbsp;
+                </span>
+            </div>
+
         </div>
 
 

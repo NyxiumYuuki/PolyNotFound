@@ -3,7 +3,6 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
-import {VideoUrlService} from "../../utils/services/videoUrl/video-url.service";
 import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {MatPaginator} from "@angular/material/paginator";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
@@ -28,7 +27,6 @@ export class PageHistoryUserComponent implements AfterViewInit
     constructor( public themeService: ThemeService,
                  private messageService: MessageService,
                  private fictitiousVideosService: FictitiousVideosService,
-                 public videoUrlService: VideoUrlService,
                  private userHistoryService: UserHistoryService,
                  private router: Router ) { }
 

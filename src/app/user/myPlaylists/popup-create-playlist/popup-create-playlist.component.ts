@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MessageService} from "../../../../utils/services/message/message.service";
-import {PlaylistDB} from "../../../../utils/interfaces/playlist";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {PlaylistDB} from "../../../utils/interfaces/playlist";
 
 
 

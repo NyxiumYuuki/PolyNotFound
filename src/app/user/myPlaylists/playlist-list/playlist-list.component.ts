@@ -4,7 +4,7 @@ import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PopupCreatePlaylistComponent} from "../../utils/components/popup-create-playlist/popup-create-playlist.component";
+import {PopupCreatePlaylistComponent} from "../popup-create-playlist/popup-create-playlist.component";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 
 
@@ -49,7 +49,7 @@ export class PlaylistListComponent implements OnInit
 
     onCreatePlaylist(): void
     {
-        const config = { width: '30%', data: this.tabPlaylist };
+        const config = { data: this.tabPlaylist };
         this.dialog
             .open(PopupCreatePlaylistComponent, config )
             .afterClosed()
@@ -57,7 +57,7 @@ export class PlaylistListComponent implements OnInit
 
                 const config = { duration: 1000, panelClass: "custom-class" };
                 if((playlist === null) || (playlist === undefined)) {
-                    this.snackBar.open("Opération annulée  ❌", "", config);
+                    this.snackBar.open("Opération annulée", "", config);
                 }
                 else {
                     this.allPlaylists.push(playlist);

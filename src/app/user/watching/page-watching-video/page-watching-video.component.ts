@@ -6,9 +6,9 @@ import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/f
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {VideoUrlService} from "../../utils/services/videoUrl/video-url.service";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {PlaylistDB} from "../../../utils/interfaces/playlist";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 
 
@@ -47,7 +47,7 @@ export class PageWatchingVideoComponent implements OnInit
                  public themeService: ThemeService,
                  private activatedRoute: ActivatedRoute,
                  private router: Router,
-                 public videoUrlService: VideoUrlService,
+                 private _sanitizer: DomSanitizer,
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService ) { }
 
 
@@ -109,4 +109,12 @@ export class PageWatchingVideoComponent implements OnInit
         else if(this.from === 'history') this.router.navigateByUrl("/user/history");
     }
 
+
+    safeUrl(videoId: string, source: string): SafeResourceUrl
+    {
+        let videoUrl = "" ;
+        if(source === 'youtube') videoUrl = "https://www.youtube.com/embed/" + videoId;
+        else if(source === 'dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
+        return this._sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+    }
 }
