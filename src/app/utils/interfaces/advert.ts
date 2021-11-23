@@ -8,7 +8,7 @@ export interface Advert
         url: string,
         description: string,
     }[],
-    tags: string[],
+    interests: string[],
     comment: string,
     views: number,
     isVisible: boolean,

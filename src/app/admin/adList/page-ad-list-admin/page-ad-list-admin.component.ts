@@ -23,7 +23,7 @@ import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fi
 export class PageAdListAdminComponent implements AfterViewInit
 {
     tabAdvert: Advert[];
-    displayedColumns: string[] = [ 'title', 'advertiser', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
+    displayedColumns: string[] = [ 'title', 'advertiser', 'interests', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,8 +32,8 @@ export class PageAdListAdminComponent implements AfterViewInit
     noVisible: boolean = true;
     startDate: Date = null;
     endDate: Date = null;
-    formControlTags = new FormControl();
-    allTags: string[] = [];
+    formControlInterests = new FormControl();
+    allInterests: string[] = [];
 
 
     constructor( public themeService: ThemeService,
@@ -47,11 +47,10 @@ export class PageAdListAdminComponent implements AfterViewInit
     {
         // --- FAUX CODE ---
         this.tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.dataSource = new MatTableDataSource<Advert>(this.tabAdvert);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource = this.dataSource;
-        this.allTags = this.fictitiousUtilsService.getTags();
+        this.allInterests = this.fictitiousUtilsService.getTags();
+
+        this.dataSource = new MatTableDataSource<Advert>();
+        this.onFilter();
     }
 
 
@@ -122,7 +121,7 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onFilter(): void
     {
-        console.log("b:" + this.formControlTags.value);
+        console.log("b:" + this.formControlInterests.value);
         this.dataSource.data = [];
         for(let advert of this.tabAdvert)
         {
@@ -147,9 +146,9 @@ export class PageAdListAdminComponent implements AfterViewInit
             }
 
             if(valide) {
-                if(this.formControlTags.value !== null) {
-                    for (let tag of this.formControlTags.value) {
-                        if (advert.tags.indexOf(tag) === -1) {
+                if(this.formControlInterests.value !== null) {
+                    for (let interest of this.formControlInterests.value) {
+                        if (advert.interests.indexOf(interest) === -1) {
                             valide = false;
                             break;
                         }

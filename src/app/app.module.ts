@@ -36,7 +36,7 @@ import { PageAdListAdvertiserComponent } from './advertiser/adList/page-ad-list-
 import { PopupDeleteAdAdvertiserComponent } from './advertiser/adList/popup-delete-ad-advertiser/popup-delete-ad-advertiser.component';
 import { PopupAddOrUpdateAdComponent } from './advertiser/adList/popup-add-or-update-ad/popup-add-or-update-ad.component';
 import { PopupVisualizeAdAdvertiserComponent } from './advertiser/adList/popup-visualize-ad-advertiser/popup-visualize-ad-advertiser.component';
-import { InputTagsComponent } from './advertiser/adList/input-tags/input-tags.component';
+import { InputInterestsAdComponent } from './advertiser/adList/input-interests-ad/input-interests-ad.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatSelectModule} from "@angular/material/select";
@@ -93,7 +93,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         PopupDeleteAdAdvertiserComponent,
         PopupAddOrUpdateAdComponent,
         PopupVisualizeAdAdvertiserComponent,
-        InputTagsComponent,
+        InputInterestsAdComponent,
         PopupVisualizeImagesAdvertiserComponent,
         DragAndDropComponent,
         DragAndDropDirective,

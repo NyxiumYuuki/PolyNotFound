@@ -2,25 +2,112 @@
     <div class="myContainer">
 
 
+        <!-- Navbar -->
         <app-navbar-advertiser></app-navbar-advertiser><br><br>
 
-        <!-- ---------------------------------------------------------------------------------- -->
 
-        <div style="text-align: center">
-            <input (keyup)="applyFilter($event)" placeholder="Filtre...">
+
+
+
+        <!-- filtre + btnAddUser -->
+        <div class="row" style="margin: 20px 3% 20px 3%">
+
+            <!-- filtre -->
+            <div class="col-10" style="padding: 0px 0px 0px 0px;">
+                <div class="filtersContainer mat-elevation-z8">
+
+                    <!-- titre -->
+                    <div style="font-weight: bold; margin-bottom: 10px;">
+                        Filtre
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <!-- filtre textuelle-->
+                    <div style="margin: 10px 0px 20px 2%;">
+                        <input class="textFilter" (keyup)="applyFilter($event)" placeholder="filtre...">
+                    </div>
+
+                    <!-- role + actif + période -->
+                    <div class="row myRow">
+
+
+                        <!-- visible -->
+                        <div class="col-2">
+                            <mat-checkbox [(ngModel)]="visible" (change)="onFilter()">visible</mat-checkbox><br>
+                            <mat-checkbox [(ngModel)]="noVisible" (change)="onFilter()">non visible</mat-checkbox>
+                        </div>
+
+
+                        <!-- sujets -->
+                        <div class="col-4">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Sujets</mat-label>
+                                <mat-select [formControl]="formControlInterests" multiple>
+                                    <mat-select-trigger>
+                                        {{formControlInterests.value ? formControlInterests.value[0] : ''}}
+                                        <span *ngIf="formControlInterests.value?.length > 1">
+                                    (+{{formControlInterests.value.length - 1}} {{formControlInterests.value?.length === 2 ? 'autre' : 'autres'}})
+                                </span>
+                                    </mat-select-trigger>
+                                    <mat-option *ngFor="let topping of allInterests" [value]="topping">{{topping}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button mat-icon-button (click)="onFilter()">
+                                <mat-icon>keyboard_tab</mat-icon>
+                            </button>
+                        </div>
+
+
+                        <!-- période -->
+                        <div class="col-6" style="text-align: right;">
+                            Période de création: &nbsp;
+                            <mat-form-field appearance="fill" style="width: 140px;">
+                                <mat-label>Date de début</mat-label>
+                                <input matInput type="date"
+                                       style="font-size: small; width: 140px;"
+                                       [ngModel] ="startDate | date:'yyyy-MM-dd'"
+                                       (ngModelChange)="onNewStartDate($event); onFilter();">
+                            </mat-form-field>
+                            &nbsp; - &nbsp;
+                            <mat-form-field appearance="fill" style="width: 140px;">
+                                <mat-label>Date de fin</mat-label>
+                                <input matInput type="date"
+                                       style="font-size: small; width: 140px;"
+                                       [ngModel] ="endDate | date:'yyyy-MM-dd'"
+                                       (ngModelChange)="onNewEndDate($event); onFilter();">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- btnAdd -->
+            <div class="col-2" style="text-align: right; position: relative;">
+                <button mat-button class="btnAjouter" (click)="onAdd()" style="position: absolute; bottom: 0; right: 0;">
+                    <mat-icon>add_circle</mat-icon> Ajouter une annonce
+                </button>
+            </div>
+
         </div>
-        <br>
 
-        <!-- ---------------------------------------------------------------------------------- -->
 
-        <button mat-button class="btnAjouter" (click)="onAdd()">
-            <mat-icon>add_circle</mat-icon> Ajouter une annonce
-        </button>
-        <br>
 
-        <!-- ---------------------------------------------------------------------------------- -->
 
+        <!-- Table -->
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+            <!-- IsActive Column -->
+            <ng-container matColumnDef="isVisible">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-icon>power_settings_new</mat-icon>
+                </th>
+                <td mat-cell *matCellDef="let advert">
+                    <mat-slide-toggle [(ngModel)]="advert.isVisible" (click)="onSliderIsVisible(advert)"></mat-slide-toggle>
+                </td>
+            </ng-container>
 
             <!-- Title Column -->
             <ng-container matColumnDef="title">
@@ -30,13 +117,13 @@
                 </td>
             </ng-container>
 
-            <!-- Tags Column -->
-            <ng-container matColumnDef="tags">
-                <th mat-header-cell *matHeaderCellDef> Tags </th>
+            <!-- Subject Column -->
+            <ng-container matColumnDef="interests">
+                <th mat-header-cell *matHeaderCellDef> Sujets </th>
                 <td mat-cell *matCellDef="let advert">
-                    <span *ngFor="let tag of advert.tags; let isLast = last;">
-                        <span *ngIf="!isLast"> {{tag}}, </span>
-                        <span *ngIf="isLast"> {{tag}} </span>
+                    <span *ngFor="let interest of advert.interests; let isLast = last;">
+                        <span *ngIf="!isLast"> {{interest}}, </span>
+                        <span *ngIf="isLast"> {{interest}} </span>
                     </span>
                 </td>
             </ng-container>
@@ -65,15 +152,6 @@
                 </td>
             </ng-container>
 
-            <!-- IsVisible Column -->
-            <ng-container matColumnDef="isVisible">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Visible </th>
-                <td mat-cell *matCellDef="let advert">
-                    <span *ngIf="advert.isVisible"> <mat-icon>check</mat-icon> </span>
-                    <span *ngIf="!advert.isVisible"></span>
-                </td>
-            </ng-container>
-
             <!-- Actions Column -->
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
@@ -82,10 +160,7 @@
                         <mat-icon> insert_photo</mat-icon>
                     </button>
                     <button mat-icon-button (click)="onUpdate(advert)">
-                        <mat-icon>settings</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="onVisualize(advert)">
-                        <mat-icon>aspect_ratio</mat-icon>
+                        <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button (click)="onDelete(advert)">
                         <mat-icon>delete</mat-icon>

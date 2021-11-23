@@ -9,28 +9,25 @@
 // ----------------------------------------------------------
 
 
-.btnAjouter {
-  margin-left: 3%;
-  padding: 5px 20px 5px 20px;
-  font-size: small;
-}
-.lightTheme .btnAjouter {
-  border-top: solid 1px #dcdcdc;
-  border-right: solid 1px #dcdcdc;
-  border-left: solid 1px #dcdcdc;
-  color: black;
+.filtersContainer {
+  width: 95%;
   background-color: white;
+  padding: 10px 10px 10px 10px;
 }
-.darkTheme .btnAjouter {
-  border-top: solid 1px white;
-  border-right: solid 1px white;
-  border-left: solid 1px white;
-  color: white;
-  background-color: black;
+
+.myRow {
+  margin-left: 1%;
 }
-.darkTheme .btnAjouter:hover {
-  background-color: #646464;
-  color: black;
+
+.textFilter {
+  width: 50%;
+  font-size: medium;
+  border-radius: 5px;
+}
+
+.btnAjouter {
+  background-color: white;
+  border: solid 1px black;
 }
 
 
@@ -56,4 +53,48 @@ input {
   width: 30%;
   font-size: large;
   border-radius: 5px;
+}
+
+
+// --------------------------------------------------------------------
+
+
+// rong gauche
+::ng-deep .mat-slide-toggle-thumb {
+  background-color: white !important;
+}
+
+// trait droite
+::ng-deep .mat-slide-toggle-bar {
+  background-color: gray !important;
+}
+
+// rond droite
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: white !important;
+}
+
+// trait gauche
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: cornflowerblue !important;
+}
+
+
+// -------------------------------------------------------------------------
+
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: solid 1px black !important;
+  background-color: white !important;
 }

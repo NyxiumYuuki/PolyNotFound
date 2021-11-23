@@ -9,7 +9,7 @@ export class DragAndDropComponent
 {
     @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef;
     files: any[] = [];
-    info_image = "Vos annonces seront affichées dans un rectangle de rapport 1/5 avec: \n • 1 la largeur durectangle \n • 5 la hauteur du rectangle" ;
+    info_image = "Vos annonces seront affichées dans un rectangle de rapport 1/5 avec: \n • 1 la largeur du rectangle \n • 5 la hauteur du rectangle" ;
 
 
     /**

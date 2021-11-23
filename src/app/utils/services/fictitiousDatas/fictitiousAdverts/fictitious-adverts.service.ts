@@ -15,7 +15,7 @@ const TAB_ADVERT: Advert[] = [
             { url: "nutella_v_2.png", description: "image nutella 2" },
             { url: "nutella_v_3.jpg", description: "image nutella 3" }
         ],
-        tags: [ "rock", "basket" ],
+        interests: [ "rock", "basket" ],
         comment: "pub pour vacances de noêl",
         views: 5,
         isVisible: true,
@@ -32,7 +32,7 @@ const TAB_ADVERT: Advert[] = [
             { url: "rolex_v_1.jpg", description: "rolex 1" },
             { url: "rolex_v_2.png", description: "rolex 2" },
         ],
-        tags: [ "rock", "rap" ],
+        interests: [ "rock", "rap" ],
         comment: "pub pour cette année",
         views: 2,
         isVisible: true,
@@ -58,7 +58,7 @@ export class FictitiousAdvertsService
         const idx = Math.floor(Math.random() * TAB_ADVERT.length);
         let advert = Object.assign({}, TAB_ADVERT[idx]);
         advert._id = advert._id + this.fictitiousUtilsService.makeid(5);
-        advert.tags = advert.tags.slice();
+        advert.interests = advert.interests.slice();
         advert.isVisible = (Math.random() < 0.5);
         return advert;
     }

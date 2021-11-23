@@ -11,6 +11,8 @@ import {PopupVisualizeAdAdvertiserComponent} from "../popup-visualize-ad-adverti
 import {MatPaginator} from "@angular/material/paginator";
 import {PopupVisualizeImagesAdvertiserComponent} from "../popup-visualize-images-advertiser/popup-visualize-images-advertiser.component";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
+import {FormControl} from "@angular/forms";
+import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 
 
 
@@ -21,14 +23,23 @@ import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/
 })
 export class PageAdListAdvertiserComponent implements AfterViewInit
 {
-    displayedColumns: string[] = [ 'title', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
+    displayedColumns: string[] = [ 'isVisible', 'title', 'interests', 'createdAt', 'updatedAt', 'views', 'actions' ];
+    tabAdvert: Advert[] = [];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    visible: boolean = true;
+    noVisible: boolean = true;
+    startDate: Date = null;
+    endDate: Date = null;
+    formControlInterests = new FormControl();
+    allInterests: string[] = [];
+
 
     constructor( public themeService: ThemeService,
                  private fictitiousAdvertsService: FictitiousAdvertsService,
+                 private fictitiousUtilsService: FictitiousUtilsService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -36,11 +47,11 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
-        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.dataSource = new MatTableDataSource<Advert>(tabAdvert);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource = this.dataSource;
+        this.tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
+        this.allInterests = this.fictitiousUtilsService.getTags();
+
+        this.dataSource = new MatTableDataSource<Advert>();
+        this.onFilter();
     }
 
 
@@ -85,8 +96,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     onAdd(): void
     {
         const config = {
-            width: '40%',
-            height: '80%',
+            width: '75%',
             data: { action: "add", advert: null }
         };
         this.dialog
@@ -113,8 +123,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     onUpdate(advertToUpdate: Advert): void
     {
         const config = {
-            width: '40%',
-            height: '80%',
+            width: '75%',
             data: { action: "update", advert: advertToUpdate }
         };
         this.dialog
@@ -163,6 +172,67 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                 }
                 this.snackBar.open( message, "", config);
             });
+    }
+
+
+    onFilter(): void
+    {
+        console.log("b:" + this.formControlInterests.value);
+        this.dataSource.data = [];
+        for(let advert of this.tabAdvert)
+        {
+            let valide: boolean = true;
+
+            if(advert.isVisible && this.visible) valide = true;
+            else if((!advert.isVisible) && this.noVisible) valide = true;
+            else valide = false;
+
+            if(valide)
+            {
+                if ((advert.createdAt === null) && (this.startDate !== null)) valide = false;
+                else if ((advert.createdAt === null) && (this.endDate !== null)) valide = false;
+                else if (this.startDate !== null)
+                {
+                    if(this.startDate.getTime() > advert.createdAt.getTime()) valide = false;
+                    else if (this.endDate !== null)
+                    {
+                        if(this.endDate.getTime() < advert.createdAt.getTime()) valide = false;
+                    }
+                }
+            }
+
+            if(valide) {
+                if(this.formControlInterests.value !== null) {
+                    for (let interest of this.formControlInterests.value) {
+                        if (advert.interests.indexOf(interest) === -1) {
+                            valide = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(valide) this.dataSource.data.push(advert);
+        }
+
+        this.dataSource = new MatTableDataSource(this.dataSource.data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+    }
+
+
+    onNewStartDate(event): void {
+        this.startDate = new Date(event);
+    }
+
+    onNewEndDate(event): void {
+        this.endDate = new Date(event);
+    }
+
+
+    onSliderIsVisible(advert: Advert): void
+    {
+        // il faut envoyer la négation de user.isActive
     }
 
 }
