@@ -72,6 +72,7 @@ import { PageWatchingVideoComponent } from './user/watching/page-watching-video/
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { PagesPopularityComponent } from './advertiser/pages-popularity/pages-popularity.component';
 import { ChartsModule } from 'ng2-charts';
+import { PopupDeletePlaylistComponent } from './user/myPlaylists/popup-delete-playlist/popup-delete-playlist.component';
 
 
 @NgModule({
@@ -122,6 +123,7 @@ import { ChartsModule } from 'ng2-charts';
         InputInterestsAdminComponent,
         PageWatchingVideoComponent,
         PagesPopularityComponent,
+        PopupDeletePlaylistComponent,
     ],
     imports: [
         BrowserModule,

@@ -35,22 +35,35 @@
   height: 60vh;
   overflow-y: scroll;
   padding: 0px;
+  overflow-x: hidden;
 }
 
 .playlistContainer {
   max-width: 100%;
   padding: 0px;
+  overflow-x: hidden;
 }
+
 
 .btnPlaylist {
   background-color: white;
   padding: 20px;
   border-bottom: solid 1px black;
-  width: 100%;
+  //width: 100%;
+  width: 35vw;
+  overflow-x: hidden;
 }
 .btnPlaylist:hover {
   background-color: #f0f0f0;
 }
+
+.btnPlaylistFocus {
+  background-color: #e6e6e6;
+}
+.btnPlaylistFocus:hover {
+  background-color: #e6e6e6;
+}
+
 
 .playListCount {
   color: gray;

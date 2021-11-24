@@ -6,26 +6,32 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
+
     <!-- [Recherche] [Mes Playlists] [Historique] -->
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
             <li class="nav-item active monLi">
-                <a class="nav-link" routerLink="/user/search"> Rechercher </a>
+                <a *ngIf="(url !== routes[0]) && (url !== routes[1])" [routerLink]="routes[1]" class="nav-link">Rechercher</a>
+                <a *ngIf="(url === routes[0]) || (url === routes[1])" [routerLink]="routes[1]" class="nav-link myActiveLink">Rechercher</a>
             </li>
             <li class="nav-item active monLi">
-                <a class="nav-link" routerLink="/user/myPlaylists"> Mes playlists </a>
+                <a *ngIf="url !== routes[2]" [routerLink]="routes[2]" class="nav-link">Mes playlists</a>
+                <a *ngIf="url === routes[2]" [routerLink]="routes[2]" class="nav-link myActiveLink">Mes playlists</a>
             </li>
             <li class="nav-item active monLi">
-                <a class="nav-link" routerLink="/user/history"> Historique </a>
+                <a *ngIf="url !== routes[3]" [routerLink]="routes[3]" class="nav-link">Historique</a>
+                <a *ngIf="url === routes[3]" [routerLink]="routes[3]" class="nav-link myActiveLink">Historique</a>
             </li>
         </ul>
     </div>
 
+
     <!-- Mon profil -->
     <img [src]=urlImage
          onerror="this.onerror=null; this.src='assets/profil.png'"
-         routerLink="/user/myProfil"
+         [routerLink]="routes[4]"
          alt="">
+
 
     <!-- Deconnexion -->
     <button mat-button class="btnDeconnexion" (click)="onDeconnexion()" routerLink="/">

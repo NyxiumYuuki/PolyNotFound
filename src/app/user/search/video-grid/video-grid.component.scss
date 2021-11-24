@@ -7,12 +7,20 @@ mat-grid-list {
 mat-grid-tile {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
-  border: solid 1px black;
+  //border: solid 1px black;
 }
 
 .myCell {
-  margin: 0px 0px 0px 0px;
-  padding: 7px 0px 0px 0px;
+  margin: 7px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background-color: #f0f0f0;
+  border: solid 1px black;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  cursor: pointer;
+}
+.myCell:hover {
+  background-color: #d2d2d2;
 }
 
 
@@ -20,22 +28,24 @@ mat-grid-tile {
 
 
 .imgsContainer {
-  width: 20vw;
+  //width: 20vw;
+  width: 18vw;
   height: 15vh;
 }
 
 .imgPlay {
   position: absolute;
-  margin-left: 9vw;
-  width: 3vw;
+  margin-left: 8vw;
+  width: 2.5vw;
   margin-top: 5vh;
-  height: 6vh;
+  height: 5vh;
   padding: 0px 0px 0px 0px;
 }
 
 .imgVideo {
-  border: solid 1px black;
-  width: 20vw;
+  //border: solid 1px black;
+  //width: 20vw;
+  width: 18vw;
   height: 15vh;
   padding: 0px 0px 0px 0px;
 }
@@ -57,10 +67,11 @@ mat-icon {
 // ---------------------------------------------------------------------------------------------
 
 
-.btnContainer {
+.paginatorContainer {
   margin: 0px 0px 0px 0px;
-  padding: 0px 0px 0px 0px;
+  padding: 5px 0px 0px 0px;
   text-align: center;
+  background-color: white;
 }
 
 .btnPaginator {

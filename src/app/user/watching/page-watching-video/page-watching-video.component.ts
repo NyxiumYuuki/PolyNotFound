@@ -117,4 +117,13 @@ export class PageWatchingVideoComponent implements OnInit
         else if(source === 'dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
         return this._sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
     }
+
+
+    // retourne la classe CSS de videoCell
+    getClassOfVideoCell(video0: VideoAll): string
+    {
+        if(video0 === this.video) return "videoCell videoCellFocus" ;
+        else return "videoCell" ;
+    }
+
 }

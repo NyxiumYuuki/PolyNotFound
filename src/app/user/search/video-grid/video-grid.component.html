@@ -2,7 +2,7 @@
 
 
 <!-- Grille -->
-<div style="height: 93%">
+<div style="height: 93%; background-color: white; padding-top: 7px;">
     <mat-grid-list cols="3" rowHeight="33%">
         <mat-grid-tile colspan="1" rowspan="1" *ngFor="let k of [0,1,2,3,4,5,6,7,8]">
             <div class="myCell" *ngIf="indexPage+k < tabVideo.length" [title]="tabVideo[indexPage+k].title">
@@ -19,13 +19,13 @@
                 <mat-grid-list cols="12" style="margin: 0px 0px 0px 0px; font-size: small">
 
                     <!-- logo -->
-                    <mat-grid-tile [colspan]="2" [rowspan]="2" class="mat-grid-tile-info-video">
+                    <mat-grid-tile [colspan]="2" [rowspan]="2" class="mat-grid-tile-info-video" (click)="onVideo(tabVideo[indexPage+k])">
                         <img *ngIf="tabVideo[indexPage+k].source==='youtube'" src="/assets/logo_plateforms/youtube.png" alt="ytb" width="20px" height="15px">
                         <img *ngIf="tabVideo[indexPage+k].source==='dailymotion'" src="/assets/logo_plateforms/dailymotion.png" alt="dlm" width="20px" height="20px">
                     </mat-grid-tile>
 
                     <!-- title + views + publishedAt -->
-                    <mat-grid-tile [colspan]="8" [rowspan]="2" class="mat-grid-tile-info-video">
+                    <mat-grid-tile [colspan]="8" [rowspan]="2" class="mat-grid-tile-info-video" (click)="onVideo(tabVideo[indexPage+k])">
                         <div style="position: absolute; left: 1px; text-align: left">
                             {{tronquage(tabVideo[indexPage+k].title)}}
                             <br>
@@ -54,7 +54,7 @@
 
 
 <!-- Paginator -->
-<div class="btnContainer">
+<div class="paginatorContainer">
 
     <!-- btn précédent -->
     <button mat-button class="btnPaginator" [disabled]="indexPage<=0" (click)="indexPage=indexPage-9"> < Précédent </button> &nbsp;
