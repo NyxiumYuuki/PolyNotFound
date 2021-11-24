@@ -13,7 +13,15 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
-        watchedDates: [new Date()],
+        interest: "PNL",
+        watchedDates: [
+            new Date(2021, 10, 15),
+            new Date(2021, 10, 16),
+            new Date(2021, 10, 17),
+            new Date(2021, 10, 18),
+            new Date(2021, 10, 19),
+            new Date(2021, 10, 20),
+        ],
         createdAt: new Date(),
         updatedAt: new Date(),
 
@@ -30,6 +38,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
+        interest: "PNL",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -47,6 +56,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
+        interest: "PNL",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -64,6 +74,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
+        interest: "PNL",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -81,6 +92,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "dailymotion",
         tags: [ "rap", "musique" ],
+        interest: "PNL",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -98,6 +110,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
+        interest: "Nekfeu",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -115,6 +128,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
+        interest: "Nekfeu",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -132,6 +146,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "youtube",
         tags: [ "rap", "musique" ],
+        interest: "Nekfeu",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -149,6 +164,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "dailymotion",
         tags: [ "rap", "musique" ],
+        interest: "Columbine",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -166,6 +182,7 @@ const TAB_VIDEO: VideoAll[] = [
         userId: "userId",
         source: "dailymotion",
         tags: [ "rap", "musique" ],
+        interest: "Columbine",
         watchedDates: [new Date()],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -210,7 +227,7 @@ export class FictitiousVideosService
     }
 
 
-    getAllVideoAll(): VideoAll[]
+    get_TAB_VIDEO(): VideoAll[]
     {
         return TAB_VIDEO;
     }

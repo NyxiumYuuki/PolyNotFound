@@ -5,8 +5,7 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
-import {Advert} from "../../../utils/interfaces/advert";
-import {PopupVisualizeAdAdminComponent} from "../popup-visualize-ad-admin/popup-visualize-ad-admin.component";
+import {Advert, AdvertWithCountViews} from "../../../utils/interfaces/advert";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
@@ -22,8 +21,8 @@ import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fi
 })
 export class PageAdListAdminComponent implements AfterViewInit
 {
-    tabAdvert: Advert[];
-    displayedColumns: string[] = [ 'title', 'advertiser', 'interests', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
+    tabAdvertWithCountViews: AdvertWithCountViews[] = [];
+    displayedColumns: string[] = [ 'title', 'advertiser', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -46,9 +45,10 @@ export class PageAdListAdminComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
-        this.tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
+        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
         this.allInterests = this.fictitiousUtilsService.getTags();
 
+        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
         this.dataSource = new MatTableDataSource<Advert>();
         this.onFilter();
     }
@@ -61,7 +61,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onVisualizeImages(advert: Advert)
+    onVisualizeImages(advert: AdvertWithCountViews)
     {
         const config = {
             width: '30%',
@@ -79,20 +79,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onVisualizeInfo(advert: Advert): void
-    {
-        const config = {
-            width: '50%',
-            data: { advert: advert }
-        };
-        this.dialog
-            .open(PopupVisualizeAdAdminComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
-    }
-
-
-    onDelete(advert: Advert): void
+    onDelete(advert: AdvertWithCountViews): void
     {
         const config = {
             data: { advert: advert }
@@ -121,9 +108,8 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onFilter(): void
     {
-        console.log("b:" + this.formControlInterests.value);
         this.dataSource.data = [];
-        for(let advert of this.tabAdvert)
+        for(let advert of this.tabAdvertWithCountViews)
         {
             let valide: boolean = true;
 
@@ -171,6 +157,26 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onNewEndDate(event): void {
         this.endDate = new Date(event);
+    }
+
+
+    advertToAdvertWithCountViews(advert: Advert): AdvertWithCountViews
+    {
+        return {
+            _id: advert._id,
+            userId: advert.userId,
+            title: advert.title,
+            advertiser: advert.advertiser,
+            images: advert.images,
+            interests: advert.interests,
+            comment: advert.comment,
+            views: advert.views,
+            countViews: advert.views.length,
+            isVisible: advert.isVisible,
+            isActive: advert.isActive,
+            createdAt: advert.createdAt,
+            updatedAt: advert.updatedAt,
+        }
     }
 
 }

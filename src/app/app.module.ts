@@ -46,8 +46,8 @@ import { DragAndDropComponent } from './advertiser/adList/drag-and-drop/drag-and
 import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-drop.directive';
 import { PageProfilUserComponent } from './user/myProfil/page-profil-user/page-profil-user.component';
 import { NavbarUserComponent } from './user/utils/components/navbar-user/navbar-user.component';
-import { NavbarAdvertiserComponent } from './advertiser/navbar-advertiser/navbar-advertiser.component';
-import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.component';
+import { NavbarAdvertiserComponent } from './advertiser/utils/components/navbar-advertiser/navbar-advertiser.component';
+import { NavbarAdminComponent } from './admin/utils/components/navbar-admin/navbar-admin.component';
 import { PageProfilAdvertiserComponent } from './advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component';
 import { PopupUpdateAdvertiserComponent } from './advertiser/myProfil/popup-update-advertiser/popup-update-advertiser.component';
 import { PopupUpdateUserComponent } from './user/myProfil/popup-update-user/popup-update-user.component';
@@ -70,6 +70,8 @@ import { PopupCreateUserComponent } from './admin/userList/popup-create-user/pop
 import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
 import { PageWatchingVideoComponent } from './user/watching/page-watching-video/page-watching-video.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import { PagesPopularityComponent } from './advertiser/pages-popularity/pages-popularity.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -119,6 +121,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         PopupCreateUserComponent,
         InputInterestsAdminComponent,
         PageWatchingVideoComponent,
+        PagesPopularityComponent,
     ],
     imports: [
         BrowserModule,
@@ -148,6 +151,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         MatStepperModule,
         MatPaginatorModule,
         MatDatepickerModule,
+        ChartsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

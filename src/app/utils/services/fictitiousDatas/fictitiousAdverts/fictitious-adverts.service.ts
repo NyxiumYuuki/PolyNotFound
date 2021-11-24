@@ -17,7 +17,18 @@ const TAB_ADVERT: Advert[] = [
         ],
         interests: [ "rock", "basket" ],
         comment: "pub pour vacances de noêl",
-        views: 5,
+        views: [
+            new Date(2021,10,1),
+            new Date(2021,10,2),
+            new Date(2021,10,3),
+            new Date(2021,10,3),
+            new Date(2021,10,5),
+            new Date(2021,10,5),
+            new Date(2021,10,5),
+            new Date(2021,10,5),
+            new Date(2021,10,5),
+            new Date(2021,10,7)
+        ],
         isVisible: true,
         isActive: true,
         createdAt: new Date(),
@@ -34,12 +45,51 @@ const TAB_ADVERT: Advert[] = [
         ],
         interests: [ "rock", "rap" ],
         comment: "pub pour cette année",
-        views: 2,
+        views: [
+            new Date(2021,10,5),
+            new Date(2021,10,6),
+            new Date(2021,10,7),
+            new Date(2021,10,8),
+            new Date(2021,10,8),
+            new Date(2021,10,8),
+            new Date(2021,10,25),
+            new Date(2021,10,25),
+            new Date(2021,10,25),
+            new Date(2021,10,27)
+        ],
         isVisible: true,
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
+    {
+        _id: "idAlbion",
+        userId: "userId",
+        title: "Albion new version",
+        advertiser: "albion",
+        images: [
+            { url: "rolex_v_1.jpg", description: "albion 1" },
+            { url: "rolex_v_2.png", description: "albion 2" },
+        ],
+        interests: [ "rock", "rap" ],
+        comment: "pub pour cette année",
+        views: [
+            new Date(2021,10,3),
+            new Date(2021,10,4),
+            new Date(2021,10,4),
+            new Date(2021,10,5),
+            new Date(2021,10,5),
+            new Date(2021,10,6),
+            new Date(2021,10,6),
+            new Date(2021,10,8),
+            new Date(2021,10,8),
+            new Date(2021,10,8)
+        ],
+        isVisible: true,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    }
 ];
 
 
@@ -69,6 +119,12 @@ export class FictitiousAdvertsService
         let tabAdvert = [];
         for(let i=0 ; i<n ; i++) tabAdvert.push(this.getAdvert());
         return tabAdvert;
+    }
+
+
+    get_TAB_ADVERT(): Advert[]
+    {
+        return TAB_ADVERT;
     }
 
 }

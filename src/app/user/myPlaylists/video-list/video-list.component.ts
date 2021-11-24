@@ -21,7 +21,7 @@ export class VideoListComponent implements OnChanges
 {
     @Input() playlist: PlaylistDB;
     videosInPlaylist: VideoAll[] = [];
-    allUserVideos: VideoAll[] = this.fictitiousVideosService.getAllVideoAll();
+    allUserVideos: VideoAll[] = this.fictitiousVideosService.get_TAB_VIDEO();
 
 
     constructor( private messageService: MessageService,

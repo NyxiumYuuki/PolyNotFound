@@ -23,27 +23,17 @@
 }
 
 
+.monLi {
+  margin: 0px 10px 0px 10px;
+}
+
+
 // Recherche, Mes Playlists, Historique
 .nav-link {
   color: white;
 }
 .nav-link:hover {
   color: grey;
-}
-
-
-// Bonton deconnexion
-.btnDeconnexion {
-  font-size: medium;
-  margin: 0px 10px 0px 10px
-}
-.btnDeconnexion:hover {
-  color: grey;
-}
-
-
-.monLi {
-  margin: 0px 10px 0px 10px;
 }
 
 
@@ -56,6 +46,16 @@ img {
 }
 img:hover {
   cursor: pointer;
+}
+
+
+// Bonton deconnexion
+.btnDeconnexion {
+  font-size: medium;
+  margin: 0px 10px 0px 10px
+}
+.btnDeconnexion:hover {
+  color: grey;
 }
 
 

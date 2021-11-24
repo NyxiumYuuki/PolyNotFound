@@ -13,7 +13,7 @@ const ADVERT_VIDE: Advert = {
     images: [],
     interests: [],
     comment: "",
-    views: 0,
+    views: [],
     isVisible: true,
     isActive: true,
     createdAt: new Date(),

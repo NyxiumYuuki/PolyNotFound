@@ -12,6 +12,7 @@ import {PageProfilAdminComponent} from "./admin/myProfil/page-profil-admin/page-
 import {PageAdListAdminComponent} from "./admin/adList/page-ad-list-admin/page-ad-list-admin.component";
 import {PageUserListComponent} from "./admin/userList/page-user-list/page-user-list.component";
 import {PageWatchingVideoComponent} from "./user/watching/page-watching-video/page-watching-video.component";
+import {PagesPopularityComponent} from "./advertiser/pages-popularity/pages-popularity.component";
 
 
 const routes: Routes = [
@@ -27,7 +28,6 @@ const routes: Routes = [
     { path: 'user/myPlaylists', component: PageMyPlaylistsComponent },
     { path: 'user/history', component: PageHistoryUserComponent },
     { path: 'user/myProfil', component:  PageProfilUserComponent },
-
     { path: 'user/watching/fromSearch/:videoId/:source/:search', component: PageWatchingVideoComponent },
     { path: 'user/watching/fromMyPlaylists/:videoId/:_idPlaylist', component: PageWatchingVideoComponent },
     { path: 'user/watching/fromHistory/:videoId/:source', component: PageWatchingVideoComponent },
@@ -36,6 +36,8 @@ const routes: Routes = [
     { path: 'advertiser', component: PageAdListAdvertiserComponent },
     { path: 'advertiser/adList', component: PageAdListAdvertiserComponent },
     { path: 'advertiser/myProfil', component: PageProfilAdvertiserComponent },
+    { path: 'advertiser/adsPopularity', component: PagesPopularityComponent },
+    { path: 'advertiser/subjectsPopularity', component: PagesPopularityComponent },
 
     // Admin
     { path: 'admin', component: PageUserListComponent },
