@@ -82,19 +82,6 @@ input {
 
 // -------------------------------------------------------------------------
 
-
-// aura
-::ng-deep .mat-checkbox-ripple .mat-ripple-element {
-  background-color: grey !important;
-}
-
-// contenu coche
-::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+::ng-deep .mat-pseudo-checkbox-checked {
   background-color: black !important;
-}
-
-// indeterminate
-::ng-deep .mat-checkbox .mat-checkbox-frame {
-  border: solid 1px black !important;
-  background-color: white !important;
 }

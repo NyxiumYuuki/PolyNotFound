@@ -5,12 +5,36 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
-import {Advert, AdvertWithCountViews} from "../../../utils/interfaces/advert";
+import {Advert} from "../../../utils/interfaces/advert";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {FormControl} from "@angular/forms";
 import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
+import {User} from "../../../utils/interfaces/user";
+import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
+
+
+
+export interface AdvertWithCountViewsAndCompany {
+    _id: string,
+    userId: string,
+    company: string,
+    title: string,
+    url: string,
+    images: {
+        url: string,
+        description: string,
+    }[],
+    interests: string[],
+    comment: string,
+    views: Date[],
+    countViews: number,
+    isVisible: boolean,
+    isActive: boolean,
+    createdAt: Date,
+    updatedAt: Date,
+}
 
 
 
@@ -21,8 +45,9 @@ import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fi
 })
 export class PageAdListAdminComponent implements AfterViewInit
 {
-    tabAdvertWithCountViews: AdvertWithCountViews[] = [];
-    displayedColumns: string[] = [ 'title', 'advertiser', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
+    tabAdvertWithCountViews: AdvertWithCountViewsAndCompany[] = [];
+    tabAdvertiser: User[];
+    displayedColumns: string[] = [ 'title', 'company', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -38,6 +63,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     constructor( public themeService: ThemeService,
                  private fictitiousAdvertsService: FictitiousAdvertsService,
                  private fictitiousUtilsService: FictitiousUtilsService,
+                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -47,8 +73,9 @@ export class PageAdListAdminComponent implements AfterViewInit
         // --- FAUX CODE ---
         const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
         this.allInterests = this.fictitiousUtilsService.getTags();
+        this.tabAdvertiser = this.fictitiousUsersService.getTabAdvertiser(3);
 
-        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
+        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViewsAndCompany(advert));
         this.dataSource = new MatTableDataSource<Advert>();
         this.onFilter();
     }
@@ -61,7 +88,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onVisualizeImages(advert: AdvertWithCountViews)
+    onVisualizeImages(advert: AdvertWithCountViewsAndCompany)
     {
         const config = {
             width: '30%',
@@ -79,7 +106,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onDelete(advert: AdvertWithCountViews): void
+    onDelete(advert: AdvertWithCountViewsAndCompany): void
     {
         const config = {
             data: { advert: advert }
@@ -160,13 +187,23 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    advertToAdvertWithCountViews(advert: Advert): AdvertWithCountViews
+    advertToAdvertWithCountViewsAndCompany(advert: Advert): AdvertWithCountViewsAndCompany
     {
+        let company0 = "company" ;
+        for(let advertiser of this.tabAdvertiser)
+        {
+            if(advert.userId === advertiser._id) {
+                company0 = advertiser.company;
+                break;
+            }
+        }
+
         return {
             _id: advert._id,
             userId: advert.userId,
             title: advert.title,
-            advertiser: advert.advertiser,
+            company: company0,
+            url: advert.url,
             images: advert.images,
             interests: advert.interests,
             comment: advert.comment,

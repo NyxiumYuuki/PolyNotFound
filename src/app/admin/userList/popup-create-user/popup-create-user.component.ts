@@ -38,6 +38,7 @@ export class PopupCreateUserComponent implements OnInit
             dateOfBirth: null,
             gender: "man",
             interests: [],
+            company: "",
             isActive: false,
             isAccepted: false,
             createdAt: new Date(),
@@ -72,12 +73,8 @@ export class PopupCreateUserComponent implements OnInit
             this.errorMessage = "Veuillez remplir le champ 'email'.";
             this.hasError = true;
         }
-        if((this.user.role.name === 'user') && ((this.user.dateOfBirth === undefined) || (this.user.dateOfBirth === null))) {
-            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
-            this.hasError = true;
-        }
         else if(!this.isValidEmail(this.user.email)) {
-            this.errorMessage = "Email invalide";
+            this.errorMessage = "Email invalide.";
             this.hasError = true;
         }
         else if(this.password.length === 0) {
@@ -86,6 +83,14 @@ export class PopupCreateUserComponent implements OnInit
         }
         else if(this.password !== this.confirmPassword) {
             this.errorMessage = "Le mot de passe est différent de sa confirmation.";
+            this.hasError = true;
+        }
+        else if((this.user.role.name === 'user') && ((this.user.dateOfBirth === undefined) || (this.user.dateOfBirth === null))) {
+            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
+            this.hasError = true;
+        }
+        else if((this.user.role.name === 'advertiser') && (this.user.company.length === 0)) {
+            this.errorMessage = "Veuillez remplir le champ 'entreprise'.";
             this.hasError = true;
         }
         else {

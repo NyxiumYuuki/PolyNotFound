@@ -32,6 +32,7 @@ export class PageRegisterComponent
         dateOfBirth: null,
         gender: "man",
         interests: [],
+        company: "",
         isActive: false,
         isAccepted: false,
         createdAt: new Date(),
@@ -94,7 +95,11 @@ export class PageRegisterComponent
     // Check les champs saisies par l'utilisateur
     checkField(): void
     {
-        if(this.user.login.length === 0) {
+        if((this.user.role.name === 'advertiser') && (this.user.company.length === 0)) {
+            this.errorMessage = "Veuillez remplir le champ 'entreprise'.";
+            this.hasError = true;
+        }
+        else if(this.user.login.length === 0) {
             this.errorMessage = "Veuillez remplir le champ 'login'.";
             this.hasError = true;
         }

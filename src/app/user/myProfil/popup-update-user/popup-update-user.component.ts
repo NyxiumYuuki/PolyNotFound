@@ -39,6 +39,7 @@ export class PopupUpdateUserComponent implements OnInit
             dateOfBirth: user0.dateOfBirth,
             gender: user0.gender,
             interests: [],
+            company: "",
             isActive: user0.isActive,
             isAccepted: user0.isAccepted,
             createdAt: user0.createdAt,

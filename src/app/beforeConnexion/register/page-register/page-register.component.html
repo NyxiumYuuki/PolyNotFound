@@ -124,9 +124,16 @@
 <!-- Info personnelles advertiser -->
 <ng-template #advertiserBlock>
 
+    <!-- Entreprise -->
+    <mat-form-field appearance="fill">
+        <mat-label>Entreprise</mat-label>
+        <input matInput type="text" [(ngModel)]="user.company" required>
+    </mat-form-field>
+    <br>
+
     <!-- Login -->
     <mat-form-field appearance="fill">
-        <mat-label>Login</mat-label>
+        <mat-label>Pseudo</mat-label>
         <input matInput type="text" [(ngModel)]="user.login" required>
     </mat-form-field>
     <br>

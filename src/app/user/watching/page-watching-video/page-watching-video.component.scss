@@ -35,7 +35,9 @@
 
 .topBorder {
   margin: 0px 0px 0px 0px;
-  background-color: #dcdcdc;
+  //background-color: #dcdcdc;
+  background: linear-gradient(top, rgba(38,38,38,0.8), #e6e6e6 25%, #fff 38%, #c5c5c5 87%, rgba(38,38,38,0.8));
+  background: -webkit-linear-gradient(top, #c5c5c5, #e6e6e6 25%, #fff 38%, #c5c5c5 87%, #c5c5c5);
   text-align: left;
   padding: 5px 0px 5px 5px;
   border-bottom: solid 1px black;

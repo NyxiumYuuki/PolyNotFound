@@ -39,6 +39,7 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             dateOfBirth: advertiser0.dateOfBirth,
             gender: advertiser0.gender,
             interests: [],
+            company: advertiser0.company,
             isActive: advertiser0.isActive,
             isAccepted: advertiser0.isAccepted,
             createdAt: advertiser0.createdAt,

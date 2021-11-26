@@ -39,6 +39,7 @@ export class PopupUpdateAdminComponent implements OnInit
             dateOfBirth: admin0.dateOfBirth,
             gender: admin0.gender,
             interests: [],
+            company: "",
             isActive: admin0.isActive,
             isAccepted: admin0.isisAccepted,
             createdAt: admin0.createdAt,

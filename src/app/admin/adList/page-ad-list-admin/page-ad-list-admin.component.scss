@@ -68,3 +68,7 @@ input {
   border: solid 1px black !important;
   background-color: white !important;
 }
+
+::ng-deep .mat-pseudo-checkbox-checked {
+  background-color: black !important;
+}

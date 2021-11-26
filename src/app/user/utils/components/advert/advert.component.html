@@ -2,6 +2,7 @@
     <span class="helper"></span>
     <img [src]="'assets/pub/'+ad.images[idxImage].url"
          [alt]="ad.images[idxImage].url"
+         (click)="onClick()"
          id="imgFromSearchOrMyPlaylists">
 </div>
 
@@ -10,6 +11,7 @@
 <img *ngIf="from === 'watchingLeft'"
      [src]="'assets/pub/'+ad.images[idxImage].url"
      [alt]="ad.images[idxImage].url"
+     (click)="onClick()"
      id="imgFromWatchingLeft">
 
 <!-- --------------------------------------------------------------------- -->
@@ -17,4 +19,5 @@
 <img *ngIf="from === 'watchingRight'"
      [src]="'assets/pub/'+ad.images[idxImage].url"
      [alt]="ad.images[idxImage].url"
+     (click)="onClick()"
      id="imgFromWatchingRight">

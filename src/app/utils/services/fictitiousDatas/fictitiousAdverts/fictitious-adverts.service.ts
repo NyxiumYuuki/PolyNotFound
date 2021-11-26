@@ -9,7 +9,7 @@ const TAB_ADVERT: Advert[] = [
         _id: "idNutella",
         userId: "userId",
         title: "pot de nutella XXL",
-        advertiser: "nutella",
+        url: "https://www.nutella.com/fr/fr/",
         images: [
             { url: "nutella_v_1.jpeg", description: "image nutella 1" },
             { url: "nutella_v_2.png", description: "image nutella 2" },
@@ -38,7 +38,7 @@ const TAB_ADVERT: Advert[] = [
         _id: "idRolex",
         userId: "userId",
         title: "Rolex",
-        advertiser: "rolex",
+        url: "https://www.rolex.com",
         images: [
             { url: "rolex_v_1.jpg", description: "rolex 1" },
             { url: "rolex_v_2.png", description: "rolex 2" },
@@ -66,7 +66,7 @@ const TAB_ADVERT: Advert[] = [
         _id: "idAlbion",
         userId: "userId",
         title: "Albion new version",
-        advertiser: "albion",
+        url: "https://www.rolex.com",
         images: [
             { url: "rolex_v_1.jpg", description: "albion 1" },
             { url: "rolex_v_2.png", description: "albion 2" },

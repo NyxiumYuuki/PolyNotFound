@@ -3,7 +3,7 @@ export interface Advert
     _id: string,
     userId: string,
     title: string,
-    advertiser: string,
+    url: string,
     images: {
         url: string,
         description: string,
@@ -23,7 +23,7 @@ export interface AdvertWithCountViews {
     _id: string,
     userId: string,
     title: string,
-    advertiser: string,
+    url: string,
     images: {
         url: string,
         description: string,

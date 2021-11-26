@@ -15,7 +15,9 @@
   text-align: center;
   margin: 0px 0px 0px 0px;
   padding: 10px 0px 10px 0px;
-  background-color: #dcdcdc;
+  //background-color: #dcdcdc;
+  background: linear-gradient(top, rgba(38,38,38,0.8), #e6e6e6 25%, #fff 38%, #c5c5c5 87%, rgba(38,38,38,0.8));
+  background: -webkit-linear-gradient(top, #c5c5c5, #e6e6e6 25%, #fff 38%, #c5c5c5 87%, #c5c5c5);
   font-size: large;
   border-bottom: solid 1px black;
   border-top-left-radius: 10px;
@@ -83,4 +85,10 @@
 
 .btnCreerPlaylist {
   margin: 0px 0px 0px 0px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: linear-gradient(top, rgba(38,38,38,0.8), #e6e6e6 25%, #fff 38%, #c5c5c5 87%, rgba(38,38,38,0.8));
+  background: -webkit-linear-gradient(top, #c5c5c5, #e6e6e6 25%, #fff 38%, #c5c5c5 87%, #c5c5c5);
+  //background: linear-gradient(180deg, #e6e6e6 0%, rgba(0,0,0,0.25) 49%, rgba(38,38,38,0.6) 51%, rgba(0,0,0,0.25) 100%);
 }
+

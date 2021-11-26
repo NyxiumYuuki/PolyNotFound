@@ -229,7 +229,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             _id: advert._id,
             userId: advert.userId,
             title: advert.title,
-            advertiser: advert.advertiser,
+            url: advert.url,
             images: advert.images,
             interests: advert.interests,
             comment: advert.comment,

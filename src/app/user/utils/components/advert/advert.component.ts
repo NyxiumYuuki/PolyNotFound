@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Advert} from "../../../../utils/interfaces/advert";
-import {ThemeService} from "../../../../utils/services/theme/theme.service";
+import {Router} from "@angular/router";
 
 
 
@@ -15,16 +15,17 @@ export class AdvertComponent implements OnInit
     @Input() from: string = "search";
     idxImage: number = 0;
 
-
-    constructor(public themeService: ThemeService) { }
-
+    constructor(private router: Router) { }
 
     ngOnInit(): void
     {
         const nbImages = this.ad.images.length;
         this.idxImage = Math.floor(Math.random() * nbImages);
+    }
 
-
+    onClick(): void
+    {
+        document.location.href = this.ad.url;
     }
 
 }

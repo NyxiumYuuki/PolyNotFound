@@ -9,7 +9,7 @@ const ADVERT_VIDE: Advert = {
     _id: "",
     userId: "",
     title: "",
-    advertiser: "",
+    url: "",
     images: [],
     interests: [],
     comment: "",
@@ -48,14 +48,14 @@ export class PopupAddOrUpdateAdComponent implements OnInit
         {
             this.advert = Object.assign({}, ADVERT_VIDE);
             this.advert.interests = [];
-            this.urlBackend = "advertiser/add/ad" ;
+            this.urlBackend = "url/add/ad" ;
             this.title = "Ajouter annonce" ;
         }
         else
         {
             this.advert = Object.assign({}, this.data.advert);
             this.advert.interests = this.data.advert.interests.slice();
-            this.urlBackend = "advertiser/update/ad" ;
+            this.urlBackend = "url/update/ad" ;
             this.title = "Modifier annonce" ;
         }
     }
