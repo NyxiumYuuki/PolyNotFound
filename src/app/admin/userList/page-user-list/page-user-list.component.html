@@ -35,7 +35,7 @@
                                 <mat-radio-button value="user" (click)="this.roleName = 'user'; onFilter()">
                                     Utilisateur
                                 </mat-radio-button><br>
-                                <mat-radio-button value="url" (click)="this.roleName = 'url'; onFilter()">
+                                <mat-radio-button value="advertiser" (click)="this.roleName = 'advertiser'; onFilter()">
                                     Annonceur
                                 </mat-radio-button><br>
                                 <mat-radio-button value="admin" (click)="this.roleName = 'admin'; onFilter()">
@@ -99,7 +99,7 @@
 
             <!-- Login Column -->
             <ng-container matColumnDef="login">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Login </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Pseudo </th>
                 <td mat-cell *matCellDef="let user">
                     {{user.login}}
                 </td>

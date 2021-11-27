@@ -14,8 +14,8 @@
 
                 <!-- Login Form -->
                 <form>
-                    <input [(ngModel)]="pseudo" type="text" id="login" class="fadeIn second" name="login" placeholder="Login">
-                    <input [(ngModel)]="password" type="password" id="password" class="fadeIn third" name="login" placeholder="Mot de passe">
+                    <input [(ngModel)]="email" type="text" id="email" class="fadeIn second" name="email" placeholder="Email">
+                    <input [(ngModel)]="password" type="password" id="password" class="fadeIn third" name="password" placeholder="Mot de passe">
                     <!-- Message d'erreur -->
                     <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
                         <span class="mat-error"> {{errorMessage}} </span>

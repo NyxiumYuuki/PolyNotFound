@@ -68,7 +68,7 @@ export class PopupUpdateAdvertiserComponent implements OnInit
     checkField()
     {
         if(this.advertiserCopy.login.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'login'" ;
+            this.errorMessage = "Veuillez remplir le champ 'pseudo'" ;
             this.hasError = true;
         }
         else if(this.advertiserCopy.email.length === 0) {

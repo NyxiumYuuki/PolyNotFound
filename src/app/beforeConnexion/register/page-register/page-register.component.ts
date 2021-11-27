@@ -100,7 +100,7 @@ export class PageRegisterComponent
             this.hasError = true;
         }
         else if(this.user.login.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'login'.";
+            this.errorMessage = "Veuillez remplir le champ 'pseudo'.";
             this.hasError = true;
         }
         else if(this.user.email.length === 0) {

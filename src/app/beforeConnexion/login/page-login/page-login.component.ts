@@ -12,7 +12,7 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 })
 export class PageLoginComponent implements OnInit
 {
-    pseudo: string = "" ;
+    email: string = "" ;
     password: string = "" ;
     hasError: boolean = false;
     errorMessage: string = "";
@@ -33,8 +33,8 @@ export class PageLoginComponent implements OnInit
         if(!this.hasError)
         {
             let data = {
-              login: this.pseudo,
-              hashPass: this.password
+                email: this.email,
+                hashPass: this.hashage(this.password)
             };
             this.messageService
                 .sendMessage('user/auth', data)
@@ -58,8 +58,8 @@ export class PageLoginComponent implements OnInit
 
     checkError(): void
     {
-        if(this.pseudo === "") {
-            this.errorMessage = "Veuillez remplir le champ login" ;
+        if(this.email === "") {
+            this.errorMessage = "Veuillez remplir le champ email" ;
             this.hasError = true;
         }
         else if(this.password === "") {
@@ -70,6 +70,18 @@ export class PageLoginComponent implements OnInit
             this.errorMessage = "" ;
             this.hasError = false;
         }
+    }
+
+    // Fonction de hashage (faible)
+    hashage(input: string): string
+    {
+        let hash = 0;
+        for (let i = 0; i < input.length; i++) {
+            let ch = input.charCodeAt(i);
+            hash = ((hash << 5) - hash) + ch;
+            hash = hash & hash;
+        }
+        return hash.toString();
     }
 
 }

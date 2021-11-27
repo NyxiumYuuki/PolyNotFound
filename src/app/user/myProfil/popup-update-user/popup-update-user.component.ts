@@ -68,7 +68,7 @@ export class PopupUpdateUserComponent implements OnInit
     checkField()
     {
         if(this.userCopy.login.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'login'." ;
+            this.errorMessage = "Veuillez remplir le champ 'pseudo'." ;
             this.hasError = true;
         }
         else if(this.userCopy.email.length === 0) {

@@ -22,7 +22,6 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { IframeTrackerDirective } from './utils/directives/iframe-tracker/iframe-tracker.directive';
 import {MatGridListModule} from "@angular/material/grid-list";
 import { PageMyPlaylistsComponent } from './user/myPlaylists/page-my-playlists/page-my-playlists.component';
 import { PlaylistListComponent } from './user/myPlaylists/playlist-list/playlist-list.component';
@@ -43,15 +42,15 @@ import {MatSelectModule} from "@angular/material/select";
 import { PopupVisualizeImagesAdvertiserComponent } from './advertiser/adList/popup-visualize-images-advertiser/popup-visualize-images-advertiser.component';
 import {IvyCarouselModule} from "angular-responsive-carousel";
 import { DragAndDropComponent } from './advertiser/adList/drag-and-drop/drag-and-drop.component';
-import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-drop.directive';
+import { DragAndDropDirective } from './advertiser/utils/dragAndDrop/drag-and-drop.directive';
 import { PageProfilUserComponent } from './user/myProfil/page-profil-user/page-profil-user.component';
 import { NavbarUserComponent } from './user/utils/components/navbar-user/navbar-user.component';
-import { NavbarAdvertiserComponent } from './advertiser/utils/components/navbar-advertiser/navbar-advertiser.component';
-import { NavbarAdminComponent } from './admin/utils/components/navbar-admin/navbar-admin.component';
+import { NavbarAdvertiserComponent } from './advertiser/utils/navbar-advertiser/navbar-advertiser.component';
+import { NavbarAdminComponent } from './admin/utils/navbar-admin/navbar-admin.component';
 import { PageProfilAdvertiserComponent } from './advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component';
 import { PopupUpdateAdvertiserComponent } from './advertiser/myProfil/popup-update-advertiser/popup-update-advertiser.component';
 import { PopupUpdateUserComponent } from './user/myProfil/popup-update-user/popup-update-user.component';
-import { NavbarBeforeConnexionComponent } from './beforeConnexion/navbar-before-connexion/navbar-before-connexion.component';
+import { NavbarBeforeConnexionComponent } from './beforeConnexion/utils/navbar-before-connexion/navbar-before-connexion.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { InputInterestsProfilComponent } from './user/myProfil/input-interests-profil/input-interests-profil.component';
 import { PageProfilAdminComponent } from './admin/myProfil/page-profil-admin/page-profil-admin.component';
@@ -85,7 +84,6 @@ import { PopupDeletePlaylistComponent } from './user/myPlaylists/popup-delete-pl
         AdvertComponent,
         VideoGridComponent,
         PopupAddVideoToPlaylistsComponent,
-        IframeTrackerDirective,
         PageMyPlaylistsComponent,
         VideoListComponent,
         PlaylistListComponent,

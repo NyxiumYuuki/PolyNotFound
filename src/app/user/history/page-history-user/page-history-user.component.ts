@@ -11,6 +11,15 @@ import {Router} from "@angular/router";
 
 
 
+interface VideoHistory {
+    imageUrl: string,
+    title: string,
+    date: Date,
+    source: string,
+}
+
+
+
 @Component({
     selector: 'app-page-history-user',
     templateUrl: './page-history-user.component.html',
@@ -37,8 +46,10 @@ export class PageHistoryUserComponent implements AfterViewInit
         this.userHistoryService.clearTabVideoUrlClicked();
 
         // --- FAUX CODE ---
-        const tabVideo: VideoAll[] = this.fictitiousVideosService.getTabVideoAll(8);
-        this.dataSource = new MatTableDataSource(tabVideo);
+        const tabVideoAll: VideoAll[] = this.fictitiousVideosService.getTabVideoAll(8);
+        let tabVideoHistory: VideoHistory[] = [];
+        for(let videoAll of tabVideoAll) tabVideoHistory.push(this.videoAllToVideoHistory(videoAll));
+        this.dataSource = new MatTableDataSource(tabVideoHistory);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource = this.dataSource;
@@ -64,15 +75,6 @@ export class PageHistoryUserComponent implements AfterViewInit
     {
         const filterValue = (event.target as HTMLInputElement).value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-
-    // Retourne la source de la video en fonction de l'url
-    getSourceByUrl(url: string): string
-    {
-        if(url.includes("youtu")) return "Youtube" ;
-        else if(url.includes("daily")) return "Dailymotion" ;
-        else return "???" ;
     }
 
 
@@ -107,6 +109,17 @@ export class PageHistoryUserComponent implements AfterViewInit
     {
         const url = '/user/watching/fromHistory/'+video.videoId+'/'+video.source ;
         this.router.navigateByUrl(url);
+    }
+
+
+    videoAllToVideoHistory(videoAll: VideoAll): VideoHistory
+    {
+        return {
+            imageUrl: videoAll.imageUrl,
+            title: videoAll.title,
+            date: videoAll.watchedDates[videoAll.watchedDates.length-1],
+            source: videoAll.source,
+        }
     }
 
 }
