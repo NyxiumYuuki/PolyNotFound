@@ -1,4 +1,4 @@
-const {youtube, dailymotion} = require('host.config');
+const {youtube, dailymotion} = require('./host.config');
 module.exports = [
   {
     id: 0,
