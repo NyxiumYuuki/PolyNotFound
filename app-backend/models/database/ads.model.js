@@ -1,9 +1,14 @@
 module.exports = mongoose => {
   let schema = mongoose.Schema({
-      images: [],
-      text: String,
-      subjectTarget: [],
-      seen: Number
+      userId: String,
+      title: String,
+      images: Array,
+      url: String,
+      interests: Array,
+      comment: String,
+      views: Array,
+      isVisible: Boolean,
+      isActive: Boolean
     },
     { timestamps: true }
   );
@@ -14,5 +19,5 @@ module.exports = mongoose => {
     return object;
   });
 
-  return mongoose.model("ad", schema);
+  return mongoose.model("ads", schema);
 };

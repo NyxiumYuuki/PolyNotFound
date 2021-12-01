@@ -1,14 +1,15 @@
-const roles = require("../config/role.config");
+const roles = require("../../config/role.config");
 
 module.exports = mongoose => {
   let schema = mongoose.Schema({
-      login: String,
+      email: String,
       hashPass: String,     // WARNING: We don't want to send back the hashPass
-      mail: String,
+      login: String,
       role: {
         type: Object,
         default: roles.User
       },
+      company: String,
       profilePictureUrl: {
         type: String,
         default: null
@@ -25,10 +26,15 @@ module.exports = mongoose => {
         type: Array,
         default: null
       },
-      active: {
+      isActive: {
         type: Boolean,
         default: true
-      }
+      },
+      isAccepted: {
+        type: Boolean,
+        default: false
+      },
+      lastConnexion: Date
     },
     { timestamps: true }
   );
@@ -39,5 +45,5 @@ module.exports = mongoose => {
     return object;
   });
 
-  return mongoose.model("user", schema);
+  return mongoose.model("users", schema);
 };

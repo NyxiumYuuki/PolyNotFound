@@ -1,6 +1,11 @@
 module.exports = mongoose => {
   let schema = mongoose.Schema({
-      user: Object
+      userId: String,
+      videoId: String,
+      source: String,
+      tags: Array,
+      interest: String,
+      watchedDates: Array
     },
     { timestamps: true }
   );
@@ -11,5 +16,5 @@ module.exports = mongoose => {
     return object;
   });
 
-  return mongoose.model("history", schema);
+  return mongoose.model("videos", schema);
 };

@@ -11,10 +11,9 @@ if(typeof process.env.NODE_ENV !== 'undefined' && process.env.NODE_ENV === 'prod
   db.url = dbConfig.devUrl;
 }
 
-db.users = require("./user.model")(mongoose);
-db.playlists = require("./playlist.model")(mongoose);
-db.ads = require("./ad.model")(mongoose);
-db.histories = require("./history.model")(mongoose);
-
+db.users = require("./database/users.model")(mongoose);
+db.playlists = require("./database/playlists.model")(mongoose);
+db.videos = require("./database/videos.model")(mongoose);
+db.ads = require("./database/ads.model")(mongoose);
 
 module.exports = db;

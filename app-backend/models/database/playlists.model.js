@@ -1,9 +1,9 @@
 module.exports = mongoose => {
   let schema = mongoose.Schema({
-      base64: String,
-      fromUrl: String,
-      description: String,
-      type: Number
+      userId: String,
+      videoIds: Array,
+      name: String,
+      isActive: Boolean
     },
     { timestamps: true }
   );
@@ -14,5 +14,5 @@ module.exports = mongoose => {
     return object;
   });
 
-  return mongoose.model("image", schema);
+  return mongoose.model("playlists", schema);
 };
