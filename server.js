@@ -32,6 +32,7 @@ require("./app-backend/routes/user.routes")(app);
 require("./app-backend/routes/playlist.routes")(app);
 require("./app-backend/routes/video.routes")(app);
 require("./app-backend/routes/ad.routes")(app);
+require("./app-backend/routes/misc.routes")(app);
 
 const roles = require("./app-backend/config/role.config");
 const User = db.users;
