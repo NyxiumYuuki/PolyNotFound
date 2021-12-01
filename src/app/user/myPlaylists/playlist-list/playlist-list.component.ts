@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {PlaylistDB} from "../../../utils/interfaces/playlist";
-import {MessageService} from "../../../utils/services/message/message.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupCreatePlaylistComponent} from "../popup-create-playlist/popup-create-playlist.component";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
+import {PopupDeletePlaylistComponent} from "../popup-delete-playlist/popup-delete-playlist.component";
 
 
 
@@ -18,8 +18,9 @@ export class PlaylistListComponent implements OnInit
 {
     allPlaylists: PlaylistDB[] = [];                           // toutes les playlists
     @Output() eventEmitter = new EventEmitter<PlaylistDB>();   // pour envoyer au parent la playlist selectionner
-    search: string = "" ;                                    // contenu de la barre de recherche
+    search: string = "" ;                                      // contenu de la barre de recherche
     tabPlaylist: PlaylistDB[] = [];                            // playlist affichées
+    playlistFocusedOn: PlaylistDB;
 
 
     constructor( public themeService: ThemeService,
@@ -30,15 +31,14 @@ export class PlaylistListComponent implements OnInit
 
     ngOnInit(): void
     {
-        //this.allPlaylists = this.fictitiousVideosService.getRandomTabPlaylistDB(10, 10);
         this.allPlaylists = this.fictitiousVideosService.getNoRandomTabPlaylistDB(10);
         this.tabPlaylist = [].concat(this.allPlaylists);
     }
 
 
+    // s'execute lorsqu'on écrit sur la barre de recherche
     whileSearch()
     {
-        console.log("whileSearch");
         this.tabPlaylist = [];
         for(let playlist of this.allPlaylists)
         {
@@ -47,6 +47,7 @@ export class PlaylistListComponent implements OnInit
     }
 
 
+    // click sur créer playlist
     onCreatePlaylist(): void
     {
         const config = { data: this.tabPlaylist };
@@ -55,16 +56,52 @@ export class PlaylistListComponent implements OnInit
             .afterClosed()
             .subscribe(playlist => {
 
-                const config = { duration: 1000, panelClass: "custom-class" };
+                const config = { duration: 1500, panelClass: "custom-class" };
                 if((playlist === null) || (playlist === undefined)) {
                     this.snackBar.open("Opération annulée", "", config);
                 }
                 else {
                     this.allPlaylists.push(playlist);
                     this.tabPlaylist.push(playlist);
-                    this.snackBar.open("La playlist a bien été créée  ✔", "", config);
+                    this.snackBar.open(`La playlist '${playlist.name}' a bien été créée  ✔`, "", config);
                 }
             });
+    }
+
+
+    // click sur supprimer playlist
+    onDeletePlaylist(playlist: PlaylistDB): void
+    {
+        const config = {data: playlist};
+        this.dialog
+            .open(PopupDeletePlaylistComponent, config)
+            .afterClosed()
+            .subscribe(retour => {
+
+                const config = { duration: 1500, panelClass: "custom-class" };
+                if((retour === null) || (retour === undefined)) {
+                    this.snackBar.open("Opération annulée", "", config);
+                }
+                else {
+                    let index = this.allPlaylists.indexOf(playlist);
+                    if(index >= 0) this.allPlaylists.splice(index, 1);
+
+                    index = this.tabPlaylist.indexOf(playlist);
+                    if(index >= 0) this.tabPlaylist.splice(index, 1);
+
+                    this.eventEmitter.emit(null);
+                    this.playlistFocusedOn = null;
+                    this.snackBar.open(`La playlist '${playlist.name}' a bien été suprimée  ✔`, "", config);
+                }
+            });
+    }
+
+
+    // retourne la class CSS de conteneur de playlist
+    getClassOfPlaylistContainer(playlist: PlaylistDB): string
+    {
+        if(playlist === this.playlistFocusedOn) return "row btnPlaylist btnPlaylistFocus" ;
+        else return "row btnPlaylist" ;
     }
 
 }

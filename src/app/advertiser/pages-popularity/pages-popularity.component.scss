@@ -1,0 +1,47 @@
+.myContainer {
+  font-size: small;
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+input {
+  font-size: small;
+  width: 140px;
+}
+
+.filtersContainer {
+  background-color: white;
+  width: 60%;
+  margin: 50px 50px 50px 50px;
+  padding: 20px 20px 20px 20px;
+}
+
+.chartContainer {
+  background-color: white;
+  border: solid 1px black;
+  padding: 10px 10px 10px 10px;
+  margin: 50px 50px 50px 50px;
+}
+
+
+// ---------------------------------------------
+// periode
+
+.periode {
+  padding: 10px 10px 0px 10px;
+}
+
+.periode .titleContainer {
+  text-align: right;
+  border-right: solid 1px #dcdcdc;
+  font-weight: bold;
+}
+
+
+// -------------------------------------------------------------------------
+
+::ng-deep .mat-pseudo-checkbox-checked {
+  background-color: black !important;
+}

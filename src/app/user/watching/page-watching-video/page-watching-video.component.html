@@ -202,13 +202,20 @@
         <!-- Liste des videos -->
         <div class="listVideoContainer">
             <div *ngFor="let video0 of videosInPlaylist; let i = index;">
-                <div class="videoCell">
-                    <div class="imgsContainer" (click)="this.video = video0">
+                <div [class]="getClassOfVideoCell(video0)" (click)="this.video = video0">
+                    <div class="imgsContainer">
                         <img class="imgPlay" src="/assets/play.png">
                         <img class="imgVideo" [src]="video0.imageUrl">
                     </div>
-                    <div class="titleContainer">
-                        {{video0.title}}
+                    <div class="infoContainer">
+                        <div class="titleContainer">{{video0.title}}</div>
+                        <div class="viewsContainer">
+                            <!-- <span>{{video.views | number: '1.0-0'}}</span> <mat-icon>visibility</mat-icon> -->
+                            {{video.views | number: '1.0-0'}} vues
+                        </div>
+                        <span class="publishedAtContainer">
+                            Publiée le {{ video.publishedAt | date:'dd/LL/YYYY à HH:mm:ss' }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -216,9 +223,11 @@
 
 
         <!-- Bordure basse -->
+        <!--
         <div class="bottomBorder">
             <div style="visibility: hidden">a</div>
         </div>
+        -->
 
     </div>
 </ng-template>

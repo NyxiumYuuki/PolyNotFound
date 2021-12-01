@@ -7,12 +7,19 @@ mat-grid-list {
 mat-grid-tile {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
-  border: solid 1px black;
 }
 
 .myCell {
-  margin: 0px 0px 0px 0px;
-  padding: 7px 0px 0px 0px;
+  margin: 7px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background-color: white;
+  border: solid 1px black;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  cursor: pointer;
+}
+.myCell:hover {
+  background-color: #d2d2d2;
 }
 
 
@@ -20,22 +27,22 @@ mat-grid-tile {
 
 
 .imgsContainer {
-  width: 20vw;
+  //width: 20vw;
+  width: 18vw;
   height: 15vh;
 }
 
 .imgPlay {
   position: absolute;
-  margin-left: 9vw;
-  width: 3vw;
+  margin-left: 8vw;
+  width: 2.5vw;
   margin-top: 5vh;
-  height: 6vh;
+  height: 5vh;
   padding: 0px 0px 0px 0px;
 }
 
 .imgVideo {
-  border: solid 1px black;
-  width: 20vw;
+  width: 18vw;
   height: 15vh;
   padding: 0px 0px 0px 0px;
 }
@@ -44,9 +51,16 @@ mat-grid-tile {
 // ---------------------------------------------------------------------------------------------
 
 
+.mat-grid-list-info-video {
+  margin: 0px 0px 0px 0px;
+  font-size: small;
+}
+
 .mat-grid-tile-info-video {
   border: none;
   font-size: x-small;
+  //background: linear-gradient(top, rgba(38,38,38,0.8), #e6e6e6 25%, #fff 38%, #c5c5c5 87%, rgba(38,38,38,0.8));
+  //background: -webkit-linear-gradient(top, #c5c5c5, #e6e6e6 25%, #fff 38%, #c5c5c5 87%, #c5c5c5);
 }
 
 mat-icon {
@@ -57,10 +71,11 @@ mat-icon {
 // ---------------------------------------------------------------------------------------------
 
 
-.btnContainer {
+.paginatorContainer {
   margin: 0px 0px 0px 0px;
-  padding: 0px 0px 0px 0px;
+  padding: 5px 0px 0px 0px;
   text-align: center;
+  background-color: white;
 }
 
 .btnPaginator {

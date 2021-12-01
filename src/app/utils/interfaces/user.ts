@@ -12,6 +12,7 @@ export interface User
     dateOfBirth: Date,
     gender: string,
     interests: string[],
+    company: string,
     isActive: boolean,
     isAccepted: boolean,
     lastConnexion: Date,

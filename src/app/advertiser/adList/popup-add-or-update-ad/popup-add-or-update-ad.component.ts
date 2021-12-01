@@ -9,11 +9,11 @@ const ADVERT_VIDE: Advert = {
     _id: "",
     userId: "",
     title: "",
-    advertiser: "",
+    url: "",
     images: [],
-    tags: [],
+    interests: [],
     comment: "",
-    views: 0,
+    views: [],
     isVisible: true,
     isActive: true,
     createdAt: new Date(),
@@ -47,15 +47,15 @@ export class PopupAddOrUpdateAdComponent implements OnInit
         if(this.data.action === "add")
         {
             this.advert = Object.assign({}, ADVERT_VIDE);
-            this.advert.tags = [];
-            this.urlBackend = "advertiser/add/ad" ;
+            this.advert.interests = [];
+            this.urlBackend = "url/add/ad" ;
             this.title = "Ajouter annonce" ;
         }
         else
         {
             this.advert = Object.assign({}, this.data.advert);
-            this.advert.tags = this.data.advert.tags.slice();
-            this.urlBackend = "advertiser/update/ad" ;
+            this.advert.interests = this.data.advert.interests.slice();
+            this.urlBackend = "url/update/ad" ;
             this.title = "Modifier annonce" ;
         }
     }
@@ -86,32 +86,15 @@ export class PopupAddOrUpdateAdComponent implements OnInit
 
     onEventInputTags(myTags: string[]): void
     {
-        this.advert.tags = myTags;
+        this.advert.interests = myTags;
     }
 
 
-    // Lorsque l'annonceur selectionne des fichiers
-    onSelectFile(event)
+    onRemoveImgAlreadyPresent(image)
     {
-        const nbFileSelected = event.target.files.length ;
-        for(let i=0 ; i<nbFileSelected ; i++) this.tabWaitingFile.push(event.target.files[i]);
-        this._event = event;
-    }
-
-    // Lorsque l'annonceur "valide" sont choix de fichier selectionné
-    onValidateFiles(): void
-    {
-        const nbFile = this.tabWaitingFile.length;
-        for(let i=0 ; i<nbFile ; i++) this.tabSelectedFile.push(this.tabWaitingFile[i]);
-        this.tabWaitingFile = [];
-        this._event.target.value = "";
-    }
-
-    // Lorsque l'annonceur souhaite supprimer un fichier "validé"
-    onDeleteFile(file: File)
-    {
-        const index = this.tabSelectedFile.findIndex(x => file);
-        this.tabSelectedFile.splice(index, 1);
+        const index = this.advert.images.indexOf(image);
+        console.log("idx: " + index);
+        this.advert.images.slice(index, 1);
     }
 
 }

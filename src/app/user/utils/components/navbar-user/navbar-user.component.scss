@@ -1,6 +1,6 @@
 .navbar {
   background-color: black;
-  height: 50px;
+  height: 60px;
   font-size: medium;
   color: white;
 }
@@ -23,27 +23,28 @@
 }
 
 
-// Recherche, Mes Playlists, Historique
+.monLi {
+  margin: 0px 10px 0px 10px;
+}
+
+
 .nav-link {
   color: white;
 }
 .nav-link:hover {
   color: grey;
 }
+.myActiveLink {
+  text-decoration: underline;
+}
 
 
-// Bonton deconnexion
 .btnDeconnexion {
   font-size: medium;
   margin: 0px 10px 0px 10px
 }
 .btnDeconnexion:hover {
   color: grey;
-}
-
-
-.monLi {
-  margin: 0px 10px 0px 10px;
 }
 
 

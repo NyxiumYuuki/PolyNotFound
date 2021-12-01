@@ -2,15 +2,16 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {Advert} from "../../../utils/interfaces/advert";
+import {Advert, AdvertWithCountViews} from "../../../utils/interfaces/advert";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupAddOrUpdateAdComponent} from "../popup-add-or-update-ad/popup-add-or-update-ad.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupDeleteAdAdvertiserComponent} from "../popup-delete-ad-advertiser/popup-delete-ad-advertiser.component";
-import {PopupVisualizeAdAdvertiserComponent} from "../popup-visualize-ad-advertiser/popup-visualize-ad-advertiser.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {PopupVisualizeImagesAdvertiserComponent} from "../popup-visualize-images-advertiser/popup-visualize-images-advertiser.component";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
+import {FormControl} from "@angular/forms";
+import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 
 
 
@@ -21,14 +22,23 @@ import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/
 })
 export class PageAdListAdvertiserComponent implements AfterViewInit
 {
-    displayedColumns: string[] = [ 'title', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
+    displayedColumns: string[] = [ 'isVisible', 'title', 'interests', 'createdAt', 'updatedAt', 'countViews', 'actions' ];
+    tabAdvertWithCountViews: AdvertWithCountViews[] = [];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    visible: boolean = true;
+    noVisible: boolean = true;
+    startDate: Date = null;
+    endDate: Date = null;
+    formControlInterests = new FormControl();
+    allInterests: string[] = [];
+
 
     constructor( public themeService: ThemeService,
                  private fictitiousAdvertsService: FictitiousAdvertsService,
+                 private fictitiousUtilsService: FictitiousUtilsService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -37,10 +47,11 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     {
         // --- FAUX CODE ---
         const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.dataSource = new MatTableDataSource<Advert>(tabAdvert);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource = this.dataSource;
+        this.allInterests = this.fictitiousUtilsService.getTags();
+
+        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
+        this.dataSource = new MatTableDataSource<Advert>();
+        this.onFilter();
     }
 
 
@@ -51,7 +62,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     }
 
 
-    onVisualizeImages(advert: Advert)
+    onVisualizeImages(advert: AdvertWithCountViews)
     {
         const config = {
             width: '30%',
@@ -69,24 +80,10 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     }
 
 
-    onVisualize(advert: Advert): void
-    {
-        const config = {
-            width: '50%',
-            data: { advert: advert }
-        };
-        this.dialog
-            .open(PopupVisualizeAdAdvertiserComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
-    }
-
-
     onAdd(): void
     {
         const config = {
-            width: '40%',
-            height: '80%',
+            width: '75%',
             data: { action: "add", advert: null }
         };
         this.dialog
@@ -110,11 +107,10 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     }
 
 
-    onUpdate(advertToUpdate: Advert): void
+    onUpdate(advertToUpdate: AdvertWithCountViews): void
     {
         const config = {
-            width: '40%',
-            height: '80%',
+            width: '75%',
             data: { action: "update", advert: advertToUpdate }
         };
         this.dialog
@@ -139,7 +135,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     }
 
 
-    onDelete(advert: Advert): void
+    onDelete(advert: AdvertWithCountViews): void
     {
         const config = {
             data: { advert: advert }
@@ -163,6 +159,87 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                 }
                 this.snackBar.open( message, "", config);
             });
+    }
+
+
+    onFilter(): void
+    {
+        console.log("b:" + this.formControlInterests.value);
+        this.dataSource.data = [];
+        for(let advert of this.tabAdvertWithCountViews)
+        {
+            let valide: boolean = true;
+
+            if(advert.isVisible && this.visible) valide = true;
+            else if((!advert.isVisible) && this.noVisible) valide = true;
+            else valide = false;
+
+            if(valide)
+            {
+                if ((advert.createdAt === null) && (this.startDate !== null)) valide = false;
+                else if ((advert.createdAt === null) && (this.endDate !== null)) valide = false;
+                else if (this.startDate !== null)
+                {
+                    if(this.startDate.getTime() > advert.createdAt.getTime()) valide = false;
+                    else if (this.endDate !== null)
+                    {
+                        if(this.endDate.getTime() < advert.createdAt.getTime()) valide = false;
+                    }
+                }
+            }
+
+            if(valide) {
+                if(this.formControlInterests.value !== null) {
+                    for (let interest of this.formControlInterests.value) {
+                        if (advert.interests.indexOf(interest) === -1) {
+                            valide = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if(valide) this.dataSource.data.push(advert);
+        }
+
+        this.dataSource = new MatTableDataSource(this.dataSource.data);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+    }
+
+
+    onNewStartDate(event): void {
+        this.startDate = new Date(event);
+    }
+
+    onNewEndDate(event): void {
+        this.endDate = new Date(event);
+    }
+
+
+    onSliderIsVisible(advert: Advert): void
+    {
+        // il faut envoyer la négation de user.isActive
+    }
+
+
+    advertToAdvertWithCountViews(advert: Advert): AdvertWithCountViews
+    {
+        return {
+            _id: advert._id,
+            userId: advert.userId,
+            title: advert.title,
+            url: advert.url,
+            images: advert.images,
+            interests: advert.interests,
+            comment: advert.comment,
+            views: advert.views,
+            countViews: advert.views.length,
+            isVisible: advert.isVisible,
+            isActive: advert.isActive,
+            createdAt: advert.createdAt,
+            updatedAt: advert.updatedAt,
+        }
     }
 
 }

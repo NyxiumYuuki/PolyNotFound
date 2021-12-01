@@ -34,7 +34,7 @@ export class PopupDeleteAdAdvertiserComponent implements OnInit
         // --- VRAI CODE ---
         /*
         this.messageService
-            .sendMessage("advertiser/delete/ad", {"advert": this.advert})
+            .sendMessage("url/delete/ad", {"advert": this.advert})
             .subscribe( retour => {
 
                 if(retour.status === "error") {

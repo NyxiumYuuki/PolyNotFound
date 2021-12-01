@@ -11,11 +11,11 @@ import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fi
 
 
 @Component({
-    selector: 'app-input-tags',
-    templateUrl: './input-tags.component.html',
-    styleUrls: ['./input-tags.component.scss']
+    selector: 'app-input-interests-ad',
+    templateUrl: './input-interests-ad.component.html',
+    styleUrls: ['./input-interests-ad.component.scss']
 })
-export class InputTagsComponent implements OnInit
+export class InputInterestsAdComponent implements OnInit
 {
     selectable = true;
     removable = true;

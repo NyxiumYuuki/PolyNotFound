@@ -22,7 +22,6 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { IframeTrackerDirective } from './utils/directives/iframe-tracker/iframe-tracker.directive';
 import {MatGridListModule} from "@angular/material/grid-list";
 import { PageMyPlaylistsComponent } from './user/myPlaylists/page-my-playlists/page-my-playlists.component';
 import { PlaylistListComponent } from './user/myPlaylists/playlist-list/playlist-list.component';
@@ -36,22 +35,22 @@ import { PageAdListAdvertiserComponent } from './advertiser/adList/page-ad-list-
 import { PopupDeleteAdAdvertiserComponent } from './advertiser/adList/popup-delete-ad-advertiser/popup-delete-ad-advertiser.component';
 import { PopupAddOrUpdateAdComponent } from './advertiser/adList/popup-add-or-update-ad/popup-add-or-update-ad.component';
 import { PopupVisualizeAdAdvertiserComponent } from './advertiser/adList/popup-visualize-ad-advertiser/popup-visualize-ad-advertiser.component';
-import { InputTagsComponent } from './advertiser/adList/input-tags/input-tags.component';
+import { InputInterestsAdComponent } from './advertiser/adList/input-interests-ad/input-interests-ad.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatSelectModule} from "@angular/material/select";
 import { PopupVisualizeImagesAdvertiserComponent } from './advertiser/adList/popup-visualize-images-advertiser/popup-visualize-images-advertiser.component';
 import {IvyCarouselModule} from "angular-responsive-carousel";
 import { DragAndDropComponent } from './advertiser/adList/drag-and-drop/drag-and-drop.component';
-import { DragAndDropDirective } from './utils/directives/dragAndDrop/drag-and-drop.directive';
+import { DragAndDropDirective } from './advertiser/utils/dragAndDrop/drag-and-drop.directive';
 import { PageProfilUserComponent } from './user/myProfil/page-profil-user/page-profil-user.component';
 import { NavbarUserComponent } from './user/utils/components/navbar-user/navbar-user.component';
-import { NavbarAdvertiserComponent } from './advertiser/navbar-advertiser/navbar-advertiser.component';
-import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.component';
+import { NavbarAdvertiserComponent } from './advertiser/utils/navbar-advertiser/navbar-advertiser.component';
+import { NavbarAdminComponent } from './admin/utils/navbar-admin/navbar-admin.component';
 import { PageProfilAdvertiserComponent } from './advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component';
 import { PopupUpdateAdvertiserComponent } from './advertiser/myProfil/popup-update-advertiser/popup-update-advertiser.component';
 import { PopupUpdateUserComponent } from './user/myProfil/popup-update-user/popup-update-user.component';
-import { NavbarBeforeConnexionComponent } from './beforeConnexion/navbar-before-connexion/navbar-before-connexion.component';
+import { NavbarBeforeConnexionComponent } from './beforeConnexion/utils/navbar-before-connexion/navbar-before-connexion.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { InputInterestsProfilComponent } from './user/myProfil/input-interests-profil/input-interests-profil.component';
 import { PageProfilAdminComponent } from './admin/myProfil/page-profil-admin/page-profil-admin.component';
@@ -70,6 +69,9 @@ import { PopupCreateUserComponent } from './admin/userList/popup-create-user/pop
 import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
 import { PageWatchingVideoComponent } from './user/watching/page-watching-video/page-watching-video.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import { PagesPopularityComponent } from './advertiser/pages-popularity/pages-popularity.component';
+import { ChartsModule } from 'ng2-charts';
+import { PopupDeletePlaylistComponent } from './user/myPlaylists/popup-delete-playlist/popup-delete-playlist.component';
 
 
 @NgModule({
@@ -82,7 +84,6 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         AdvertComponent,
         VideoGridComponent,
         PopupAddVideoToPlaylistsComponent,
-        IframeTrackerDirective,
         PageMyPlaylistsComponent,
         VideoListComponent,
         PlaylistListComponent,
@@ -93,7 +94,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         PopupDeleteAdAdvertiserComponent,
         PopupAddOrUpdateAdComponent,
         PopupVisualizeAdAdvertiserComponent,
-        InputTagsComponent,
+        InputInterestsAdComponent,
         PopupVisualizeImagesAdvertiserComponent,
         DragAndDropComponent,
         DragAndDropDirective,
@@ -119,6 +120,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         PopupCreateUserComponent,
         InputInterestsAdminComponent,
         PageWatchingVideoComponent,
+        PagesPopularityComponent,
+        PopupDeletePlaylistComponent,
     ],
     imports: [
         BrowserModule,
@@ -148,6 +151,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         MatStepperModule,
         MatPaginatorModule,
         MatDatepickerModule,
+        ChartsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

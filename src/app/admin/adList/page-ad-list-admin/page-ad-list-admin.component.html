@@ -21,7 +21,7 @@
                 <input class="textFilter" (keyup)="applyFilter($event)" placeholder="filtre...">
             </div>
 
-            <!-- visible + tags + période -->
+            <!-- visible + interests + période -->
             <div class="row myRow">
 
                 <!-- visible -->
@@ -30,18 +30,18 @@
                     <mat-checkbox [(ngModel)]="noVisible" (change)="onFilter()">non visible</mat-checkbox>
                 </div>
 
-                <!-- tags -->
+                <!-- subjects -->
                 <div class="col-4">
                     <mat-form-field appearance="fill">
-                        <mat-label>Tags</mat-label>
-                        <mat-select [formControl]="formControlTags" multiple>
+                        <mat-label>Sujets</mat-label>
+                        <mat-select [formControl]="formControlInterests" multiple>
                             <mat-select-trigger>
-                                {{formControlTags.value ? formControlTags.value[0] : ''}}
-                                <span *ngIf="formControlTags.value?.length > 1">
-                                    (+{{formControlTags.value.length - 1}} {{formControlTags.value?.length === 2 ? 'autre' : 'autres'}})
+                                {{formControlInterests.value ? formControlInterests.value[0] : ''}}
+                                <span *ngIf="formControlInterests.value?.length > 1">
+                                    (+{{formControlInterests.value.length - 1}} {{formControlInterests.value?.length === 2 ? 'autre' : 'autres'}})
                                 </span>
                             </mat-select-trigger>
-                            <mat-option *ngFor="let topping of allTags" [value]="topping">{{topping}}</mat-option>
+                            <mat-option *ngFor="let topping of allInterests" [value]="topping">{{topping}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <button mat-icon-button (click)="onFilter()">
@@ -86,20 +86,20 @@
             </ng-container>
 
             <!-- Advertiser Column -->
-            <ng-container matColumnDef="advertiser">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Annonceur </th>
+            <ng-container matColumnDef="company">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Entreprise </th>
                 <td mat-cell *matCellDef="let advert">
-                    {{advert.advertiser}}
+                    {{advert.company}}
                 </td>
             </ng-container>
 
             <!-- Tags Column -->
-            <ng-container matColumnDef="tags">
-                <th mat-header-cell *matHeaderCellDef> Tags </th>
+            <ng-container matColumnDef="interests">
+                <th mat-header-cell *matHeaderCellDef> Sujets </th>
                 <td mat-cell *matCellDef="let advert">
-                    <span *ngFor="let tag of advert.tags; let isLast = last;">
-                        <span *ngIf="!isLast"> {{tag}}, </span>
-                        <span *ngIf="isLast"> {{tag}} </span>
+                    <span *ngFor="let interest of advert.interests; let isLast = last;">
+                        <span *ngIf="!isLast"> {{interest}}, </span>
+                        <span *ngIf="isLast"> {{interest}} </span>
                     </span>
                 </td>
             </ng-container>
@@ -120,11 +120,11 @@
                 </td>
             </ng-container>
 
-            <!-- Views Column -->
-            <ng-container matColumnDef="views">
+            <!-- CountViews Column -->
+            <ng-container matColumnDef="countViews">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Vues </th>
                 <td mat-cell *matCellDef="let advert">
-                    {{advert.views}}
+                    {{advert.countViews}}
                 </td>
             </ng-container>
 

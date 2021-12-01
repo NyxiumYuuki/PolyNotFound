@@ -37,26 +37,24 @@
                         <mat-grid-list cols="12" rowHeight="15vh">
 
                             <!-- btnAdd -->
-                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <mat-grid-tile [colspan]="2" [rowspan]="1">
                                 <button mat-icon-button (click)="onAdd(video)">
                                     <mat-icon> add_circle </mat-icon>
                                 </button>
                             </mat-grid-tile>
 
                             <!-- imgVideo -->
-                            <mat-grid-tile [colspan]="10" [rowspan]="1">
-                                <div class="col-8">
+                            <mat-grid-tile [colspan]="8" [rowspan]="1">
                                     <div style="margin: auto; width: 20vw; height: 15vh;">
                                         <div class="imgsContainer" (click)="onVideo(video)">
                                             <img class="imgPlay" src="/assets/play.png">
                                             <img class="imgVideo" [src]="video.imageUrl">
                                         </div>
                                     </div>
-                                </div>
                             </mat-grid-tile>
 
                             <!-- btnDelete -->
-                            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                            <mat-grid-tile [colspan]="2" [rowspan]="1">
                                 <button mat-icon-button (click)="onDelete(video, i)">
                                     <mat-icon>delete</mat-icon>
                                 </button>

@@ -39,6 +39,7 @@ export class PopupUpdateUserComponent implements OnInit
             dateOfBirth: user0.dateOfBirth,
             gender: user0.gender,
             interests: [],
+            company: "",
             isActive: user0.isActive,
             isAccepted: user0.isAccepted,
             createdAt: user0.createdAt,
@@ -67,7 +68,7 @@ export class PopupUpdateUserComponent implements OnInit
     checkField()
     {
         if(this.userCopy.login.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'login'." ;
+            this.errorMessage = "Veuillez remplir le champ 'pseudo'." ;
             this.hasError = true;
         }
         else if(this.userCopy.email.length === 0) {

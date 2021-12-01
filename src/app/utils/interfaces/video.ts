@@ -4,7 +4,8 @@ export interface VideoDB
     userId: string,
     videoId: string,
     source: string,
-    tags: String[],
+    tags: string[],
+    interest: string,
     watchedDates: Date[],
     createdAt: Date,
     updatedAt: Date
@@ -18,6 +19,7 @@ export interface VideoAll
     videoId: string,
     source: string,
     tags: String[],
+    interest: string,
     watchedDates: Date[],
     createdAt: Date,
     updatedAt: Date

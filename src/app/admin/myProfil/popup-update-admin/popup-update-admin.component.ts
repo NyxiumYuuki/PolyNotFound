@@ -39,6 +39,7 @@ export class PopupUpdateAdminComponent implements OnInit
             dateOfBirth: admin0.dateOfBirth,
             gender: admin0.gender,
             interests: [],
+            company: "",
             isActive: admin0.isActive,
             isAccepted: admin0.isisAccepted,
             createdAt: admin0.createdAt,
@@ -67,7 +68,7 @@ export class PopupUpdateAdminComponent implements OnInit
     checkField()
     {
         if(this.adminCopy.login.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'login'" ;
+            this.errorMessage = "Veuillez remplir le champ 'pseudo'" ;
             this.hasError = true;
         }
         else if(this.adminCopy.email.length === 0) {
@@ -112,4 +113,5 @@ export class PopupUpdateAdminComponent implements OnInit
         }
         return hash.toString();
     }
+
 }

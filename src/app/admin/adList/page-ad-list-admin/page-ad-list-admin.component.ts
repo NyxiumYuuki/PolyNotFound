@@ -6,12 +6,35 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
 import {Advert} from "../../../utils/interfaces/advert";
-import {PopupVisualizeAdAdminComponent} from "../popup-visualize-ad-admin/popup-visualize-ad-admin.component";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {FormControl} from "@angular/forms";
 import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
+import {User} from "../../../utils/interfaces/user";
+import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
+
+
+
+export interface AdvertWithCountViewsAndCompany {
+    _id: string,
+    userId: string,
+    company: string,
+    title: string,
+    url: string,
+    images: {
+        url: string,
+        description: string,
+    }[],
+    interests: string[],
+    comment: string,
+    views: Date[],
+    countViews: number,
+    isVisible: boolean,
+    isActive: boolean,
+    createdAt: Date,
+    updatedAt: Date,
+}
 
 
 
@@ -22,8 +45,9 @@ import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fi
 })
 export class PageAdListAdminComponent implements AfterViewInit
 {
-    tabAdvert: Advert[];
-    displayedColumns: string[] = [ 'title', 'advertiser', 'tags', 'createdAt', 'updatedAt', 'views', 'isVisible', 'actions' ];
+    tabAdvertWithCountViews: AdvertWithCountViewsAndCompany[] = [];
+    tabAdvertiser: User[];
+    displayedColumns: string[] = [ 'title', 'company', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,13 +56,14 @@ export class PageAdListAdminComponent implements AfterViewInit
     noVisible: boolean = true;
     startDate: Date = null;
     endDate: Date = null;
-    formControlTags = new FormControl();
-    allTags: string[] = [];
+    formControlInterests = new FormControl();
+    allInterests: string[] = [];
 
 
     constructor( public themeService: ThemeService,
                  private fictitiousAdvertsService: FictitiousAdvertsService,
                  private fictitiousUtilsService: FictitiousUtilsService,
+                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar ) { }
 
@@ -46,12 +71,13 @@ export class PageAdListAdminComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
-        this.tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.dataSource = new MatTableDataSource<Advert>(this.tabAdvert);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource = this.dataSource;
-        this.allTags = this.fictitiousUtilsService.getTags();
+        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
+        this.allInterests = this.fictitiousUtilsService.getTags();
+        this.tabAdvertiser = this.fictitiousUsersService.getTabAdvertiser(3);
+
+        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViewsAndCompany(advert));
+        this.dataSource = new MatTableDataSource<Advert>();
+        this.onFilter();
     }
 
 
@@ -62,7 +88,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onVisualizeImages(advert: Advert)
+    onVisualizeImages(advert: AdvertWithCountViewsAndCompany)
     {
         const config = {
             width: '30%',
@@ -80,20 +106,7 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onVisualizeInfo(advert: Advert): void
-    {
-        const config = {
-            width: '50%',
-            data: { advert: advert }
-        };
-        this.dialog
-            .open(PopupVisualizeAdAdminComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
-    }
-
-
-    onDelete(advert: Advert): void
+    onDelete(advert: AdvertWithCountViewsAndCompany): void
     {
         const config = {
             data: { advert: advert }
@@ -122,9 +135,8 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onFilter(): void
     {
-        console.log("b:" + this.formControlTags.value);
         this.dataSource.data = [];
-        for(let advert of this.tabAdvert)
+        for(let advert of this.tabAdvertWithCountViews)
         {
             let valide: boolean = true;
 
@@ -147,9 +159,9 @@ export class PageAdListAdminComponent implements AfterViewInit
             }
 
             if(valide) {
-                if(this.formControlTags.value !== null) {
-                    for (let tag of this.formControlTags.value) {
-                        if (advert.tags.indexOf(tag) === -1) {
+                if(this.formControlInterests.value !== null) {
+                    for (let interest of this.formControlInterests.value) {
+                        if (advert.interests.indexOf(interest) === -1) {
                             valide = false;
                             break;
                         }
@@ -172,6 +184,36 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onNewEndDate(event): void {
         this.endDate = new Date(event);
+    }
+
+
+    advertToAdvertWithCountViewsAndCompany(advert: Advert): AdvertWithCountViewsAndCompany
+    {
+        let company0 = "company" ;
+        for(let advertiser of this.tabAdvertiser)
+        {
+            if(advert.userId === advertiser._id) {
+                company0 = advertiser.company;
+                break;
+            }
+        }
+
+        return {
+            _id: advert._id,
+            userId: advert.userId,
+            title: advert.title,
+            company: company0,
+            url: advert.url,
+            images: advert.images,
+            interests: advert.interests,
+            comment: advert.comment,
+            views: advert.views,
+            countViews: advert.views.length,
+            isVisible: advert.isVisible,
+            isActive: advert.isActive,
+            createdAt: advert.createdAt,
+            updatedAt: advert.updatedAt,
+        }
     }
 
 }

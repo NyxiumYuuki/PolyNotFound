@@ -66,7 +66,7 @@ export class PageWatchingVideoComponent implements OnInit
             this.from = "myPlaylists";
             const _idPlaylist = this.activatedRoute.snapshot.paramMap.get('_idPlaylist');
             this.playlist = this.fictitiousVideosService.getPlaylistBy_id(_idPlaylist);
-            const allVideo = this.fictitiousVideosService.getAllVideoAll();
+            const allVideo = this.fictitiousVideosService.get_TAB_VIDEO();
             this.videosInPlaylist = [];
             for(let _idVideo of this.playlist.videoIds)
             {
@@ -117,4 +117,13 @@ export class PageWatchingVideoComponent implements OnInit
         else if(source === 'dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
         return this._sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
     }
+
+
+    // retourne la classe CSS de videoCell
+    getClassOfVideoCell(video0: VideoAll): string
+    {
+        if(video0 === this.video) return "videoCell videoCellFocus" ;
+        else return "videoCell" ;
+    }
+
 }
