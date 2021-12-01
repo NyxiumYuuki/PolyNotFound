@@ -5,19 +5,19 @@ module.exports = app => {
   // Create a new Ad
   router.post("/ad/create", ads.create);
 
-  // Retrieve all Ads
+  // Retrieve all Ad from id if admin or session id
   router.get("/ad/findAll", ads.findAll);
 
-  // Retrieve a single Ad with id
+  // Find single Ad from id if admin or session id
   router.get("/ad/findOne/:id", ads.findOne);
 
-  // Update an Ad with id
+  // Update a Ad with ad id
   router.put("/ad/update/:id", ads.update);
 
-  // Delete an Ad with id
+  // Delete a Ad with ad id
   router.delete("/ad/delete/:id", ads.delete);
 
-  // Delete all Ads
+  // Delete all Ad from id if admin or session id
   router.delete("/ad/deleteAll", ads.deleteAll);
 
   app.use('/api', router);

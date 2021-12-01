@@ -39,6 +39,11 @@ exports.logout = (req, res) => {
   }
 };
 
+// Request password reset with email
+exports.resetPass = (req, res) => {
+  return sendError(res, 501, -1, "User.resetPass not Implemented", null);
+};
+
 // Create and Save a new User
 exports.create = (req, res) => {
   // Validate request
@@ -322,4 +327,14 @@ exports.roles = (req, res) => {
       sendMessage(res, 1, rolesP);
     }
   }
+};
+
+// Get 1 or multiple ad adapted to the User session id
+exports.ad = (req, res) => {
+  return sendError(res, 501, -1, "User.ad not Implemented", null);
+};
+
+// Get History
+exports.history = (req, res) => {
+  return sendError(res, 501, -1, "User.history not Implemented", null);
 };

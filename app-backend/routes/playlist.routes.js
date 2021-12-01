@@ -2,22 +2,22 @@ const playlists = require("../controllers/playlist.controller");
 module.exports = app => {
   let router = require("express").Router();
 
-  // Create a new PlaylistDB
+  // Create a new Playlist
   router.post("/playlist/create", playlists.create);
 
-  // Retrieve all Playlists
+  // Retrieve all Playlist from id if admin or session id
   router.get("/playlist/findAll", playlists.findAll);
 
-  // Retrieve a single PlaylistDB with id
+  // Find single Playlist from id if admin or session id
   router.get("/playlist/findOne/:id", playlists.findOne);
 
-  // Update a PlaylistDB with id
+  // Update a Playlist with playlist id
   router.put("/playlist/update/:id", playlists.update);
 
-  // Delete a PlaylistDB with id
+  // Delete a Playlist with playlist id
   router.delete("/playlist/delete/:id", playlists.delete);
 
-  // Delete all Playlists
+  // Delete all Playlists from id if admin or session id
   router.delete("/playlist/deleteAll", playlists.deleteAll);
 
   app.use('/api', router);
