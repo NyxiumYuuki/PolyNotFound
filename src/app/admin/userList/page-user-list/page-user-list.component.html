@@ -117,7 +117,8 @@
             <ng-container matColumnDef="dateOfBirth">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Date de naissance </th>
                 <td mat-cell *matCellDef="let user">
-                    {{ user.dateOfBirth | date:'dd/LL/YYYY' }}
+                    <span *ngIf="((user.dateOfBirth === null) || (user.dateOfBirth === undefined)); else elseDateOfBirth"></span>
+                    <ng-template #elseDateOfBirth> {{ user.dateOfBirth | date:'dd/LL/YYYY' }} </ng-template>
                 </td>
             </ng-container>
 
@@ -125,7 +126,8 @@
             <ng-container matColumnDef="age">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Âge </th>
                 <td mat-cell *matCellDef="let user">
-                    {{user.age}}
+                    <span *ngIf="(user.age < 0) ; else elseAge"></span>
+                    <ng-template #elseAge> {{user.age}} </ng-template>
                 </td>
             </ng-container>
 
@@ -133,8 +135,8 @@
             <ng-container matColumnDef="sexe">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Sexe </th>
                 <td mat-cell *matCellDef="let user">
-                    <span *ngIf="user.gender === 'man'">H</span>
-                    <span *ngIf="user.gender === 'woman'">F</span>
+                    <span *ngIf="(user.gender === 'man') ; else elseSexe"> H </span>
+                    <ng-template #elseSexe> F </ng-template>
                 </td>
             </ng-container>
 
@@ -143,8 +145,8 @@
                 <th mat-header-cell *matHeaderCellDef> Centres d'intérêt </th>
                 <td mat-cell *matCellDef="let user">
                     <span *ngFor="let interest of user.interests; let isLast = last;">
-                        <span *ngIf="!isLast"> {{interest}}, </span>
-                        <span *ngIf="isLast"> {{interest}} </span>
+                        <span *ngIf="!isLast ; else elseInterests"> {{interest}}, </span>
+                        <ng-template #elseInterests> {{interest}} </ng-template>
                     </span>
                 </td>
             </ng-container>
@@ -170,19 +172,6 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Accepté </th>
                 <td mat-cell *matCellDef="let user">
                     <mat-slide-toggle [(ngModel)]="user.isAccepted" (click)="onSlideIsAccepted(user)"></mat-slide-toggle>
-                </td>
-            </ng-container>
-
-            <!-- Delete Column -->
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> Actions </th>
-                <td mat-cell *matCellDef="let user">
-                    <button mat-icon-button (click)="onVisualize(user)">
-                        <mat-icon>aspect_ratio</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="onDelete(user)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
                 </td>
             </ng-container>
 

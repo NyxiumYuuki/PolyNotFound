@@ -1,9 +1,23 @@
-.lightTheme, .darkTheme {
-  background-image: none;
-  overflow-y: hidden;
-  overflow-x: hidden;
+.myContainer1 {
+  padding: 10px 10px 0px 25px;
+  margin: 0px 0px 0px 0px;
   font-size: small;
 }
+
+
+.myContainer2 {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.myContainer2::-webkit-scrollbar {
+  display: none;
+}
+
+
 
 h1 {
   text-align: center;
@@ -24,6 +38,10 @@ h1 {
 
 .imageContainer {
   border: solid 1px grey;
+}
+
+mat-dialog-actions {
+  margin-bottom: 0px;
 }
 
 button {

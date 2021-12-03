@@ -60,10 +60,8 @@ import { InputInterestsRegisterComponent } from './beforeConnexion/register/inpu
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { PageAdListAdminComponent } from './admin/adList/page-ad-list-admin/page-ad-list-admin.component';
 import { PopupDeleteAdAdminComponent } from './admin/adList/popup-delete-ad-admin/popup-delete-ad-admin.component';
-import { PopupVisualizeAdAdminComponent } from './admin/adList/popup-visualize-ad-admin/popup-visualize-ad-admin.component';
 import { PopupVisualizeImagesAdminComponent } from './admin/adList/popup-visualize-images-admin/popup-visualize-images-admin.component';
 import { PageUserListComponent } from './admin/userList/page-user-list/page-user-list.component';
-import { PopupVisualizeUserComponent } from './admin/userList/popup-visualize-user/popup-visualize-user.component';
 import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/popup-delete-user.component';
 import { PopupCreateUserComponent } from './admin/userList/popup-create-user/popup-create-user.component';
 import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
@@ -72,6 +70,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import { PagesPopularityComponent } from './advertiser/pages-popularity/pages-popularity.component';
 import { ChartsModule } from 'ng2-charts';
 import { PopupDeletePlaylistComponent } from './user/myPlaylists/popup-delete-playlist/popup-delete-playlist.component';
+import { PopupForgottenPasswordComponent } from './beforeConnexion/login/popup-forgotten-password/popup-forgotten-password.component';
 
 
 @NgModule({
@@ -112,16 +111,15 @@ import { PopupDeletePlaylistComponent } from './user/myPlaylists/popup-delete-pl
         InputInterestsRegisterComponent,
         PageAdListAdminComponent,
         PopupDeleteAdAdminComponent,
-        PopupVisualizeAdAdminComponent,
         PopupVisualizeImagesAdminComponent,
         PageUserListComponent,
-        PopupVisualizeUserComponent,
         PopupDeleteUserComponent,
         PopupCreateUserComponent,
         InputInterestsAdminComponent,
         PageWatchingVideoComponent,
         PagesPopularityComponent,
         PopupDeletePlaylistComponent,
+        PopupForgottenPasswordComponent,
     ],
     imports: [
         BrowserModule,

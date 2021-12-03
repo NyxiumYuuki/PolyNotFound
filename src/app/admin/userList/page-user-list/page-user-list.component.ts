@@ -6,7 +6,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
 import {User} from "../../../utils/interfaces/user";
-import {PopupVisualizeUserComponent} from "../popup-visualize-user/popup-visualize-user.component";
 import {PopupDeleteUserComponent} from "../popup-delete-user/popup-delete-user.component";
 import {PopupCreateUserComponent} from "../popup-create-user/popup-create-user.component";
 import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
@@ -63,19 +62,6 @@ export class PageUserListComponent implements AfterViewInit
     {
         const filterValue = (event.target as HTMLInputElement).value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-
-    onVisualize(user: User): void
-    {
-        const config = {
-            width: '50%',
-            data: { user: user }
-        };
-        this.dialog
-            .open(PopupVisualizeUserComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
     }
 
 
@@ -139,9 +125,12 @@ export class PageUserListComponent implements AfterViewInit
 
     getAge(date: Date): number
     {
-        const diff = Date.now() - date.getTime();
-        const age = new Date(diff);
-        return Math.abs(age.getUTCFullYear() - 1970);
+        if((date === null) || (date === undefined)) return -1;
+        else {
+            const diff = Date.now() - date.getTime();
+            const age = new Date(diff);
+            return Math.abs(age.getUTCFullYear() - 1970);
+        }
     }
 
 

@@ -119,10 +119,6 @@ export class PageRegisterComponent
             this.errorMessage = "Le mot de passe est différent de sa confirmation.";
             this.hasError = true;
         }
-        else if((this.user.role.name === 'user') && ((this.user.dateOfBirth === undefined) || (this.user.dateOfBirth === null))) {
-            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
-            this.hasError = true;
-        }
         else {
             this.errorMessage = "" ;
             this.hasError = false;
