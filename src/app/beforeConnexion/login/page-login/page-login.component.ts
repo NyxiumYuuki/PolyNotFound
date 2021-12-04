@@ -39,28 +39,23 @@ export class PageLoginComponent implements OnInit
         {
             let data = {
                 email: this.email,
-                hashPass: this.hashage(this.password)
+                hashPass: this.password
             };
             this.messageService
                 .post('user/auth', data)
-                .subscribe( retour => this.onSeConnecterCallback(retour));
+                .subscribe( retour => this.onSeConnecterCallback(retour), err => this.onSeConnecterCallback(err));
         }
 	}
 
 
     onSeConnecterCallback(retour): void
     {
-        console.log(retour);
-
-        if(retour.status !== 200)
-        {
-            console.log("noooo !");
-            //this.errorMessage = retour.error.data.reason;
-            //this.hasError = true;
+        if(retour.status !== "success") {
+            this.errorMessage = retour.error.data.reason;
+            this.hasError = true;
         }
         else {
-            console.log("yeeess !");
-            //this.router.navigateByUrl( '/search' );
+            this.router.navigateByUrl( '/user/search');
         }
     }
 
