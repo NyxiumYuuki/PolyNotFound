@@ -48,7 +48,7 @@ User.exists({role: roles.SuperAdmin}, function (err, docs){
       const user = new User({
         login: login,
         hashPass: hashPass,
-        mail: mail,
+        email: mail,
         role: roles.SuperAdmin
       });
       user
