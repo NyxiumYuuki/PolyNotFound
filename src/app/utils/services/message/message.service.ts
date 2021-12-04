@@ -3,16 +3,38 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService
 {
+
     constructor( private http: HttpClient ) { }
 
-    sendMessage( url, data ): Observable<any>
+    post(url: string, data: any): Observable<any>
     {
         const urlComplete = environment.debutUrl + url ;
-        return this.http.post<any>( urlComplete, data, {withCredentials: true} );
+        return this.http.post<any>(urlComplete, data, {withCredentials: true});
     }
+
+    get(url: string, data: any): Observable<any>
+    {
+        const urlComplete = environment.debutUrl + url ;
+        return this.http.get<any>(urlComplete, data);
+    }
+
+    put(url: string, data: any): Observable<any>
+    {
+        const urlComplete = environment.debutUrl + url ;
+        return this.http.put<any>(urlComplete, data, {withCredentials: true});
+    }
+
+    delete(url: string, data: any): Observable<any>
+    {
+        const urlComplete = environment.debutUrl + url ;
+        return this.http.delete<any>(urlComplete, data);
+    }
+
 }

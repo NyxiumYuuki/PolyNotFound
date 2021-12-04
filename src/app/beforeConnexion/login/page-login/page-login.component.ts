@@ -42,10 +42,27 @@ export class PageLoginComponent implements OnInit
                 hashPass: this.hashage(this.password)
             };
             this.messageService
-                .sendMessage('user/auth', data)
-                .subscribe( retour => this.maCallback(retour))
+                .post('user/auth', data)
+                .subscribe( retour => this.onSeConnecterCallback(retour));
         }
 	}
+
+
+    onSeConnecterCallback(retour): void
+    {
+        console.log(retour);
+
+        if(retour.status !== 200)
+        {
+            console.log("noooo !");
+            //this.errorMessage = retour.error.data.reason;
+            //this.hasError = true;
+        }
+        else {
+            console.log("yeeess !");
+            //this.router.navigateByUrl( '/search' );
+        }
+    }
 
 
     onForgottenPassword(): void
@@ -60,19 +77,6 @@ export class PageLoginComponent implements OnInit
                     this.snackBar.open( "Un mail de réinitialisation de mot de passe vous a été envoyé.", "", config);
                 }
             });
-    }
-
-
-    maCallback(retour): void
-    {
-        console.log(retour.data)
-        if(retour.status !== 200) {
-            this.errorMessage = retour.error.data.reason;
-            this.hasError = true;
-        }
-        else {
-            //this.router.navigateByUrl( '/search' );
-        }
     }
 
 
