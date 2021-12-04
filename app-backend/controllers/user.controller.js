@@ -13,10 +13,9 @@ exports.auth = (req, res) => {
   } else{
     // Check User in the database
     User
-      .findOne({email: req.body.email, hashPass: req.body.hashPass, isActive: true}, {role: true})
+      .findOne({email: req.body.email, hashPass: req.body.hashPass, isActive: true}, {role: true, profileImageUrl: true})
       .then(data => {
         if (data !== null){
-          console.log(data._id.toString(), {lastConnexion: new Date()});
           User.findByIdAndUpdate(data._id.toString(), {lastConnexion: new Date()}, {useFindAndModify: false});
           const dataRes = {id: data._id.toString(), email: req.body.email, profileImageUrl: data.profileImageUrl, role: data.role};
           setSessionCookie(req, res, dataRes);
