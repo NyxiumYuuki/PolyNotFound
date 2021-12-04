@@ -12,7 +12,7 @@ module.exports = mongoose => {
       company: String,
       profilePictureUrl: {
         type: String,
-        default: null
+        default: "https://www.handiclubnimois.fr/wp-content/uploads/2020/10/blank-profile-picture-973460_1280.png"
       },
       dateOfBirth: {
         type: Date,
