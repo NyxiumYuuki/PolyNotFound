@@ -34,7 +34,10 @@ module.exports = mongoose => {
         type: Boolean,
         default: false
       },
-      lastConnexion: Date
+      lastConnexion: {
+        type: Date,
+        default: null
+      }
     },
     { timestamps: true }
   );

@@ -4,28 +4,30 @@ const {checkLogin, setSessionCookie, getSession, getToken} = require("../config/
 const ObjectId = require('mongoose').Types.ObjectId;
 const roles = require("../config/role.config");
 const User = db.users;
-const History = db.histories;
 
 // Authenticate a User
 exports.auth = (req, res) => {
   // Validate request
-  if (!req.body.login || !req.body.hashPass) {
-    sendError(res, 400,-1,"Content can not be empty . (login and hashPass needed)");
+  if (!req.body.email || !req.body.hashPass) {
+    sendError(res, 400,-1,"Content can not be empty . (email and hashPass needed)");
   } else{
     // Check User in the database
     User
-      .findOne({login: req.body.login, hashPass: req.body.hashPass, active: true}, {role: true})
+      .findOne({email: req.body.email, hashPass: req.body.hashPass, isActive: true}, {role: true})
       .then(data => {
         if (data !== null){
-          setSessionCookie(req, res, {id: data._id, login: req.body.login, role: data.role});
-          return sendMessage(res, 1, {id: data._id, login: req.body.login, role: data.role});
+          console.log(data._id.toString(), {lastConnexion: new Date()});
+          User.findByIdAndUpdate(data._id.toString(), {lastConnexion: new Date()}, {useFindAndModify: false});
+          const dataRes = {id: data._id.toString(), email: req.body.email, profileImageUrl: data.profileImageUrl, role: data.role};
+          setSessionCookie(req, res, dataRes);
+          return sendMessage(res, 1, dataRes);
         } else {
-          setSessionCookie(req, res, {id: -1, login: -1, role: -1 });
-          return sendError(res, 500, -1, "Invalid login or password.");
+          setSessionCookie(req, res, {id: -1, email: -1, profileImageUrl: -1, role: -1});
+          return sendError(res, 500, 101, "Invalid login or password.");
         }
       })
       .catch(err => {
-        sendError(res, 500,-1,err.message || "Some error occurred while authenticating the User.");
+        sendError(res, 400, 100,err.message || "Some error occurred while authenticating the User.");
       });
   }
 };
@@ -34,8 +36,8 @@ exports.auth = (req, res) => {
 exports.logout = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    setSessionCookie(req, res, {id: -1, login: -1, role: -1});
-    return sendMessage(res, 1, {message: "User disconnected"}, token);
+    setSessionCookie(req, res, {id: -1, email: -1, profileImageUrl: -1, role: -1});
+    return sendMessage(res, 2, {message: "User disconnected"}, token);
   }
 };
 
@@ -47,11 +49,11 @@ exports.resetPass = (req, res) => {
 // Create and Save a new User
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.login || !req.body.hashPass || !req.body.mail) {
-    sendError(res, 400,-1,"Content can not be empty . (login, hashPass and email needed");
+  if (!req.body.email || !req.body.hashPass || !req.body.login) {
+    sendError(res, 400,-1,"Content can not be empty . (email, hashPass and login needed");
   }
   else{
-    User.exists({login: req.body.login}, function (err, docs){
+    User.exists({email: req.body.email}, function (err, docs){
       if(err){
         sendError(res, 500,-1,err.message || "Some error occurred while checking if the User already exists.");
       } else{
@@ -59,12 +61,13 @@ exports.create = (req, res) => {
           let user;
           const session = getSession(req.cookies.SESSIONID);
           const token = getToken(session);
-          if((typeof token.login === 'undefined' || token.login === -1) && typeof req.body.role === 'undefined'){
+          if((typeof token.email === 'undefined' || token.email === -1) && typeof req.body.role === 'undefined'){
             user = new User({
-              login: req.body.login,
+              email: req.body.email,
               hashPass: req.body.hashPass,
-              mail: req.body.mail,
-              profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
+              login: req.body.login,
+              role: req.body.role,
+              company: req.body.company ? req.body.company : null,
               dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
               gender: req.body.gender ? req.body.gender : null,
               interests: req.body.interests ? req.body.interests : null
@@ -76,12 +79,13 @@ exports.create = (req, res) => {
             user = new User({
               login: req.body.login,
               hashPass: req.body.hashPass,
-              mail: req.body.mail,
+              email: req.body.mail,
               role: req.body.role,
               profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
               dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
               gender: req.body.gender ? req.body.gender : null,
-              interests: req.body.interests ? req.body.interests : null
+              interests: req.body.interests ? req.body.interests : null,
+              isAccepted: true
             });
           } else {
             user = new User({
