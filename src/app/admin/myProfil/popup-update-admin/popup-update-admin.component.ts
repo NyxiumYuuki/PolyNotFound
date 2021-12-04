@@ -30,7 +30,7 @@ export class PopupUpdateAdminComponent implements OnInit
             _id: admin0._id,
             login: admin0.login,
             hashPass: admin0.hashPass,
-            email: admin0.mail,
+            email: admin0.email,
             role: {
                 name: admin0.role.name,
                 permission: admin0.role.permission,
@@ -79,14 +79,13 @@ export class PopupUpdateAdminComponent implements OnInit
             this.errorMessage = "Email invalide" ;
             this.hasError = true;
         }
-        else if(this.changePassword) {
-            if (this.newPassword.length === 0) {
-                this.errorMessage = "Veuillez remplir le champ 'mot de passe'" ;
-                this.hasError = true;
-            } else if (this.newPassword !== this.confirmNewPassword) {
-                this.errorMessage = "Le mot de passe est différent de sa confirmation" ;
-                this.hasError = true;
-            }
+        else if((this.changePassword) && (this.newPassword.length === 0)) {
+            this.errorMessage = "Veuillez remplir le champ 'mot de passe'" ;
+            this.hasError = true;
+        }
+        else if((this.changePassword) && (this.newPassword !== this.confirmNewPassword)) {
+            this.errorMessage = "Le mot de passe est différent de sa confirmation" ;
+            this.hasError = true;
         }
         else {
             this.errorMessage = "" ;

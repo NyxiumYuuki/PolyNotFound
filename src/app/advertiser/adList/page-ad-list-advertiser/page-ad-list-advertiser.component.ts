@@ -84,6 +84,8 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     {
         const config = {
             width: '75%',
+            height: '80%',
+            panelClass: 'custom-dialog-container',
             data: { action: "add", advert: null }
         };
         this.dialog
@@ -111,6 +113,8 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     {
         const config = {
             width: '75%',
+            height: '80%',
+            panelClass: 'custom-dialog-container',
             data: { action: "update", advert: advertToUpdate }
         };
         this.dialog

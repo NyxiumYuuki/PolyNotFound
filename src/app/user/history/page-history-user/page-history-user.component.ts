@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
 
 
 interface VideoHistory {
+    videoId: string,
     imageUrl: string,
     title: string,
     date: Date,
@@ -115,6 +116,7 @@ export class PageHistoryUserComponent implements AfterViewInit
     videoAllToVideoHistory(videoAll: VideoAll): VideoHistory
     {
         return {
+            videoId: videoAll.videoId,
             imageUrl: videoAll.imageUrl,
             title: videoAll.title,
             date: videoAll.watchedDates[videoAll.watchedDates.length-1],

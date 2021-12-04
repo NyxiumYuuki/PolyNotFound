@@ -30,7 +30,7 @@ export class PopupUpdateUserComponent implements OnInit
             _id: user0._id,
             login: user0.login,
             hashPass: user0.hashPass,
-            email: user0.mail,
+            email: user0.email,
             role: {
                 name: user0.role.name,
                 permission: user0.role.permission,
@@ -79,18 +79,13 @@ export class PopupUpdateUserComponent implements OnInit
             this.errorMessage = "Email invalide." ;
             this.hasError = true;
         }
-        else if((this.userCopy.dateOfBirth === undefined) || (this.userCopy.dateOfBirth === null)) {
-            this.errorMessage = "Veuillez remplir le champ 'date de naissance'.";
+        else if((this.changePassword) && (this.newPassword.length === 0)) {
+            this.errorMessage = "Veuillez remplir le champ 'mot de passe'" ;
             this.hasError = true;
         }
-        else if(this.changePassword) {
-            if (this.newPassword.length === 0) {
-                this.errorMessage = "Veuillez remplir le champ 'mot de passe'." ;
-                this.hasError = true;
-            } else if (this.newPassword !== this.confirmNewPassword) {
-                this.errorMessage = "Le mot de passe est différent de sa confirmation." ;
-                this.hasError = true;
-            }
+        else if((this.changePassword) && (this.newPassword !== this.confirmNewPassword)) {
+            this.errorMessage = "Le mot de passe est différent de sa confirmation" ;
+            this.hasError = true;
         }
         else {
             this.errorMessage = "" ;

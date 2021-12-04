@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {MessageService} from "../../../utils/services/message/message.service";
 import {Router} from "@angular/router";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
+import {MatDialog} from "@angular/material/dialog";
+import {PopupForgottenPasswordComponent} from "../popup-forgotten-password/popup-forgotten-password.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 
@@ -20,7 +23,9 @@ export class PageLoginComponent implements OnInit
 
     constructor( private messageService: MessageService,
                  private router: Router,
-                 public themeService: ThemeService ) { }
+                 public themeService: ThemeService,
+                 public dialog: MatDialog,
+                 private snackBar: MatSnackBar ) { }
 
 
     ngOnInit(): void {}
@@ -41,6 +46,21 @@ export class PageLoginComponent implements OnInit
                 .subscribe( retour => this.maCallback(retour))
         }
 	}
+
+
+    onForgottenPassword(): void
+    {
+        this.dialog
+            .open(PopupForgottenPasswordComponent, {width: '30%'})
+            .afterClosed()
+            .subscribe(result => {
+                if((result !== null) && (result !== undefined))
+                {
+                    const config = { duration: 5000, panelClass: "custom-class" };
+                    this.snackBar.open( "Un mail de réinitialisation de mot de passe vous a été envoyé.", "", config);
+                }
+            });
+    }
 
 
     maCallback(retour): void
@@ -71,6 +91,7 @@ export class PageLoginComponent implements OnInit
             this.hasError = false;
         }
     }
+
 
     // Fonction de hashage (faible)
     hashage(input: string): string
