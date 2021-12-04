@@ -10,7 +10,7 @@ module.exports = mongoose => {
         default: roles.User
       },
       company: String,
-      profilePictureUrl: {
+      profileImageUrl: {
         type: String,
         default: "https://www.handiclubnimois.fr/wp-content/uploads/2020/10/blank-profile-picture-973460_1280.png"
       },
