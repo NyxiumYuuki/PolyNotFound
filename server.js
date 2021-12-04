@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
 const cors = require('cors');
-app.use(cors({origin: 'http://localhost:4200', credentials: true}));
+app.use(cors({origin: 'http://127.0.0.1:4200', credentials: true}));
 
 const db = require("./app-backend/models/mongodb.model");
 console.log("Db Url: ",db.url);
