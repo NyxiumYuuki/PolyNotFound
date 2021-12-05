@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
+import {ProfilService} from "../../../utils/services/profil/profil.service";
+import {MessageService} from "../../../utils/services/message/message.service";
 
 
 
@@ -19,9 +21,20 @@ export class NavbarAdminComponent
 
     url = this.router.url;
 
-    urlImage: string = "https://www.reference-gaming.com/assets/media/product/41195/figurine-pop-duck-tales-n-309-loulou.jpg?format=product-cover-large&k=1519639530" ;
+    constructor( private router: Router,
+                 public profilService: ProfilService,
+                 private messageService: MessageService ) { }
 
-    constructor(private router: Router) { }
+    onDeconnexion(): void
+    {
+        this.messageService
+            .delete('user/logout', {})
+            .subscribe(retour => this.onDeconnexionCallback(retour), err => this.onDeconnexionCallback(err));
+    }
 
-    onDeconnexion(): void {}
+    onDeconnexionCallback(retour: any): void
+    {
+        console.log(retour);
+    }
+
 }

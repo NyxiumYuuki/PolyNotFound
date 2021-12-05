@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {MessageService} from "../../../utils/services/message/message.service";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
@@ -55,27 +55,18 @@ export class PageRegisterComponent
         {
             if(this.user.role.name === "user") this.user.role.permission = 0;
             else this.user.role.permission = 5;
-            this.user.hashPass = this.hashage(this.password);
-
-            // FAUX CODE
-            const retour = { status: "succes" };
-            this.myCallback(retour);
-
-            // VRAI CODE
-            /*
+            this.user.hashPass = this.password;
             this.messageService
-                .sendMessage('register', this.user)
-                .subscribe(retour => this.myCallback(retour));
-            */
+                .post('user/create', this.user)
+                .subscribe(retour => this.onEnregistrerCallback(retour), err => this.onEnregistrerCallback(err));
         }
     }
 
 
     // Gestion de la réponde du backend
-    myCallback(retour): void
+    onEnregistrerCallback(retour): void
     {
-        if(retour.status === "error")
-        {
+        if(retour.status !== "success") {
             console.log(retour);
         }
         else
@@ -138,19 +129,6 @@ export class PageRegisterComponent
     onEventInputInterests(myInterets: string[]): void
     {
         this.user.interests = myInterets;
-    }
-
-
-    // Fonction de hashage (faible)
-    hashage(input: string): string
-    {
-        let hash = 0;
-        for (let i = 0; i < input.length; i++) {
-            let ch = input.charCodeAt(i);
-            hash = ((hash << 5) - hash) + ch;
-            hash = hash & hash;
-        }
-        return hash.toString();
     }
 
 }
