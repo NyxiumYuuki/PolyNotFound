@@ -1,5 +1,5 @@
 const {sendMessage} = require ("../config/response.config");
-const interests = require("../config/video.categories.config");
+const interests = require("../models/objects/video.categories.model");
 
 // Get all interests available
 exports.getInterests = (req, res) => {

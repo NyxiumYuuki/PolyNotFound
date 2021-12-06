@@ -1,4 +1,4 @@
-const roles = require("../../config/role.config");
+const roles = require("../objects/role.model");
 
 module.exports = mongoose => {
   let schema = mongoose.Schema({
@@ -29,10 +29,6 @@ module.exports = mongoose => {
       isActive: {
         type: Boolean,
         default: true
-      },
-      isAccepted: {
-        type: Boolean,
-        default: false
       },
       lastConnexion: {
         type: Date,

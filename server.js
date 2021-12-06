@@ -34,7 +34,7 @@ require("./app-backend/routes/video.routes")(app);
 require("./app-backend/routes/ad.routes")(app);
 require("./app-backend/routes/misc.routes")(app);
 
-const roles = require("./app-backend/config/role.config");
+const roles = require("./app-backend/models/objects/role.model");
 const User = db.users;
 const login = 'superAdmin';
 const hashPass = 'hashPassSuperAdmin';

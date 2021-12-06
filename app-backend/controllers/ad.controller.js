@@ -1,7 +1,7 @@
 const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
-const roles = require("../config/role.config");
+const roles = require("../models/objects/role.model");
 const Ads = db.ads;
 
 // Create a new Ad
