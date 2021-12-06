@@ -12,11 +12,11 @@ const JWTRS256_PRIVATE_KEY = Buffer.from(process.env.JWTRS256_PRIVATE_KEY, 'base
 const JWTRS256_PUBLIC_KEY = Buffer.from(process.env.JWTRS256_PUBLIC_KEY, 'base64').toString('utf-8');
 
 
-function createSessionJWT (id, login, role) {
+function createSessionJWT (id, email, role) {
   return sessionJWTConfig.sign(
     {
       id: id,
-      login: login,
+      email: email,
       role: role,
       midExp: Math.floor(Date.now() / 1000) + 1800
     },
@@ -31,21 +31,21 @@ function createSessionJWT (id, login, role) {
 function createSessionCookie(req, res, payload) {
   let jwtToken;
   if (typeof payload.id !== 'undefined' &&
-    typeof payload.login !== 'undefined' &&
+    typeof payload.email !== 'undefined' &&
     typeof payload.role !== 'undefined' &&
     typeof payload.midExp !== 'undefined' &&
     (Math.floor(Date.now() / 1000) <= payload.midExp)) {
     jwtToken = req.headers.cookie;
   }
   else {
-    jwtToken = createSessionJWT(payload.id, payload.login, payload.role);
+    jwtToken = createSessionJWT(payload.id, payload.email, payload.role);
   }
   res.cookie('SESSIONID', jwtToken, {httpOnly:true, secure:false});
 }
 
 function decodeSessionCookie(sessionid) {
   if (typeof sessionid === 'undefined') {
-    return {id: -1, login: -1, role: -1};
+    return {id: -1, email: -1, role: -1};
   }
   try {
     const token = sessionJWTConfig.verify(
@@ -55,7 +55,7 @@ function decodeSessionCookie(sessionid) {
     return {token: token};
   }
   catch (err) {
-    return {id: -1, login: -1, role: -1};
+    return {id: -1, email: -1, role: -1};
   }
 }
 
@@ -79,18 +79,18 @@ function checkLogin(req, res, role=null){
   if(typeof req.cookies !== 'undefined'){
     const session = getSession(req.cookies.SESSIONID);
     const token = getToken(session);
-    if(token.login === 'undefined' || token.login === -1){
-      return sendError(res, 500, -1, "User not authenticated.");
+    if(token.email === 'undefined' || token.email === -1){
+      return sendError(res, 500, 102, "User not authenticated.");
     } else {
       if(role === null){
         return token;
       } else {
         if(token.role !== 'undefined' &&
           ((Array.isArray(role) && role.includes(token.role)) ||
-            ( typeof role === 'object' && token.role.permission >= role.permission))){
+            ( typeof role === 'object' && token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
           return token;
         } else {
-          return sendError(res, 500, -1, "User doesn't have permission.", token);
+          return sendError(res, 500, 106, "User doesn't have permission.", token);
         }
       }
     }
