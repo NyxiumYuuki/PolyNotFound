@@ -5,6 +5,7 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupForgottenPasswordComponent} from "../popup-forgotten-password/popup-forgotten-password.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ProfilService} from "../../../utils/services/profil/profil.service";
 
 
 
@@ -25,7 +26,8 @@ export class PageLoginComponent implements OnInit
                  private router: Router,
                  public themeService: ThemeService,
                  public dialog: MatDialog,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private profilService: ProfilService) { }
 
 
     ngOnInit(): void {}
@@ -50,12 +52,16 @@ export class PageLoginComponent implements OnInit
 
     onSeConnecterCallback(retour): void
     {
+        console.log(retour);
         if(retour.status !== "success") {
             this.errorMessage = retour.error.data.reason;
             this.hasError = true;
         }
         else {
-            this.router.navigateByUrl( '/user/search');
+            this.profilService.profileImageUrl = retour.data.profileImageUrl;
+            if(retour.data.role.name === "user") this.router.navigateByUrl( '/user/search');
+            else if(retour.data.role.name === "advertiser") this.router.navigateByUrl( '/advertiser/adList');
+            else if(retour.data.role.name === "admin") this.router.navigateByUrl( '/admin/userList');
         }
     }
 
