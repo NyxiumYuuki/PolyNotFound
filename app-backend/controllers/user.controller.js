@@ -2,7 +2,7 @@ const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin, setSessionCookie, getSession, getToken} = require("../config/sessionJWT.config");
 const ObjectId = require('mongoose').Types.ObjectId;
-const roles = require("../config/role.config");
+const roles = require("../models/objects/role.model");
 const User = db.users;
 
 // Authenticate a User
@@ -16,17 +16,24 @@ exports.auth = (req, res) => {
       .findOne({email: req.body.email, hashPass: req.body.hashPass, isActive: true}, {role: true, profileImageUrl: true})
       .then(data => {
         if (data !== null){
-          User.findByIdAndUpdate(data._id.toString(), {lastConnexion: new Date()}, {useFindAndModify: false});
-          const dataRes = {id: data._id.toString(), email: req.body.email, profileImageUrl: data.profileImageUrl, role: data.role};
-          setSessionCookie(req, res, dataRes);
-          return sendMessage(res, 1, dataRes);
+          User.findByIdAndUpdate(data._id.toString(), {lastConnexion: new Date()}, {useFindAndModify: false},
+            function (err) {
+              if (err){
+                return sendError(res, 400, 100,err.message || "Some error occurred while updating the User.");
+              }
+              else{
+                const dataRes = {id: data._id.toString(), email: req.body.email, profileImageUrl: data.profileImageUrl, role: data.role};
+                setSessionCookie(req, res, dataRes);
+                return sendMessage(res, 1, dataRes);
+              }
+            });
         } else {
           setSessionCookie(req, res, {id: -1, email: -1, profileImageUrl: -1, role: -1});
           return sendError(res, 500, 101, "Invalid login or password.");
         }
       })
       .catch(err => {
-        sendError(res, 400, 100,err.message || "Some error occurred while authenticating the User.");
+        return sendError(res, 400, 100,err.message || "Some error occurred while authenticating the User.");
       });
   }
 };
@@ -36,7 +43,7 @@ exports.logout = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
     setSessionCookie(req, res, {id: -1, email: -1, profileImageUrl: -1, role: -1});
-    return sendMessage(res, 2, {message: "User disconnected"}, token);
+    return sendMessage(res, 2, {message: "User disconnected"});
   }
 };
 
@@ -54,62 +61,50 @@ exports.create = (req, res) => {
   else{
     User.exists({email: req.body.email}, function (err, docs){
       if(err){
-        sendError(res, 500,-1,err.message || "Some error occurred while checking if the User already exists.");
+        sendError(res, 500,100,err.message || "Some error occurred while checking if the User already exists.");
       } else{
         if(docs === null) {
           let user;
-          const session = getSession(req.cookies.SESSIONID);
-          const token = getToken(session);
-          if((typeof token.email === 'undefined' || token.email === -1) && typeof req.body.role === 'undefined'){
-            user = new User({
-              email: req.body.email,
-              hashPass: req.body.hashPass,
-              login: req.body.login,
-              role: req.body.role,
-              company: req.body.company ? req.body.company : null,
-              dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
-              gender: req.body.gender ? req.body.gender : null,
-              interests: req.body.interests ? req.body.interests : null
-            });
-          } else if(typeof token.role !== 'undefined' &&
-              typeof req.body.role !== 'undefined' &&
-            typeof req.body.role.permission !== 'undefined' &&
-            token.role.permission > req.body.role.permission) {
-            user = new User({
-              login: req.body.login,
-              hashPass: req.body.hashPass,
-              email: req.body.mail,
-              role: req.body.role,
-              profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
-              dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
-              gender: req.body.gender ? req.body.gender : null,
-              interests: req.body.interests ? req.body.interests : null,
-              isAccepted: true
-            });
-          } else {
-            user = new User({
-              login: req.body.login,
-              hashPass: req.body.hashPass,
-              mail: req.body.mail,
-              profilePictureUrl: req.body.profilePictureUrl ? req.body.profilePictureUrl : null,
-              dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
-              gender: req.body.gender ? req.body.gender : null,
-              interests: req.body.interests ? req.body.interests : null
-            });
+          let var_role;
+          if(req.body.role !== 'undefined'){
+            switch(req.body.role){
+              case 'admin':
+                var_role = roles.Admin;
+                break;
+              case 'advertiser':
+                var_role = roles.Advertiser;
+                break;
+              default:
+                var_role = roles.User;
+            }
+          } else{
+            var_role = roles.User;
           }
+
+          user = new User({
+            email: req.body.email,
+            hashPass: req.body.hashPass,
+            login: req.body.login,
+            role: var_role,
+            company: req.body.company ? req.body.company : null,
+            dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : null,
+            gender: req.body.gender ? req.body.gender : null,
+            interests: req.body.interests ? req.body.interests : null,
+          });
+
           // Save User in the database
           user
             .save(user)
             .then(data => {
               data.active = undefined;
               data.hashPass = undefined; // Hiding hashPass on return
-              sendMessage(res, 1, data)
+              return sendMessage(res, 4, data)
             })
             .catch(err => {
-              sendError(res, 500,-1,err.message || "Some error occurred while creating the User.");
+              return sendError(res, 500,100,err.message || "Some error occurred while creating the User.");
             });
         } else{
-          sendError(res, 500, -1, err || `User ${req.body.login} already exists.`);
+          return sendError(res, 500, 104, err || `Email ${req.body.email} already exists.`);
         }
       }
     });
@@ -121,33 +116,58 @@ exports.findAll = (req, res) => {
   const token = checkLogin(req, res, roles.Admin);
   if(token){
     let query = {};
+    let condition;
 
-    const ids = req.query.ids;
-    let condition = ids ? {$in: ids} : {};
+    const ids = req.query.userId;
+    condition = ids ? {$in: ids} : undefined;
     query._id = condition;
+
+    const email = req.query.email;
+    condition = email ? { $regex: new RegExp(email), $options: "i" } : undefined;
+    query.email = condition;
 
     const login = req.query.login;
     condition = login ? { $regex: new RegExp(login), $options: "i" } : undefined;
     query.login = condition;
 
-    const mail = req.query.mail;
-    condition = mail ? { $regex: new RegExp(mail), $options: "i" } : undefined;
-    query.mail = condition;
-
     const role = req.query.role;
-    condition = role ? { $regex: new RegExp(role), $options: "i" } : undefined;
-    query.role = condition;
+    condition = role ? role : undefined;
+    query.role = {name: condition};
 
-    const active = req.query.active;
-    condition = active ? active : undefined;
-    query.active = condition;
+    const company = req.query.company;
+    condition = company ? { $regex: new RegExp(company), $options: "i" } : undefined;
+    query.company = condition;
 
-    User.find(condition, {hashPass: false})
+    const dateOfBirth = req.query.dateOfBirth;
+    condition = dateOfBirth ? dateOfBirth : undefined;
+    query.dateOfBirth = condition;
+
+    const gender = req.query.gender;
+    condition = gender ? gender : undefined;
+    query.gender = condition;
+
+    const isActive = req.query.isActive;
+    condition = isActive ? isActive : undefined;
+    query.isActive = condition;
+
+    const isAccepted = req.query.isAccepted;
+    condition = isAccepted ? isAccepted : undefined;
+    query.isAccepted = condition;
+
+    const sort = req.query.sort;
+    condition = sort ? sort : {email: 1};
+    const query_sort = {sort: condition};
+
+    // Remove undefined key
+    Object.keys(query).forEach(key => query[key] === undefined ? delete query[key] : {});
+    console.log(query);
+
+    User.find(query, {hashPass: false}, query_sort)
       .then(data => {
-        sendMessage(res, 1, data, token)
+        sendMessage(res, 5, data, token)
       })
       .catch(err => {
-        sendError(res,500,-1,err.message || "Some error occurred while retrieving users.", token);
+        sendError(res,500,100,err.message || "Some error occurred while retrieving users.", token);
       });
   }
 };
@@ -252,7 +272,8 @@ exports.delete = (req, res) => {
     } else {
       if (typeof token.role !== 'undefined' &&
         typeof token.role.permission !== 'undefined' &&
-        token.role.permission >= roles.Admin.permission) {
+        token.role.permission >= roles.Admin.permission &&
+        token.role.isAccepted === true) {
         id = req.params.id;
       } else {
         sendError(res, 500, -1, `Cannot delete User with id=${id}. User do not have the permission`, token);
@@ -262,26 +283,16 @@ exports.delete = (req, res) => {
       User.findById(id, {hashPass: false})
         .then(user => {
           if(user){
-            const history = new History({delete: user});
-            history
-              .save(history)
+            User.findByIdAndRemove(id)
               .then(data => {
-                if(data) {
-                  User.findByIdAndRemove(id)
-                    .then(data => {
-                      if (data) {
-                        sendMessage(res, 1, {message: `User ${id} was deleted successfully.`}, token);
-                      } else {
-                        sendError(res, 404, -1, `Cannot delete User with id=${id}. Maybe User was not found.`, token);
-                      }
-                    })
-                    .catch(err => {
-                      sendError(res, 500, -1, err.message || "Could not delete User with id=" + id, token);
-                    });
+                if (data) {
+                  sendMessage(res, 1, {message: `User ${id} was deleted successfully.`}, token);
+                } else {
+                  sendError(res, 404, -1, `Cannot delete User with id=${id}. Maybe User was not found.`, token);
                 }
               })
               .catch(err => {
-                sendError(res, 500,-1,err.message || "Some error occurred while creating the User.");
+                sendError(res, 500, -1, err.message || "Could not delete User with id=" + id, token);
               });
           } else {
             sendError(res,404,-1,"User not found with id " + id, token);
@@ -318,17 +329,7 @@ exports.deleteAll = (req, res) => {
 exports.roles = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    let rolesP = [];
-    for(const [roleName, role] of Object.entries(roles)){
-      if(role.permission < token.role.permission){
-        rolesP.push(role);
-      }
-    }
-    if(Object.entries(rolesP).length === 0){
-      sendError(res, 500, -1, "User do not have permission to see & create user with roles.", token);
-    } else{
-      sendMessage(res, 1, rolesP);
-    }
+    sendMessage(res, 10, roles, token);
   }
 };
 
