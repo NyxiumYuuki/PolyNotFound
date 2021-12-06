@@ -132,14 +132,14 @@ exports.findAll = (req, res) => {
 
     const role = req.query.role;
     condition = role ? role : undefined;
-    query.role = {name: condition};
+    query["role.name"] = condition;
 
     const company = req.query.company;
     condition = company ? { $regex: new RegExp(company), $options: "i" } : undefined;
     query.company = condition;
 
     const dateOfBirth = req.query.dateOfBirth;
-    condition = dateOfBirth ? dateOfBirth : undefined;
+    condition = dateOfBirth ? new Date(dateOfBirth) : undefined;
     query.dateOfBirth = condition;
 
     const gender = req.query.gender;
@@ -151,11 +151,49 @@ exports.findAll = (req, res) => {
     query.isActive = condition;
 
     const isAccepted = req.query.isAccepted;
-    condition = isAccepted ? isAccepted : undefined;
-    query.isAccepted = condition;
+    if(isAccepted !== 'undefined'){
+      switch (isAccepted){
+        case 'true':
+          condition = true;
+          break;
+        case 'false':
+          condition = false;
+          break;
+      }
+    }
+    query["role.isAccepted"] = condition;
 
     const sort = req.query.sort;
-    condition = sort ? sort : {email: 1};
+    if(sort !== 'undefined'){
+      switch (sort){
+        case 'asc':
+          condition = {email: 1};
+          break;
+        case 'desc':
+          condition = {email: -1};
+          break;
+        case 'lastConnexionAsc':
+          condition = {lastConnexion: 1};
+          break;
+        case 'lastConnexionDesc':
+          condition = {lastConnexion: -1};
+          break;
+        case 'createdAtAsc':
+          condition = {createdAt: 1};
+          break;
+        case 'createdAtDesc':
+          condition = {createdAt: -1};
+          break;
+        case 'updatedAtAsc':
+          condition = {updatedAt: 1};
+          break;
+        case 'updatedAtDesc':
+          condition = {updatedAt: -1};
+          break;
+        default:
+          condition = {email: 1};
+      }
+    }
     const query_sort = {sort: condition};
 
     // Remove undefined key
