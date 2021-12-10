@@ -98,7 +98,6 @@ exports.create = (req, res) => {
           user
             .save(user)
             .then(data => {
-              data.active = undefined;
               data.hashPass = undefined; // Hiding hashPass on return
               return sendMessage(res, 4, data)
             })
