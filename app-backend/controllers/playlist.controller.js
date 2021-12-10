@@ -106,19 +106,72 @@ exports.findAll = (req, res) => {
   }
 };
 
-// Find single Playlist from id if admin or session id
+// Find single Playlist from session id
 exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Playlist.findOne not Implemented", token);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id = req.params.id;
+    Playlist.findById(id, {})
+      .then(data => {
+        if(data){
+          return sendMessage(res, 23, data, token);
+        } else {
+          return sendError(res,404,105,`Playlist not found with id=${id}`, token);
+        }
+      })
+      .catch(err => {
+        return sendError(res,500,100,err.message || `Some error occurred while finding the Playlist with id=${id}`, token);
+      });
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
 // Update a Playlist with playlist id
 exports.update = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Playlist.update not Implemented", token);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id = req.params.id;
+    if(typeof req.body._id !== 'undefined' || typeof req.body.id !== 'undefined'){
+      return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
+    } else{
+      let update = {};
+      let condition;
+
+      const name = req.body.name;
+      condition = name ? name : undefined;
+      update.name = condition;
+
+      const videoIds = req.body.videoIds;
+      condition = videoIds ? {videoIds: videoIds} : undefined;
+      update.$push = condition;
+
+      const isActive = req.body.isActive;
+      if(typeof isActive !== 'undefined'){
+        condition = isActive;
+      } else{
+        condition = undefined;
+      }
+      update.isActive = condition;
+
+      // Remove undefined key
+      Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
+
+      Playlist.updateOne({_id: id, userId: token.id}, update)
+        .then(data => {
+          if(data) {
+            //Object.keys(update).forEach(key => data[key] = update[key]);
+            sendMessage(res, 7, update, token);
+          } else {
+            sendError(res, 404, -1, `Playlist not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          sendError(res, 500, -1, err.message || `Some error occurred while updating the Playlist with id=${id}`, token);
+        });
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
