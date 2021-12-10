@@ -338,19 +338,19 @@ exports.delete = (req, res) => {
       User.findByIdAndUpdate(id, {isActive: false}, {useFindAndModify: false})
         .then(data => {
           if(data) {
-            sendMessage(res, 8, {message: `User ${id} was successfully deleted.`}, token);
+            return sendMessage(res, 8, {message: `User ${id} was successfully deleted.`}, token);
           } else {
-            sendError(res, 404, 105, `User not found with id=${id}`, token);
+            return sendError(res, 404, 105, `User not found with id=${id}`, token);
           }
         })
         .catch(err => {
-          sendError(res, 500, 100, err.message || `Some error occurred while deleting the User with id=${id}`, token);
+          return sendError(res, 500, 100, err.message || `Some error occurred while deleting the User with id=${id}`, token);
         });
     } else {
-      sendError(res, 500, -1, `Error id is not valid`, token);
+      return sendError(res, 500, -1, `Error id is not valid`, token);
     }
   } else {
-    sendError(res, 500, -1, `No id given`, token);
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
@@ -360,12 +360,12 @@ exports.deleteAll = (req, res) => {
   if(token) {
     User.deleteMany({login: {$ne: "superAdmin"}})
       .then(data => {
-        sendMessage(res, 1, {
+        return sendMessage(res, 9, {
           message: `${data.deletedCount} Users were deleted successfully.`
         });
       })
       .catch(err => {
-        sendError(res, 500, -1, err.message || "Some error occurred while removing all Users.");
+        return sendError(res, 500, 100, err.message || "Some error occurred while removing all Users.");
       });
   }
 };
@@ -374,7 +374,7 @@ exports.deleteAll = (req, res) => {
 exports.roles = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    sendMessage(res, 10, roles, token);
+    return sendMessage(res, 10, roles, token);
   }
 };
 
