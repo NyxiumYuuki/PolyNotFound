@@ -3,6 +3,7 @@ const request = require('request');
 const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const {youtube, dailymotion} = require("../config/host.config");
+const VideoCategories = require("../models/objects/video.categories.model");
 const Video = db.video;
 
 // Search Videos
@@ -35,6 +36,9 @@ exports.get = (req, res) => {
               const description = jsonBody.items[0].snippet.description  ?  jsonBody.items[0].snippet.description : null;
               //const embedUrl = jsonBody.embed_url  ?  jsonBody.embed_url : null;
               const publishedAt = jsonBody.items[0].snippet.publishedAt  ?  jsonBody.items[0].snippet.publishedAt : null;
+              const interest = jsonBody.items[0].snippet.categoryId  ? VideoCategories
+                  .filter(obj => Object.values(obj.categories[1])
+                  .some(val => val.includes(jsonBody.items[0].snippet.categoryId)))[0].interest  : null;
               const views = jsonBody.items[0].statistics.viewCount  ?  parseInt(jsonBody.items[0].statistics.viewCount) : null;
               const likes = jsonBody.items[0].statistics.likeCount  ?  parseInt(jsonBody.items[0].statistics.likeCount) : null;
               const dislikes = jsonBody.items[0].statistics.dislikeCount  ?  parseInt(jsonBody.items[0].statistics.dislikeCount) : null;
@@ -47,6 +51,7 @@ exports.get = (req, res) => {
                 channelUrl: youtube.baseChannelUrl+channelId,
                 description: description,
                 embedUrl: 'https://www.youtube.com/embed/'+id,
+                interest: interest,
                 views: views,
                 likes: likes,
                 dislikes: dislikes,
@@ -65,7 +70,7 @@ exports.get = (req, res) => {
       }
     } else if(source === dailymotion.shortname){
       if(dailymotion.DAILYMOTION_API_KEY !== 'undefined' && dailymotion.DAILYMOTION_API_KEY !== ''){
-        const uri = dailymotion.baseAPIUrl+'/video/'+id+'?fields=created_time%2Cdescription%2Cthumbnail_480_url%2Clikes_total%2Ctitle%2Cid%2Cembed_url%2Cviews_total%2Cowner.username%2Cowner.id';
+        const uri = dailymotion.baseAPIUrl+'/video/'+id+'?fields=created_time%2Cdescription%2Cthumbnail_480_url%2Clikes_total%2Ctitle%2Cid%2Cembed_url%2Cviews_total%2Cowner.username%2Cowner.id%2Cchannel.name';
         request(uri,{},function (error, response, body) {
           if (typeof body !== 'undefined') {
             const jsonBody = JSON.parse(body);
@@ -79,6 +84,9 @@ exports.get = (req, res) => {
               const description = jsonBody.description  ?  jsonBody.description : null;
               const embedUrl = jsonBody.embed_url  ?  jsonBody.embed_url : null;
               const publishedAt = jsonBody.created_time  ?  new Date(jsonBody.created_time * 1000) : null;
+              const interest = jsonBody['channel.name']  ? VideoCategories
+                  .filter(obj => Object.values(obj.categories[0])
+                  .some(val => val.includes(jsonBody['channel.name'])))[0].interest  : null;
               const views = jsonBody.views_total  ?  parseInt(jsonBody.views_total) : null;
               const likes = jsonBody.likes_total ?  parseInt(jsonBody.likes_total) : null;
               const dislikes = null;
@@ -91,6 +99,7 @@ exports.get = (req, res) => {
                 channelUrl: dailymotion.baseChannelUrl+channelTitle,
                 description: description,
                 embedUrl: embedUrl,
+                interest: interest,
                 views: views,
                 likes: likes,
                 dislikes: dislikes,
