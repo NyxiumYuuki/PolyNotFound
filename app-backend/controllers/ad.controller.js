@@ -151,9 +151,73 @@ exports.findOne = (req, res) => {
 
 // Update a Ad with ad id
 exports.update = (req, res) => {
-  const token = checkLogin(req, res, [roles.Admin, roles.Advertiser]);
-  if(token){
-    return sendError(res, 501, -1, "Ad.update not Implemented", token);
+  const token = checkLogin(req, res, roles.Advertiser);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id = req.params.id;
+    if(typeof req.body._id !== 'undefined' || typeof req.body.id !== 'undefined'){
+      return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
+    } else{
+      let update = {};
+      let condition;
+
+      const title = req.body.title;
+      condition = title ? title : undefined;
+      update.title = condition;
+
+      const images = req.body.images;
+      condition = images ? images : undefined;
+      update.images = condition;
+
+      const url = req.body.url;
+      condition = url ? url : undefined;
+      update.url = condition;
+
+      const interests = req.body.interests;
+      condition = interests ? interests : undefined;
+      update.interests = condition;
+
+      const comment = req.body.comment;
+      condition = comment ? comment : undefined;
+      update.comment = condition;
+
+      const isVisible = req.body.isVisible;
+      if(typeof isVisible !== 'undefined'){
+        condition = isVisible;
+      } else{
+        condition = undefined;
+      }
+      update.isVisible = condition;
+
+      const isActive = req.body.isActive;
+      if(typeof isActive !== 'undefined'){
+        condition = isActive;
+      } else{
+        condition = undefined;
+      }
+      update.isActive = condition;
+
+      // Remove undefined key
+      Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
+
+      if(id && ObjectId.isValid(id)){
+        Ad.updateOne({_id: id, userId: token.id}, update)
+          .then(data => {
+            if(data) {
+              //Object.keys(update).forEach(key => data[key] = update[key]);
+              return sendMessage(res, 44, update, token);
+            } else {
+              return sendError(res, 404, -1, `Ad not found with id=${id}`, token);
+            }
+          })
+          .catch(err => {
+            return sendError(res, 500, -1, err.message || `Some error occurred while updating the Ad with id=${id}`, token);
+          });
+      } else {
+        return sendError(res, 500, -1, `Error id is not valid`, token);
+      }
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
