@@ -1,9 +1,15 @@
 module.exports = mongoose => {
   let schema = mongoose.Schema({
       userId: String,
-      videoIds: Array,
+      videoIds: {
+        type: Array,
+        default: null
+      },
       name: String,
-      isActive: Boolean
+      isActive: {
+        type: Boolean,
+        default: true
+      }
     },
     { timestamps: true }
   );
