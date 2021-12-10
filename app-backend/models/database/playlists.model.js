@@ -3,7 +3,7 @@ module.exports = mongoose => {
       userId: String,
       videoIds: {
         type: Array,
-        default: null
+        default: []
       },
       name: String,
       isActive: {
