@@ -183,10 +183,18 @@ exports.delete = (req, res) => {
   }
 };
 
-// Delete all Playlists from id if admin or session id
+// Delete all Playlists from session id
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Playlist.deleteAll not Implemented", token);
+  if(token) {
+    Playlist.deleteMany({userId: {$eq: token.id}})
+      .then(data => {
+        sendMessage(res, 1, {
+          message: `${data.deletedCount} Playlists were deleted successfully.`
+        });
+      })
+      .catch(err => {
+        sendError(res, 500, -1, err.message || "Some error occurred while removing all Playlists.");
+      });
   }
 };
