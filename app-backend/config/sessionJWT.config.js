@@ -82,6 +82,9 @@ function checkLogin(req, res, role=null){
     if(typeof token.email === 'undefined' || typeof token.email === 'undefined'){
       return sendError(res, 500, 102, "User not authenticated.");
     } else {
+      token.midExp = new Date(token.midExp*1000);
+      token.iat = new Date(token.iat*1000);
+      token.exp = new Date(token.exp*1000);
       if(role === null){
         return token;
       } else {
