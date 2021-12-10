@@ -3,9 +3,14 @@ module.exports = mongoose => {
       userId: String,
       videoId: String,
       source: String,
-      tags: Array,
-      interest: String,
-      watchedDates: Array
+      interest: {
+        type: Array,
+        default: null
+      },
+      watchedDates: {
+        type: Array,
+        default: null
+      }
     },
     { timestamps: true }
   );
