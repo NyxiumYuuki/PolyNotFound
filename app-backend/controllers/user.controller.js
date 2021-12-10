@@ -380,23 +380,25 @@ exports.roles = (req, res) => {
 
 // Get 1 or multiple ad adapted to the User session id
 exports.ad = (req, res) => {
-  // const token = checkLogin(req, res);
-  // if(token && typeof req.query.quantity !== 'undefined'){
-  //   const id = token.id;
-  //   const quantity = req.query.quantity;
-  //   // Interests from the user and from last 20 videos viewed -> find x ad from these interests + add date view to the ad
-  //   let interests = ['Entertainments', ];
-  //   Ad.aggregate([{$match: {'interests.interest': {$in: interests}}}])
-  //     .then(data => {
-  //       return sendMessage(res, 11, data, token)
-  //     })
-  //     .catch(err => {
-  //       return sendError(res,500,100,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
-  //     });
-  // }  else {
-  //   sendError(res, 500, -1, `No quantity given`, token);
-  // }
-  return sendError(res, 501, -1, "User.ad not Implemented", null);
+  const token = checkLogin(req, res);
+  if(token && typeof req.query.quantity !== 'undefined'){
+    const id = token.id;
+    const quantity = req.query.quantity;
+    // Interests from the user and from last 20 videos viewed -> find x ad from these interests + add date view to the ad
+    // let interests = ['Entertainments', 'Test'];
+    // const match = {$match: {interests: {$in: interests}}};
+    const match = {$match: {}}
+
+    Ad.aggregate([match, {$limit: parseInt(quantity, 10)}])
+      .then(data => {
+        return sendMessage(res, 11, data, token)
+      })
+      .catch(err => {
+        return sendError(res,500,100,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
+      });
+  }  else {
+    sendError(res, 500, -1, `No quantity given`, token);
+  }
 };
 
 // Get History
