@@ -1,10 +1,14 @@
 module.exports = {
   youtube: {
     name: "Youtube",
-    baseAPIUrl: 'https://www.youtube.com/'
+    shortname: "yt",
+    baseAPIUrl: 'https://youtube.googleapis.com/youtube/v3',
+    YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY
   },
   dailymotion: {
     name: "Dailymotion",
-    baseAPIUrl: 'https://api.dailymotion.com/'
+    shortname: "dm",
+    baseAPIUrl: 'https://api.dailymotion.com/',
+    DAILYMOTION_API_KEY: process.env.DAILYMOTION_API_KEY
   }
 };
