@@ -145,7 +145,7 @@ exports.update = (req, res) => {
   }
 };
 
-// Delete a Ad with ad id
+// Delete an Ad with ad id
 exports.delete = (req, res) => {
   const token = checkLogin(req, res, [roles.Admin, roles.Advertiser]);
   if(token){
@@ -153,10 +153,18 @@ exports.delete = (req, res) => {
   }
 };
 
-// Delete all Ad from id if admin or session id
+// Delete all Ad from session id
 exports.deleteAll = (req, res) => {
-  const token = checkLogin(req, res, [roles.Admin, roles.Advertiser]);
-  if(token){
-    return sendError(res, 501, -1, "Ad.deleteAll not Implemented", token);
+  const token = checkLogin(req, res, roles.Advertiser);
+  if(token) {
+    Ad.deleteMany({userId: {$eq: token.id}})
+      .then(data => {
+        return sendMessage(res, 46, {
+          message: `${data.deletedCount} Ads were deleted successfully.`
+        });
+      })
+      .catch(err => {
+        return sendError(res, 500, -1, err.message || "Some error occurred while removing all Ads.");
+      });
   }
 };
