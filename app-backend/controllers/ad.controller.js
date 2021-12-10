@@ -147,9 +147,26 @@ exports.update = (req, res) => {
 
 // Delete an Ad with ad id
 exports.delete = (req, res) => {
-  const token = checkLogin(req, res, [roles.Admin, roles.Advertiser]);
-  if(token){
-    return sendError(res, 501, -1, "Ad.delete not Implemented", token);
+  const token = checkLogin(req, res, roles.Advertiser);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id =  req.params.id;
+    if(id && ObjectId.isValid(id)){
+      Ad.findByIdAndUpdate(id, {isActive: false}, {useFindAndModify: false})
+        .then(data => {
+          if(data) {
+            return sendMessage(res, 45, {message: `Ad ${id} was successfully deleted.`}, token);
+          } else {
+            return sendError(res, 404, 105, `Ad not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          return sendError(res, 500, 100, err.message || `Some error occurred while deleting the Ad with id=${id}`, token);
+        });
+    } else {
+      return sendError(res, 500, -1, `Error id is not valid`, token);
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
