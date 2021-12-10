@@ -5,6 +5,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const roles = require("../models/objects/role.model");
 const User = db.users;
 const Video = db.videos;
+const Ad = db.ads;
 
 // Authenticate a User
 exports.auth = (req, res) => {
@@ -203,7 +204,7 @@ exports.findAll = (req, res) => {
 
     User.find(query, {hashPass: false}, query_sort)
       .then(data => {
-        return sendMessage(res, 5, data, token)
+        return sendMessage(res, 5, data, token);
       })
       .catch(err => {
         return sendError(res,500,100,err.message || "Some error occurred while retrieving users.", token);
@@ -375,13 +376,29 @@ exports.roles = (req, res) => {
 
 // Get 1 or multiple ad adapted to the User session id
 exports.ad = (req, res) => {
+  // const token = checkLogin(req, res);
+  // if(token && typeof req.query.quantity !== 'undefined'){
+  //   const id = token.id;
+  //   const quantity = req.query.quantity;
+  //   // Interests from the user and from last 20 videos viewed -> find x ad from these interests + add date view to the ad
+  //   let interests = ['Entertainments', ];
+  //   Ad.aggregate([{$match: {'interests.interest': {$in: interests}}}])
+  //     .then(data => {
+  //       return sendMessage(res, 11, data, token)
+  //     })
+  //     .catch(err => {
+  //       return sendError(res,500,100,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
+  //     });
+  // }  else {
+  //   sendError(res, 500, -1, `No quantity given`, token);
+  // }
   return sendError(res, 501, -1, "User.ad not Implemented", null);
 };
 
 // Get History
 exports.history = (req, res) => {
   const token = checkLogin(req, res);
-  if(token && typeof token.id !== 'undefined'){
+  if(token){
     const id = token.id;
     Video.aggregate([{$match: {userId: id}}, {
         $project: {
