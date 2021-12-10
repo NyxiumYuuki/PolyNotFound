@@ -4,6 +4,7 @@ const {checkLogin, setSessionCookie} = require("../config/sessionJWT.config");
 const ObjectId = require('mongoose').Types.ObjectId;
 const roles = require("../models/objects/role.model");
 const User = db.users;
+const Video = db.videos;
 
 // Authenticate a User
 exports.auth = (req, res) => {
@@ -379,5 +380,25 @@ exports.ad = (req, res) => {
 
 // Get History
 exports.history = (req, res) => {
-  return sendError(res, 501, -1, "User.history not Implemented", null);
+  const token = checkLogin(req, res);
+  if(token && typeof token.id !== 'undefined'){
+    const id = token.id;
+    Video.aggregate([{$match: {userId: id}}, {
+        $project: {
+          videoId: true,
+          source: true,
+          tags: true,
+          interest: true,
+          views: {$size: '$watchedDates'},
+          watchedDate: {$last: "$watchedDates"},
+          createdAt: true,
+          updatedAt: true
+        }}])
+      .then(data => {
+        return sendMessage(res, 12, data, token)
+      })
+      .catch(err => {
+        return sendError(res,500,100,err.message || "Some error occurred while getting the User history.", token);
+      });
+  }
 };
