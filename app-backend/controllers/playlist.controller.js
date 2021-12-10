@@ -6,8 +6,35 @@ const Playlist = db.playlists;
 // Create a new Playlist
 exports.create = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Playlist.create not Implemented", token);
+  if(token && req.body.name){
+    Playlist.exists({name: req.body.name}, function (err, docs){
+      if(err){
+        sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
+      } else{
+        if(docs === null) {
+          let playlist;
+
+          playlist = new Playlist({
+            userId: token.id,
+            name: req.body.name,
+            videoIds: req.body.videoIds ? req.body.videoIds : undefined,
+            isActive: req.body.isActive ? req.body.isActive : undefined
+          });
+
+          // Save User in the database
+          playlist
+            .save(playlist)
+            .then(data => {
+              return sendMessage(res, 21, data, token)
+            })
+            .catch(err => {
+              return sendError(res, 500,100,err.message || "Some error occurred while creating the Playlist.", token);
+            });
+        } else{
+          return sendError(res, 500, 104, err || `Playlist ${req.body.name} already exists.`, token);
+        }
+      }
+    });
   }
 };
 
