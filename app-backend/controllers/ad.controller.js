@@ -41,6 +41,8 @@ exports.create = (req, res) => {
         }
       }
     });
+  } else {
+    return sendError(res, 500, -1, `No title given`, token);
   }
 };
 
