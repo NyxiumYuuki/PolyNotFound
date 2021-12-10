@@ -38,6 +38,7 @@
     "mongoose": "^6.0.12",
     "ng2-charts": "^2.2.3",
     "popper": "^1.0.1",
+    "request": "^2.88.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "typescript": "~4.3.5",
