@@ -1,6 +1,7 @@
 const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
+const ObjectId = require('mongoose').Types.ObjectId;
 const Playlist = db.playlists;
 
 // Create a new Playlist
@@ -111,17 +112,21 @@ exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
   if(token && typeof req.params.id !== 'undefined') {
     const id = req.params.id;
-    Playlist.findById(id, {})
-      .then(data => {
-        if(data){
-          return sendMessage(res, 23, data, token);
-        } else {
-          return sendError(res,404,105,`Playlist not found with id=${id}`, token);
-        }
-      })
-      .catch(err => {
-        return sendError(res,500,100,err.message || `Some error occurred while finding the Playlist with id=${id}`, token);
-      });
+    if(id && ObjectId.isValid(id)){
+      Playlist.findById(id, {})
+        .then(data => {
+          if(data){
+            return sendMessage(res, 23, data, token);
+          } else {
+            return sendError(res,404,105,`Playlist not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          return sendError(res,500,100,err.message || `Some error occurred while finding the Playlist with id=${id}`, token);
+        });
+    } else {
+      return sendError(res, 500, -1, `Error id is not valid`, token);
+    }
   } else {
     return sendError(res, 500, -1, `No id given`, token);
   }
@@ -157,18 +162,22 @@ exports.update = (req, res) => {
       // Remove undefined key
       Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
 
-      Playlist.updateOne({_id: id, userId: token.id}, update)
-        .then(data => {
-          if(data) {
-            //Object.keys(update).forEach(key => data[key] = update[key]);
-            sendMessage(res, 7, update, token);
-          } else {
-            sendError(res, 404, -1, `Playlist not found with id=${id}`, token);
-          }
-        })
-        .catch(err => {
-          sendError(res, 500, -1, err.message || `Some error occurred while updating the Playlist with id=${id}`, token);
-        });
+      if(id && ObjectId.isValid(id)){
+        Playlist.updateOne({_id: id, userId: token.id}, update)
+          .then(data => {
+            if(data) {
+              //Object.keys(update).forEach(key => data[key] = update[key]);
+              return sendMessage(res, 24, update, token);
+            } else {
+              return sendError(res, 404, -1, `Playlist not found with id=${id}`, token);
+            }
+          })
+          .catch(err => {
+            return sendError(res, 500, -1, err.message || `Some error occurred while updating the Playlist with id=${id}`, token);
+          });
+      } else {
+        return sendError(res, 500, -1, `Error id is not valid`, token);
+      }
     }
   } else {
     return sendError(res, 500, -1, `No id given`, token);
@@ -178,8 +187,25 @@ exports.update = (req, res) => {
 // Delete a Playlist with playlist id
 exports.delete = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Playlist.delete not Implemented", token);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id =  req.params.id;
+    if(id && ObjectId.isValid(id)){
+      Playlist.findByIdAndUpdate(id, {isActive: false}, {useFindAndModify: false})
+        .then(data => {
+          if(data) {
+            return sendMessage(res, 25, {message: `Playlist ${id} was successfully deleted.`}, token);
+          } else {
+            return sendError(res, 404, 105, `Playlist not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          return sendError(res, 500, 100, err.message || `Some error occurred while deleting the Playlist with id=${id}`, token);
+        });
+    } else {
+      return sendError(res, 500, -1, `Error id is not valid`, token);
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
@@ -189,12 +215,12 @@ exports.deleteAll = (req, res) => {
   if(token) {
     Playlist.deleteMany({userId: {$eq: token.id}})
       .then(data => {
-        sendMessage(res, 1, {
+        return sendMessage(res, 26, {
           message: `${data.deletedCount} Playlists were deleted successfully.`
         });
       })
       .catch(err => {
-        sendError(res, 500, -1, err.message || "Some error occurred while removing all Playlists.");
+        return sendError(res, 500, -1, err.message || "Some error occurred while removing all Playlists.");
       });
   }
 };
