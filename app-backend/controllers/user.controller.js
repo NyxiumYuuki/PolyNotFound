@@ -1,6 +1,6 @@
 const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
-const {checkLogin, setSessionCookie, getSession, getToken} = require("../config/sessionJWT.config");
+const {checkLogin, setSessionCookie} = require("../config/sessionJWT.config");
 const ObjectId = require('mongoose').Types.ObjectId;
 const roles = require("../models/objects/role.model");
 const User = db.users;
@@ -202,10 +202,10 @@ exports.findAll = (req, res) => {
 
     User.find(query, {hashPass: false}, query_sort)
       .then(data => {
-        sendMessage(res, 5, data, token)
+        return sendMessage(res, 5, data, token)
       })
       .catch(err => {
-        sendError(res,500,100,err.message || "Some error occurred while retrieving users.", token);
+        return sendError(res,500,100,err.message || "Some error occurred while retrieving users.", token);
       });
   }
 };
@@ -215,32 +215,34 @@ exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
   if(token && typeof req.params.id !== 'undefined') {
     let id = null;
-    if(typeof token.id !== 'undefined' && req.params.id === token.id){
+    if(typeof token.id !== 'undefined' && token.id === req.params.id){
       id = req.params.id;
     } else {
-      if (typeof token.role !== 'undefined' &&
+      if(typeof token.role !== 'undefined' &&
         typeof token.role.permission !== 'undefined' &&
+        typeof token.role.isAccepted !== 'undefined' &&
+        token.role.isAccepted === true &&
         token.role.permission >= roles.Admin.permission) {
         id = req.params.id;
       } else {
-        sendError(res, 500, -1, `Cannot find User with id=${id}. User do not have the permission`, token);
+        return sendError(res, 500, 106, `User do not have the permission.`, token);
       }
     }
     if(id){
       User.findById(id, {hashPass: false})
         .then(data => {
           if(data){
-            sendMessage(res, 1, data, token);
+            return sendMessage(res, 6, data, token);
           } else {
-            sendError(res,404,-1,"User not found with id " + id, token);
+            return sendError(res,404,105,`User not found with id=${id}`, token);
           }
         })
         .catch(err => {
-          sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
+          return sendError(res,500,100,err.message || `Some error occurred while finding the User with id=${id}`, token);
         });
     }
   } else {
-    sendError(res, 500, -1, `No id given`, token);
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
@@ -249,56 +251,64 @@ exports.update = (req, res) => {
   const token = checkLogin(req, res);
   if(token && typeof req.params.id !== 'undefined') {
     let id = null;
-    if(typeof token.id !== 'undefined' && req.params.id === token.id){
+    if(typeof token.id !== 'undefined' && token.id === req.params.id){
       id = req.params.id;
     } else {
-      if (typeof token.role !== 'undefined' &&
+      if(typeof token.role !== 'undefined' &&
         typeof token.role.permission !== 'undefined' &&
+        typeof token.role.isAccepted !== 'undefined' &&
+        token.role.isAccepted === true &&
         token.role.permission >= roles.Admin.permission) {
         id = req.params.id;
       } else {
-        sendError(res, 500, -1, `Cannot update User with id=${id}. User do not have the permission`, token);
+        return sendError(res, 500, 106, `User do not have the permission.`, token);
       }
     }
     if(id){
-      User.findById(id, {hashPass: false})
-        .then(user => {
-          if(user){
-            const history = new History({update: user});
-            history
-              .save(history)
-              .then(data => {
-                if(data) {
-                  User.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
-                    .then(data => {
-                      data.hashPass = undefined;
-                      console.log(data);
-                      if (data) {
-                        sendMessage(res, 1, {message: "User was updated successfully."}, token);
-                      } else {
-                        sendError(res, 404, -1, `Cannot update User with id=${id}. Maybe User was not found.`, token);
-                      }
-                    })
-                    .catch(err => {
-                      sendError(res, 500, -1, err.message || "Error updating User with id=" + id, token);
-                    });
-                }
-              })
-              .catch(err => {
-                sendError(res, 500,-1,err.message || "Some error occurred while creating the User.");
-              });
-          } else {
-            sendError(res,404,-1,"User not found with id " + id, token);
+      let update = null;
+      if(typeof req.body._id !== 'undefined' || typeof req.body.id !== 'undefined'){
+        return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
+      } else{
+        if(typeof req.body.role !== 'undefined' ||
+          typeof req.body.isActive !== 'undefined' ||
+          typeof req.body.lastConnexion !== 'undefined' ||
+          typeof req.body.createdAt !== 'undefined'||
+          typeof req.body.updatedAt !== 'undefined'){
+          if(typeof token.role !== 'undefined' &&
+            typeof token.role.permission !== 'undefined' &&
+            typeof token.role.isAccepted !== 'undefined' &&
+            token.role.isAccepted === true &&
+            token.role.permission >= roles.Admin.permission) {
+            update = true;
+          } else{
+            return sendError(res, 500, 106, `User do not have the permission to modify these keys.`, token);
           }
-        })
-        .catch(err => {
-          sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
-        });
+        } else{
+          update = true;
+        }
+      }
+      if(update === true){
+        User.findByIdAndUpdate(id, req.body, {useFindAndModify: false})
+          .then(data => {
+            if(data) {
+              data.hashPass = undefined;
+              Object.keys(req.body).forEach(key => data[key] = req.body[key]);
+              sendMessage(res, 7, data, token);
+            } else {
+              sendError(res, 404, -1, `User not found with id=${id}`, token);
+            }
+          })
+          .catch(err => {
+            sendError(res, 500, -1, err.message || `Some error occurred while updating the User with id=${id}`, token);
+          });
+      }
     }
   } else {
-    sendError(res, 500, -1, `No id given`, token);
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
+
+
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
