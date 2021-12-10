@@ -51,21 +51,33 @@ exports.findAll = (req, res) => {
     let query = {};
     let condition;
 
-    const playlistId = req.query.playlistId;
-    condition = playlistId ? playlistId : undefined;
+    const adId = req.query.adId;
+    condition = adId ? adId : undefined;
     query._id = condition;
 
     const userId = req.query.userId;
     condition = userId ? userId : undefined;
     query.userId = condition;
 
-    const videoIds = req.query.videoIds;
-    condition = videoIds ? {$in: videoIds} : undefined;
-    query.videoIds = condition;
+    const title = req.query.title;
+    condition = title ? { $regex: new RegExp(title), $options: "i" } : undefined;
+    query.title = condition;
 
-    const name = req.query.name;
-    condition = name ? { $regex: new RegExp(name), $options: "i" } : undefined;
-    query.name = condition;
+    const url = req.query.url;
+    condition = url ? { $regex: new RegExp(url), $options: "i" } : undefined;
+    query.url = condition;
+
+    const interests = req.query.interests;
+    condition = interests ? {$in: interests} : undefined;
+    query["interests.interest"] = condition
+
+    const comment = req.query.comment;
+    condition = comment ? { $regex: new RegExp(comment), $options: "i" } : undefined;
+    query.comment = condition;
+
+    const isVisible = req.query.isVisible;
+    condition = isVisible ? isVisible : undefined;
+    query.isVisible = condition;
 
     const isActive = req.query.isActive;
     condition = isActive ? isActive : undefined;
@@ -75,10 +87,10 @@ exports.findAll = (req, res) => {
     if(sort !== 'undefined'){
       switch (sort){
         case 'asc':
-          condition = {name: 1};
+          condition = {title: 1};
           break;
         case 'desc':
-          condition = {name: -1};
+          condition = {title: -1};
           break;
         case 'createdAtAsc':
           condition = {createdAt: 1};
@@ -93,7 +105,7 @@ exports.findAll = (req, res) => {
           condition = {updatedAt: -1};
           break;
         default:
-          condition = {name: 1};
+          condition = {title: 1};
       }
     }
     const query_sort = {sort: condition};
@@ -102,12 +114,12 @@ exports.findAll = (req, res) => {
     Object.keys(query).forEach(key => query[key] === undefined ? delete query[key] : {});
     console.log(query);
 
-    Playlist.find(query, {}, query_sort)
+    Ad.find(query, {}, query_sort)
       .then(data => {
-        return sendMessage(res, 22, data, token);
+        return sendMessage(res, 42, data, token);
       })
       .catch(err => {
-        return sendError(res,500,100,err.message || "Some error occurred while finding the Playlists.", token);
+        return sendError(res,500,100,err.message || "Some error occurred while finding the Ads.", token);
       });
   }
 };
