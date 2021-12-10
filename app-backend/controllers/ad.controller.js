@@ -114,9 +114,26 @@ exports.findAll = (req, res) => {
 
 // Find single Ad from id if admin or session id
 exports.findOne = (req, res) => {
-  const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Ad.findOne not Implemented", token);
+  const token = checkLogin(req, res, roles.Advertiser);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id = req.params.id;
+    if(id && ObjectId.isValid(id)){
+      Ad.findById(id, {})
+        .then(data => {
+          if(data){
+            return sendMessage(res, 43, data, token);
+          } else {
+            return sendError(res,404,105,`Ad not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          return sendError(res,500,100,err.message || `Some error occurred while finding the Ad with id=${id}`, token);
+        });
+    } else {
+      return sendError(res, 500, -1, `Error id is not valid`, token);
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
