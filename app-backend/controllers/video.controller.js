@@ -4,7 +4,7 @@ const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const {youtube, dailymotion} = require("../config/host.config");
 const VideoCategories = require("../models/objects/video.categories.model");
-const Video = db.video;
+const Video = db.videos;
 
 // Search Videos
 exports.search = (req, res) => {
@@ -125,8 +125,53 @@ exports.get = (req, res) => {
 // Create a new Video
 exports.create = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Video.create not Implemented", token);
+  if(token &&
+    typeof req.body.source !== 'undefined' &&
+    typeof req.body.interest !== 'undefined' &&
+    typeof req.params.id !== 'undefined'){
+    const id = req.params.id;
+    Video.exists({userId: token.id, videoId: id, source: req.body.source}, function (err, docs){
+      if(err){
+        sendError(res, 500,100,err.message || "Some error occurred while checking if the Video already exists.", token);
+      } else{
+        if(docs === null) {
+          let video;
+
+          video = new Video({
+            userId: token.id,
+            videoId: id,
+            source: req.body.source,
+            interest: req.body.interest,
+            watchedDates: [new Date()]
+          });
+
+          // Save Video in the database
+          video
+            .save(video)
+            .then(data => {
+              return sendMessage(res, 33, data, token)
+            })
+            .catch(err => {
+              return sendError(res, 500,100,err.message || "Some error occurred while creating the Video.", token);
+            });
+        } else{
+          const id = docs._id.toString();
+          Video.findByIdAndUpdate(id, {$push: {watchedDates: [new Date()]}}, {useFindAndModify: false})
+            .then(data => {
+              if(data) {
+                return sendMessage(res, 33, {message: `Video ${id} was successfully updated.`}, token);
+              } else {
+                return sendError(res, 404, 105, `Video not found with id=${id}`, token);
+              }
+            })
+            .catch(err => {
+              return sendError(res, 500, 100, err.message || `Some error occurred while updating the Video with id=${id}`, token);
+            });
+        }
+      }
+    });
+  } else {
+    return sendError(res, 500, -1, `No source or interest or id given`, token);
   }
 };
 
