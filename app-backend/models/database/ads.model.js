@@ -2,13 +2,34 @@ module.exports = mongoose => {
   let schema = mongoose.Schema({
       userId: String,
       title: String,
-      images: Array,
-      url: String,
-      interests: Array,
-      comment: String,
-      views: Array,
-      isVisible: Boolean,
-      isActive: Boolean
+      images: {
+        type: Array,
+        default: []
+      },
+      url: {
+        type: String,
+        default: null
+      },
+      interests: {
+        type: Array,
+        default: []
+      },
+      comment: {
+        type: String,
+        default: null
+      },
+      views: {
+        type: Array,
+        default: []
+      },
+      isVisible: {
+        type: Boolean,
+        default: true
+      },
+      isActive: {
+        type: Boolean,
+        default: true
+      }
     },
     { timestamps: true }
   );
