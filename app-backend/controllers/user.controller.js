@@ -315,39 +315,30 @@ exports.delete = (req, res) => {
   const token = checkLogin(req, res);
   if(token && typeof req.params.id !== 'undefined') {
     let id = null;
-    if(typeof token.id !== 'undefined' && req.params.id === token.id){
+    if(typeof token.id !== 'undefined' && token.id === req.params.id){
       id = req.params.id;
     } else {
-      if (typeof token.role !== 'undefined' &&
+      if(typeof token.role !== 'undefined' &&
         typeof token.role.permission !== 'undefined' &&
-        token.role.permission >= roles.Admin.permission &&
-        token.role.isAccepted === true) {
+        typeof token.role.isAccepted !== 'undefined' &&
+        token.role.isAccepted === true &&
+        token.role.permission >= roles.Admin.permission) {
         id = req.params.id;
       } else {
-        sendError(res, 500, -1, `Cannot delete User with id=${id}. User do not have the permission`, token);
+        return sendError(res, 500, 106, `User do not have the permission.`, token);
       }
     }
     if(id && ObjectId.isValid(id)){
-      User.findById(id, {hashPass: false})
-        .then(user => {
-          if(user){
-            User.findByIdAndRemove(id)
-              .then(data => {
-                if (data) {
-                  sendMessage(res, 1, {message: `User ${id} was deleted successfully.`}, token);
-                } else {
-                  sendError(res, 404, -1, `Cannot delete User with id=${id}. Maybe User was not found.`, token);
-                }
-              })
-              .catch(err => {
-                sendError(res, 500, -1, err.message || "Could not delete User with id=" + id, token);
-              });
+      User.findByIdAndUpdate(id, {isActive: false}, {useFindAndModify: false})
+        .then(data => {
+          if(data) {
+            sendMessage(res, 8, {message: `User ${id} was successfully deleted.`}, token);
           } else {
-            sendError(res,404,-1,"User not found with id " + id, token);
+            sendError(res, 404, 105, `User not found with id=${id}`, token);
           }
         })
         .catch(err => {
-          sendError(res,500,-1,err.message || "Error retrieving User with id=" + id, token);
+          sendError(res, 500, 100, err.message || `Some error occurred while deleting the User with id=${id}`, token);
         });
     } else {
       sendError(res, 500, -1, `Error id is not valid`, token);
