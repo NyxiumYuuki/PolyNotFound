@@ -79,15 +79,15 @@ function checkLogin(req, res, role=null){
   if(typeof req.cookies !== 'undefined'){
     const session = getSession(req.cookies.SESSIONID);
     const token = getToken(session);
-    if(token.email === 'undefined' || token.email === -1){
+    if(typeof token.email === 'undefined' || typeof token.email === 'undefined'){
       return sendError(res, 500, 102, "User not authenticated.");
     } else {
       if(role === null){
         return token;
       } else {
-        if(token.role !== 'undefined' &&
+        if(typeof token.role !== 'undefined' &&
           ((Array.isArray(role) && role.includes(token.role)) ||
-            ( typeof role === 'object' && token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
+            ( typeof role === 'object' && typeof token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
           return token;
         } else {
           return sendError(res, 500, 106, "User doesn't have permission.", token);
