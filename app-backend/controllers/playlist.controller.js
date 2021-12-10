@@ -42,7 +42,67 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
-    return sendError(res, 501, -1, "Playlist.findAll not Implemented", token);
+    let query = {};
+    let condition;
+
+    const playlistId = req.query.playlistId;
+    condition = playlistId ? playlistId : undefined;
+    query._id = condition;
+
+    const userId = req.query.userId;
+    condition = userId ? userId : undefined;
+    query.userId = condition;
+
+    const videoIds = req.query.videoIds;
+    condition = videoIds ? {$in: videoIds} : undefined;
+    query.videoIds = condition;
+
+    const name = req.query.name;
+    condition = name ? { $regex: new RegExp(name), $options: "i" } : undefined;
+    query.name = condition;
+
+    const isActive = req.query.isActive;
+    condition = isActive ? isActive : undefined;
+    query.isActive = condition;
+
+    const sort = req.query.sort;
+    if(sort !== 'undefined'){
+      switch (sort){
+        case 'asc':
+          condition = {name: 1};
+          break;
+        case 'desc':
+          condition = {name: -1};
+          break;
+        case 'createdAtAsc':
+          condition = {createdAt: 1};
+          break;
+        case 'createdAtDesc':
+          condition = {createdAt: -1};
+          break;
+        case 'updatedAtAsc':
+          condition = {updatedAt: 1};
+          break;
+        case 'updatedAtDesc':
+          condition = {updatedAt: -1};
+          break;
+        default:
+          condition = {name: 1};
+      }
+    }
+    const query_sort = {sort: condition};
+
+    // Remove undefined key
+    Object.keys(query).forEach(key => query[key] === undefined ? delete query[key] : {});
+    console.log(query);
+
+    Playlist.find(query, {}, query_sort)
+      .then(data => {
+        return sendMessage(res, 22, data, token);
+      })
+      .catch(err => {
+        return sendError(res,500,100,err.message || "Some error occurred while finding the Playlists.", token);
+      });
   }
 };
 
