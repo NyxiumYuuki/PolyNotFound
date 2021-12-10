@@ -10,6 +10,10 @@ module.exports = mongoose => {
       watchedDates: {
         type: Array,
         default: null
+      },
+      isActive: {
+        type: Boolean,
+        default: true
       }
     },
     { timestamps: true }
