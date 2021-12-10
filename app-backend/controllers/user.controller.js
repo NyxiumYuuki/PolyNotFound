@@ -230,7 +230,7 @@ exports.findOne = (req, res) => {
         return sendError(res, 500, 106, `User do not have the permission.`, token);
       }
     }
-    if(id){
+    if(id && ObjectId.isValid(id)){
       User.findById(id, {hashPass: false})
         .then(data => {
           if(data){
@@ -242,6 +242,8 @@ exports.findOne = (req, res) => {
         .catch(err => {
           return sendError(res,500,100,err.message || `Some error occurred while finding the User with id=${id}`, token);
         });
+    } else {
+      sendError(res, 500, -1, `Error id is not valid`, token);
     }
   } else {
     return sendError(res, 500, -1, `No id given`, token);
@@ -266,7 +268,7 @@ exports.update = (req, res) => {
         return sendError(res, 500, 106, `User do not have the permission.`, token);
       }
     }
-    if(id){
+    if(id && ObjectId.isValid(id)){
       let update = null;
       if(typeof req.body._id !== 'undefined' || typeof req.body.id !== 'undefined'){
         return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
@@ -304,6 +306,8 @@ exports.update = (req, res) => {
             sendError(res, 500, -1, err.message || `Some error occurred while updating the User with id=${id}`, token);
           });
       }
+    } else {
+      sendError(res, 500, -1, `Error id is not valid`, token);
     }
   } else {
     return sendError(res, 500, -1, `No id given`, token);
@@ -400,6 +404,7 @@ exports.history = (req, res) => {
   const token = checkLogin(req, res);
   if(token){
     const id = token.id;
+
     Video.aggregate([{$match: {userId: id}}, {
         $project: {
           videoId: true,
