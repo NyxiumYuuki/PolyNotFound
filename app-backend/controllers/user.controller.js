@@ -383,14 +383,51 @@ exports.ad = (req, res) => {
   if(token && typeof req.query.quantity !== 'undefined'){
     const id = token.id;
     const quantity = req.query.quantity;
-    // Interests from the user and from last 20 videos viewed -> find x ad from these interests + add date view to the ad
-    // let interests = ['Entertainments', 'Test'];
-    // const match = {$match: {interests: {$in: interests}}};
-    const match = {$match: {}}
-
-    Ad.aggregate([match, {$limit: parseInt(quantity, 10)}])
+    // Interests from the user and from last 20 videos viewed if no ad matches -> find x ad from these interests + add date view to the ad
+    let interests = [];
+    const maxInterests = 20;
+    let limit = maxInterests;
+    User.findById(id, {_id: false, interests: true})
       .then(data => {
-        return sendMessage(res, 11, data, token)
+        if(typeof data.interests !== 'undefined' && data.interests !== null){
+          interests = interests.concat(data.interests);
+          limit = maxInterests-data.interests.length;
+        }
+        Video.aggregate([
+          {$match: {userId: id}},
+          {$project: {_id: false, interest: true}},
+          {$sort: {watchedDates: -1}},
+          {$limit: limit},
+          {$unwind: '$interest'},
+          {$group: {_id: null, interests: {$push: '$interest'}}}
+        ])
+          .then(data => {
+            if(typeof data[0] !== 'undefined' &&
+              typeof data[0].interests !== 'undefined' &&
+              data[0].interests !== [] &&
+              data[0].interests !== null){
+              interests = interests.concat(data[0].interests);
+            }
+            let match, pick;
+            if(interests.length > 0){
+              match = {$match: {interests: {$in: interests}}};
+              pick = {$limit: parseInt(quantity, 10)}
+            } else {
+              match = {$match: {}};
+              pick = {$sample: {size: parseInt(quantity, 10)}};
+            }
+
+            Ad.aggregate([match, pick])
+              .then(data => {
+                return sendMessage(res, 11, data, token);
+              })
+              .catch(err => {
+                return sendError(res,500,101,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
+              });
+          })
+          .catch(err => {
+            return sendError(res,500,102,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
+          });
       })
       .catch(err => {
         return sendError(res,500,100,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
