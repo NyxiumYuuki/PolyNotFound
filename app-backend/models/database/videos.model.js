@@ -4,7 +4,7 @@ module.exports = mongoose => {
       videoId: String,
       source: String,
       interest: {
-        type: Array,
+        type: String,
         default: null
       },
       watchedDates: {
