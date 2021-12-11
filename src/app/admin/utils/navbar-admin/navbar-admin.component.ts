@@ -28,7 +28,7 @@ export class NavbarAdminComponent
     onDeconnexion(): void
     {
         this.messageService
-            .delete('user/logout', {})
+            .delete('user/logout')
             .subscribe(retour => this.onDeconnexionCallback(retour), err => this.onDeconnexionCallback(err));
     }
 

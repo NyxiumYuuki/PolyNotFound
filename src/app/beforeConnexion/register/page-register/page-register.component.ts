@@ -67,9 +67,8 @@ export class PageRegisterComponent
     // Gestion de la réponse du backend
     onEnregistrerCallback(retour): void
     {
-        console.log(retour);
         if(retour.status !== "success") {
-
+            console.log(retour);
         }
         else
         {

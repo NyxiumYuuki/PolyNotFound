@@ -22,7 +22,20 @@ export class PopupDeletePlaylistComponent implements OnInit
 
     onValidate(): void
     {
-        this.dialogRef.close(true);
+        this.messageService
+            .delete("playlist/delete/"+this.playlist._id)
+            .subscribe( retour => this.onValidateCallback(retour), err => this.onValidateCallback(err));
+    }
+
+    onValidateCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close(null);
+        }
+        else {
+            this.dialogRef.close(true);
+        }
     }
 
 }

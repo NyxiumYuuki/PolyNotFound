@@ -37,7 +37,7 @@ export class InputInterestsRegisterComponent implements OnInit
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allInterests.slice()));
 
         this.messageService
-            .get("misc/getInterests", {})
+            .get("misc/getInterests")
             .subscribe( retour => {
 
                 if(retour.status !== "success") {

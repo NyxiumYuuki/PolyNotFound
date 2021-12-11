@@ -58,6 +58,7 @@ export class PageLoginComponent implements OnInit
             this.hasError = true;
         }
         else {
+            this.profilService.id = retour.data.id;
             this.profilService.profileImageUrl = retour.data.profileImageUrl;
             if(retour.data.role.name === "user") this.router.navigateByUrl( '/user/search');
             else if(retour.data.role.name === "advertiser") this.router.navigateByUrl( '/advertiser/adList');
