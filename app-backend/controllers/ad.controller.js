@@ -48,7 +48,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Ad from id if admin or session id
 exports.findAll = (req, res) => {
-  const token = checkLogin(req, res);
+  const token = checkLogin(req, res, roles.Advertiser);
   if(token){
     let query = {};
     let condition;
@@ -229,7 +229,7 @@ exports.delete = (req, res) => {
   if(token && typeof req.params.id !== 'undefined') {
     const id =  req.params.id;
     if(id && ObjectId.isValid(id)){
-      Ad.findByIdAndUpdate(id, {isActive: false}, {useFindAndModify: false})
+      Ad.updateOne({_id: id, userId: token.id}, {isActive: false}, {useFindAndModify: false})
         .then(data => {
           if(data) {
             return sendMessage(res, 45, {message: `Ad ${id} was successfully deleted.`}, token);
