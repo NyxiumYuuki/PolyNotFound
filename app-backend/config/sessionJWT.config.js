@@ -12,11 +12,12 @@ const JWTRS256_PRIVATE_KEY = Buffer.from(process.env.JWTRS256_PRIVATE_KEY, 'base
 const JWTRS256_PUBLIC_KEY = Buffer.from(process.env.JWTRS256_PUBLIC_KEY, 'base64').toString('utf-8');
 
 
-function createSessionJWT (id, email, role) {
+function createSessionJWT (id, email, profileImageUrl, role) {
   return sessionJWTConfig.sign(
     {
       id: id,
       email: email,
+      profileImageUrl: profileImageUrl,
       role: role,
       midExp: Math.floor(Date.now() / 1000) + 1800
     },
@@ -32,20 +33,21 @@ function createSessionCookie(req, res, payload) {
   let jwtToken;
   if (typeof payload.id !== 'undefined' &&
     typeof payload.email !== 'undefined' &&
+    typeof payload.profileImageUrl !== 'undefined' &&
     typeof payload.role !== 'undefined' &&
     typeof payload.midExp !== 'undefined' &&
     (Math.floor(Date.now() / 1000) <= payload.midExp)) {
     jwtToken = req.headers.cookie;
   }
   else {
-    jwtToken = createSessionJWT(payload.id, payload.email, payload.role);
+    jwtToken = createSessionJWT(payload.id, payload.email, payload.profileImageUrl, payload.role);
   }
   res.cookie('SESSIONID', jwtToken, {httpOnly:true, secure:false});
 }
 
 function decodeSessionCookie(sessionid) {
   if (typeof sessionid === 'undefined') {
-    return {id: -1, email: -1, role: -1};
+    return {id: -1, email: -1, profileImageUrl: -1, role: -1};
   }
   try {
     const token = sessionJWTConfig.verify(
@@ -55,7 +57,7 @@ function decodeSessionCookie(sessionid) {
     return {token: token};
   }
   catch (err) {
-    return {id: -1, email: -1, role: -1};
+    return {id: -1, email: -1, profileImageUrl: -1, role: -1};
   }
 }
 
@@ -79,7 +81,10 @@ function checkLogin(req, res, role=null){
   if(typeof req.cookies !== 'undefined'){
     const session = getSession(req.cookies.SESSIONID);
     const token = getToken(session);
-    if(typeof token.email === 'undefined' || typeof token.email === 'undefined'){
+    if(typeof token.email === 'undefined' ||
+      typeof token.email === -1 ||
+      typeof token.id === 'undefined' ||
+      typeof token.id === -1){
       return sendError(res, 500, 102, "User not authenticated.");
     } else {
       token.midExp = new Date(token.midExp*1000);
