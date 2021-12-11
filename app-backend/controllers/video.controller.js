@@ -380,8 +380,55 @@ exports.findOne = (req, res) => {
 // Update Video with id
 exports.update = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Video.update not Implemented", token);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id = req.params.id;
+    if(typeof req.body._id !== 'undefined' || typeof req.body.id !== 'undefined'){
+      return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
+    } else{
+      let update = {};
+      let condition;
+
+      const watchedDate = req.body.watchedDate;
+      if(typeof watchedDate !== 'undefined'){
+        if(watchedDate){
+          condition = {watchedDates: [new Date()]}
+        } else {
+          condition = undefined;
+        }
+      } else{
+        condition = undefined;
+      }
+      update.$push = condition;
+
+      const isActive = req.body.isActive;
+      if(typeof isActive !== 'undefined'){
+        condition = isActive;
+      } else{
+        condition = undefined;
+      }
+      update.isActive = condition;
+
+      // Remove undefined key
+      Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
+
+      if(id && ObjectId.isValid(id)){
+        Video.updateOne({_id: id, userId: token.id}, update)
+          .then(data => {
+            if(data) {
+              return sendMessage(res, 36, update, token);
+            } else {
+              return sendError(res, 404, -1, `Video not found with id=${id}`, token);
+            }
+          })
+          .catch(err => {
+            return sendError(res, 500, -1, err.message || `Some error occurred while updating the Video with id=${id}`, token);
+          });
+      } else {
+        return sendError(res, 500, -1, `Error id is not valid`, token);
+      }
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
