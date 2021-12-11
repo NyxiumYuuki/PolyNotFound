@@ -1,6 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {User} from "../../../utils/interfaces/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {ProfilService} from "../../../utils/services/profil/profil.service";
 
 
 
@@ -20,7 +22,9 @@ export class PopupUpdateAdvertiserComponent implements OnInit
 
 
     constructor( public dialogRef: MatDialogRef<PopupUpdateAdvertiserComponent>,
-                 @Inject(MAT_DIALOG_DATA) public data) { }
+                 @Inject(MAT_DIALOG_DATA) public data,
+                 private messageService: MessageService,
+                 private profilService: ProfilService ) { }
 
 
     ngOnInit(): void
@@ -55,11 +59,28 @@ export class PopupUpdateAdvertiserComponent implements OnInit
         this.checkField();
         if(!this.hasError)
         {
-            if(this.changePassword) this.advertiserCopy.hashPass = this.hashage(this.newPassword);
-            const data = { user: this.advertiserCopy };
+            if(this.changePassword) this.advertiserCopy.hashPass = this.newPassword;
+            const data = {
+                login: this.advertiserCopy.login,
+                hashPass: this.advertiserCopy.hashPass,
+                email: this.advertiserCopy.email,
+                profileImageUrl: this.advertiserCopy.profileImageUrl,
+                company: this.advertiserCopy.company
+            };
+            this.messageService
+                .put("user/update/"+this.profilService.id, data)
+                .subscribe( ret => this.onValiderCallback(ret), err => this.onValiderCallback(err) );
+        }
+    }
 
-            // VRAI CODE: envoie au back ...
 
+    onValiderCallback(retour: any)
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close(null);
+        }
+        else {
             this.dialogRef.close(this.advertiserCopy);
         }
     }
@@ -100,16 +121,4 @@ export class PopupUpdateAdvertiserComponent implements OnInit
         return re.test(email);
     }
 
-
-    // Fonction de hashage (faible)
-    hashage(input: string): string
-    {
-        let hash = 0;
-        for (let i = 0; i < input.length; i++) {
-            let ch = input.charCodeAt(i);
-            hash = ((hash << 5) - hash) + ch;
-            hash = hash & hash;
-        }
-        return hash.toString();
-    }
 }

@@ -1,6 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {User} from "../../../utils/interfaces/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {ProfilService} from "../../../utils/services/profil/profil.service";
 
 
 
@@ -20,7 +22,9 @@ export class PopupUpdateAdminComponent implements OnInit
 
 
     constructor( public dialogRef: MatDialogRef<PopupUpdateAdminComponent>,
-                 @Inject(MAT_DIALOG_DATA) public data) { }
+                 @Inject(MAT_DIALOG_DATA) public data,
+                 private messageService: MessageService,
+                 private profilService: ProfilService ) { }
 
 
     ngOnInit(): void
@@ -55,11 +59,27 @@ export class PopupUpdateAdminComponent implements OnInit
         this.checkField();
         if(!this.hasError)
         {
-            if(this.changePassword) this.adminCopy.hashPass = this.hashage(this.newPassword);
-            const data = { user: this.adminCopy };
+            if(this.changePassword) this.adminCopy.hashPass = this.newPassword;
+            const data = {
+                login: this.adminCopy.login,
+                hashPass: this.adminCopy.hashPass,
+                email: this.adminCopy.email,
+                profileImageUrl: this.adminCopy.profileImageUrl,
+            };
+            this.messageService
+                .put("user/update/"+this.profilService.id, data)
+                .subscribe( ret => this.onValiderCallback(ret), err => this.onValiderCallback(err) );
+        }
+    }
 
-            // VRAI CODE: envoie au back ...
 
+    onValiderCallback(retour: any)
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close(null);
+        }
+        else {
             this.dialogRef.close(this.adminCopy);
         }
     }
@@ -98,19 +118,6 @@ export class PopupUpdateAdminComponent implements OnInit
     {
         let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
-    }
-
-
-    // Fonction de hashage (faible)
-    hashage(input: string): string
-    {
-        let hash = 0;
-        for (let i = 0; i < input.length; i++) {
-            let ch = input.charCodeAt(i);
-            hash = ((hash << 5) - hash) + ch;
-            hash = hash & hash;
-        }
-        return hash.toString();
     }
 
 }
