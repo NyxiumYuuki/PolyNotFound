@@ -53,21 +53,23 @@ export class PageRegisterComponent
         this.checkField();
         if(!this.hasError)
         {
-            if(this.user.role.name === "user") this.user.role.permission = 0;
-            else this.user.role.permission = 5;
-            this.user.hashPass = this.password;
+            let data: any = Object.assign({}, this.user);
+            if(this.user.role.name === "user") data.role = "user" ;
+            else data.role = "advertiser";
+            data.hashPass = this.password;
             this.messageService
-                .post('user/create', this.user)
+                .post('user/create', data)
                 .subscribe(retour => this.onEnregistrerCallback(retour), err => this.onEnregistrerCallback(err));
         }
     }
 
 
-    // Gestion de la réponde du backend
+    // Gestion de la réponse du backend
     onEnregistrerCallback(retour): void
     {
+        console.log(retour);
         if(retour.status !== "success") {
-            console.log(retour);
+
         }
         else
         {
