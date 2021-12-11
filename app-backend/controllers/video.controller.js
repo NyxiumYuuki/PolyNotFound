@@ -316,7 +316,7 @@ exports.delete = (req, res) => {
     if(id && ObjectId.isValid(id)){
       Video.updateOne({_id: id, userId: token.id, isActive: true}, {isActive: false}, {useFindAndModify: false})
         .then(data => {
-          if(data) {
+          if(data.modifiedCount > 0) {
             return sendMessage(res, 37, {message: `Video ${id} was successfully deleted.`}, token);
           } else {
             return sendError(res, 404, 105, `Video not found with id=${id}`, token);
