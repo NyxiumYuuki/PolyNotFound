@@ -81,7 +81,6 @@ function checkLogin(req, res, role=null){
   if(typeof req.cookies !== 'undefined'){
     const session = getSession(req.cookies.SESSIONID);
     const token = getToken(session);
-    console.log(token);
     if(typeof token.email === 'undefined' ||
       token.email === -1 ||
       typeof token.id === 'undefined' ||
