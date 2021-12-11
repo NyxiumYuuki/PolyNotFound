@@ -6,7 +6,8 @@ import {MessageService} from "../../../utils/services/message/message.service";
 import {map, startWith} from "rxjs/operators";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
+
+
 
 @Component({
   selector: 'app-input-interests-register',
@@ -26,8 +27,7 @@ export class InputInterestsRegisterComponent implements OnInit
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
 
-    constructor( private fictitiousUtilsService: FictitiousUtilsService,
-                 private messageService: MessageService ) {}
+    constructor( private messageService: MessageService ) {}
 
 
     ngOnInit(): void
@@ -36,9 +36,19 @@ export class InputInterestsRegisterComponent implements OnInit
             startWith(null),
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allInterests.slice()));
 
-        // --- FAUX CODE ---
-        this.allInterests = this.fictitiousUtilsService.getTags();
-        this.allInterests.sort();
+        this.messageService
+            .get("misc/getInterests")
+            .subscribe( retour => {
+
+                if(retour.status !== "success") {
+                    console.log(retour);
+                }
+                else {
+                    this.allInterests = [];
+                    for(let elt of retour.data) this.allInterests.push(elt.interest);
+                    this.allInterests.sort();
+                }
+            });
     }
 
 

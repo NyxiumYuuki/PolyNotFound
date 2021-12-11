@@ -3,9 +3,10 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PopupCreatePlaylistComponent} from "../popup-create-playlist/popup-create-playlist.component";
+import {PopupCreateOrUpdatePlaylistComponent} from "../popup-create-or-update-playlist/popup-create-or-update-playlist.component";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 import {PopupDeletePlaylistComponent} from "../popup-delete-playlist/popup-delete-playlist.component";
+import {MessageService} from "../../../utils/services/message/message.service";
 
 
 
@@ -26,13 +27,30 @@ export class PlaylistListComponent implements OnInit
     constructor( public themeService: ThemeService,
                  public dialog: MatDialog,
                  public snackBar: MatSnackBar,
-                 private fictitiousVideosService: FictitiousVideosService ) { }
+                 private fictitiousVideosService: FictitiousVideosService,
+                 private messageService: MessageService ) { }
 
 
     ngOnInit(): void
     {
-        this.allPlaylists = this.fictitiousVideosService.getNoRandomTabPlaylistDB(10);
-        this.tabPlaylist = [].concat(this.allPlaylists);
+        this.messageService
+            .get("playlist/findAll")
+            .subscribe( retour => this.ngOnInitCallback(retour), err => this.ngOnInitCallback(err) );
+    }
+
+
+    ngOnInitCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        } else {
+            const aux = retour.data.filter( x => x.isActive === true);
+            this.allPlaylists = aux.map(x => {
+                x["_id"] = x.id ;
+                return x;
+            });
+            this.tabPlaylist = [].concat(this.allPlaylists);
+        }
     }
 
 
@@ -50,9 +68,14 @@ export class PlaylistListComponent implements OnInit
     // click sur créer playlist
     onCreatePlaylist(): void
     {
-        const config = { data: this.tabPlaylist };
+        const config = {
+            data: {
+                action: "create",
+                tabPlaylist: this.tabPlaylist,
+            }
+        };
         this.dialog
-            .open(PopupCreatePlaylistComponent, config )
+            .open(PopupCreateOrUpdatePlaylistComponent, config )
             .afterClosed()
             .subscribe(playlist => {
 
@@ -61,9 +84,45 @@ export class PlaylistListComponent implements OnInit
                     this.snackBar.open("Opération annulée", "", config);
                 }
                 else {
+                    playlist["_id"] = playlist.id;
                     this.allPlaylists.push(playlist);
                     this.tabPlaylist.push(playlist);
                     this.snackBar.open(`La playlist '${playlist.name}' a bien été créée  ✔`, "", config);
+                }
+            });
+    }
+
+
+    // click sur update playlist
+    onUpdatePlaylist(playlistToUpdate: PlaylistDB): void
+    {
+        console.log(playlistToUpdate);
+
+        const config = {
+            data: {
+                action: "update",
+                tabPlaylist: this.tabPlaylist,
+                playlistName: playlistToUpdate.name,
+                playlistId: playlistToUpdate._id
+            }
+        };
+        this.dialog
+            .open(PopupCreateOrUpdatePlaylistComponent, config)
+            .afterClosed()
+            .subscribe(newName => {
+
+                console.log("nn:" + newName);
+
+                const config = { duration: 1500, panelClass: "custom-class" };
+                if((newName === null) || (newName === undefined)) {
+                    this.snackBar.open("Opération annulée", "", config);
+                }
+                else {
+                    let index = this.allPlaylists.findIndex( elt => (elt._id === playlistToUpdate._id));
+                    this.allPlaylists[index].name = newName;
+                    index = this.tabPlaylist.findIndex( elt => (elt._id === playlistToUpdate._id));
+                    this.tabPlaylist[index].name = newName;
+                    this.snackBar.open(`La playlist '${playlistToUpdate.name}' a bien été mise à jour  ✔`, "", config);
                 }
             });
     }

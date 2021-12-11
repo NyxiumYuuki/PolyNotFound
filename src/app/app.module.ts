@@ -26,7 +26,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import { PageMyPlaylistsComponent } from './user/myPlaylists/page-my-playlists/page-my-playlists.component';
 import { PlaylistListComponent } from './user/myPlaylists/playlist-list/playlist-list.component';
 import {VideoListComponent} from "./user/myPlaylists/video-list/video-list.component";
-import { PopupCreatePlaylistComponent } from './user/myPlaylists/popup-create-playlist/popup-create-playlist.component';
+import { PopupCreateOrUpdatePlaylistComponent } from './user/myPlaylists/popup-create-or-update-playlist/popup-create-or-update-playlist.component';
 import { PageHistoryUserComponent } from './user/history/page-history-user/page-history-user.component';
 import {MatTableModule} from '@angular/material/table';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -87,7 +87,7 @@ import { PopupForgottenPasswordComponent } from './beforeConnexion/login/popup-f
         VideoListComponent,
         PlaylistListComponent,
         VideoListComponent,
-        PopupCreatePlaylistComponent,
+        PopupCreateOrUpdatePlaylistComponent,
         PageHistoryUserComponent,
         PageAdListAdvertiserComponent,
         PopupDeleteAdAdvertiserComponent,

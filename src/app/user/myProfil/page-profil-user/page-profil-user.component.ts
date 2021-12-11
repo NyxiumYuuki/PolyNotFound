@@ -4,7 +4,8 @@ import {User} from "../../../utils/interfaces/user";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupUpdateUserComponent} from "../popup-update-user/popup-update-user.component";
-import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {ProfilService} from "../../../utils/services/profil/profil.service";
 
 
 
@@ -15,18 +16,52 @@ import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fi
 })
 export class PageProfilUserComponent implements OnInit
 {
-    user: User;
+    user: User = {
+        _id: "",
+        login: "",
+        hashPass: "",
+        email: "",
+        role: {
+            name: "user",
+            permission: 0,
+        },
+        profileImageUrl: "",
+        dateOfBirth: null,
+        gender: "man",
+        interests: [],
+        company: "",
+        isActive: false,
+        isAccepted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lastConnexion: null
+    };
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private messageService: MessageService,
+                 private profilService: ProfilService ) { }
 
 
     ngOnInit(): void
     {
-        this.user = this.fictitiousUsersService.getUser();
+        this.messageService
+            .get( "user/findOne/"+this.profilService.id)
+            .subscribe( retour => this.ngOnInitCallback(retour), err => this.ngOnInitCallback(err) )
+    }
+
+
+    ngOnInitCallback(retour: any)
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.user = retour.data;
+            this.profilService.id = retour.data.id;
+        }
     }
 
 

@@ -168,7 +168,6 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
 
     onFilter(): void
     {
-        console.log("b:" + this.formControlInterests.value);
         this.dataSource.data = [];
         for(let advert of this.tabAdvertWithCountViews)
         {

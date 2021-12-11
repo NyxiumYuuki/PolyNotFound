@@ -58,6 +58,7 @@ export class PageLoginComponent implements OnInit
             this.hasError = true;
         }
         else {
+            this.profilService.id = retour.data.id;
             this.profilService.profileImageUrl = retour.data.profileImageUrl;
             if(retour.data.role.name === "user") this.router.navigateByUrl( '/user/search');
             else if(retour.data.role.name === "advertiser") this.router.navigateByUrl( '/advertiser/adList');
@@ -95,19 +96,6 @@ export class PageLoginComponent implements OnInit
             this.errorMessage = "" ;
             this.hasError = false;
         }
-    }
-
-
-    // Fonction de hashage (faible)
-    hashage(input: string): string
-    {
-        let hash = 0;
-        for (let i = 0; i < input.length; i++) {
-            let ch = input.charCodeAt(i);
-            hash = ((hash << 5) - hash) + ch;
-            hash = hash & hash;
-        }
-        return hash.toString();
     }
 
 }

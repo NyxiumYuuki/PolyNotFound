@@ -1,6 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {User} from "../../../utils/interfaces/user";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {ProfilService} from "../../../utils/services/profil/profil.service";
 
 
 
@@ -20,7 +22,9 @@ export class PopupUpdateUserComponent implements OnInit
 
 
     constructor( public dialogRef: MatDialogRef<PopupUpdateUserComponent>,
-                 @Inject(MAT_DIALOG_DATA) public data) { }
+                 @Inject(MAT_DIALOG_DATA) public data,
+                 private messageService: MessageService,
+                 private profilService: ProfilService ) { }
 
 
     ngOnInit(): void
@@ -55,11 +59,30 @@ export class PopupUpdateUserComponent implements OnInit
         this.checkField();
         if(!this.hasError)
         {
-            if(this.changePassword) this.userCopy.hashPass = this.hashage(this.newPassword);
-            const data = { user: this.userCopy };
+            if(this.changePassword) this.userCopy.hashPass = this.newPassword;
+            const data = {
+                login: this.userCopy.login,
+                hashPass: this.userCopy.hashPass,
+                email: this.userCopy.email,
+                profileImageUrl: this.userCopy.profileImageUrl,
+                dateOfBirth: this.userCopy.dateOfBirth,
+                gender: this.userCopy.gender,
+                interests: this.userCopy.interests,
+            };
+            this.messageService
+                .put("user/update/"+this.profilService.id, data)
+                .subscribe( ret => this.onValiderCallback(ret), err => this.onValiderCallback(err) );
+        }
+    }
 
-            // VRAI CODE: envoie au back ...
 
+    onValiderCallback(retour: any)
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close(null);
+        }
+        else {
             this.dialogRef.close(this.userCopy);
         }
     }
@@ -104,19 +127,6 @@ export class PopupUpdateUserComponent implements OnInit
     onEventInputInterests(myInterets: string[])
     {
         this.userCopy.interests = myInterets;
-    }
-
-
-    // Fonction de hashage (faible)
-    hashage(input: string): string
-    {
-        let hash = 0;
-        for (let i = 0; i < input.length; i++) {
-            let ch = input.charCodeAt(i);
-            hash = ((hash << 5) - hash) + ch;
-            hash = hash & hash;
-        }
-        return hash.toString();
     }
 
 }

@@ -19,10 +19,10 @@ export class MessageService
         return this.http.post<any>(urlComplete, data, {withCredentials: true});
     }
 
-    get(url: string, data: any): Observable<any>
+    get(url: string): Observable<any>
     {
         const urlComplete = environment.debutUrl + url ;
-        return this.http.get<any>(urlComplete, data);
+        return this.http.get<any>(urlComplete,{withCredentials: true});
     }
 
     put(url: string, data: any): Observable<any>
@@ -31,10 +31,10 @@ export class MessageService
         return this.http.put<any>(urlComplete, data, {withCredentials: true});
     }
 
-    delete(url: string, data: any): Observable<any>
+    delete(url: string): Observable<any>
     {
         const urlComplete = environment.debutUrl + url ;
-        return this.http.delete<any>(urlComplete, data);
+        return this.http.delete<any>(urlComplete,{withCredentials: true});
     }
 
 }

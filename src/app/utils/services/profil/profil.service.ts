@@ -5,5 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class ProfilService
 {
+    public id: string = "" ;
     public profileImageUrl: string = "";
 }
