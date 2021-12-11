@@ -100,7 +100,7 @@ module.exports = [
     id: 10,
     interest: "Science and Technology",
     categories: [
-      {id: "", name: "", source: dailymotion.name},
+      {id: "tech", name: "Tech", source: dailymotion.name},
       {id: "28", name: "Science & Technology", source: youtube.name},
     ]
   },
