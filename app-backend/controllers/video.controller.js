@@ -34,31 +34,38 @@ exports.search = async (req, res) => {
   const token = checkLogin(req, res);
   if(token && typeof req.query.q !== 'undefined'){
     const query = req.query.q;
+    const maxResults = req.query.maxResults ? req.query.maxResults : 45;
+    const pageToken = req.query.pageToken ? req.query.pageToken : undefined;
     let sources;
     if(typeof req.query.sources !== 'undefined' && req.query.sources !== ''){
       sources = req.query.sources.split(',');
     } else {
       sources = ["yt", "dm"];
     }
-    const maxResults = req.query.maxResults ? req.query.maxResults : 45;
-    const pageToken = req.query.pageToken ? req.query.pageToken : undefined;
-
     let yt_results = [];
     let dm_results = [];
     for(const i in sources){
       if(sources[i] === youtube.shortname){
         if(youtube.YOUTUBE_API_KEY !== 'undefined' && youtube.YOUTUBE_API_KEY !== ''){
           let uri;
-          if(typeof pageToken !== 'undefined'){
-            uri = youtube.baseAPIUrl+'/search'+'?part=snippet&maxResults='+maxResults+'&q='+query+'&pageToken='+pageToken+'&key='+youtube.YOUTUBE_API_KEY;
-          } else{
-            uri = youtube.baseAPIUrl+'/search'+'?part=snippet&maxResults='+maxResults+'&q='+query+'&key='+youtube.YOUTUBE_API_KEY;
-          }
-          const dataIds = await asyncRequest(uri, {});
-          if(dataIds.response.statusCode === 200 && dataIds.body.items.length > 0){
-            let yt_videoIds = "";
-            dataIds.body.items.forEach(item => yt_videoIds = yt_videoIds+item.id.videoId+",");
-            uri = youtube.baseAPIUrl+'/videos'+'?part=snippet&part=statistics&id='+yt_videoIds.slice(0, -1)+'&key='+youtube.YOUTUBE_API_KEY;
+          if(query !== ''){
+            if(typeof pageToken !== 'undefined'){
+              uri = youtube.baseAPIUrl+'/search'+'?part=snippet&maxResults='+maxResults+'&q='+query+'&pageToken='+pageToken+'&key='+youtube.YOUTUBE_API_KEY;
+            } else{
+              uri = youtube.baseAPIUrl+'/search'+'?part=snippet&maxResults='+maxResults+'&q='+query+'&key='+youtube.YOUTUBE_API_KEY;
+            }
+            const dataIds = await asyncRequest(uri, {});
+            if(dataIds.response.statusCode === 200 && dataIds.body.items.length > 0){
+              let yt_videoIds = "";
+              dataIds.body.items.forEach(item => yt_videoIds = yt_videoIds+item.id.videoId+",");
+              uri = youtube.baseAPIUrl+'/videos'+'?part=snippet&part=statistics&id='+yt_videoIds.slice(0, -1)+'&key='+youtube.YOUTUBE_API_KEY;
+              const dataVideos = await asyncRequest(uri, {});
+              if(dataVideos.response.statusCode === 200 && dataVideos.body.items.length > 0){
+                yt_results = dataVideos.body.items;
+              }
+            }
+          } else {
+            uri = youtube.baseAPIUrl+'/videos'+'?part=snippet&part=statistics&chart=mostPopular&key='+youtube.YOUTUBE_API_KEY;
             const dataVideos = await asyncRequest(uri, {});
             if(dataVideos.response.statusCode === 200 && dataVideos.body.items.length > 0){
               yt_results = dataVideos.body.items;
@@ -69,10 +76,17 @@ exports.search = async (req, res) => {
         }
       } else if(sources[i] === dailymotion.shortname){
         if(dailymotion.DAILYMOTION_API_KEY !== 'undefined' && dailymotion.DAILYMOTION_API_KEY !== '') {
-          const uri = dailymotion.baseAPIUrl + '/videos?limit='+maxResults+'&search='+query+'&fields=created_time%2Cdescription%2Cthumbnail_480_url%2Clikes_total%2Ctitle%2Cid%2Cembed_url%2Cviews_total%2Cowner.username%2Cowner.id%2Cchannel.name';
+          let uri;
+          if(query !== ''){
+            uri = dailymotion.baseAPIUrl + '/videos?limit='+maxResults+'&search='+query+'&fields=created_time%2Cdescription%2Cthumbnail_480_url%2Clikes_total%2Ctitle%2Cid%2Cembed_url%2Cviews_total%2Cowner.username%2Cowner.id%2Cchannel.name';
+          } else {
+            uri = dailymotion.baseAPIUrl + '/videos?limit='+maxResults+'&sort=trending&fields=created_time%2Cdescription%2Cthumbnail_480_url%2Clikes_total%2Ctitle%2Cid%2Cembed_url%2Cviews_total%2Cowner.username%2Cowner.id%2Cchannel.name';
+          }
+          console.log(uri);
           const data = await asyncRequest(uri, {});
           const response = data.response;
           const jsonBody = data.body;
+          console.log(jsonBody);
           if(response.statusCode === 200){
             dm_results = jsonBody.list;
           }
