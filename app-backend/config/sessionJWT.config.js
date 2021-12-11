@@ -81,10 +81,11 @@ function checkLogin(req, res, role=null){
   if(typeof req.cookies !== 'undefined'){
     const session = getSession(req.cookies.SESSIONID);
     const token = getToken(session);
+    console.log(token);
     if(typeof token.email === 'undefined' ||
-      typeof token.email === -1 ||
+      token.email === -1 ||
       typeof token.id === 'undefined' ||
-      typeof token.id === -1){
+      token.id === -1){
       return sendError(res, 500, 102, "User not authenticated.");
     } else {
       token.midExp = new Date(token.midExp*1000);
