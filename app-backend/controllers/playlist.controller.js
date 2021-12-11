@@ -213,10 +213,10 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token) {
-    Playlist.deleteMany({userId: {$eq: token.id}})
+    Playlist.updateMany({userId: {$eq: token.id}, isActive: true}, {isActive: false})
       .then(data => {
         return sendMessage(res, 26, {
-          message: `${data.deletedCount} Playlists were deleted successfully.`
+          message: `${data.modifiedCount} Playlists were deleted successfully.`
         });
       })
       .catch(err => {

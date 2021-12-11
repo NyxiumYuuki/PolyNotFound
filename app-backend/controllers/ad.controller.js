@@ -252,10 +252,10 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res, roles.Advertiser);
   if(token) {
-    Ad.deleteMany({userId: {$eq: token.id}})
+    Ad.updateMany({userId: {$eq: token.id}, isActive: true}, {isActive: false})
       .then(data => {
         return sendMessage(res, 46, {
-          message: `${data.deletedCount} Ads were deleted successfully.`
+          message: `${data.modifiedCount} Ads were deleted successfully.`
         });
       })
       .catch(err => {
