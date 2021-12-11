@@ -355,8 +355,25 @@ exports.findAll = (req, res) => {
 // Find single Video with id
 exports.findOne = (req, res) => {
   const token = checkLogin(req, res);
-  if(token){
-    return sendError(res, 501, -1, "Video.findOne not Implemented", token);
+  if(token && typeof req.params.id !== 'undefined') {
+    const id = req.params.id;
+    if(id && ObjectId.isValid(id)){
+      Video.findById(id, {})
+        .then(data => {
+          if(data){
+            return sendMessage(res, 35, data, token);
+          } else {
+            return sendError(res,404,105,`Video not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          return sendError(res,500,100,err.message || `Some error occurred while finding the Video with id=${id}`, token);
+        });
+    } else {
+      return sendError(res, 500, -1, `Error id is not valid`, token);
+    }
+  } else {
+    return sendError(res, 500, -1, `No id given`, token);
   }
 };
 
