@@ -68,7 +68,7 @@ exports.create = (req, res) => {
         if(docs === null) {
           let user;
           let var_role;
-          if(req.body.role !== 'undefined'){
+          if(typeof req.body.role !== 'undefined'){
             switch(req.body.role){
               case 'admin':
                 var_role = roles.Admin;
