@@ -34,12 +34,17 @@ exports.search = async (req, res) => {
   const token = checkLogin(req, res);
   if(token && typeof req.query.q !== 'undefined'){
     const query = req.query.q;
-    const sources = req.query.sources ? req.query.sources : ["yt", "dm"];
+    let sources;
+    if(typeof req.query.sources !== 'undefined' && req.query.sources !== ''){
+      sources = req.query.sources.split(',');
+    } else {
+      sources = ["yt", "dm"];
+    }
     const maxResults = req.query.maxResults ? req.query.maxResults : 45;
     const pageToken = req.query.pageToken ? req.query.pageToken : undefined;
 
-    let yt_results;
-    let dm_results;
+    let yt_results = [];
+    let dm_results = [];
     for(const i in sources){
       if(sources[i] === youtube.shortname){
         if(youtube.YOUTUBE_API_KEY !== 'undefined' && youtube.YOUTUBE_API_KEY !== ''){
