@@ -6,7 +6,7 @@ module.exports = app => {
   router.get("/video/search", videos.search);
 
   // Get Video with id of source
-  router.get("/video/:id", videos.get);
+  router.get("/video/get/:id", videos.get);
 
   // Create a new Video
   router.post("/video/create/:id", videos.create);
