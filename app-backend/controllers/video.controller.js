@@ -82,11 +82,9 @@ exports.search = async (req, res) => {
           } else {
             uri = dailymotion.baseAPIUrl + '/videos?limit='+maxResults+'&sort=trending&fields=created_time%2Cdescription%2Cthumbnail_480_url%2Clikes_total%2Ctitle%2Cid%2Cembed_url%2Cviews_total%2Cowner.username%2Cowner.id%2Cchannel.name';
           }
-          console.log(uri);
           const data = await asyncRequest(uri, {});
           const response = data.response;
           const jsonBody = data.body;
-          console.log(jsonBody);
           if(response.statusCode === 200){
             dm_results = jsonBody.list;
           }
