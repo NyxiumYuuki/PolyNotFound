@@ -337,10 +337,10 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   const token = checkLogin(req, res);
   if(token) {
-    Video.deleteMany({userId: {$eq: token.id}})
+    Video.updateMany({userId: {$eq: token.id}, isActive: true}, {isActive: false})
       .then(data => {
         return sendMessage(res, 38, {
-          message: `${data.deletedCount} Videos were deleted successfully.`
+          message: `${data.modifiedCount} Videos were deleted successfully.`,
         });
       })
       .catch(err => {
