@@ -34,8 +34,8 @@ export class VideoGridComponent implements OnChanges
 
     tronquage(str: string)
     {
-        if(str.length < 40) return str;
-        else return str.substring(0, 37) + "..." ;
+        if(str.length < 33) return str;
+        else return str.substring(0, 30) + "..." ;
     }
 
     onVideo(video: VideoAll): void
@@ -43,4 +43,5 @@ export class VideoGridComponent implements OnChanges
         const url = '/user/watching/fromSearch/'+video.videoId+'/'+video.source+'/'+this.search;
         this.router.navigateByUrl(url);
     }
+
 }

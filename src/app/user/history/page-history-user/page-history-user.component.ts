@@ -47,6 +47,7 @@ export class PageHistoryUserComponent implements AfterViewInit
         this.userHistoryService.clearTabVideoUrlClicked();
 
         // --- FAUX CODE ---
+        /*
         const tabVideoAll: VideoAll[] = this.fictitiousVideosService.getTabVideoAll(8);
         let tabVideoHistory: VideoHistory[] = [];
         for(let videoAll of tabVideoAll) tabVideoHistory.push(this.videoAllToVideoHistory(videoAll));
@@ -54,20 +55,37 @@ export class PageHistoryUserComponent implements AfterViewInit
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.dataSource = this.dataSource;
+        */
 
-        // --- VRAI CODE ---
-        /*
         this.messageService
-            .sendMessage( "user/get/history", null )
-            .subscribe( retour => {
+            .get("user/history")
+            .subscribe(ret => this.ngAfterViewInitCallback(ret), err => this.ngAfterViewInitCallback(err));
 
-                if(retour.status === "error") console.log(retour);
-                else {
-                    this.dataSource = new MatTableDataSource(retour.data);
-                    this.dataSource.sort = this.sort;
+    }
+
+
+    ngAfterViewInitCallback(retour: any): void
+    {
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
+        else {
+            const tabVideoHistory = retour.data.map( video => {
+                return {
+                    videoId: video.videoId,
+                    imageUrl: video.imageUrl,
+                    title: video.title,
+                    date: video.watchedDate,
+                    source: video.source,
                 }
             });
-        */
+            this.dataSource = new MatTableDataSource(tabVideoHistory);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource = this.dataSource;
+        }
     }
 
 

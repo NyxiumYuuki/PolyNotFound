@@ -16,7 +16,7 @@
             <!-- Search bar -->
             <div class="input-group" style="width: 100%; margin: 0 auto;">
                 <div class="form-outline" style="width: 100%; margin: 0 auto;">
-                    <input type="search" placeholder="recherche..." class="inputSearchBar"/>
+                    <input type="search" placeholder="recherche..." class="inputSearchBar" [(ngModel)]="search"/>
                     <button mat-icon-button (click)="onSearch()">
                         <mat-icon>search</mat-icon>
                     </button>
@@ -30,7 +30,7 @@
                     &nbsp;
                     <mat-checkbox id="youtube" name="youtube" style="margin-left: 5px" [(ngModel)]="tabPlateform[0].isSelected"></mat-checkbox>
                     <img src="/assets/logo_plateforms/youtube.png" alt="logo" width="30px" height="25px" style="margin-left: 5px">
-                    <label for="youtube" style="margin-left: 5px">youtube</label>
+                    <label for="youtube" style="margin-left: 5px">Youtube</label>
                     &nbsp;
                 </span>
                 <!-- dailymotion -->
@@ -38,7 +38,7 @@
                     &nbsp;
                     <mat-checkbox id="dailymotion" name="dailymotion" style="margin-left: 5px" [(ngModel)]="tabPlateform[1].isSelected"></mat-checkbox>
                     <img src="/assets/logo_plateforms/dailymotion.png" alt="logo" width="25px" height="25px" style="margin-left: 5px">
-                    <label for="dailymotion" style="margin-left: 5px">dailymotion</label>
+                    <label for="dailymotion" style="margin-left: 5px">Dailymotion</label>
                     &nbsp;
                 </span>
             </div>

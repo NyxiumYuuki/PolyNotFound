@@ -5,12 +5,13 @@ import {Advert} from "../../../utils/interfaces/advert";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
+import {HttpParams} from "@angular/common/http";
 
 
 
 let TAB_PLATEFORM = [
-    { name: "youtube", isSelected: false },
-    { name: "dailymotion", isSelected: false }
+    { name: "Youtube", isSelected: true },
+    { name: "Dailymotion", isSelected: true }
 ];
 
 
@@ -38,53 +39,44 @@ export class PageSearchComponent implements OnInit
     ngOnInit(): void
     {
         // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousVideosService.getTabVideoAll(90);
+        //this.tabVideo = this.fictitiousVideosService.getTabVideoAll(90);
         this.ad1 = this.fictitiousAdvertsService.getAdvert();
         this.ad2 = this.fictitiousAdvertsService.getAdvert();
-
-        // --- VRAI CODE ---
-        /*
-        let tabPlateformName = [];
-        for(let plateform of this.tabPlateform) tabPlateformName.push(plateform.title);
-        let data = { search: "", plaateforms: tabPlateformName };
-        this.messageService
-            .sendMessage("user/searchVideo", data)
-            .subscribe( retour => {
-                if(retour.status === "error") console.log(retour.data);
-                else {
-                    this.tabVideo = retour.data.videos;
-                    this.ad1 = retour.data.ad1;
-                    this.ad2 = retour.data.ad2;
-                }
-            });
-        */
+        this.onSearch();
     }
+
 
 
     onSearch()
     {
-        // --- FAUX CODE ---
-        this.tabVideo = this.fictitiousVideosService.getTabVideoAll(2);
+        let params = new HttpParams();
+        params = params.append('q', this.search);
 
-        // --- VRAI CODE ---
-        /*
-        let tabPlateformName = [];
-        for(let plateform of this.tabPlateform)
-        {
-            if(plateform.isSelected) tabPlateformName.push(plateform.title);
-        }
-        let data = { "search": this.search, "plateforms": tabPlateformName };
+        let sources = "";
+        if(this.tabPlateform[0].isSelected && this.tabPlateform[1].isSelected) sources += "yt,dm" ;
+        else if((!this.tabPlateform[0].isSelected) && this.tabPlateform[1].isSelected) sources += "dm" ;
+        else if(this.tabPlateform[0].isSelected && (!this.tabPlateform[1].isSelected)) sources += "yt" ;
+        else sources += "" ;
+        console.log(sources);
+        params = params.append('sources', sources);
+
         this.messageService
-            .sendMessage("user/searchVideo", data)
-            .subscribe(retour => {
-                if(retour.status === "error") console.log(retour.data);
-                else {
-                    this.tabVideo = retour.data.videos;
-                    this.ad1 = retour.data.ad1;
-                    this.ad2 = retour.data.ad2;
-                }
-            });
-        */
+            .get("video/search", params)
+            .subscribe(ret => this.onSearchCallback(ret), err => this.onSearchCallback(err));
+    }
+
+
+    onSearchCallback(retour: any): void
+    {
+        console.log("ngOnInitCallback:");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
+        else {
+            this.tabVideo = retour.data;
+        }
     }
 
 }
