@@ -3,31 +3,10 @@ const request = require('request');
 const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const {youtube, dailymotion} = require("../config/host.config");
-const VideoCategories = require("../models/objects/video.categories.model");
+const {asyncRequest, asyncInterest} = require("../config/functions.config");
 const ObjectId = require('mongoose').Types.ObjectId;
 const Video = db.videos;
 
-function asyncRequest(uri, option){
-  return new Promise(function(resolve){
-    request(uri, option,function (error, response, body){
-      resolve({response: response, body: JSON.parse(body)});
-    });
-  });
-}
-
-function asyncInterest(interest, source){
-  return new Promise(function(resolve){
-    for(const i in VideoCategories){
-      for(const j in VideoCategories[i].categories){
-        if((VideoCategories[i].categories[j].name === interest || VideoCategories[i].categories[j].id === interest)
-          && VideoCategories[i].categories[j].source === source){
-          resolve(VideoCategories[i].interest);
-        }
-      }
-    }
-    resolve(null);
-  });
-}
 
 // Search Videos
 exports.search = async (req, res) => {
