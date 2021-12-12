@@ -261,10 +261,10 @@ exports.create = (req, res) => {
             });
         } else{
           const id = docs._id.toString();
-          Video.findByIdAndUpdate(id, {$push: {watchedDates: [new Date()]}}, {useFindAndModify: false})
+          Video.findByIdAndUpdate(id, {$push: {watchedDates: [new Date()]}}, {useFindAndModify: false, new: true})
             .then(data => {
               if(data) {
-                return sendMessage(res, 33, {message: `Video ${id} was successfully updated.`}, token);
+                return sendMessage(res, 33, data, token);
               } else {
                 return sendError(res, 404, 105, `Video not found with id=${id}`, token);
               }
@@ -408,7 +408,7 @@ exports.update = (req, res) => {
       Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
 
       if(id && ObjectId.isValid(id)){
-        Video.updateOne({_id: id, userId: token.id}, update)
+        Video.updateOne({_id: id, userId: token.id, isActive: true}, update)
           .then(data => {
             if(data) {
               return sendMessage(res, 36, update, token);
