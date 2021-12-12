@@ -44,7 +44,7 @@ exports.search = async (req, res) => {
               }
             }
           } else {
-            uri = youtube.baseAPIUrl+'/videos'+'?part=snippet&part=statistics&chart=mostPopular&key='+youtube.YOUTUBE_API_KEY;
+            uri = youtube.baseAPIUrl+'/videos'+'?part=snippet&part=statistics&chart=mostPopular&maxResults='+maxResults+'&key='+youtube.YOUTUBE_API_KEY;
             const dataVideos = await asyncRequest(uri, {});
             if(dataVideos.response.statusCode === 200 && dataVideos.body.items.length > 0){
               yt_results = dataVideos.body.items;
