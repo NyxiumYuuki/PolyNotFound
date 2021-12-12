@@ -5,39 +5,138 @@ const {youtube, dailymotion} = require("../config/host.config");
 const {asyncRequest} = require("../config/functions.config");
 const ObjectId = require('mongoose').Types.ObjectId;
 const Playlist = db.playlists;
+const Video = db.videos;
 
 // Create a new Playlist
 exports.create = (req, res) => {
   const token = checkLogin(req, res);
   if(token && req.body.name){
-    Playlist.exists({name: req.body.name}, function (err, docs){
-      if(err){
-        sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
-      } else{
-        if(docs === null) {
-          let playlist;
-
-          playlist = new Playlist({
-            userId: token.id,
-            name: req.body.name,
-            videoIds: req.body.videoIds ? req.body.videoIds : undefined,
-            isActive: req.body.isActive ? req.body.isActive : undefined
-          });
-
-          // Save User in the database
-          playlist
-            .save(playlist)
-            .then(data => {
-              return sendMessage(res, 21, data, token)
-            })
-            .catch(err => {
-              return sendError(res, 500,100,err.message || "Some error occurred while creating the Playlist.", token);
-            });
+    const video = req.body.video;
+    if(typeof video !== 'undefined' &&
+      video !== null &&
+      typeof video.videoId !== 'undefined' &&
+      video.videoId !== null &&
+      typeof video.source !== 'undefined' &&
+      video.source !== null &&
+      typeof video.interest !== 'undefined' &&
+      video.interest !== null
+    ){
+      Video.exists({userId: token.id, videoId: video.videoId, source: video.source, isActive: true}, function (err, docs){
+        if(err){
+          sendError(res, 500,100,err.message || "Some error occurred while checking if the Video already exists.", token);
         } else{
-          return sendError(res, 500, 104, err || `Playlist ${req.body.name} already exists.`, token);
+          if(docs === null) {
+            let video;
+
+            video = new Video({
+              userId: token.id,
+              videoId: id,
+              source: req.body.source,
+              interest: req.body.interest,
+              watchedDates: [new Date()]
+            });
+
+            // Save Video in the database
+            video
+              .save(video)
+              .then(data => {
+                if(data) {
+                  Playlist.exists({name: req.body.name}, function (err, docs){
+                    if(err){
+                      sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
+                    } else{
+                      if(docs === null) {
+                        let playlist;
+
+                        playlist = new Playlist({
+                          userId: token.id,
+                          name: req.body.name,
+                          videoIds: data._id ? [data._id] : undefined,
+                          isActive: true
+                        });
+
+                        // Save User in the database
+                        playlist
+                          .save(playlist)
+                          .then(data => {
+                            return sendMessage(res, 21, data, token)
+                          })
+                          .catch(err => {
+                            return sendError(res, 500,100,err.message || "Some error occurred while creating the Playlist.", token);
+                          });
+                      } else{
+                        return sendError(res, 500, 104, err || `Playlist ${req.body.name} already exists.`, token);
+                      }
+                    }
+                  });
+                }
+              })
+              .catch(err => {
+                return sendError(res, 500,100,err.message || "Some error occurred while creating the Video.", token);
+              });
+          } else{
+            const id = docs._id.toString();
+            Playlist.exists({name: req.body.name}, function (err, docs){
+              if(err){
+                sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
+              } else{
+                if(docs === null) {
+                  let playlist;
+
+                  playlist = new Playlist({
+                    userId: token.id,
+                    name: req.body.name,
+                    videoIds: [id],
+                    isActive: true
+                  });
+
+                  // Save User in the database
+                  playlist
+                    .save(playlist)
+                    .then(data => {
+                      return sendMessage(res, 21, data, token)
+                    })
+                    .catch(err => {
+                      return sendError(res, 500,100,err.message || "Some error occurred while creating the Playlist.", token);
+                    });
+                } else{
+                  return sendError(res, 500, 104, err || `Playlist ${req.body.name} already exists.`, token);
+                }
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    } else {
+      Playlist.exists({name: req.body.name}, function (err, docs){
+        if(err){
+          sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
+        } else{
+          if(docs === null) {
+            let playlist;
+
+            playlist = new Playlist({
+              userId: token.id,
+              name: req.body.name,
+              videoIds: req.body.videoIds ? req.body.videoIds : undefined,
+              isActive: req.body.isActive ? req.body.isActive : undefined
+            });
+
+            // Save User in the database
+            playlist
+              .save(playlist)
+              .then(data => {
+                return sendMessage(res, 21, data, token)
+              })
+              .catch(err => {
+                return sendError(res, 500,100,err.message || "Some error occurred while creating the Playlist.", token);
+              });
+          } else{
+            return sendError(res, 500, 104, err || `Playlist ${req.body.name} already exists.`, token);
+          }
+        }
+      });
+    }
   }
 };
 
@@ -232,7 +331,7 @@ exports.update = (req, res) => {
       Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
 
       if(id && ObjectId.isValid(id)){
-        Playlist.findOneAndUpdate({_id: id, userId: token.id}, update, {new: false})
+        Playlist.findOneAndUpdate({_id: id, userId: token.id, isActive: true}, update, {new: false})
           .then(data => {
             if(data) {
               if(!data.videoIds.includes(videoIds)){
