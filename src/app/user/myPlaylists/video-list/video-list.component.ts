@@ -50,7 +50,7 @@ export class VideoListComponent implements OnChanges
 
     onAdd(video: VideoAll): void
     {
-        this.addVideoToPlaylistService.run(video);
+        //this.addVideoToPlaylistService.run(video);
     }
 
 

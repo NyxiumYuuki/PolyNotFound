@@ -29,7 +29,7 @@ export class VideoGridComponent implements OnChanges
 
     onAdd(video: VideoAll): void
     {
-        this.addVideoToPlaylistsService.run(video);
+        this.addVideoToPlaylistsService.run(video.videoId, video.source);
     }
 
     tronquage(str: string)

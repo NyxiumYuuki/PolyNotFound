@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {HttpParams} from "@angular/common/http";
 
 
 
@@ -27,10 +28,16 @@ let TAB_PLATEFORM = [
 export class PageWatchingVideoComponent implements OnInit
 {
     tabPlateform = TAB_PLATEFORM;
-    video: VideoAll;
+    video = {
+        title: "zzz",
+        views: 0,
+        publishedAt: null,
+        description: "",
+        source: ""
+    };
     search: string = "";
-    ad1: Advert;
-    ad2: Advert;
+    ad1: any = { title: "", url: "", images: [] };
+    ad2: any = { title: "", url: "", images: [] };
     from: string = "";
 
     playlist: PlaylistDB;
@@ -54,10 +61,29 @@ export class PageWatchingVideoComponent implements OnInit
     ngOnInit(): void
     {
         // --- FAUX CODE ---
+        //const videoId = this.activatedRoute.snapshot.paramMap.get('videoId');
+        //this.video =  this.fictitiousVideosService.getVideoByVideoId(videoId);
+        //this.ad1 = this.fictitiousAdvertsService.getAdvert();
+        //this.ad2 = this.fictitiousAdvertsService.getAdvert();
+
+        // findVideoCallback
         const videoId = this.activatedRoute.snapshot.paramMap.get('videoId');
-        this.video =  this.fictitiousVideosService.getVideoByVideoId(videoId);
-        this.ad1 = this.fictitiousAdvertsService.getAdvert();
-        this.ad2 = this.fictitiousAdvertsService.getAdvert();
+        let params1 = new HttpParams();
+        let source = "" ;
+        if(this.activatedRoute.snapshot.paramMap.get('source') === "Youtube") source = "yt" ;
+        else source = "dm"
+        params1 = params1.append("source", source);
+        this.messageService
+            .get("video/get/"+videoId, params1)
+            .subscribe(ret => this.findVideoCallback(ret), err => this.findVideoCallback(err));
+
+        // advert
+        let params2 = new HttpParams();
+        params2 = params2.append("quantity", 2);
+        this.messageService
+            .get("user/ad", params2)
+            .subscribe(ret => this.findAdCallback(ret), err => this.findAdCallback(err));
+
 
         if(this.router.url.includes("fromSearch")) this.from = "search" ;
         else if(this.router.url.includes("fromHistory")) this.from = "history";
@@ -90,6 +116,29 @@ export class PageWatchingVideoComponent implements OnInit
     }
 
 
+    findVideoCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.video = retour.data;
+        }
+    }
+
+
+    findAdCallback(retour: any): void
+    {
+        if(retour !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.ad1 = retour.data[0];
+            this.ad2 = retour.data[1];
+        }
+    }
+
+
     onSearch()
     {
 
@@ -98,7 +147,7 @@ export class PageWatchingVideoComponent implements OnInit
 
     onAdd(): void
     {
-        this.addVideoToPlaylistsService.run(this.video);
+        //this.addVideoToPlaylistsService.run(this.video);
     }
 
 
@@ -113,8 +162,8 @@ export class PageWatchingVideoComponent implements OnInit
     safeUrl(videoId: string, source: string): SafeResourceUrl
     {
         let videoUrl = "" ;
-        if(source === 'youtube') videoUrl = "https://www.youtube.com/embed/" + videoId;
-        else if(source === 'dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
+        if(source === 'Youtube') videoUrl = "https://www.youtube.com/embed/" + videoId;
+        else if(source === 'Dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
         return this._sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
     }
 

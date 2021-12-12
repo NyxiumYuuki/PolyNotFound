@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../../utils/services/message/message.service";
 import {VideoAll} from "../../../utils/interfaces/video";
-import {Advert} from "../../../utils/interfaces/advert";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
-import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
-import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {HttpParams} from "@angular/common/http";
 
 
@@ -26,25 +23,36 @@ export class PageSearchComponent implements OnInit
     tabPlateform = TAB_PLATEFORM;
     tabVideo: VideoAll[] = [];
     search: string = "";
-    ad1: Advert;
-    ad2: Advert;
+    ad1: any = { title: "", url: "", images: [] };
+    ad2: any = { title: "", url: "", images: [] };
 
 
     constructor( private messageService: MessageService,
-                 private fictitiousVideosService: FictitiousVideosService,
-                 private fictitiousAdvertsService: FictitiousAdvertsService,
                  public themeService: ThemeService ) { }
 
 
     ngOnInit(): void
     {
-        // --- FAUX CODE ---
-        //this.tabVideo = this.fictitiousVideosService.getTabVideoAll(90);
-        this.ad1 = this.fictitiousAdvertsService.getAdvert();
-        this.ad2 = this.fictitiousAdvertsService.getAdvert();
+        let params = new HttpParams();
+        params = params.append("quantity", 2);
+        this.messageService
+            .get("user/ad", params)
+            .subscribe(ret => this.adCallback(ret), err => this.adCallback(err));
+
         this.onSearch();
     }
 
+
+    adCallback(retour: any): void
+    {
+        if(retour !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.ad1 = retour.data[0];
+            this.ad2 = retour.data[1];
+        }
+    }
 
 
     onSearch()
@@ -68,11 +76,8 @@ export class PageSearchComponent implements OnInit
 
     onSearchCallback(retour: any): void
     {
-        console.log("ngOnInitCallback:");
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             this.tabVideo = retour.data;
