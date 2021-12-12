@@ -6,6 +6,8 @@ import { Router} from "@angular/router";
 import {FictitiousAdvertsService} from "../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {FictitiousVideosService} from "../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 import {ThemeService} from "../../utils/services/theme/theme.service";
+import {MessageService} from "../../utils/services/message/message.service";
+import {HttpParams} from "@angular/common/http";
 
 
 
@@ -25,6 +27,8 @@ export class PagesPopularityComponent implements OnInit
 {
     formControl: FormControl;
     allCoupleNameViews: CoupleNameViews[] = [];
+
+    allInterests: string[] = [];
 
     startDate: Date = null;
     endDate: Date = null;
@@ -48,55 +52,111 @@ export class PagesPopularityComponent implements OnInit
     constructor( private router: Router,
                  public themeService: ThemeService,
                  private fictitiousAdvertsService: FictitiousAdvertsService,
-                 private fictitiousVideosService: FictitiousVideosService ) {}
+                 private fictitiousVideosService: FictitiousVideosService,
+                 private messageService: MessageService ) {}
+
+
+    // -----------------------------------------------------------------------------------------------------
 
 
     ngOnInit(): void
     {
-        if(this.router.url.includes("ads")) this.ngOnInitAds();
-        else if(this.router.url.includes("subjects")) this.ngOnInitSubjects();
-        this.formControl = new FormControl(this.allCoupleNameViews);
-        this.onApplyFilter();
-    }
-
-
-    // Sera excuté si on est sur la page 'adsPopularity'
-    // Remplie l'attribut 'allCoupleNameViews'
-    ngOnInitAds(): void
-    {
-        const allAdverts = this.fictitiousAdvertsService.get_TAB_ADVERT();
-        for(let advert of allAdverts)
+        // Sera excuté si on est sur la page 'adsPopularity'
+        // Remplie l'attribut 'allCoupleNameViews'
+        if(this.router.url.includes("ads"))
         {
-            let couple = {name: advert.title, views: advert.views }
-            this.allCoupleNameViews.push(couple);
+            let params = new HttpParams();
+            params = params.append("isActive", true);
+            this.messageService
+                .get("ad/findAll", params )
+                .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err));
+        }
+
+        // Sera excuté si on est sur la page 'subjectsPopularity'
+        // Remplie l'attribut 'allCoupleNameViews'
+        else if(this.router.url.includes("subjects"))
+        {
+            this.messageService
+                .get("misc/getInterests")
+                .subscribe( retour => {
+
+                    if(retour.status !== "success") {
+                        console.log(retour);
+                    }
+                    else {
+                        this.allInterests = retour.data.map(x => x.interest);
+                        this.allInterests.sort();
+                        this.messageService
+                            .get("video/findAll")
+                            .subscribe(ret => this.afterReceivingVideos(ret), err => this.afterReceivingVideos(err));
+                    }
+                });
         }
     }
 
 
-    // Sera excuté si on est sur la page 'subjectsPopularity'
-    // Remplie l'attribut 'allCoupleNameViews'
-    ngOnInitSubjects(): void
+    // Callback: Sera excuté si on est sur la page 'adsPopularity'
+    afterReceivingAds(retour: any): void
     {
-        const allVideos = this.fictitiousVideosService.get_TAB_VIDEO();
-        let myMap: Map<string,Date[]> = new Map();
-
-        for(let video of allVideos)
-        {
-            const key = video.interest;
-            if(!myMap.has(key)) myMap.set(key, video.watchedDates);
-            else {
-                let tabDate = myMap.get(key);
-                for(let date0 of video.watchedDates) tabDate = this.insertInOrder(tabDate, date0);
-                myMap.set(key, tabDate);
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            const allAdverts = retour.data;
+            for(let advert of allAdverts)
+            {
+                let couple = {name: advert.title, views: advert.views }
+                this.allCoupleNameViews.push(couple);
             }
-        }
 
-        for(const [key, value] of myMap.entries())
-        {
-            let couple = {name: key, views: value }
-            this.allCoupleNameViews.push(couple);
+            this.formControl = new FormControl(this.allCoupleNameViews);
+            this.onApplyFilter();
         }
     }
+
+
+    // Callback: Sera excuté si on est sur la page 'subjectsPopularity'
+    afterReceivingVideos(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            const allVideos = retour.data;
+            let myMap: Map<string,Date[]> = new Map();
+
+            // parcours des interest de chaque video
+            for(let video of allVideos)
+            {
+                const key = video.interest;
+                if(!myMap.has(key)) myMap.set(key, video.watchedDates);
+                else {
+                    let tabDate = myMap.get(key);
+                    for(let date0 of video.watchedDates) tabDate = this.insertInOrder(tabDate, date0);
+                    myMap.set(key, tabDate);
+                }
+            }
+
+            // parcours les interest qui n'ont pas p été vu dans les videos
+            for(let interest of this.allInterests)
+            {
+                if(!myMap.has(interest)) myMap.set(interest, []);
+            }
+
+            // parcours de la map pour remplir 'allCoupleNameViews'
+            for(const [key, value] of myMap.entries())
+            {
+                let couple = {name: key, views: value }
+                this.allCoupleNameViews.push(couple);
+            }
+
+            this.formControl = new FormControl(this.allCoupleNameViews);
+            this.onApplyFilter();
+        }
+    }
+
+
+    // -----------------------------------------------------------------------------------------------------
 
 
     // Applique le filtre
@@ -137,7 +197,7 @@ export class PagesPopularityComponent implements OnInit
 
             for(let date0 of coupleNameViews.views)
             {
-                const time0 = date0.getTime();
+                const time0 = (new Date(date0)).getTime();
 
                 if(time0 > endTime) break;
 
@@ -172,7 +232,7 @@ export class PagesPopularityComponent implements OnInit
             return date0.toLocaleDateString();
         }
         else {
-            const time2 = this.addStep(date0.getTime()) - this.oneDay;
+            const time2 = this.addStep((new Date(date0)).getTime()) - this.oneDay;
             let date2 = new Date(time2);
             return date0.toLocaleDateString() + " à " + date2.toLocaleDateString();
         }
