@@ -1,3 +1,13 @@
+if(process.env.YOUTUBE_API_KEY === undefined ||
+  process.env.YOUTUBE_API_KEY === '' ||
+  process.env.DAILYMOTION_API_KEY === undefined ||
+  process.env.DAILYMOTION_API_KEY === ''){
+  console.log('Error Env YOUTUBE_API_KEY & DAILYMOTION_API_KEY Variables');
+  process.exit();
+}
+
+console.log('Env variables YOUTUBE_API_KEY & DAILYMOTION_API_KEY received');
+
 module.exports = {
   youtube: {
     name: "Youtube",
