@@ -3,6 +3,8 @@ const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin, setSessionCookie} = require("../config/sessionJWT.config");
 const ObjectId = require('mongoose').Types.ObjectId;
 const roles = require("../models/objects/role.model");
+const {youtube, dailymotion} = require("../config/host.config");
+const {asyncRequest} = require("../config/functions.config");
 const User = db.users;
 const Video = db.videos;
 const Ad = db.ads;
@@ -443,8 +445,8 @@ exports.history = (req, res) => {
   if(token){
     const id = token.id;
 
-    Video.aggregate([{$match: {userId: id}}, {
-        $project: {
+    Video.aggregate([{$match: {userId: id}}, {$limit: 300},
+        {$project: {
           videoId: true,
           source: true,
           tags: true,
@@ -454,7 +456,47 @@ exports.history = (req, res) => {
           createdAt: true,
           updatedAt: true
         }}])
-      .then(data => {
+      .then(async data => {
+        let yt_results = [];
+        let dm_results = [];
+        let yt_videoIds = "";
+        let dm_videoIds = "";
+
+        for(const i in data) {
+          if(data[i].source === youtube.name) {
+            yt_videoIds = yt_videoIds + data[i].videoId + ",";
+          } else if (data[i].source === dailymotion.name) {
+            dm_videoIds = dm_videoIds + data[i].videoId + ",";
+          }
+        }
+        if(yt_videoIds !== ""){
+          const uri = youtube.baseAPIUrl + '/videos' + '?part=snippet&part=statistics&id=' + yt_videoIds.slice(0, -1) + '&key=' + youtube.YOUTUBE_API_KEY;
+          const dataVideos = await asyncRequest(uri, {});
+          if (dataVideos.response.statusCode === 200 && dataVideos.body.items.length > 0) {
+            yt_results = dataVideos.body.items;
+          }
+        }
+
+        if(dm_videoIds !== ""){
+          const uri = dailymotion.baseAPIUrl + '/videos?ids='+dm_videoIds.slice(0, -1)+'&fields=thumbnail_480_url%2Ctitle%2Cid';
+          const data = await asyncRequest(uri, {});
+          const response = data.response;
+          const jsonBody = data.body;
+          if(response.statusCode === 200){
+            dm_results = jsonBody.list;
+          }
+        }
+        for(const i in data) {
+          if(data[i].source === youtube.name) {
+            const obj = yt_results.filter(obj => obj.id === data[i].videoId);
+            data[i].imageUrl = obj[0].snippet.thumbnails.medium.url ? obj[0].snippet.thumbnails.medium.url : null;
+            data[i].title =  obj[0].snippet.title  ?  obj[0].snippet.title : null;
+          } else if (data[i].source === dailymotion.name) {
+            const obj = dm_results.filter(obj => obj.id === data[i].videoId);
+            data[i].imageUrl = obj[0].thumbnail_480_url ? obj[0].thumbnail_480_url : null;
+            data[i].title =  obj[0].title ? obj[0].title : null;
+          }
+        }
         return sendMessage(res, 12, data, token)
       })
       .catch(err => {
