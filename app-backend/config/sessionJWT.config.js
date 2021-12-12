@@ -3,11 +3,11 @@ require('dotenv').config({ path: './app-backend/.env' });
 const {sendError} = require ("./response.config");
 
 if(process.env.JWTRS256_PRIVATE_KEY === undefined || process.env.JWTRS256_PUBLIC_KEY === undefined){
-  console.log('Error Env Variables');
+  console.log('Error Env JWTRS256_PRIVATE_KEY & JWTRS256_PUBLIC_KEY Variables');
   process.exit();
 }
 
-console.log('Env variables received');
+console.log('Env variables JWTRS256_PRIVATE_KEY & JWTRS256_PUBLIC_KEY received');
 const JWTRS256_PRIVATE_KEY = Buffer.from(process.env.JWTRS256_PRIVATE_KEY, 'base64').toString('utf-8');
 const JWTRS256_PUBLIC_KEY = Buffer.from(process.env.JWTRS256_PUBLIC_KEY, 'base64').toString('utf-8');
 
