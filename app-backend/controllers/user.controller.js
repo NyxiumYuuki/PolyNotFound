@@ -15,7 +15,7 @@ exports.auth = (req, res) => {
   } else{
     // Check User in the database
     User
-      .findOne({email: req.body.email, hashPass: req.body.hashPass, isActive: true}, {role: true, profileImageUrl: true})
+      .findOne({email: req.body.email, hashPass: req.body.hashPass, isActive: true, "role.isAccepted": true}, {role: true, profileImageUrl: true})
       .then(data => {
         if (data !== null){
           User.findByIdAndUpdate(data._id.toString(), {lastConnexion: new Date()}, {useFindAndModify: false},
