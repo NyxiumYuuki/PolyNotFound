@@ -54,7 +54,7 @@ export class PageLoginComponent implements OnInit
     {
         console.log(retour);
         if(retour.status !== "success") {
-            this.errorMessage = retour.error.data.reason;
+            this.errorMessage = retour.error.reason;
             this.hasError = true;
         }
         else {
