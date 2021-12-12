@@ -27,14 +27,14 @@ export class PageRegisterComponent
         role: {
             name: "user",
             permission: 0,
+            isAccepted: false,
         },
         profileImageUrl: "",
         dateOfBirth: null,
         gender: "man",
         interests: [],
         company: "",
-        isActive: false,
-        isAccepted: false,
+        isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
         lastConnexion: null

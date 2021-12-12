@@ -7,6 +7,7 @@ export interface User
     role: {
         name: string,
         permission: number,
+        isAccepted: boolean,
     },
     profileImageUrl: string,
     dateOfBirth: Date,
@@ -14,7 +15,6 @@ export interface User
     interests: any[],
     company: string,
     isActive: boolean,
-    isAccepted: boolean,
     lastConnexion: Date,
     createdAt: Date,
     updatedAt: Date

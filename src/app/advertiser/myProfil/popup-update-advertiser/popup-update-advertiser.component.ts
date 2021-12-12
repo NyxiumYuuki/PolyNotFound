@@ -38,6 +38,7 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             role: {
                 name: advertiser0.role.name,
                 permission: advertiser0.role.permission,
+                isAccepted: advertiser0.role.isAccepted,
             },
             profileImageUrl: advertiser0.profileImageUrl,
             dateOfBirth: advertiser0.dateOfBirth,
@@ -45,7 +46,6 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             interests: [],
             company: advertiser0.company,
             isActive: advertiser0.isActive,
-            isAccepted: advertiser0.isAccepted,
             createdAt: advertiser0.createdAt,
             updatedAt: advertiser0.updatedAt,
             lastConnexion: new Date()

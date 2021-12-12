@@ -93,7 +93,8 @@
                     <mat-icon>power_settings_new</mat-icon>
                 </th>
                 <td mat-cell *matCellDef="let user">
-                    <mat-slide-toggle [(ngModel)]="user.isActive" (click)="onSliderIsActive(user)"></mat-slide-toggle>
+                    <mat-slide-toggle *ngIf="user.role.name !== 'superAdmin'" [(ngModel)]="user.isActive" (click)="onSliderIsActive(user)"></mat-slide-toggle>
+                    <mat-slide-toggle *ngIf="user.role.name === 'superAdmin'" [(ngModel)]="user.isActive" disabled></mat-slide-toggle>
                 </td>
             </ng-container>
 
@@ -107,7 +108,7 @@
 
             <!-- Mail Column -->
             <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mail </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
                 <td mat-cell *matCellDef="let user">
                     {{user.email}}
                 </td>
@@ -171,7 +172,7 @@
             <ng-container matColumnDef="isAccepted">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Accepté </th>
                 <td mat-cell *matCellDef="let user">
-                    <mat-slide-toggle [(ngModel)]="user.isAccepted" (click)="onSlideIsAccepted(user)"></mat-slide-toggle>
+                    <mat-slide-toggle [(ngModel)]="user.role.isAccepted" (click)="onSlideIsAccepted(user)"></mat-slide-toggle>
                 </td>
             </ng-container>
 

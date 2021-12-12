@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {User} from "../../../utils/interfaces/user";
+import {MessageService} from "../../../utils/services/message/message.service";
 
 
 
@@ -11,7 +11,7 @@ import {User} from "../../../utils/interfaces/user";
 })
 export class PopupCreateUserComponent implements OnInit
 {
-    user: User;
+    user: any;
     hasError: boolean = false;
     errorMessage: string = "";
     password: string = "";
@@ -19,7 +19,8 @@ export class PopupCreateUserComponent implements OnInit
 
 
     constructor( public dialogRef: MatDialogRef<PopupCreateUserComponent>,
-                 @Inject(MAT_DIALOG_DATA) public data ) { }
+                 @Inject(MAT_DIALOG_DATA) public data,
+                 private messageService: MessageService ) { }
 
 
     // Initialise l'utilisateur qui va être créé
@@ -33,6 +34,7 @@ export class PopupCreateUserComponent implements OnInit
             role: {
                 name: "",
                 permission: 0,
+                isAccepted: false,
             },
             profileImageUrl: "",
             dateOfBirth: null,
@@ -40,7 +42,6 @@ export class PopupCreateUserComponent implements OnInit
             interests: [],
             company: "",
             isActive: false,
-            isAccepted: false,
             createdAt: new Date(),
             updatedAt: new Date(),
             lastConnexion: new Date()
@@ -52,12 +53,25 @@ export class PopupCreateUserComponent implements OnInit
     onEnregistrer(): void
     {
         this.checkField();
-
         if(!this.hasError)
         {
-            this.user.hashPass = this.hashage(this.password);
-            this.dialogRef.close(this.user);
-            // VRAI CODE ...
+            this.user.hashPass = this.password;
+            this.user.role = this.user.role.name;
+            this.messageService
+                .post("user/create", this.user)
+                .subscribe(ret => this.onEnregistrerCallback(ret), err => this.onEnregistrerCallback(err));
+        }
+    }
+
+
+    // Callback de 'onEnregistrer'
+    onEnregistrerCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.dialogRef.close(retour.data);
         }
     }
 
@@ -108,19 +122,6 @@ export class PopupCreateUserComponent implements OnInit
     onEventInputInterests(myInterets: string[]): void
     {
         this.user.interests = myInterets;
-    }
-
-
-    // Fonction de hashage (faible)
-    hashage(input: string): string
-    {
-        let hash = 0;
-        for (let i = 0; i < input.length; i++) {
-            let ch = input.charCodeAt(i);
-            hash = ((hash << 5) - hash) + ch;
-            hash = hash & hash;
-        }
-        return hash.toString();
     }
 
 }

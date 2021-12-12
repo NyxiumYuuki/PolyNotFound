@@ -38,9 +38,18 @@ export class InputInterestsAdComponent implements OnInit
             startWith(null),
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allTags.slice()));
 
-        // --- FAUX CODE ---
-        this.allTags = this.fictitiousUtilsService.getTags();
-        this.allTags.sort();
+        this.messageService
+            .get("misc/getInterests")
+            .subscribe( retour => {
+
+                if(retour.status !== "success") {
+                    console.log(retour);
+                }
+                else {
+                    this.allTags = retour.data.map(x => x.interest)
+                    this.allTags.sort();
+                }
+            });
     }
 
 

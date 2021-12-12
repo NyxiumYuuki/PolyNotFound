@@ -38,6 +38,7 @@ export class PopupUpdateAdminComponent implements OnInit
             role: {
                 name: admin0.role.name,
                 permission: admin0.role.permission,
+                isAccepted: admin0.role.isAccepted,
             },
             profileImageUrl: admin0.profileImageUrl,
             dateOfBirth: admin0.dateOfBirth,
@@ -45,7 +46,6 @@ export class PopupUpdateAdminComponent implements OnInit
             interests: [],
             company: "",
             isActive: admin0.isActive,
-            isAccepted: admin0.isisAccepted,
             createdAt: admin0.createdAt,
             updatedAt: admin0.updatedAt,
             lastConnexion: admin0.lastConnexion

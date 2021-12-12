@@ -28,9 +28,9 @@ const ADVERT_VIDE: Advert = {
 })
 export class PopupAddOrUpdateAdComponent implements OnInit
 {
-    advert: Advert;
-    urlBackend: string = "" ;
+    advert: any;
     title: string = "" ;
+    allVideoCategorie = [];
     tabWaitingFile: File[] = []; // fichiers selectionnés mais pas encore "validés"
     tabSelectedFile: File[] = []; // fichier "validés"
     _event;
@@ -44,18 +44,17 @@ export class PopupAddOrUpdateAdComponent implements OnInit
 
     ngOnInit(): void
     {
+        this.allVideoCategorie = this.data.allVideoCategorie
         if(this.data.action === "add")
         {
             this.advert = Object.assign({}, ADVERT_VIDE);
             this.advert.interests = [];
-            this.urlBackend = "url/add/ad" ;
             this.title = "Ajouter annonce" ;
         }
         else
         {
             this.advert = Object.assign({}, this.data.advert);
             this.advert.interests = this.data.advert.interests.slice();
-            this.urlBackend = "url/update/ad" ;
             this.title = "Modifier annonce" ;
         }
     }
@@ -63,24 +62,59 @@ export class PopupAddOrUpdateAdComponent implements OnInit
 
     onValidate(): void
     {
-        // --- FAUX CODE ---
-        this.dialogRef.close(this.advert);
-
-        // --- VRAI CODE ---
-        /*
-        this.messageService
-            .sendMessage(this.urlBackend, this.advert)
-            .subscribe( retour => {
-
-                if(retour.status === "error") {
-                    console.log(retour);
-                    this.dialogRef.close(this.advert);
+        // On transforme 'this.user.interests' en tableau de 'videoCategorie'
+        let interests = []; // tableau de videoCategorie
+        for(let interest of this.advert.interests)
+        {
+            for(let videoCategorie of this.allVideoCategorie)
+            {
+                if(videoCategorie.interest === interest) {
+                    interests.push(videoCategorie);
+                    break;
                 }
-                else {
-                    this.dialogRef.close(retour.data.advert);
-                }
-            });
-        */
+            }
+        }
+        this.advert.interests = interests;
+
+        if(this.data.action === "add")
+        {
+            this.messageService
+                .post("ad/create", this.advert)
+                .subscribe(ret => this.onCreateCallback(ret), err => this.onCreateCallback(err));
+        }
+        else {
+            const id = this.advert.id;
+            Reflect.deleteProperty(this.advert, "id");
+            Reflect.deleteProperty(this.advert, "_id");
+            this.messageService
+                .put("ad/update/"+id, this.advert)
+                .subscribe(ret => this.onUpdateCallback(ret,id), err => this.onUpdateCallback(err,id));
+        }
+    }
+
+
+    onCreateCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close();
+        }
+        else {
+            this.dialogRef.close(retour.data);
+        }
+    }
+
+
+    onUpdateCallback(retour: any, id: string): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close();
+        }
+        else {
+            this.advert.id = id;
+            this.dialogRef.close(this.advert);
+        }
     }
 
 

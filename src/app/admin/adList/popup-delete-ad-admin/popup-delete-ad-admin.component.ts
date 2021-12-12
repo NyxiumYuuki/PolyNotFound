@@ -1,5 +1,4 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Advert} from "../../../utils/interfaces/advert";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MessageService} from "../../../utils/services/message/message.service";
 
@@ -12,7 +11,7 @@ import {MessageService} from "../../../utils/services/message/message.service";
 })
 export class PopupDeleteAdAdminComponent implements OnInit
 {
-    advert: Advert;
+    advert: any;
 
 
     constructor( public dialogRef: MatDialogRef<PopupDeleteAdAdminComponent>,
@@ -28,24 +27,23 @@ export class PopupDeleteAdAdminComponent implements OnInit
 
     onValidate(): void
     {
-        // --- FAUX CODE ---
-        this.dialogRef.close(true);
-
-        // --- VRAI CODE ---
-        /*
         this.messageService
-            .sendMessage("url/delete/ad", {"advert": this.advert})
-            .subscribe( retour => {
+            .delete("ad/delete/"+this.advert.id)
+            .subscribe(ret => this.onValidateCallback(ret), err => this.onValidateCallback(err));
+    }
 
-                if(retour.status === "error") {
-                    console.log(retour);
-                    this.dialogRef.close();
-                }
-                else {
-                    this.dialogRef.close(true);
-                }
-            });
-        */
+
+    onValidateCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+            this.dialogRef.close();
+        }
+        else {
+            console.log("suppr");
+            console.log(retour);
+            this.dialogRef.close(true);
+        }
     }
 
 }
