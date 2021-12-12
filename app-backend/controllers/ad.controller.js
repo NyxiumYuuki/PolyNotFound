@@ -227,12 +227,26 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const token = checkLogin(req, res, roles.Advertiser);
   if(token && typeof req.params.id !== 'undefined') {
-    const id =  req.params.id;
+    let match = null;
+    const id = req.params.id;
     if(id && ObjectId.isValid(id)){
-      Ad.updateOne({_id: id, userId: token.id}, {isActive: false}, {useFindAndModify: false})
+      if(typeof token.role !== 'undefined' &&
+        typeof token.role.permission !== 'undefined' &&
+        typeof token.role.isAccepted !== 'undefined' &&
+        token.role.isAccepted === true &&
+        token.role.permission >= roles.Admin.permission) {
+        match =  {_id: id, isActive: true};
+      } else {
+        match =  {_id: id, userId: token.id, isActive: true};
+      }
+      Ad.findOneAndUpdate(match, {isActive: false}, {useFindAndModify: false, new: true})
         .then(data => {
           if(data) {
-            return sendMessage(res, 45, {message: `Ad ${id} was successfully deleted.`}, token);
+            if(data.isActive !== true){
+              return sendMessage(res, 45, {message: `Ad ${id} was successfully deleted.`}, token);
+            } else {
+              return sendError(res, 404, 105, `Ad ${id} was not deleted.`, token);
+            }
           } else {
             return sendError(res, 404, 105, `Ad not found with id=${id}`, token);
           }
