@@ -5,10 +5,9 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
-import {User} from "../../../utils/interfaces/user";
 import {PopupDeleteUserComponent} from "../popup-delete-user/popup-delete-user.component";
 import {PopupCreateUserComponent} from "../popup-create-user/popup-create-user.component";
-import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
+import {MessageService} from "../../../utils/services/message/message.service";
 
 
 
@@ -25,8 +24,8 @@ export class PageUserListComponent implements AfterViewInit
     displayedColumnsAdmin: string[] = [ 'isActive', 'login', 'email', 'createdAt', 'lastConnexion' ];
 
     tabUser: any[] = [];
-    tabAdvertiser: User[] = [];
-    tabAdmin: User[] = [];
+    tabAdvertiser: any[] = [];
+    tabAdmin: any[] = [];
 
     roleName: string = "user" ;
     dataSource ;
@@ -40,21 +39,36 @@ export class PageUserListComponent implements AfterViewInit
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private messageService: MessageService ) { }
 
 
     ngAfterViewInit(): void
     {
-        // --- FAUX CODE ---
-        this.tabUser = this.fictitiousUsersService.getTabUser(32);
-        this.tabAdvertiser = this.fictitiousUsersService.getTabAdvertiser(8);
-        this.tabAdmin = this.fictitiousUsersService.getTabAdmin(4);
+        this.messageService
+            .get("user/findAll")
+            .subscribe(ret => this.ngAfterViewInitCallback(ret), err => this.ngAfterViewInitCallback(err));
+    }
 
-        for(const user of this.tabUser) user.age = this.getAge(user.dateOfBirth);
 
-        this.onFilter();
+    ngAfterViewInitCallback(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            for(let person of retour.data)
+            {
+                if(person.role.name === "user") {
+                    person["age"] = this.getAge(person.dateOfBirth);
+                    this.tabUser.push(person);
+                }
+                else if(person.role.name === "advertiser") this.tabAdvertiser.push(person);
+                else this.tabAdmin.push(person);
+            }
+            this.onFilter();
+        }
     }
 
 
@@ -65,7 +79,7 @@ export class PageUserListComponent implements AfterViewInit
     }
 
 
-    onDelete(user: User): void
+    onDelete(user: any): void
     {
         const config = {
             data: { user: user }
@@ -81,13 +95,13 @@ export class PageUserListComponent implements AfterViewInit
                     message = "Opération annulée" ;
                 }
                 else {
-                    const index = this.dataSource.data.findIndex( elt => (elt._id === user._id));
+                    const index = this.dataSource.data.findIndex( elt => (elt.id === user.id));
                     this.dataSource.data.splice(index, 1);
                     this.dataSource.data = this.dataSource.data;
                     this.dataSource = this.dataSource;
                     message = user.login + " a bien été supprimée ✔" ;
                 }
-                this.snackBar.open( message, "", config);
+                this.snackBar.open(message, "", config);
             });
     }
 
@@ -106,20 +120,47 @@ export class PageUserListComponent implements AfterViewInit
                 }
                 else {
                     this.snackBar.open( "L'utilisateur a bien été créé", "", config);
+                    if(retour.role.name === "user") this.tabUser.push(retour);
+                    else if(retour.role.name === "advertiser") this.tabAdvertiser.push(retour);
+                    else if(retour.role.name === "admin") this.tabAdmin.push(retour);
+                    this.onFilter();
                 }
             });
     }
 
 
-    onSliderIsActive(user: User): void
+    onSliderIsActive(user: any): void
     {
         // il faut envoyer la négation de user.isActive
+        this.messageService
+            .put("user/update/"+user.id, { isActive: !user.isActive })
+            .subscribe(
+                ret => {},
+                err => {
+                    console.log("onSliderIsActive");
+                    console.log(err);
+                }
+            );
     }
 
 
-    onSlideIsAccepted(user: User): void
+    onSlideIsAccepted(user: any): void
     {
-        // il faut envoyer la négation de user.isActive
+        // il faut envoyer la négation de user.role.isAccepted
+        const role0 = {
+            name: user.role.name,
+            permission: user.role.permission,
+            isAccepted: !user.role.isAccepted,
+        };
+        this.messageService
+            .put("user/update/"+user.id, {role: role0})
+            .subscribe(
+                ret => {},
+                err => {
+                    console.log("onSlideIsAccepted");
+                    console.log(err);
+                }
+            );
     }
 
 
@@ -127,7 +168,7 @@ export class PageUserListComponent implements AfterViewInit
     {
         if((date === null) || (date === undefined)) return -1;
         else {
-            const diff = Date.now() - date.getTime();
+            const diff = Date.now() - (new Date(date)).getTime();
             const age = new Date(diff);
             return Math.abs(age.getUTCFullYear() - 1970);
         }

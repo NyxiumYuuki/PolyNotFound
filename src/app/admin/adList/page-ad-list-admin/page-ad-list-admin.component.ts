@@ -8,11 +8,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Advert} from "../../../utils/interfaces/advert";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
-import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {FormControl} from "@angular/forms";
-import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
-import {User} from "../../../utils/interfaces/user";
-import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 
 
@@ -62,9 +58,6 @@ export class PageAdListAdminComponent implements AfterViewInit
 
 
     constructor( public themeService: ThemeService,
-                 private fictitiousAdvertsService: FictitiousAdvertsService,
-                 private fictitiousUtilsService: FictitiousUtilsService,
-                 private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
                  private snackBar: MatSnackBar,
                  private messageService: MessageService) { }
@@ -72,25 +65,15 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     ngAfterViewInit(): void
     {
-        // --- FAUX CODE ---
-        /*
-        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.allInterests = this.fictitiousUtilsService.getTags();
-        this.tabAdvertiser = this.fictitiousUsersService.getTabAdvertiser(3);
-        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViewsAndCompany(advert));
-        this.dataSource = new MatTableDataSource<Advert>();
-        this.onFilter();
-        */
+        // Ask for ads and then for advertiser
+        this.messageService
+            .get("ad/findAll")
+            .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err) );
 
         // Ask for interest
         this.messageService
             .get("misc/getInterests")
             .subscribe(ret => this.afterReceivingInterests(ret), err => this.afterReceivingInterests(err) );
-
-        // Ask for ads
-        this.messageService
-            .get("ad/findAll")
-            .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err) );
     }
 
 
