@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {MessageService} from "../../../../utils/services/message/message.service";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupAddVideoToPlaylistsComponent} from "../../components/popup-add-video-to-playlists/popup-add-video-to-playlists.component";
-import {VideoAll, VideoDB} from "../../../../utils/interfaces/video";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FictitiousVideosService} from "../../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
+import {HttpParams} from "@angular/common/http";
 
 
 
@@ -13,7 +13,11 @@ import {FictitiousVideosService} from "../../../../utils/services/fictitiousData
 })
 export class AddVideoToPlaylistsService
 {
-    private _video: VideoDB | VideoAll;
+    private _idVideo: string = "" ;
+    private videoId: string = "" ;
+    private source: string = "" ;
+    private interest: string = "" ;
+
 
 
     constructor( private messageService: MessageService,
@@ -22,45 +26,87 @@ export class AddVideoToPlaylistsService
                  private snackBar: MatSnackBar ) { }
 
 
-    // --- FAUX CODE ---
-    run(video0: VideoDB | VideoAll): void
-    {
-        this._video = video0;
-        const retour = {
-            status: "success",
-            data: this.fictitiousVideosService.getRandomTabPlaylistDB(4, 5),
-        }
-        this.afterReceivingPlaylists(retour)
-    }
 
 
-    // --- VRAI CODE ---
-    /*
-    run(video0: VideoDB): void
+    run(videoId: string, source: string): void
     {
-        this._video = video0;
+        this.videoId = videoId;
+        this.source = source;
+
+        let params = new HttpParams();
+        if(source === "Youtube") params = params.append("source", "yt");
+        else params = params.append("source", "dm");
         this.messageService
-            .sendMessage('user/get/playlists', null)
-            .subscribe( retour => { this.afterReceivingPlaylists(retour) });
+            .get("video/get/"+videoId, params)
+            .subscribe(ret => this.afterAskingVideoInfo(ret), err => this.afterAskingVideoInfo(err));
     }
-    */
 
 
-    private afterReceivingPlaylists(retour): void
+
+    afterAskingVideoInfo(retour: any): void
     {
-        if(retour.status === "error") console.log(retour.data);
+        console.log("afterAskingVideoInfo");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
+        else {
+            this.interest = retour.data.interest;
+            const data = { source: this.source, interest: this.interest };
+            this.messageService
+                .post("video/create/"+this.videoId, data)
+                .subscribe(ret => this.afterCreatingVideo(ret), err => this.afterCreatingVideo(err));
+        }
+    }
+
+
+
+    private afterCreatingVideo(retour: any): void
+    {
+        console.log("afterCreatingVideo");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
+        else {
+            this._idVideo = retour.data.id;
+            this.messageService
+                .get('playlist/findAll')
+                .subscribe( ret => this.afterReceivingPlaylists(ret), ret => this.afterReceivingPlaylists(ret) );
+        }
+    }
+
+
+
+    private afterReceivingPlaylists(retour: any): void
+    {
+        console.log("afterReceivingPlaylists");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
         else
         {
             const config = {
                 width: '30%',
-                data: { video: this._video, playlists: retour.data }
+                data: {
+                    _idVideo: this._idVideo,
+                    videoId: this.videoId,
+                    source: this.source,
+                    interest: this.interest,
+                    playlists: retour.data.filter(x => x.isActive === true)
+                }
             };
             this.dialog
-                .open(PopupAddVideoToPlaylistsComponent, config )
+                .open(PopupAddVideoToPlaylistsComponent, config)
                 .afterClosed()
-                .subscribe(retour => { this.afterClosingDialog(retour); });
+                .subscribe(retour => this.afterClosingDialog(retour));
         }
     }
+
 
 
     private afterClosingDialog(retour): void

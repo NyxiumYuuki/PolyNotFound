@@ -62,7 +62,7 @@ export class PageLoginComponent implements OnInit
             this.profilService.profileImageUrl = retour.data.profileImageUrl;
             if(retour.data.role.name === "user") this.router.navigateByUrl( '/user/search');
             else if(retour.data.role.name === "advertiser") this.router.navigateByUrl( '/advertiser/adList');
-            else if(retour.data.role.name === "admin") this.router.navigateByUrl( '/admin/userList');
+            else if(retour.data.role.name === "admin" || retour.data.role.name === "superAdmin") this.router.navigateByUrl( '/admin/userList');
         }
     }
 

@@ -1,7 +1,7 @@
 <div *ngIf="from==='search' || from==='myPlaylists'" class="myContainer">
     <span class="helper"></span>
     <img [src]="'assets/pub/'+ad.images[idxImage].url"
-         [alt]="ad.images[idxImage].url"
+         [alt]="ad.title"
          (click)="onClick()"
          id="imgFromSearchOrMyPlaylists">
 </div>
@@ -10,7 +10,7 @@
 
 <img *ngIf="from === 'watchingLeft'"
      [src]="'assets/pub/'+ad.images[idxImage].url"
-     [alt]="ad.images[idxImage].url"
+     [alt]="ad.title"
      (click)="onClick()"
      id="imgFromWatchingLeft">
 
@@ -18,6 +18,6 @@
 
 <img *ngIf="from === 'watchingRight'"
      [src]="'assets/pub/'+ad.images[idxImage].url"
-     [alt]="ad.images[idxImage].url"
+     [alt]="ad.title"
      (click)="onClick()"
      id="imgFromWatchingRight">

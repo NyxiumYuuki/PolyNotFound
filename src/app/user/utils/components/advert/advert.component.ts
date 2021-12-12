@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class AdvertComponent implements OnInit
 {
-    @Input() ad: Advert;
+    @Input() ad: any;
     @Input() from: string = "search";
     idxImage: number = 0;
 
@@ -20,7 +20,10 @@ export class AdvertComponent implements OnInit
     ngOnInit(): void
     {
         const nbImages = this.ad.images.length;
+        if(nbImages === 0) this.ad.images.push({url: "img pub"});
         this.idxImage = Math.floor(Math.random() * nbImages);
+
+        if(this.ad.title === "") this.ad.title = "--- pub ---" ;
     }
 
     onClick(): void
