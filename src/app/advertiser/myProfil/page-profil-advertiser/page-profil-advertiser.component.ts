@@ -24,14 +24,14 @@ export class PageProfilAdvertiserComponent implements OnInit
         role: {
             name: "advertiser",
             permission: 5,
+            isAccepted: true,
         },
         profileImageUrl: "",
         dateOfBirth: null,
         gender: "man",
         interests: [],
         company: "",
-        isActive: false,
-        isAccepted: false,
+        isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
         lastConnexion: null

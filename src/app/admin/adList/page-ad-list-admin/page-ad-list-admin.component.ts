@@ -13,11 +13,12 @@ import {FormControl} from "@angular/forms";
 import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 import {User} from "../../../utils/interfaces/user";
 import {FictitiousUsersService} from "../../../utils/services/fictitiousDatas/fictitiousUsers/fictitious-users.service";
+import {MessageService} from "../../../utils/services/message/message.service";
 
 
 
 export interface AdvertWithCountViewsAndCompany {
-    _id: string,
+    id: string,
     userId: string,
     company: string,
     title: string,
@@ -46,7 +47,7 @@ export interface AdvertWithCountViewsAndCompany {
 export class PageAdListAdminComponent implements AfterViewInit
 {
     tabAdvertWithCountViews: AdvertWithCountViewsAndCompany[] = [];
-    tabAdvertiser: User[];
+    tabAdvertiser: any[];
     displayedColumns: string[] = [ 'title', 'company', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
@@ -65,19 +66,81 @@ export class PageAdListAdminComponent implements AfterViewInit
                  private fictitiousUtilsService: FictitiousUtilsService,
                  private fictitiousUsersService: FictitiousUsersService,
                  public dialog: MatDialog,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private messageService: MessageService) { }
 
 
     ngAfterViewInit(): void
     {
         // --- FAUX CODE ---
+        /*
         const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
         this.allInterests = this.fictitiousUtilsService.getTags();
         this.tabAdvertiser = this.fictitiousUsersService.getTabAdvertiser(3);
-
         for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViewsAndCompany(advert));
         this.dataSource = new MatTableDataSource<Advert>();
         this.onFilter();
+        */
+
+        // Ask for interest
+        this.messageService
+            .get("misc/getInterests")
+            .subscribe(ret => this.afterReceivingInterests(ret), err => this.afterReceivingInterests(err) );
+
+        // Ask for ads
+        this.messageService
+            .get("ad/findAll")
+            .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err) );
+    }
+
+
+    afterReceivingAds(retour: any): void
+    {
+        console.log("afterReceivingAds");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
+        else {
+            const tabAdvert = retour.data;
+            this.messageService
+                .get("user/findAll")
+                .subscribe(ret => this.afterReceivingAdvertiser(ret, tabAdvert), err => this.afterReceivingAdvertiser(err, tabAdvert) );
+        }
+    }
+
+
+    afterReceivingAdvertiser(retour: any, tabAdvert): void
+    {
+        console.log("afterReceivingAdvertiser");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
+        }
+        else {
+            this.tabAdvertiser = retour.data.filter(x => x.role.name === "advertiser");
+            for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViewsAndCompany(advert));
+            this.dataSource = new MatTableDataSource<Advert>();
+            this.onFilter();
+        }
+    }
+
+
+    afterReceivingInterests(retour: any): void
+    {
+        console.log("afterReceivingInterests");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.allInterests = [];
+            this.allInterests = retour.data.map(x => x.interest);
+            this.allInterests.sort();
+        }
     }
 
 
@@ -122,7 +185,7 @@ export class PageAdListAdminComponent implements AfterViewInit
                     message = "Opération annulée" ;
                 }
                 else {
-                    const index = this.dataSource.data.findIndex( elt => (elt._id === advert._id));
+                    const index = this.dataSource.data.findIndex( elt => (elt.id === advert.id));
                     this.dataSource.data.splice(index, 1);
                     this.dataSource.data = this.dataSource.data;
                     this.dataSource = this.dataSource;
@@ -187,19 +250,19 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    advertToAdvertWithCountViewsAndCompany(advert: Advert): AdvertWithCountViewsAndCompany
+    advertToAdvertWithCountViewsAndCompany(advert): AdvertWithCountViewsAndCompany
     {
         let company0 = "company" ;
         for(let advertiser of this.tabAdvertiser)
         {
-            if(advert.userId === advertiser._id) {
+            if(advert.userId === advertiser.id) {
                 company0 = advertiser.company;
                 break;
             }
         }
 
         return {
-            _id: advert._id,
+            id: advert.id,
             userId: advert.userId,
             title: advert.title,
             company: company0,

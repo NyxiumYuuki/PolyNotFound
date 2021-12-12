@@ -24,14 +24,14 @@ export class PageProfilAdminComponent implements OnInit
         role: {
             name: "admin",
             permission: 10,
+            isAccepted: true,
         },
         profileImageUrl: "",
         dateOfBirth: null,
         gender: "man",
         interests: [],
         company: "",
-        isActive: false,
-        isAccepted: false,
+        isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
         lastConnexion: null

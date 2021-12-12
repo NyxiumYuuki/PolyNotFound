@@ -33,6 +33,7 @@ export class PopupCreateUserComponent implements OnInit
             role: {
                 name: "",
                 permission: 0,
+                isAccepted: false,
             },
             profileImageUrl: "",
             dateOfBirth: null,
@@ -40,7 +41,6 @@ export class PopupCreateUserComponent implements OnInit
             interests: [],
             company: "",
             isActive: false,
-            isAccepted: false,
             createdAt: new Date(),
             updatedAt: new Date(),
             lastConnexion: new Date()

@@ -126,12 +126,12 @@
             <!-- email -->
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
-                <input matInput type="text" [(ngModel)]="user.email">
+                <input matInput type="text" [(ngModel)]="user.email" required>
             </mat-form-field><br>
             <!-- login -->
             <mat-form-field appearance="fill">
                 <mat-label>Pseudo</mat-label>
-                <input matInput type="text" [(ngModel)]="user.login">
+                <input matInput type="text" [(ngModel)]="user.login" required>
             </mat-form-field><br>
             <!-- company -->
             <mat-form-field appearance="fill" *ngIf="user.role.name === 'advertiser'">
@@ -145,12 +145,12 @@
             <!-- mot de passe -->
             <mat-form-field appearance="fill">
                 <mat-label>Mot de passe</mat-label>
-                <input matInput type="password" [(ngModel)]="password">
+                <input matInput type="password" [(ngModel)]="password" required>
             </mat-form-field><br>
             <!-- confirmation mot de passe -->
             <mat-form-field appearance="fill">
                 <mat-label>Confirmation nouveau mot de passe</mat-label>
-                <input matInput type="password" [(ngModel)]="confirmPassword">
+                <input matInput type="password" [(ngModel)]="confirmPassword" required>
             </mat-form-field>
         </div>
 
