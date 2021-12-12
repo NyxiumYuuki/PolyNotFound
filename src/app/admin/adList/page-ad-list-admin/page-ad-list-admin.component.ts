@@ -10,6 +10,7 @@ import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
 import {FormControl} from "@angular/forms";
 import {MessageService} from "../../../utils/services/message/message.service";
+import {HttpParams} from "@angular/common/http";
 
 
 
@@ -66,8 +67,10 @@ export class PageAdListAdminComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         // Ask for ads and then for advertiser
+        let params = new HttpParams();
+        params = params.append("isActive", true);
         this.messageService
-            .get("ad/findAll")
+            .get("ad/findAll", params)
             .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err) );
 
         // Ask for interest
@@ -79,11 +82,8 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     afterReceivingAds(retour: any): void
     {
-        console.log("afterReceivingAds");
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             const tabAdvert = retour.data;
@@ -96,11 +96,8 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     afterReceivingAdvertiser(retour: any, tabAdvert): void
     {
-        console.log("afterReceivingAdvertiser");
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             this.tabAdvertiser = retour.data.filter(x => x.role.name === "advertiser");
@@ -113,14 +110,10 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     afterReceivingInterests(retour: any): void
     {
-        console.log("afterReceivingInterests");
-        console.log(retour);
-
         if(retour.status !== "success") {
             console.log(retour);
         }
         else {
-            this.allInterests = [];
             this.allInterests = retour.data.map(x => x.interest);
             this.allInterests.sort();
         }
@@ -136,19 +129,27 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onVisualizeImages(advert: AdvertWithCountViewsAndCompany)
     {
-        const config = {
-            width: '30%',
-            height: '90%',
-            data: {
-                images: advert.images,
-                width: 300,
-                height: 800,
-            }
-        };
-        this.dialog
-            .open(PopupVisualizeImagesAdminComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
+        if(advert.images.length !== 0)
+        {
+            const config = {
+                width: '30%',
+                height: '90%',
+                data: {
+                    images: advert.images,
+                    width: 300,
+                    height: 800,
+                }
+            };
+            this.dialog
+                .open(PopupVisualizeImagesAdminComponent, config)
+                .afterClosed()
+                .subscribe(retour => {});
+        }
+        else {
+            const config = { duration: 2000, panelClass: "custom-class" };
+            const message = "Cette annonce ne contient aucune image" ;
+            this.snackBar.open( message, "", config);
+        }
     }
 
 

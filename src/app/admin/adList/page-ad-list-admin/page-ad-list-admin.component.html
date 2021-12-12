@@ -97,9 +97,9 @@
             <ng-container matColumnDef="interests">
                 <th mat-header-cell *matHeaderCellDef> Sujets </th>
                 <td mat-cell *matCellDef="let advert">
-                    <span *ngFor="let interest of advert.interests; let isLast = last;">
-                        <span *ngIf="!isLast"> {{interest}}, </span>
-                        <span *ngIf="isLast"> {{interest}} </span>
+                    <span *ngFor="let objectInterest of advert.interests; let isLast = last;">
+                        <span *ngIf="!isLast"> {{objectInterest.interest}}, </span>
+                        <span *ngIf="isLast"> {{objectInterest.interest}} </span>
                     </span>
                 </td>
             </ng-container>

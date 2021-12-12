@@ -20,7 +20,7 @@ export interface Advert
 
 
 export interface AdvertWithCountViews {
-    _id: string,
+    id: string,
     userId: string,
     title: string,
     url: string,

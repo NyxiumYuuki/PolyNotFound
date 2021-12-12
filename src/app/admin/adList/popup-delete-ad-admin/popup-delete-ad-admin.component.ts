@@ -29,7 +29,7 @@ export class PopupDeleteAdAdminComponent implements OnInit
     {
         this.messageService
             .delete("ad/delete/"+this.advert.id)
-            .subscribe(ret => this.onValidateCallback(ret), err => this.onValidateCallback(err) );
+            .subscribe(ret => this.onValidateCallback(ret), err => this.onValidateCallback(err));
     }
 
 
@@ -40,6 +40,8 @@ export class PopupDeleteAdAdminComponent implements OnInit
             this.dialogRef.close();
         }
         else {
+            console.log("suppr");
+            console.log(retour);
             this.dialogRef.close(true);
         }
     }

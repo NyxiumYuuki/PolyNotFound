@@ -12,6 +12,8 @@ import {PopupVisualizeImagesAdvertiserComponent} from "../popup-visualize-images
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
 import {FormControl} from "@angular/forms";
 import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
+import {MessageService} from "../../../utils/services/message/message.service";
+import {HttpParams} from "@angular/common/http";
 
 
 
@@ -24,7 +26,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
 {
     displayedColumns: string[] = [ 'isVisible', 'title', 'interests', 'createdAt', 'updatedAt', 'countViews', 'actions' ];
     tabAdvertWithCountViews: AdvertWithCountViews[] = [];
-    dataSource ;
+    dataSource;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -33,6 +35,8 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     startDate: Date = null;
     endDate: Date = null;
     formControlInterests = new FormControl();
+
+    allVideoCategorie = [];
     allInterests: string[] = [];
 
 
@@ -40,18 +44,50 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                  private fictitiousAdvertsService: FictitiousAdvertsService,
                  private fictitiousUtilsService: FictitiousUtilsService,
                  public dialog: MatDialog,
-                 private snackBar: MatSnackBar ) { }
+                 private snackBar: MatSnackBar,
+                 private messageService: MessageService ) { }
 
 
     ngAfterViewInit(): void
     {
-        // --- FAUX CODE ---
-        const tabAdvert = this.fictitiousAdvertsService.getTabAdvert(8);
-        this.allInterests = this.fictitiousUtilsService.getTags();
+        // Ask interests
+        this.messageService
+            .get("misc/getInterests")
+            .subscribe(ret => this.afterReceivingInterests(ret), err => this.afterReceivingInterests(err) );
 
-        for(let advert of tabAdvert) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
-        this.dataSource = new MatTableDataSource<Advert>();
-        this.onFilter();
+        // Ask ads
+        let params = new HttpParams();
+        params = params.append("isActive", true);
+        this.messageService
+            .get("ad/findAll", params)
+            .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err));
+    }
+
+
+    afterReceivingInterests(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log("afterReceivingInterests");
+            console.log(retour);
+        }
+        else {
+            this.allVideoCategorie = retour.data;
+            this.allInterests = retour.data.map(x => x.interest);
+            this.allInterests.sort();
+        }
+    }
+
+
+    afterReceivingAds(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            for(let advert of retour.data) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
+            this.dataSource = new MatTableDataSource<AdvertWithCountViews>();
+            this.onFilter();
+        }
     }
 
 
@@ -86,7 +122,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             width: '75%',
             height: '80%',
             panelClass: 'custom-dialog-container',
-            data: { action: "add", advert: null }
+            data: { action: "add", advert: null, allVideoCategorie: this.allVideoCategorie }
         };
         this.dialog
             .open(PopupAddOrUpdateAdComponent, config)
@@ -99,10 +135,9 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                     message = "Opération annulée" ;
                 }
                 else {
-                    this.dataSource.data.push(advertAdded);
-                    this.dataSource.data = this.dataSource.data;
-                    this.dataSource = this.dataSource;
-                    message = "L'annoonce a bien été ajoutée ✔"
+                    this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advertAdded));
+                    this.onFilter();
+                    message = "L'annoonce a bien été ajoutée ✔" ;
                 }
                 this.snackBar.open( message, "", config);
             });
@@ -115,7 +150,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             width: '75%',
             height: '80%',
             panelClass: 'custom-dialog-container',
-            data: { action: "update", advert: advertToUpdate }
+            data: { action: "update", advert: advertToUpdate, allVideoCategorie: this.allVideoCategorie }
         };
         this.dialog
             .open(PopupAddOrUpdateAdComponent, config)
@@ -128,11 +163,10 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                     message = "Opération annulée" ;
                 }
                 else {
-                    const index = this.dataSource.data.findIndex( elt => (elt._id === advertToUpdate._id));
-                    this.dataSource.data.splice(index, 1, advertUpdated);
-                    this.dataSource.data = this.dataSource.data;
-                    this.dataSource = this.dataSource;
-                    message = "L'annonce a bien été modifiée ✔"
+                    const index = this.tabAdvertWithCountViews.findIndex(elt => (elt.id === advertToUpdate.id));
+                    this.tabAdvertWithCountViews.splice(index, 1, this.advertToAdvertWithCountViews(advertUpdated));
+                    this.onFilter();
+                    message = "L'annonce a bien été modifiée ✔" ;
                 }
                 this.snackBar.open( message, "", config);
             });
@@ -155,7 +189,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                     message = "Opération annulée" ;
                 }
                 else {
-                    const index = this.dataSource.data.findIndex( elt => (elt._id === advert._id));
+                    const index = this.dataSource.data.findIndex( elt => (elt.id === advert.id));
                     this.dataSource.data.splice(index, 1);
                     this.dataSource.data = this.dataSource.data;
                     this.dataSource = this.dataSource;
@@ -168,6 +202,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
 
     onFilter(): void
     {
+        if(this.dataSource === null || this.dataSource === undefined) this.dataSource = new MatTableDataSource();
         this.dataSource.data = [];
         for(let advert of this.tabAdvertWithCountViews)
         {
@@ -220,21 +255,30 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     }
 
 
-    onSliderIsVisible(advert: Advert): void
+    onSliderIsVisible(advert: any): void
     {
         // il faut envoyer la négation de user.isActive
+        this.messageService
+            .put("ad/update/"+advert.id, { isVisible: !advert.isVisible })
+            .subscribe(
+                ret => {},
+                err => {
+                    console.log("onSliderIsVisible");
+                    console.log(err);
+                }
+            );
     }
 
 
-    advertToAdvertWithCountViews(advert: Advert): AdvertWithCountViews
+    advertToAdvertWithCountViews(advert): AdvertWithCountViews
     {
         return {
-            _id: advert._id,
+            id: advert.id,
             userId: advert.userId,
             title: advert.title,
             url: advert.url,
             images: advert.images,
-            interests: advert.interests,
+            interests: advert.interests.map(x => x.interest),
             comment: advert.comment,
             views: advert.views,
             countViews: advert.views.length,
