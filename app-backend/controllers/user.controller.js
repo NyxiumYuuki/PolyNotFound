@@ -452,7 +452,7 @@ exports.history = (req, res) => {
           tags: true,
           interest: true,
           views: {$size: '$watchedDates'},
-          watchedDate: {$last: "$watchedDates"},
+          watchedDate: {$arrayElemAt: ["$watchedDates", -1]},
           createdAt: true,
           updatedAt: true
         }}])
