@@ -134,11 +134,7 @@ export class PageAdListAdminComponent implements AfterViewInit
             const config = {
                 width: '30%',
                 height: '90%',
-                data: {
-                    images: advert.images,
-                    width: 300,
-                    height: 800,
-                }
+                data: { images: advert.images }
             };
             this.dialog
                 .open(PopupVisualizeImagesAdminComponent, config)

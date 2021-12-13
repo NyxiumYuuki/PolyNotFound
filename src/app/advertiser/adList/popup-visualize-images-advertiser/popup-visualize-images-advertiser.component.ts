@@ -11,8 +11,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 export class PopupVisualizeImagesAdvertiserComponent implements OnInit
 {
     tabImages = [];
-    width: number = 0;
-    height: number = 0;
+    index: number = 0;
+    nbImage: number = 0;
 
 
     constructor( public dialogRef: MatDialogRef<PopupVisualizeImagesAdvertiserComponent>,
@@ -21,15 +21,18 @@ export class PopupVisualizeImagesAdvertiserComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.width = this.data.width;
-        this.height = this.data.height;
+        this.tabImages = this.data.images;
+        this.nbImage = this.tabImages.length;
+    }
 
-        for(let couple of this.data.images)
-        {
-            const elt = { path: "assets/pub/"+couple.url };
-            this.tabImages.push(elt);
-        }
-        console.log(this.tabImages);
+    onPrecedent(): void
+    {
+        if(this.index !== 0) this.index -= 1;
+    }
+
+    onSuivant(): void
+    {
+        if(this.index !== (this.nbImage-1)) this.index += 1;
     }
 
 }

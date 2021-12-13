@@ -59,7 +59,7 @@
 
             <!-- nouvelles images -->
             <div class="col-6" style="overflow-x: hidden; overflow-y: scroll; max-height: 70vh;">
-                <app-drag-and-drop></app-drag-and-drop>
+                <app-drag-and-drop (eventEmitter)="onReceiveNewImages($event)"></app-drag-and-drop>
             </div>
 
         </div>
@@ -67,6 +67,10 @@
 
         <br><mat-divider></mat-divider>
 
+        <!-- message d'erreur -->
+        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
+            <span class="mat-error">{{errorMessage}}</span>
+        </div>
 
         <!-- Actions -->
         <mat-dialog-actions align="end">

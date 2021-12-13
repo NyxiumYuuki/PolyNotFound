@@ -5,9 +5,16 @@
     </button>
 </div>
 
-<div style="text-align: center; justify-content: center">
-    <carousel [images]="tabImages"
-              cellsToShow="1"
-              [height]="height"
-              [width]="width"></carousel>
-</div>
+
+
+<mat-grid-list cols="12" rowHeight="500">
+    <mat-grid-tile colspan="1" rowspan="1" (click)="onPrecedent()">
+        <button> < </button>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="10" rowspan="1">
+        <img [src]="tabImages[index].base64" [alt]="tabImages[index].description">
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1" (click)="onSuivant()">
+        <button> > </button>
+    </mat-grid-tile>
+</mat-grid-list>
