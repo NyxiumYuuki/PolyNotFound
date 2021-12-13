@@ -6,7 +6,6 @@ import {map, startWith} from "rxjs/operators";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {MessageService} from "../../../utils/services/message/message.service";
-import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 
 
 
@@ -28,8 +27,7 @@ export class InputInterestsAdComponent implements OnInit
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
 
-    constructor( private fictitiousUtilsService: FictitiousUtilsService,
-                 private messageService: MessageService ) {}
+    constructor( private messageService: MessageService ) {}
 
 
     ngOnInit(): void
@@ -56,7 +54,7 @@ export class InputInterestsAdComponent implements OnInit
     add(event: MatChipInputEvent): void
     {
         const value = (event.value || '').trim();
-        if (value && (this.allTags.indexOf(value) !== -1))
+        if (value && (this.allTags.indexOf(value) !== -1) && (!this.myTags.includes(value)))
         {
             this.myTags.push(value);
             event.chipInput!.clear();
@@ -76,7 +74,8 @@ export class InputInterestsAdComponent implements OnInit
 
     selected(event: MatAutocompleteSelectedEvent): void
     {
-        this.myTags.push(event.option.viewValue);
+        const value = event.option.viewValue;
+        if(!this.myTags.includes(value))this.myTags.push(value);
         this.tagInput.nativeElement.value = '';
         this.formControl.setValue(null);
         this.eventEmitter.emit(this.myTags);

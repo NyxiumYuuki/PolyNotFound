@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {Advert, AdvertWithCountViews} from "../../../utils/interfaces/advert";
+import {AdvertWithCountViews} from "../../../utils/interfaces/advert";
 import {MatDialog} from "@angular/material/dialog";
 import {PopupAddOrUpdateAdComponent} from "../popup-add-or-update-ad/popup-add-or-update-ad.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -100,19 +100,23 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
 
     onVisualizeImages(advert: AdvertWithCountViews)
     {
-        const config = {
-            width: '30%',
-            height: '90%',
-            data: {
-                images: advert.images,
-                width: 300,
-                height: 800,
-            }
-        };
-        this.dialog
-            .open(PopupVisualizeImagesAdvertiserComponent, config)
-            .afterClosed()
-            .subscribe(retour => {});
+        if(advert.images.length !== 0)
+        {
+            const config = {
+                width: '30%',
+                height: '90%',
+                data: { images: advert.images }
+            };
+            this.dialog
+                .open(PopupVisualizeImagesAdvertiserComponent, config)
+                .afterClosed()
+                .subscribe(retour => {});
+        }
+        else {
+            const config = { duration: 2000, panelClass: "custom-class" };
+            const message = "Cette annonce ne contient aucune image" ;
+            this.snackBar.open( message, "", config);
+        }
     }
 
 
@@ -122,7 +126,12 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             width: '75%',
             height: '80%',
             panelClass: 'custom-dialog-container',
-            data: { action: "add", advert: null, allVideoCategorie: this.allVideoCategorie }
+            data: {
+                action: "add",
+                advert: null,
+                allVideoCategorie: this.allVideoCategorie,
+                allTitle: this.tabAdvertWithCountViews.map(x => x.title)
+            }
         };
         this.dialog
             .open(PopupAddOrUpdateAdComponent, config)
@@ -150,7 +159,12 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             width: '75%',
             height: '80%',
             panelClass: 'custom-dialog-container',
-            data: { action: "update", advert: advertToUpdate, allVideoCategorie: this.allVideoCategorie }
+            data: {
+                action: "update",
+                advert: advertToUpdate,
+                allVideoCategorie: this.allVideoCategorie,
+                allTitle: this.tabAdvertWithCountViews.map(x => x.title)
+            }
         };
         this.dialog
             .open(PopupAddOrUpdateAdComponent, config)

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-drag-and-drop',
@@ -8,15 +8,16 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 export class DragAndDropComponent
 {
     @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef;
-    files: any[] = [];
     info_image = "Vos annonces seront affichées dans un rectangle de rapport 1/5 avec: \n • 1 la largeur du rectangle \n • 5 la hauteur du rectangle" ;
-
+    files: any[] = [];
+    @Output() eventEmitter = new EventEmitter<any>();
 
     /**
      * on file drop handler
      */
     onFileDropped($event) {
         this.prepareFilesList($event);
+        this.eventEmitter.emit(this.files);
     }
 
     /**
@@ -24,6 +25,7 @@ export class DragAndDropComponent
      */
     fileBrowseHandler(files) {
         this.prepareFilesList(files);
+        this.eventEmitter.emit(this.files);
     }
 
     /**

@@ -5,6 +5,8 @@ import {MessageService} from "../../../utils/services/message/message.service";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 
 
+
+
 const ADVERT_VIDE: Advert = {
     _id: "",
     userId: "",
@@ -31,9 +33,14 @@ export class PopupAddOrUpdateAdComponent implements OnInit
     advert: any;
     title: string = "" ;
     allVideoCategorie = [];
-    tabWaitingFile: File[] = []; // fichiers selectionnés mais pas encore "validés"
-    tabSelectedFile: File[] = []; // fichier "validés"
-    _event;
+    allTitle = [];
+
+    tabOfNewImagesBase64 = [];
+    tabOfNewImagesName = [];
+
+    hasError: boolean = false;
+    errorMessage: string = "" ;
+
 
 
     constructor( public dialogRef: MatDialogRef<PopupAddOrUpdateAdComponent>,
@@ -44,7 +51,8 @@ export class PopupAddOrUpdateAdComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.allVideoCategorie = this.data.allVideoCategorie
+        this.allVideoCategorie = this.data.allVideoCategorie;
+        this.allTitle = this.data.allTitle.slice();
         if(this.data.action === "add")
         {
             this.advert = Object.assign({}, ADVERT_VIDE);
@@ -56,41 +64,59 @@ export class PopupAddOrUpdateAdComponent implements OnInit
             this.advert = Object.assign({}, this.data.advert);
             this.advert.interests = this.data.advert.interests.slice();
             this.title = "Modifier annonce" ;
+            const indexOldTitle = this.allTitle.findIndex(title => title == this.advert.title);
+            this.allTitle.splice(indexOldTitle, 1);
         }
     }
 
 
     onValidate(): void
     {
-        // On transforme 'this.user.interests' en tableau de 'videoCategorie'
-        let interests = []; // tableau de videoCategorie
-        for(let interest of this.advert.interests)
+        this.checkField();
+        if(!this.hasError)
         {
-            for(let videoCategorie of this.allVideoCategorie)
+            // preparation des donnees
+            this.prepareAdvertInterests();
+            this.prepareAdvertImages();
+
+            // si creation
+            if (this.data.action === "add")
             {
-                if(videoCategorie.interest === interest) {
-                    interests.push(videoCategorie);
-                    break;
-                }
+                this.messageService
+                    .post("ad/create", this.advert)
+                    .subscribe(ret => this.onCreateCallback(ret), err => this.onCreateCallback(err));
+            }
+            // si update
+            else
+            {
+                const id = this.advert.id;
+                Reflect.deleteProperty(this.advert, "id");
+                Reflect.deleteProperty(this.advert, "_id");
+                this.messageService
+                    .put("ad/update/" + id, this.advert)
+                    .subscribe(ret => this.onUpdateCallback(ret, id), err => this.onUpdateCallback(err, id));
             }
         }
-        this.advert.interests = interests;
+    }
 
-        if(this.data.action === "add")
+
+    checkField()
+    {
+        if(this.advert.title.length === 0) {
+            this.errorMessage = "Veuillez remplir le champ 'titre'" ;
+            this.hasError = true;
+        }
+        else if(this.allTitle.includes(this.advert.title))
         {
-            this.messageService
-                .post("ad/create", this.advert)
-                .subscribe(ret => this.onCreateCallback(ret), err => this.onCreateCallback(err));
+            this.errorMessage = "Ce titre est déjà pris" ;
+            this.hasError = true;
         }
         else {
-            const id = this.advert.id;
-            Reflect.deleteProperty(this.advert, "id");
-            Reflect.deleteProperty(this.advert, "_id");
-            this.messageService
-                .put("ad/update/"+id, this.advert)
-                .subscribe(ret => this.onUpdateCallback(ret,id), err => this.onUpdateCallback(err,id));
+            this.errorMessage = "";
+            this.hasError = false;
         }
     }
+
 
 
     onCreateCallback(retour: any): void
@@ -127,8 +153,65 @@ export class PopupAddOrUpdateAdComponent implements OnInit
     onRemoveImgAlreadyPresent(image)
     {
         const index = this.advert.images.indexOf(image);
-        console.log("idx: " + index);
-        this.advert.images.slice(index, 1);
+        this.advert.images.splice(index, 1);
+    }
+
+
+    onReceiveNewImages(files: any): void
+    {
+        this.tabOfNewImagesBase64 = [];
+        this.tabOfNewImagesName = [];
+        if(files)
+        {
+            for(let file of files)
+            {
+                if(file)
+                {
+                    const reader = new FileReader();
+                    reader.onload = this.handleReaderLoaded.bind(this);
+                    this.tabOfNewImagesName.push(file.name)
+                    reader.readAsBinaryString(file);
+                }
+            }
+        }
+    }
+    handleReaderLoaded(e)
+    {
+        this.tabOfNewImagesBase64.push('data:image/png;base64,' + btoa(e.target.result))
+    }
+
+
+    // Met bien en forme les "images" avant d'être envoyer
+    prepareAdvertImages(): void
+    {
+        for(let i=0; i<this.tabOfNewImagesName.length ; i++)
+        {
+            let newImagePrepared = {
+                base64: this.tabOfNewImagesBase64[i],
+                url: "",
+                description: this.tabOfNewImagesName[i],
+                type: 0,
+            };
+            this.advert.images.push(newImagePrepared);
+        }
+    }
+
+
+    // Met bien en forme les "interests" avant d'être envoyer
+    prepareAdvertInterests(): void
+    {
+        let interests = [];
+
+        for (let interest of this.advert.interests) {
+            for (let videoCategorie of this.allVideoCategorie) {
+                if (videoCategorie.interest === interest) {
+                    interests.push(videoCategorie);
+                    break;
+                }
+            }
+        }
+
+        this.advert.interests = interests;
     }
 
 }

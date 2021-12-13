@@ -6,7 +6,6 @@ import {MessageService} from "../../../utils/services/message/message.service";
 import {map, startWith} from "rxjs/operators";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {FictitiousUtilsService} from "../../../utils/services/fictitiousDatas/fictitiousUtils/fictitious-utils.service";
 
 
 
@@ -28,8 +27,7 @@ export class InputInterestsAdminComponent implements OnInit
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
 
 
-    constructor( private fictitiousUtilsService: FictitiousUtilsService,
-                 private messageService: MessageService ) {}
+    constructor( private messageService: MessageService ) {}
 
 
     ngOnInit(): void
@@ -38,16 +36,26 @@ export class InputInterestsAdminComponent implements OnInit
             startWith(null),
             map((fruit: string | null) => fruit ? this._filter(fruit) : this.allInterests.slice()));
 
-        // --- FAUX CODE ---
-        this.allInterests = this.fictitiousUtilsService.getTags();
-        this.allInterests.sort();
+        this.messageService
+            .get("misc/getInterests")
+            .subscribe( retour => {
+
+                if(retour.status !== "success") {
+                    console.log(retour);
+                }
+                else {
+                    this.allInterests = [];
+                    for(let elt of retour.data) this.allInterests.push(elt.interest);
+                    this.allInterests.sort();
+                }
+            });
     }
 
 
     add(event: MatChipInputEvent): void
     {
         const value = (event.value || '').trim();
-        if (value && (this.allInterests.indexOf(value) !== -1))
+        if (value && (this.allInterests.indexOf(value) !== -1) && (!this.myInterests.includes(value)))
         {
             this.myInterests.push(value);
             event.chipInput!.clear();
@@ -67,7 +75,8 @@ export class InputInterestsAdminComponent implements OnInit
 
     selected(event: MatAutocompleteSelectedEvent): void
     {
-        this.myInterests.push(event.option.viewValue);
+        const value = event.option.viewValue;
+        if(!this.myInterests.includes(value))this.myInterests.push(value);
         this.tagInput.nativeElement.value = '';
         this.formControl.setValue(null);
         this.eventEmitter.emit(this.myInterests);
