@@ -445,7 +445,9 @@ exports.history = (req, res) => {
   if(token){
     const id = token.id;
 
-    Video.aggregate([{$match: {userId: id}}, {$limit: 300},
+    Video.aggregate([
+        {$match: {userId: id, $expr: {$gt: [{$size: "$watchedDates"}, 0]}}},
+        {$limit: 300},
         {$project: {
           videoId: true,
           source: true,
