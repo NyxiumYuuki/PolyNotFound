@@ -55,7 +55,7 @@ export class InputInterestsRegisterComponent implements OnInit
     add(event: MatChipInputEvent): void
     {
         const value = (event.value || '').trim();
-        if (value && (this.allInterests.indexOf(value) !== -1))
+        if (value && (this.allInterests.indexOf(value) !== -1) && (!this.myInterests.includes(value)))
         {
             this.myInterests.push(value);
             event.chipInput!.clear();
@@ -75,7 +75,8 @@ export class InputInterestsRegisterComponent implements OnInit
 
     selected(event: MatAutocompleteSelectedEvent): void
     {
-        this.myInterests.push(event.option.viewValue);
+        const value = event.option.viewValue;
+        if(!this.myInterests.includes(value))this.myInterests.push(value);
         this.tagInput.nativeElement.value = '';
         this.formControl.setValue(null);
         this.eventEmitter.emit(this.myInterests);
