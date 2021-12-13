@@ -70,7 +70,7 @@ exports.findAll = (req, res) => {
     query.url = condition;
 
     const interests = req.query.interests;
-    condition = interests ? {$in: interests} : undefined;
+    condition = interests ? {$in: interests.split(',')} : undefined;
     query["interests.interest"] = condition
 
     const comment = req.query.comment;
@@ -174,9 +174,9 @@ exports.update = (req, res) => {
       condition = url ? url : undefined;
       update.url = condition;
 
-      const interests = req.body.interests;
-      condition = interests ? interests : undefined;
-      update.interests = condition;
+      let interests = req.body.interests;
+      condition = interests ? {interests: [...new Map(interests.map(v => [v.id, v])).values()]} : undefined;
+      update.$addToSet = condition;
 
       const comment = req.body.comment;
       condition = comment ? comment : undefined;
