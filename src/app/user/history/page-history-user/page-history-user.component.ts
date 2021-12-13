@@ -3,21 +3,10 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
-import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {MatPaginator} from "@angular/material/paginator";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 import {VideoAll} from "../../../utils/interfaces/video";
 import {Router} from "@angular/router";
-
-
-
-interface VideoHistory {
-    videoId: string,
-    imageUrl: string,
-    title: string,
-    date: Date,
-    source: string,
-}
 
 
 
@@ -37,43 +26,27 @@ export class PageHistoryUserComponent implements AfterViewInit
     constructor( public themeService: ThemeService,
                  private messageService: MessageService,
                  private fictitiousVideosService: FictitiousVideosService,
-                 private userHistoryService: UserHistoryService,
                  private router: Router ) { }
 
 
     // charge la page
     ngAfterViewInit(): void
     {
-        this.userHistoryService.clearTabVideoUrlClicked();
-
-        // --- FAUX CODE ---
-        /*
-        const tabVideoAll: VideoAll[] = this.fictitiousVideosService.getTabVideoAll(8);
-        let tabVideoHistory: VideoHistory[] = [];
-        for(let videoAll of tabVideoAll) tabVideoHistory.push(this.videoAllToVideoHistory(videoAll));
-        this.dataSource = new MatTableDataSource(tabVideoHistory);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource = this.dataSource;
-        */
-
         this.messageService
             .get("user/history")
             .subscribe(ret => this.ngAfterViewInitCallback(ret), err => this.ngAfterViewInitCallback(err));
-
     }
 
 
     ngAfterViewInitCallback(retour: any): void
     {
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             const tabVideoHistory = retour.data.map( video => {
                 return {
+                    _id: video._id,
                     videoId: video.videoId,
                     imageUrl: video.imageUrl,
                     title: video.title,
@@ -98,48 +71,42 @@ export class PageHistoryUserComponent implements AfterViewInit
 
 
     // Supprime la video
-    onDelete(video: VideoAll): void
+    onDelete(video: any): void
     {
-        // --- FAUX CODE ---
-        const index = this.dataSource.data.indexOf(video);
-        this.dataSource.data.splice(index, 1);
-        this.dataSource.data = this.dataSource.data;
-        this.dataSource = this.dataSource;
-
-        // --- VRAI CODE ---
-        /*
         this.messageService
-            .sendMessage("user/delete/videoSeen", { "watchedVideo": watchedVideo})
-            .subscribe( retour => {
+            .put("video/update/"+video._id, { watchedDates: []})
+            .subscribe(ret => this.onDeleteCallback(ret, video), err => this.onDeleteCallback(err, video))
+    }
 
-                if(retour.status === "error") console.log(retour);
-                else {
-                    const index = this.dataSource.data.indexOf(watchedVideo);
-                    this.dataSource.data.splice(index, 1);
-                    this.dataSource.data = this.dataSource.data;
-                    this.dataSource = this.dataSource;
-                }
-            });
-        */
+
+    onDeleteCallback(retour: any, video: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            const index = this.dataSource.data.indexOf(video);
+            this.dataSource.data.splice(index, 1);
+            this.dataSource.data = this.dataSource.data;
+            this.dataSource = this.dataSource;
+        }
     }
 
     
     onVideo(video: VideoAll): void
     {
+        this.messageService
+            .put("video/update/"+video._id, { watchedDate: true})
+            .subscribe(ret => this.onVideoCallback(ret), err => this.onVideoCallback(err));
+
         const url = '/user/watching/fromHistory/'+video.videoId+'/'+video.source ;
         this.router.navigateByUrl(url);
     }
 
 
-    videoAllToVideoHistory(videoAll: VideoAll): VideoHistory
+    onVideoCallback(retour: any): void
     {
-        return {
-            videoId: videoAll.videoId,
-            imageUrl: videoAll.imageUrl,
-            title: videoAll.title,
-            date: videoAll.watchedDates[videoAll.watchedDates.length-1],
-            source: videoAll.source,
-        }
+        if(retour.status !== "success") console.log(retour);
     }
 
 }

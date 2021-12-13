@@ -105,6 +105,7 @@ export class PopupAddVideoToPlaylistsComponent implements OnInit
         }
         else {
             this.isFinishedForExistingPlaylist = true;
+            console.log("isFinishedForExistingPlaylist: true");
         }
     }
 
@@ -120,6 +121,7 @@ export class PopupAddVideoToPlaylistsComponent implements OnInit
         }
         else {
             this.isFinishedForNewPlaylist = true;
+            console.log("isFinishedForNewPlaylist: true");
         }
     }
 
