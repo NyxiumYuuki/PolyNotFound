@@ -65,7 +65,6 @@ export class PageSearchComponent implements OnInit
         else if((!this.tabPlateform[0].isSelected) && this.tabPlateform[1].isSelected) sources += "dm" ;
         else if(this.tabPlateform[0].isSelected && (!this.tabPlateform[1].isSelected)) sources += "yt" ;
         else sources += "" ;
-        console.log(sources);
         params = params.append('sources', sources);
 
         this.messageService

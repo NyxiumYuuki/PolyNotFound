@@ -52,8 +52,8 @@ export class PageLoginComponent implements OnInit
 
     onSeConnecterCallback(retour): void
     {
-        console.log(retour);
         if(retour.status !== "success") {
+            console.log(retour);
             this.errorMessage = retour.error.reason;
             this.hasError = true;
         }

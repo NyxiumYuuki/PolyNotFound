@@ -4,7 +4,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {PopupAddVideoToPlaylistsComponent} from "../../components/popup-add-video-to-playlists/popup-add-video-to-playlists.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FictitiousVideosService} from "../../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
-import {HttpParams} from "@angular/common/http";
 
 
 
@@ -40,11 +39,8 @@ export class AddVideoToPlaylistsService
 
     private afterCreatingVideo(retour: any): void
     {
-        console.log("afterCreatingVideo");
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             this._idVideo = retour.data.id;
@@ -58,11 +54,8 @@ export class AddVideoToPlaylistsService
 
     private afterReceivingPlaylists(retour: any): void
     {
-        console.log("afterReceivingPlaylists");
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else
         {
