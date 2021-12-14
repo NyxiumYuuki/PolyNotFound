@@ -316,12 +316,19 @@ exports.update = (req, res) => {
       update.name = condition;
 
       const videoIds = req.body.videoIds;
-      if(typeof videoIds !== 'undefined' && videoIds !== null){
-        condition = videoIds ? {videoIds: videoIds} : undefined;
-      } else {
-        condition = undefined;
+      condition = videoIds ? videoIds : undefined;
+      update.videoIds = condition;
+
+      const videoId = req.body.videoId;
+      if(typeof videoId !== 'undefined' && typeof videoId.id !== 'undefined' && typeof videoId.action !== 'undefined'){
+        if(videoId.action === 'add'){
+          condition = videoId.id ? {videoIds: videoId.id} : undefined;
+          update.$addToSet = condition;
+        } else if(videoId.action === 'delete'){
+          condition = videoId.id ? {videoIds: videoId.id} : undefined;
+          update.$pull = condition;
+        }
       }
-      update.$addToSet = condition;
 
       const isActive = req.body.isActive;
       if(typeof isActive !== 'undefined'){
