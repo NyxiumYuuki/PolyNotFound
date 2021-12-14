@@ -2,38 +2,66 @@ const {youtube, dailymotion} = require('../../config/host.config');
 module.exports = [
   {
     id: 0,
-    interest: "Musics",
-    categories: [
-      {id: "music", name: "Musique", source: dailymotion.name},
-      {id: "10", name: "Music", source: youtube.name},
-    ]
-  },
-  {
-    id: 1,
-    interest: "Video Games",
-    categories: [
-      {id: "videogames", name: "Jeux vidéo", source: dailymotion.name},
-      {id: "20", name: "Gaming", source: youtube.name},
-    ]
-  },
-  {
-    id: 2,
-    interest: "Sports",
-    categories: [
-      {id: "sport", name: "Sport", source: dailymotion.name},
-      {id: "17", name: "Sports", source: youtube.name},
-    ]
-  },
-  {
-    id: 3,
-    interest: "News",
+    interest: "Actualités",
     categories: [
       {id: "news", name: "News", source: dailymotion.name},
       {id: "25", name: "News & Politics", source: youtube.name},
     ]
   },
   {
+    id: 1,
+    interest: "Animaux",
+    categories: [
+      {id: "animals", name: "animaux", source: dailymotion.name},
+      {id: "15", name: "Pets & Animals", source: youtube.name},
+    ]
+  },
+  {
+    id: 2,
+    interest: "Arts",
+    categories: [
+      {id: "creation", name: "Art", source: dailymotion.name},
+      {id: "", name: "", source: youtube.name},
+    ]
+  },
+  {
+    id: 3,
+    interest: "Autos",
+    categories: [
+      {id: "auto", name: "Auto-Moto", source: dailymotion.name},
+      {id: "2", name: "Autos & Vehicles", source: youtube.name},
+    ]
+  },
+  {
     id: 4,
+    interest: "Divertissements",
+    categories: [
+      {id: "tv", name: "TV", source: dailymotion.name},
+      {id: "fun", name: "Humour & Divertissement", source: dailymotion.name},
+      {id: "webcam", name: "Webcam", source: dailymotion.name},
+      {id: "23", name: "Comedy", source: youtube.name},
+      {id: "24", name: "Entertainment", source: youtube.name},
+      {id: "43", name: "Shows", source: youtube.name}
+    ]
+  },
+  {
+    id: 5,
+    interest: "Éducation",
+    categories: [
+      {id: "school", name: "Éducation", source: dailymotion.name},
+      {id: "27", name: "Education", source: youtube.name}
+    ]
+  },
+  {
+    id: 6,
+    interest: "Événements",
+    categories: [
+      {id: "", name: "", source: dailymotion.name},
+      {id: "19", name: "Travel & Events", source: youtube.name},
+    ]
+  },
+  {
+    id: 7,
     interest: "Films",
     categories: [
       {id: "shortfilms", name: "Cinéma", source: dailymotion.name},
@@ -53,63 +81,35 @@ module.exports = [
     ]
   },
   {
-    id: 5,
-    interest: "Entertainments",
+    id: 8,
+    interest: "Jeux vidéo",
     categories: [
-      {id: "tv", name: "TV", source: dailymotion.name},
-      {id: "fun", name: "Humour & Divertissement", source: dailymotion.name},
-      {id: "webcam", name: "Webcam", source: dailymotion.name},
-      {id: "23", name: "Comedy", source: youtube.name},
-      {id: "24", name: "Entertainment", source: youtube.name},
-      {id: "43", name: "Shows", source: youtube.name}
+      {id: "videogames", name: "Jeux vidéo", source: dailymotion.name},
+      {id: "20", name: "Gaming", source: youtube.name},
     ]
   },
   {
-    id: 6,
-    interest: "Animals",
+    id: 9,
+    interest: "Kids",
     categories: [
-      {id: "animals", name: "animaux", source: dailymotion.name},
-      {id: "15", name: "Pets & Animals", source: youtube.name},
+      {id: "kids", name: "Kids", source: dailymotion.name},
+      {id: "", name: "", source: youtube.name},
     ]
   },
   {
-    id: 7,
-    interest: "Lifestyles",
+    id: 10,
+    interest: "Modes de vie",
     categories: [
       {id: "lifestyle", name: "Lifestyle & Tutoriels", source: dailymotion.name},
       {id: "26", name: "Howto & Style", source: youtube.name},
     ]
   },
   {
-    id: 8,
-    interest: "Autos",
-    categories: [
-      {id: "auto", name: "Auto-Moto", source: dailymotion.name},
-      {id: "2", name: "Autos & Vehicles", source: youtube.name},
-    ]
-  },
-  {
-    id: 9,
-    interest: "Arts",
-    categories: [
-      {id: "creation", name: "Art", source: dailymotion.name},
-      {id: "", name: "", source: youtube.name},
-    ]
-  },
-  {
-    id: 10,
-    interest: "Science and Technology",
-    categories: [
-      {id: "tech", name: "Tech", source: dailymotion.name},
-      {id: "28", name: "Science & Technology", source: youtube.name},
-    ]
-  },
-  {
     id: 11,
-    interest: "Kids",
+    interest: "Musiques",
     categories: [
-      {id: "kids", name: "Kids", source: dailymotion.name},
-      {id: "", name: "", source: youtube.name},
+      {id: "music", name: "Musique", source: dailymotion.name},
+      {id: "10", name: "Music", source: youtube.name},
     ]
   },
   {
@@ -124,31 +124,31 @@ module.exports = [
   },
   {
     id: 13,
-    interest: "Education",
+    interest: "Science et Technologie",
     categories: [
-      {id: "school", name: "Éducation", source: dailymotion.name},
-      {id: "27", name: "Education", source: youtube.name}
+      {id: "tech", name: "Tech", source: dailymotion.name},
+      {id: "28", name: "Science & Technology", source: youtube.name},
     ]
   },
   {
     id: 14,
-    interest: "Travels",
+    interest: "Sports",
+    categories: [
+      {id: "sport", name: "Sport", source: dailymotion.name},
+      {id: "17", name: "Sports", source: youtube.name},
+    ]
+  },
+  {
+    id: 15,
+    interest: "Voyages",
     categories: [
       {id: "travel", name: "Voyages", source: dailymotion.name},
       {id: "38", name: "Foreign", source: youtube.name},
     ]
   },
   {
-    id: 15,
-    interest: "Events",
-    categories: [
-      {id: "", name: "", source: dailymotion.name},
-      {id: "19", name: "Travel & Events", source: youtube.name},
-    ]
-  },
-  {
     id: 16,
-    interest: "Others",
+    interest: "Autres",
     categories: [
       {id: "29", name: "Nonprofits & Activism", source: youtube.name},
       {id: "33", name: "Classics", source: youtube.name}
