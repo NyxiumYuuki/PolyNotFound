@@ -56,6 +56,7 @@ export class PopupAddOrUpdateAdComponent implements OnInit
         if(this.data.action === "add")
         {
             this.advert = Object.assign({}, ADVERT_VIDE);
+            this.advert.images = [];
             this.advert.interests = [];
             this.title = "Ajouter annonce" ;
         }
@@ -103,12 +104,15 @@ export class PopupAddOrUpdateAdComponent implements OnInit
     checkField()
     {
         if(this.advert.title.length === 0) {
-            this.errorMessage = "Veuillez remplir le champ 'titre'" ;
+            this.errorMessage = "Veuillez remplir le champ 'titre'." ;
             this.hasError = true;
         }
-        else if(this.allTitle.includes(this.advert.title))
-        {
-            this.errorMessage = "Ce titre est déjà pris" ;
+        else if(this.allTitle.includes(this.advert.title)) {
+            this.errorMessage = "Ce titre est déjà pris." ;
+            this.hasError = true;
+        }
+        else if((this.advert.images.length === 0) && (this.tabOfNewImagesName.length === 0)) {
+            this.errorMessage = "Veuillez uploader au moins une image." ;
             this.hasError = true;
         }
         else {

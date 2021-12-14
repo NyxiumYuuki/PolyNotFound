@@ -25,6 +25,7 @@ export class InputInterestsProfilComponent implements OnInit
     allInterests: string[] = [];
     @Output() eventEmitter = new EventEmitter<string[]>();
     @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+    interestsNotSelected: string[] = [];
 
 
     constructor( private messageService: MessageService ) {}
@@ -34,7 +35,7 @@ export class InputInterestsProfilComponent implements OnInit
     {
         this.filteredInterests = this.formControl.valueChanges.pipe(
             startWith(null),
-            map((fruit: string | null) => fruit ? this._filter(fruit) : this.allInterests.slice()));
+            map((fruit: string | null) => fruit ? this._filter(fruit) : this.interestsNotSelected.slice()));
 
         this.messageService
             .get("misc/getInterests")
@@ -45,8 +46,11 @@ export class InputInterestsProfilComponent implements OnInit
                 }
                 else {
                     this.allInterests = [];
-                    for(let elt of retour.data) this.allInterests.push(elt.interest);
-                    this.allInterests.sort();
+                    for(let elt of retour.data)
+                    {
+                        this.allInterests.push(elt.interest);
+                        this.interestsNotSelected.push(elt.interest);
+                    }
                 }
             });
     }
@@ -55,28 +59,53 @@ export class InputInterestsProfilComponent implements OnInit
     add(event: MatChipInputEvent): void
     {
         const value = (event.value || '').trim();
-        if (value && (this.allInterests.indexOf(value) !== -1) && (!this.myInterests.includes(value)))
+        const index = this.interestsNotSelected.indexOf(value);
+        if (value && (index !== -1) && (!this.myInterests.includes(value)))
         {
             this.myInterests.push(value);
             event.chipInput!.clear();
             this.formControl.setValue(null);
             this.eventEmitter.emit(this.myInterests);
+            this.interestsNotSelected.splice(index, 1);
         }
     }
 
 
-    remove(tag: string): void
+    remove(interest: string): void
     {
-        const index = this.myInterests.indexOf(tag);
+        // supprimer 'interest' de 'myInterest'
+        const index = this.myInterests.indexOf(interest);
         if (index >= 0) this.myInterests.splice(index, 1);
         this.eventEmitter.emit(this.myInterests);
+
+        // remmettre 'interest' dans 'interestsNotSelected'
+        if(!this.interestsNotSelected.includes(interest))
+        {
+            const indexOfAutres = this.interestsNotSelected.indexOf("Autres");
+            if(indexOfAutres !== -1)
+            {
+                this.interestsNotSelected.splice(indexOfAutres, 1);
+                if(interest !== "Autres") this.interestsNotSelected.push(interest);
+                this.interestsNotSelected.sort();
+                this.interestsNotSelected.push("Autres");
+            }
+            else {
+                this.interestsNotSelected.push(interest);
+                if(interest !== "Autres") this.interestsNotSelected.sort();
+            }
+        }
     }
 
 
     selected(event: MatAutocompleteSelectedEvent): void
     {
         const value = event.option.viewValue;
-        if(!this.myInterests.includes(value))this.myInterests.push(value);
+        if(!this.myInterests.includes(value))
+        {
+            this.myInterests.push(value);
+            const index = this.interestsNotSelected.indexOf(value);
+            this.interestsNotSelected.splice(index, 1);
+        }
         this.tagInput.nativeElement.value = '';
         this.formControl.setValue(null);
         this.eventEmitter.emit(this.myInterests);
@@ -86,7 +115,7 @@ export class InputInterestsProfilComponent implements OnInit
     private _filter(value: string): string[]
     {
         const filterValue = value.toLowerCase();
-        return this.allInterests.filter(fruit => fruit.toLowerCase().includes(filterValue));
+        return this.interestsNotSelected.filter(fruit => fruit.toLowerCase().includes(filterValue));
     }
 
 }
