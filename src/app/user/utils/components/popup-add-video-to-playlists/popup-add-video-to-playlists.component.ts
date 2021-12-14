@@ -41,7 +41,8 @@ export class PopupAddVideoToPlaylistsComponent implements OnInit
 
         for(let playlist of this.data.playlists)
         {
-            playlist["isSelected"] = false;
+            if(playlist.videoIds.includes(this._idVideo)) playlist["isSelected"] = true;
+            else playlist["isSelected"] = false;
             this.tabPlaylistAndBool.push(playlist);
         }
     }

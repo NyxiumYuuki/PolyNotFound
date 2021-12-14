@@ -4,6 +4,7 @@ import {Advert} from "../../../utils/interfaces/advert";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {HttpParams} from "@angular/common/http";
+import {subscribeOn} from "rxjs/operators";
 
 
 
@@ -43,9 +44,22 @@ export class PageMyPlaylistsComponent implements OnInit
     }
 
 
-    transmitToVideoList(playlist): void
+    transmitPlaylistToVideoList(playlist): void
     {
-        this.playlist = playlist;
+        this.messageService
+            .get("playlist/findOne/"+playlist.id)
+            .subscribe(ret => this.afterReceivingPlaylistWithVideo(ret), err => this.afterReceivingPlaylistWithVideo(err));
+    }
+
+
+    afterReceivingPlaylistWithVideo(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.playlist = retour.data;
+        }
     }
 
 }
