@@ -2,7 +2,7 @@ const db = require("../models/mongodb.model");
 const {sendError, sendMessage} = require ("../config/response.config");
 const {checkLogin} = require("../config/sessionJWT.config");
 const {youtube, dailymotion} = require("../config/host.config");
-const {asyncRequest} = require("../config/functions.config");
+const {asyncRequest, asyncInterest} = require("../config/functions.config");
 const ObjectId = require('mongoose').Types.ObjectId;
 const Playlist = db.playlists;
 const Video = db.videos;
@@ -276,10 +276,12 @@ exports.findOne = (req, res) => {
             if (data[0].videos[i].source === youtube.name) {
               const obj = yt_results.filter(obj => obj.id === data[0].videos[i].videoId);
               data[0].videos[i].imageUrl = obj[0].snippet.thumbnails.medium.url ? obj[0].snippet.thumbnails.medium.url : null;
+              data[0].videos[i].interest = obj[0].snippet.categoryId  ? await asyncInterest(obj[0].snippet.categoryId, youtube.name): null;
               data[0].videos[i].title = obj[0].snippet.title ? obj[0].snippet.title : null;
             } else if (data[0].videos[i].source === dailymotion.name) {
               const obj = dm_results.filter(obj => obj.id === data[0].videos[i].videoId);
               data[0].videos[i].imageUrl = obj[0].thumbnail_480_url ? obj[0].thumbnail_480_url : null;
+              data[0].videos[i].interest =  obj[0]['channel.name']  ? await asyncInterest( obj[0]['channel.name'], dailymotion.name) : null;
               data[0].videos[i].title = obj[0].title ? obj[0].title : null;
             }
           }
@@ -304,6 +306,8 @@ exports.update = (req, res) => {
     if(typeof req.body._id !== 'undefined' || typeof req.body.id !== 'undefined'){
       return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
     } else{
+      const ids = id.split(',');
+      console.log(ids);
       let update = {};
       let condition;
 
@@ -330,25 +334,22 @@ exports.update = (req, res) => {
       // Remove undefined key
       Object.keys(update).forEach(key => update[key] === undefined ? delete update[key] : {});
 
-      if(id && ObjectId.isValid(id)){
-        Playlist.findOneAndUpdate({_id: id, userId: token.id, isActive: true}, update, {new: false})
-          .then(data => {
-            if(data) {
-              if(!data.videoIds.includes(videoIds)){
-                return sendMessage(res, 24, update, token);
-              } else {
-                return sendError(res, 500, -1, `Video in Playlist ${data.name} already exists.`, token);
-              }
+      Playlist.updateMany({_id: {$in: ids}, userId: token.id, isActive: true}, update, {new: false})
+        .then(data => {
+          console.log(data);
+          if(data) {
+            if(data.modifiedCount > 0){
+              return sendMessage(res, 24, update, token);
             } else {
-              return sendError(res, 404, -1, `Playlist not found with id=${id}`, token);
+              return sendError(res, 500, -1, `Video in Playlist ${data} already exists.`, token);
             }
-          })
-          .catch(err => {
-            return sendError(res, 500, -1, err.message || `Some error occurred while updating the Playlist with id=${id}`, token);
-          });
-      } else {
-        return sendError(res, 500, -1, `Error id is not valid`, token);
-      }
+          } else {
+            return sendError(res, 404, -1, `Playlist not found with id=${id}`, token);
+          }
+        })
+        .catch(err => {
+          return sendError(res, 500, -1, err.message || `Some error occurred while updating the Playlist with id=${id}`, token);
+        });
     }
   } else {
     return sendError(res, 500, -1, `No id given`, token);
