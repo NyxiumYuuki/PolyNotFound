@@ -307,7 +307,6 @@ exports.update = (req, res) => {
       return sendError(res, 500, -1, `User do not have the permission to modify id or _id`, token);
     } else{
       const ids = id.split(',');
-      console.log(ids);
       let update = {};
       let condition;
 
@@ -343,7 +342,6 @@ exports.update = (req, res) => {
 
       Playlist.updateMany({_id: {$in: ids}, userId: token.id, isActive: true}, update, {new: false})
         .then(data => {
-          console.log(data);
           if(data) {
             if(data.modifiedCount > 0){
               return sendMessage(res, 24, update, token);
