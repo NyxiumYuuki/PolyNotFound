@@ -52,19 +52,28 @@ export class PopupAddVideoToPlaylistsComponent implements OnInit
     onValider(): void
     {
         // --- Existing playlists ---
-        let listeDesPlaylists = "" ;
+        let listeDesPlaylistsSelected = "" ;
+        let listeDesPlaylistsNotSelected = "" ;
         for(let playlist of this.tabPlaylistAndBool)
         {
-            if(playlist.isSelected) listeDesPlaylists += playlist.id + "," ;
+            if(playlist.isSelected) listeDesPlaylistsSelected += playlist.id + "," ;
+            else listeDesPlaylistsNotSelected += playlist.id + "," ;
         }
-        if(listeDesPlaylists.endsWith(",")) listeDesPlaylists = listeDesPlaylists.slice(0, listeDesPlaylists.length-1);
+        if(listeDesPlaylistsSelected.endsWith(",")) listeDesPlaylistsSelected = listeDesPlaylistsSelected.slice(0, listeDesPlaylistsSelected.length-1);
+        if(listeDesPlaylistsNotSelected.endsWith(",")) listeDesPlaylistsNotSelected = listeDesPlaylistsNotSelected.slice(0, listeDesPlaylistsNotSelected.length-1);
 
-        console.log(listeDesPlaylists);
-        if(listeDesPlaylists !== "")
+        if(listeDesPlaylistsSelected !== "")
         {
-            const data1 = { videoId: this._idVideo };
+            const data1 = { videoId: { id: this._idVideo, action: "add" } };
             this.messageService
-                .put( "playlist/update/"+listeDesPlaylists, data1)
+                .put( "playlist/update/"+listeDesPlaylistsSelected, data1)
+                .subscribe( ret => this.callbackForExistingPlaylists(ret), err => this.callbackForExistingPlaylists(err));
+        }
+        if(listeDesPlaylistsNotSelected !== "")
+        {
+            const data2 = { videoId: { id: this._idVideo, action: "delete" } };
+            this.messageService
+                .put( "playlist/update/"+listeDesPlaylistsNotSelected, data2)
                 .subscribe( ret => this.callbackForExistingPlaylists(ret), err => this.callbackForExistingPlaylists(err));
         }
 
@@ -72,12 +81,12 @@ export class PopupAddVideoToPlaylistsComponent implements OnInit
         // --- New playlists ---
         if(this.goToCreatePlaylist)
         {
-            const data2 = {
+            const data3 = {
                 name: this.newPlaylistName,
                 video: {videoId: this.videoId, interest: this.interest, source: this.source}
             };
             this.messageService
-                .post("playlist/create", data2)
+                .post("playlist/create", data3)
                 .subscribe( ret => this.callbackForNewPlaylist(ret), err => this.callbackForNewPlaylist(err));
         }
     }

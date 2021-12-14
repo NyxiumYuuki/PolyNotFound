@@ -34,7 +34,8 @@ export class PageWatchingVideoComponent implements OnInit
         views: 0,
         publishedAt: null,
         description: "",
-        source: ""
+        source: "",
+        interest: ""
     };
     search: string = "";
     ad1: any = { title: "", url: "", images: [] };
@@ -55,7 +56,8 @@ export class PageWatchingVideoComponent implements OnInit
                  public themeService: ThemeService,
                  private activatedRoute: ActivatedRoute,
                  private router: Router,
-                 private _sanitizer: DomSanitizer ) { }
+                 private _sanitizer: DomSanitizer,
+                 private addVideoToPlaylistsService: AddVideoToPlaylistsService ) { }
 
 
     ngOnInit(): void
@@ -139,7 +141,7 @@ export class PageWatchingVideoComponent implements OnInit
 
     onAddToPlaylist(): void
     {
-        //this.addVideoToPlaylistsService.run(this.video);
+        this.addVideoToPlaylistsService.run(this.video.videoId, this.video.source, this.video.interest);
     }
 
 

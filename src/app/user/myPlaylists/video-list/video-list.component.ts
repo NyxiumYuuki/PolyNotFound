@@ -45,14 +45,14 @@ export class VideoListComponent implements OnChanges
 
     onDelete(video0: any, indexVideo: number): void
     {
-        let _idsVideo = this.videosInPlaylist.filter( x => (x._id !== video0._id) );
-        _idsVideo = _idsVideo.map( x => x._id );
-
-        console.log("_idsVideo:");
-        console.log(_idsVideo);
-
+        const data = {
+            videoId: {
+                id: video0._id,
+                action: "delete"
+            }
+        }
         this.messageService
-            .put("playlist/update/"+this.playlist._id, {videoIds: _idsVideo})
+            .put("playlist/update/"+this.playlist._id, data)
             .subscribe( ret => this.onDeleteCallback(ret, indexVideo), err => this.onDeleteCallback(err, indexVideo));
     }
 
