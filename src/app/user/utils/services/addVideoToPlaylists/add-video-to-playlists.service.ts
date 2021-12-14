@@ -19,47 +19,23 @@ export class AddVideoToPlaylistsService
     private interest: string = "" ;
 
 
-
     constructor( private messageService: MessageService,
                  public dialog: MatDialog,
                  private fictitiousVideosService: FictitiousVideosService,
                  private snackBar: MatSnackBar ) { }
 
 
-
-
-    run(videoId: string, source: string): void
+    run(videoId: string, source: string, interest: string): void
     {
         this.videoId = videoId;
         this.source = source;
+        this.interest = interest;
 
-        let params = new HttpParams();
-        if(source === "Youtube") params = params.append("source", "yt");
-        else params = params.append("source", "dm");
+        const data = { source: this.source, interest: this.interest };
         this.messageService
-            .get("video/get/"+videoId, params)
-            .subscribe(ret => this.afterAskingVideoInfo(ret), err => this.afterAskingVideoInfo(err));
+            .post("video/create/"+this.videoId, data)
+            .subscribe(ret => this.afterCreatingVideo(ret), err => this.afterCreatingVideo(err));
     }
-
-
-
-    afterAskingVideoInfo(retour: any): void
-    {
-        console.log("afterAskingVideoInfo");
-        console.log(retour);
-
-        if(retour.status !== "success") {
-            //console.log(retour);
-        }
-        else {
-            this.interest = retour.data.interest;
-            const data = { source: this.source, interest: this.interest };
-            this.messageService
-                .post("video/create/"+this.videoId, data)
-                .subscribe(ret => this.afterCreatingVideo(ret), err => this.afterCreatingVideo(err));
-        }
-    }
-
 
 
     private afterCreatingVideo(retour: any): void

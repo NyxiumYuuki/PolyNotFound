@@ -3,7 +3,7 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {Advert} from "../../../utils/interfaces/advert";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {PlaylistDB} from "../../../utils/interfaces/playlist";
-import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
+import {HttpParams} from "@angular/common/http";
 
 
 
@@ -14,36 +14,36 @@ import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/
 })
 export class PageMyPlaylistsComponent implements OnInit
 {
-    ad: Advert;                 // pub
-    playlist: PlaylistDB;         // la playlist sélectionnée
+    ad: Advert;             // pub
+    playlist: any;   // la playlist sélectionnée
 
 
     constructor( public themeService: ThemeService,
-                 private messageService: MessageService,
-                 private fictitiousAdvertsService: FictitiousAdvertsService ) { }
+                 private messageService: MessageService ) { }
 
 
     ngOnInit(): void
     {
-        // --- FAUX CODE ---
-        this.ad = this.fictitiousAdvertsService.getAdvert();
-
-        // --- VRAI CODE ---
-        /*
+        let params = new HttpParams();
+        params = params.append("quantity", 1);
         this.messageService
-            .sendMessage("user/get/playlists", null)
-            .subscribe( retour => {
-
-                if(retour.status === "error") console.log(retour.data);
-                else {
-                    this.tabPlaylists = retour.data.playlists;
-                    this.ad = retour.data.ad;
-                }
-            })
-        */
+            .get("user/ad", params)
+            .subscribe(ret => this.adCallback(ret), err => this.adCallback(err));
     }
 
-    transmitToVideoList(playlist: PlaylistDB): void
+
+    adCallback(retour: any): void
+    {
+        if(retour !== "success") {
+            console.log(retour);
+        }
+        else {
+            this.ad = retour.data[0];
+        }
+    }
+
+
+    transmitToVideoList(playlist): void
     {
         this.playlist = playlist;
     }
