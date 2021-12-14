@@ -35,7 +35,7 @@ export class NavbarUserComponent
 
     onDeconnexionCallback(retour: any): void
     {
-        console.log(retour);
+        if(retour.status !== "success") console.log(retour);
     }
 
 }

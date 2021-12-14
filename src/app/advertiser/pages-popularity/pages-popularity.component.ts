@@ -25,7 +25,7 @@ interface CoupleNameViews {
 })
 export class PagesPopularityComponent implements OnInit
 {
-    formControl: FormControl;
+    formControl: FormControl = new FormControl();
     allCoupleNameViews: CoupleNameViews[] = [];
 
     allInterests: string[] = [];
@@ -47,6 +47,8 @@ export class PagesPopularityComponent implements OnInit
             xAxes: [{ scaleLabel: { display: true, labelString: "temps" } }],
         }
     };
+
+    isDisplayable: boolean = false;
 
 
     constructor( private router: Router,
@@ -167,8 +169,8 @@ export class PagesPopularityComponent implements OnInit
         this.lineChartLabels = [];
 
         if(this.step <= 0) this.step = 0;
-        if(this.endDate === null) this.endDate = new Date();
-        if(this.startDate === null) this.startDate = new Date(this.endDate.getTime() - this.oneWeek); // date d'il y a une semaine
+        if((this.endDate === null) || (this.endDate === undefined)) this.endDate = new Date();
+        if((this.startDate === null) || (this.startDate === undefined)) this.startDate = new Date(this.endDate.getTime() - this.oneWeek); // date d'il y a une semaine
 
         const startTime = this.startDate.getTime();
         const endTime = this.endDate.getTime();
@@ -211,6 +213,7 @@ export class PagesPopularityComponent implements OnInit
 
             this.lineChartData.push({"data": data.slice(), "label": label});
         }
+        this.isDisplayable = true;
     }
 
 
@@ -282,9 +285,9 @@ export class PagesPopularityComponent implements OnInit
     {
         let i = 0;
         let n = tabDate.length;
-        let time0 = date0.getTime();
+        let time0 = (new Date(date0)).getTime();
 
-        while((i <n) && (time0 > tabDate[i].getTime())) i++;
+        while((i <n) && (time0 > (new Date(tabDate[i])).getTime())) i++;
         if(i === n) tabDate.push(date0);
         else tabDate.splice(i, 0, date0);
 

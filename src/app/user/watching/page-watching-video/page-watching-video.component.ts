@@ -38,8 +38,8 @@ export class PageWatchingVideoComponent implements OnInit
         interest: ""
     };
     search: string = "";
-    ad1: any = { title: "", url: "", images: [] };
-    ad2: any = { title: "", url: "", images: [] };
+    ad1: any;
+    ad2: any;
     from: string = "";
 
     playlist: PlaylistDB;

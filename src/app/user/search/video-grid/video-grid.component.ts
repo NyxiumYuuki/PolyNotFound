@@ -1,6 +1,5 @@
 import {Component, Input } from '@angular/core';
 import {VideoAll} from "../../../utils/interfaces/video";
-import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Router} from "@angular/router";
 import {MessageService} from "../../../utils/services/message/message.service";
@@ -19,8 +18,7 @@ export class VideoGridComponent
     indexPage: number = 0;
 
 
-    constructor( private historiqueService: UserHistoryService,
-                 private addVideoToPlaylistsService: AddVideoToPlaylistsService,
+    constructor( private addVideoToPlaylistsService: AddVideoToPlaylistsService,
                  private router: Router,
                  private messageService: MessageService ) {}
 

@@ -3,7 +3,6 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {Router} from "@angular/router";
 import {ProfilService} from "../../../utils/services/profil/profil.service";
 
@@ -24,7 +23,6 @@ export class VideoListComponent implements OnChanges
                  public themeService: ThemeService,
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService,
                  private snackBar: MatSnackBar,
-                 private historiqueService: UserHistoryService,
                  private profilService: ProfilService,
                  private router: Router ) { }
 

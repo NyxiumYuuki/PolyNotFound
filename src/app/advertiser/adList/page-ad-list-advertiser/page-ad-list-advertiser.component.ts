@@ -84,9 +84,12 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             console.log(retour);
         }
         else {
-            for(let advert of retour.data) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
-            this.dataSource = new MatTableDataSource<AdvertWithCountViews>();
-            this.onFilter();
+            if(retour.data.length !== 0)
+            {
+                for(let advert of retour.data) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
+                this.dataSource = new MatTableDataSource<AdvertWithCountViews>();
+                this.onFilter();
+            }
         }
     }
 

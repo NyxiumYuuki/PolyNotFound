@@ -34,7 +34,7 @@ export class NavbarAdminComponent
 
     onDeconnexionCallback(retour: any): void
     {
-        console.log(retour);
+        if(retour.status !== "success") console.log(retour);
     }
 
 }
