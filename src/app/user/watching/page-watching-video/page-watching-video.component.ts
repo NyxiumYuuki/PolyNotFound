@@ -169,4 +169,10 @@ export class PageWatchingVideoComponent implements OnInit
         else return "videoCell" ;
     }
 
+
+    onEnterOnSearchBar(event)
+    {
+        if(event.key === 'Enter') this.onSearch();
+    }
+
 }

@@ -33,8 +33,8 @@ export class VideoGridComponent
 
     tronquage(str: string)
     {
-        if(str.length < 33) return str;
-        else return str.substring(0, 30) + "..." ;
+        if(str.length < 30) return str;
+        else return str.substring(0, 27) + "..." ;
     }
 
 
@@ -53,6 +53,46 @@ export class VideoGridComponent
     onVideoCallback(retour: any): void
     {
         if(retour.status !== "success") console.log(retour);
+    }
+
+
+    dateToElapsedTime(date0): string
+    {
+        const ellapsedTimeInMilliSeconds = (new Date()).getTime() - (new Date(date0)).getTime();
+
+        // seconde
+        const ellapsedTimeInSeconds = Math.trunc(ellapsedTimeInMilliSeconds / 1000);
+        if(ellapsedTimeInSeconds < 60) {
+            if(ellapsedTimeInSeconds <= 1)return ellapsedTimeInSeconds + " seconde" ;
+            else return ellapsedTimeInSeconds + " secondes" ;
+        }
+        // minute
+        const ellapsedTimeInMinutes = Math.trunc(ellapsedTimeInSeconds / 60);
+        if(ellapsedTimeInMinutes < 60) {
+            if(ellapsedTimeInMinutes <= 1) return ellapsedTimeInMinutes + " minute" ;
+            else return ellapsedTimeInMinutes + " minutes" ;
+        }
+        // heure
+        const ellapsedTimeInHours = Math.trunc(ellapsedTimeInMinutes / 60);
+        if(ellapsedTimeInHours < 24) {
+            if(ellapsedTimeInHours <= 1) return ellapsedTimeInHours + " heure" ;
+            else return ellapsedTimeInHours + " heures" ;
+        }
+        // jour
+        const ellapsedTimeInDays = Math.trunc(ellapsedTimeInHours / 24);
+        if(ellapsedTimeInDays < 31) {
+            if(ellapsedTimeInDays <= 1) return ellapsedTimeInDays + " jour" ;
+            else return ellapsedTimeInDays + " jours" ;
+        }
+        // mois
+        const ellapsedTimeInMonths = Math.trunc(ellapsedTimeInDays / 31);
+        if(ellapsedTimeInMonths < 12) {
+            return ellapsedTimeInMonths + " mois" ;
+        }
+        // an
+        const ellapsedTimeInYears = Math.trunc(ellapsedTimeInMonths / 12);
+        if(ellapsedTimeInYears <= 1) return ellapsedTimeInYears + " an" ;
+        else return ellapsedTimeInYears + " ans" ;
     }
 
 }

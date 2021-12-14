@@ -83,4 +83,10 @@ export class PageSearchComponent implements OnInit
         }
     }
 
+
+    onEnterOnSearchBar(event)
+    {
+        if(event.key === 'Enter') this.onSearch();
+    }
+
 }
