@@ -29,7 +29,8 @@ export class PageWatchingVideoComponent implements OnInit
 {
     tabPlateform = TAB_PLATEFORM;
     video = {
-        title: "zzz",
+        title: "",
+        videoId: "",
         views: 0,
         publishedAt: null,
         description: "",
@@ -41,7 +42,7 @@ export class PageWatchingVideoComponent implements OnInit
     from: string = "";
 
     playlist: PlaylistDB;
-    videosInPlaylist: VideoAll[] = [];
+    videosInPlaylist: any[] = [];
 
     hiddenDescription: boolean = true;
     iframeStyle: string = "";
@@ -54,19 +55,12 @@ export class PageWatchingVideoComponent implements OnInit
                  public themeService: ThemeService,
                  private activatedRoute: ActivatedRoute,
                  private router: Router,
-                 private _sanitizer: DomSanitizer,
-                 private addVideoToPlaylistsService: AddVideoToPlaylistsService ) { }
+                 private _sanitizer: DomSanitizer ) { }
 
 
     ngOnInit(): void
     {
-        // --- FAUX CODE ---
-        //const videoId = this.activatedRoute.snapshot.paramMap.get('videoId');
-        //this.video =  this.fictitiousVideosService.getVideoByVideoId(videoId);
-        //this.ad1 = this.fictitiousAdvertsService.getAdvert();
-        //this.ad2 = this.fictitiousAdvertsService.getAdvert();
-
-        // findVideoCallback
+        // Ask for videos
         const videoId = this.activatedRoute.snapshot.paramMap.get('videoId');
         let params1 = new HttpParams();
         let source = "" ;
@@ -77,7 +71,7 @@ export class PageWatchingVideoComponent implements OnInit
             .get("video/get/"+videoId, params1)
             .subscribe(ret => this.findVideoCallback(ret), err => this.findVideoCallback(err));
 
-        // advert
+        // Ask for adverts
         let params2 = new HttpParams();
         params2 = params2.append("quantity", 2);
         this.messageService
@@ -101,6 +95,7 @@ export class PageWatchingVideoComponent implements OnInit
             }
         }
 
+        // style
         if(this.from === 'search' || this.from === 'history')
         {
             this.containerStyle = "margin: 0 auto; width: 64vw;"
@@ -110,9 +105,6 @@ export class PageWatchingVideoComponent implements OnInit
             this.containerStyle = "margin: 0 auto; width: 48vw;"
             this.iframeStyle = "width: 48vw; height: 45vh;" ;
         }
-
-        // --- VRAI CODE ---
-        // ...
     }
 
 
@@ -145,7 +137,7 @@ export class PageWatchingVideoComponent implements OnInit
     }
 
 
-    onAdd(): void
+    onAddToPlaylist(): void
     {
         //this.addVideoToPlaylistsService.run(this.video);
     }
@@ -162,8 +154,8 @@ export class PageWatchingVideoComponent implements OnInit
     safeUrl(videoId: string, source: string): SafeResourceUrl
     {
         let videoUrl = "" ;
-        if(source === 'Youtube') videoUrl = "https://www.youtube.com/embed/" + videoId;
-        else if(source === 'Dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId;
+        if(source === 'Youtube') videoUrl = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+        else if(source === 'Dailymotion') videoUrl = "https://www.dailymotion.com/embed/video/" + videoId + "?autoplay=true";
         return this._sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
     }
 

@@ -96,7 +96,7 @@ export class PageHistoryUserComponent implements AfterViewInit
     onVideo(video: VideoAll): void
     {
         this.messageService
-            .put("video/update/"+video._id, { watchedDate: true})
+            .put("video/update/"+video._id, {watchedDate: true})
             .subscribe(ret => this.onVideoCallback(ret), err => this.onVideoCallback(err));
 
         const url = '/user/watching/fromHistory/'+video.videoId+'/'+video.source ;
