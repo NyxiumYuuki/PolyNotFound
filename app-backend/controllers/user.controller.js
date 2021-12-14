@@ -457,7 +457,8 @@ exports.history = (req, res) => {
           watchedDate: {$arrayElemAt: ["$watchedDates", -1]},
           createdAt: true,
           updatedAt: true
-        }}])
+        }},
+        {$sort: {watchedDate: -1}}])
       .then(async data => {
         let yt_results = [];
         let dm_results = [];
