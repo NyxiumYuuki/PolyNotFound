@@ -20,6 +20,10 @@ db.mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true
   }, function (err){
+    const admin = new db.mongoose.mongo.Admin(db.mongoose.connection.db);
+    admin.buildInfo(function (err, info) {
+      console.log("MongoDB Version: "+info.version);
+    });
     if(err){
       console.log("Cannot connect to the database!", err);
       process.exit();
