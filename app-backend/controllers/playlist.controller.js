@@ -41,7 +41,7 @@ exports.create = (req, res) => {
               .save(video)
               .then(data => {
                 if(data) {
-                  Playlist.exists({name: req.body.name}, function (err, docs){
+                  Playlist.exists({name: req.body.name, isActive: true}, function (err, docs){
                     if(err){
                       sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
                     } else{
@@ -76,7 +76,7 @@ exports.create = (req, res) => {
               });
           } else{
             const id = docs._id.toString();
-            Playlist.exists({name: req.body.name}, function (err, docs){
+            Playlist.exists({name: req.body.name, isActive: true}, function (err, docs){
               if(err){
                 sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
               } else{
@@ -108,7 +108,7 @@ exports.create = (req, res) => {
         }
       });
     } else {
-      Playlist.exists({name: req.body.name}, function (err, docs){
+      Playlist.exists({name: req.body.name, isActive: true}, function (err, docs){
         if(err){
           sendError(res, 500,100,err.message || "Some error occurred while checking if the Playlist already exists.", token);
         } else{
