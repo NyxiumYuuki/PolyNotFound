@@ -418,7 +418,7 @@ exports.ad = (req, res) => {
               match = {$match: {isVisible: true, isActive: true}};
               pick = {$sample: {size: parseInt(quantity, 10)}};
             }
-            console.log(match, pick);
+            console.log(match, pick, interests);
             Ad.aggregate([
                 match,
                 pick
