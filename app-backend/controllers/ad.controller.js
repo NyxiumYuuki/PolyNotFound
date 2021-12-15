@@ -57,7 +57,16 @@ exports.findAll = (req, res) => {
     condition = adId ? adId : undefined;
     query._id = condition;
 
-    const userId = req.query.userId;
+    let userId;
+    if(typeof token.role !== 'undefined' &&
+      typeof token.role.permission !== 'undefined' &&
+      typeof token.role.isAccepted !== 'undefined' &&
+      token.role.isAccepted === true &&
+      token.role.permission >= roles.Admin.permission) {
+      userId = req.query.userId;
+    } else {
+      userId = token.id;
+    }
     condition = userId ? userId : undefined;
     query.userId = condition;
 
