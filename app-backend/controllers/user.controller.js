@@ -418,12 +418,23 @@ exports.ad = (req, res) => {
               match = {$match: {isVisible: true, isActive: true}};
               pick = {$sample: {size: parseInt(quantity, 10)}};
             }
+            console.log(match, pick, interests);
             Ad.aggregate([
                 match,
                 pick
             ])
               .then(data => {
-                return sendMessage(res, 11, data, token);
+                if(data.length > 0){
+                  return sendMessage(res, 11, data, token);
+                } else {
+                  Ad.aggregate([{$match: {isVisible: true, isActive: true}}, {$sample: {size: parseInt(quantity, 10)}}])
+                    .then(data => {
+                        return sendMessage(res, 11, data, token);
+                    })
+                    .catch(err => {
+                      return sendError(res,500,101,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
+                    });
+                }
               })
               .catch(err => {
                 return sendError(res,500,101,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
