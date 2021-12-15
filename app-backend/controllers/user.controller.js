@@ -412,13 +412,12 @@ exports.ad = (req, res) => {
             }
             let match, pick;
             if(interests.length > 0){
-              match = {$match: {isVisible: true, isActive: true, interests: {$in: interests}}};
+              match = {$match: {isVisible: true, isActive: true, interests: {$elemMatch: {interest: {$in: interests}}}}};
               pick = {$limit: parseInt(quantity, 10)}
             } else {
               match = {$match: {isVisible: true, isActive: true}};
               pick = {$sample: {size: parseInt(quantity, 10)}};
             }
-            console.log(match, pick, interests);
             Ad.aggregate([
                 match,
                 pick
