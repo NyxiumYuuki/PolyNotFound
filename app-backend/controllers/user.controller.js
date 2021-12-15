@@ -429,7 +429,7 @@ exports.ad = (req, res) => {
                   for(const i in data){ids.push(data[i]._id);}
                   Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}})
                     .then(dataUpdate => {
-                      if(dataUpdate && dataUpdate.modifiedCount === parseInt(quantity, 10)){
+                      if(dataUpdate && dataUpdate.modifiedCount > 0){
                         return sendMessage(res, 11, data, token);
                       } else {
                         return sendError(res,500,101,`Some error occurred while updating ${quantity} ad(s) for the User.`, token);
@@ -445,7 +445,7 @@ exports.ad = (req, res) => {
                       for(const i in data){ids.push(data[i]._id);}
                       Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}})
                         .then(dataUpdate => {
-                          if(dataUpdate && dataUpdate.modifiedCount === parseInt(quantity, 10)){
+                          if(dataUpdate && dataUpdate.modifiedCount > 0){
                             return sendMessage(res, 11, data, token);
                           } else {
                             return sendError(res,500,101,`Some error occurred while updating ${quantity} ad(s) for the User.`, token);
