@@ -412,10 +412,10 @@ exports.ad = (req, res) => {
             }
             let match, pick;
             if(interests.length > 0){
-              match = {$match: {interests: {$in: interests}}};
+              match = {$match: {isVisible: true, isActive: true, interests: {$in: interests}}};
               pick = {$limit: parseInt(quantity, 10)}
             } else {
-              match = {$match: {}};
+              match = {$match: {isVisible: true, isActive: true}};
               pick = {$sample: {size: parseInt(quantity, 10)}};
             }
 
