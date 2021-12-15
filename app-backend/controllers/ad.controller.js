@@ -9,7 +9,7 @@ const Ad = db.ads;
 exports.create = (req, res) => {
   const token = checkLogin(req, res, roles.Advertiser);
   if(token && req.body.title){
-    Ad.exists({title: req.body.title}, function (err, docs){
+  Ad.exists({title: req.body.title, userId: token.id, isActive: true}, function (err, docs){
       if(err){
         sendError(res, 500,100,err.message || "Some error occurred while checking if the Ad already exists.", token);
       } else{
@@ -118,7 +118,9 @@ exports.findAll = (req, res) => {
 
     Ad.find(query, {}, query_sort)
       .then(data => {
-        return sendMessage(res, 42, data, token);
+        if(data){
+          return sendMessage(res, 42, data, token);
+        }
       })
       .catch(err => {
         return sendError(res,500,100,err.message || "Some error occurred while finding the Ads.", token);
