@@ -84,9 +84,12 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             console.log(retour);
         }
         else {
-            for(let advert of retour.data) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
-            this.dataSource = new MatTableDataSource<AdvertWithCountViews>();
-            this.onFilter();
+            if(retour.data.length !== 0)
+            {
+                for(let advert of retour.data) this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advert));
+                this.dataSource = new MatTableDataSource<AdvertWithCountViews>();
+                this.onFilter();
+            }
         }
     }
 
@@ -124,7 +127,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     {
         const config = {
             width: '75%',
-            height: '80%',
+            //height: '80%',
             panelClass: 'custom-dialog-container',
             data: {
                 action: "add",
@@ -146,7 +149,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                 else {
                     this.tabAdvertWithCountViews.push(this.advertToAdvertWithCountViews(advertAdded));
                     this.onFilter();
-                    message = "L'annoonce a bien été ajoutée ✔" ;
+                    message = "L'annonce a bien été ajoutée ✔" ;
                 }
                 this.snackBar.open( message, "", config);
             });
@@ -157,7 +160,7 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     {
         const config = {
             width: '75%',
-            height: '80%',
+            //height: '80%',
             panelClass: 'custom-dialog-container',
             data: {
                 action: "update",

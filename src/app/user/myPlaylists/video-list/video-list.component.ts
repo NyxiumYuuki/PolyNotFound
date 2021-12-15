@@ -3,7 +3,6 @@ import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {UserHistoryService} from "../../utils/services/userHistory/userHistory.service";
 import {Router} from "@angular/router";
 import {ProfilService} from "../../../utils/services/profil/profil.service";
 
@@ -24,7 +23,6 @@ export class VideoListComponent implements OnChanges
                  public themeService: ThemeService,
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService,
                  private snackBar: MatSnackBar,
-                 private historiqueService: UserHistoryService,
                  private profilService: ProfilService,
                  private router: Router ) { }
 
@@ -45,14 +43,14 @@ export class VideoListComponent implements OnChanges
 
     onDelete(video0: any, indexVideo: number): void
     {
-        let _idsVideo = this.videosInPlaylist.filter( x => (x._id !== video0._id) );
-        _idsVideo = _idsVideo.map( x => x._id );
-
-        console.log("_idsVideo:");
-        console.log(_idsVideo);
-
+        const data = {
+            videoId: {
+                id: video0._id,
+                action: "delete"
+            }
+        }
         this.messageService
-            .put("playlist/update/"+this.playlist._id, {videoIds: _idsVideo})
+            .put("playlist/update/"+this.playlist._id, data)
             .subscribe( ret => this.onDeleteCallback(ret, indexVideo), err => this.onDeleteCallback(err, indexVideo));
     }
 

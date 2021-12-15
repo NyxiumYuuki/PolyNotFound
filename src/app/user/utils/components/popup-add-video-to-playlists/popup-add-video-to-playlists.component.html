@@ -35,7 +35,8 @@
 <mat-divider></mat-divider><!------------------------------------------------------------------------------------------------------------->
 
 
+<span *ngIf="hasError" class="mat-error"> {{errorMessage}} </span>
 <mat-dialog-actions style="justify-content: flex-end;">
-    <button mat-button mat-dialog-close (click)="onAnnuler()">Annuler</button>
-    <button mat-button mat-dialog-close="success" cdkFocusInitial (click)="onValider()">Valider</button>
+    <button mat-button (click)="onAnnuler()">Annuler</button>
+    <button mat-button cdkFocusInitial (click)="onValider()">Valider</button>
 </mat-dialog-actions>

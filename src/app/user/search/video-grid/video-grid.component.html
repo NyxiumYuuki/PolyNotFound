@@ -30,7 +30,8 @@
                             {{tronquage(tabVideo[indexPage+k].title)}}
                             <br>
                             <span style="color: gray">
-                                {{tabVideo[indexPage+k].views | number: '1.0-0'}} vues. Il y a 2h.
+                                {{tabVideo[indexPage+k].views | number: '1.0-0'}} vues.
+                                Il y a {{dateToElapsedTime(tabVideo[indexPage+k].publishedAt)}}.
                             </span>
                         </div>
                     </mat-grid-tile>

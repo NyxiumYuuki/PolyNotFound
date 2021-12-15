@@ -23,8 +23,8 @@ export class PageSearchComponent implements OnInit
     tabPlateform = TAB_PLATEFORM;
     tabVideo: VideoAll[] = [];
     search: string = "";
-    ad1: any = { title: "", url: "", images: [] };
-    ad2: any = { title: "", url: "", images: [] };
+    ad1: any;
+    ad2: any;
 
 
     constructor( private messageService: MessageService,
@@ -45,8 +45,11 @@ export class PageSearchComponent implements OnInit
 
     adCallback(retour: any): void
     {
-        if(retour !== "success") {
-            console.log(retour);
+        console.log("adCallback retour:");
+        console.log(retour);
+
+        if(retour.status !== "success") {
+            //console.log(retour);
         }
         else {
             this.ad1 = retour.data[0];
@@ -65,7 +68,6 @@ export class PageSearchComponent implements OnInit
         else if((!this.tabPlateform[0].isSelected) && this.tabPlateform[1].isSelected) sources += "dm" ;
         else if(this.tabPlateform[0].isSelected && (!this.tabPlateform[1].isSelected)) sources += "yt" ;
         else sources += "" ;
-        console.log(sources);
         params = params.append('sources', sources);
 
         this.messageService
@@ -82,6 +84,12 @@ export class PageSearchComponent implements OnInit
         else {
             this.tabVideo = retour.data;
         }
+    }
+
+
+    onEnterOnSearchBar(event)
+    {
+        if(event.key === 'Enter') this.onSearch();
     }
 
 }

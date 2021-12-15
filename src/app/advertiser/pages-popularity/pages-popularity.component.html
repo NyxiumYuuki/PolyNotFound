@@ -27,7 +27,7 @@
 
 
         <!-- chart -->
-        <div class="chartContainer">
+        <div *ngIf="isDisplayable" class="chartContainer">
             <canvas baseChart
                     [datasets]="lineChartData"
                     [labels]="lineChartLabels"

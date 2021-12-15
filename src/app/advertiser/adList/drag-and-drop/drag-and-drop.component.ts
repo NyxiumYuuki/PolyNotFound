@@ -38,6 +38,7 @@ export class DragAndDropComponent
             return;
         }
         this.files.splice(index, 1);
+        this.eventEmitter.emit(this.files);
     }
 
     /**

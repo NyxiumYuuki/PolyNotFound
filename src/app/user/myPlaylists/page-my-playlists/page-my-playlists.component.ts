@@ -46,16 +46,22 @@ export class PageMyPlaylistsComponent implements OnInit
 
     transmitPlaylistToVideoList(playlist): void
     {
-        this.messageService
-            .get("playlist/findOne/"+playlist.id)
-            .subscribe(ret => this.afterReceivingPlaylistWithVideo(ret), err => this.afterReceivingPlaylistWithVideo(err));
+        if ((playlist === null) || (playlist === undefined)) {
+            this.playlist = playlist;
+        }
+        else {
+            this.messageService
+                .get("playlist/findOne/" + playlist.id)
+                .subscribe(ret => this.afterReceivingPlaylistWithVideo(ret, playlist), err => this.afterReceivingPlaylistWithVideo(err, playlist));
+        }
     }
 
 
-    afterReceivingPlaylistWithVideo(retour: any): void
+    afterReceivingPlaylistWithVideo(retour: any, playlist): void
     {
         if(retour.status !== "success") {
             console.log(retour);
+            this.playlist = playlist;
         }
         else {
             this.playlist = retour.data;

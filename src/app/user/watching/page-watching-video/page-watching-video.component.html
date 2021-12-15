@@ -17,7 +17,7 @@
             <!-- Search bar -->
             <div class="input-group" style="width: 100%; margin: 0 auto;">
                 <div class="form-outline" style="width: 100%; margin: 0 auto;">
-                    <input type="search" placeholder="Rechercher..." class="inputSearchBar"/>
+                    <input type="search" placeholder="Rechercher..." class="inputSearchBar" (keydown)="onEnterOnSearchBar($event)"/>
                     <button mat-icon-button (click)="onSearch()">
                         <mat-icon>search</mat-icon>
                     </button>

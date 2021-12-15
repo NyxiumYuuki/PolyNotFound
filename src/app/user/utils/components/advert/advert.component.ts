@@ -1,6 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Advert} from "../../../../utils/interfaces/advert";
-import {Router} from "@angular/router";
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 
 
@@ -9,26 +7,32 @@ import {Router} from "@angular/router";
     templateUrl: './advert.component.html',
     styleUrls: ['./advert.component.scss']
 })
-export class AdvertComponent implements OnInit
+export class AdvertComponent implements OnChanges
 {
     @Input() ad: any;
     @Input() from: string = "search";
-    idxImage: number = 0;
+    image: any;
+    imageExist: boolean = false;
 
-    constructor(private router: Router) { }
 
-    ngOnInit(): void
+    constructor() { }
+
+
+    ngOnChanges(changes: SimpleChanges): void
     {
-        const nbImages = this.ad.images.length;
-        if(nbImages === 0) this.ad.images.push({url: "img pub"});
-        this.idxImage = Math.floor(Math.random() * nbImages);
-
-        if(this.ad.title === "") this.ad.title = "--- pub ---" ;
+        if((this.ad !== null) && (this.ad !== undefined))
+        {
+            const nbImages = this.ad.images.length;
+            const indexImage = Math.floor(Math.random() * nbImages);
+            this.image = this.ad.images[indexImage];
+            this.imageExist = true;
+        }
     }
+
 
     onClick(): void
     {
-        document.location.href = this.ad.url;
+        if(this.ad.url !== "") document.location.href = this.ad.url;
     }
 
 }
