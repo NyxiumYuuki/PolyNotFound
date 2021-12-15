@@ -418,18 +418,42 @@ exports.ad = (req, res) => {
               match = {$match: {isVisible: true, isActive: true}};
               pick = {$sample: {size: parseInt(quantity, 10)}};
             }
-            console.log(match, pick, interests);
+
             Ad.aggregate([
                 match,
                 pick
             ])
               .then(data => {
                 if(data.length > 0){
-                  return sendMessage(res, 11, data, token);
+                  let ids = []
+                  for(const i in data){ids.push(data[i]._id);}
+                  Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}})
+                    .then(dataUpdate => {
+                      if(dataUpdate && dataUpdate.modifiedCount === parseInt(quantity, 10)){
+                        return sendMessage(res, 11, data, token);
+                      } else {
+                        return sendError(res,500,101,`Some error occurred while updating ${quantity} ad(s) for the User.`, token);
+                      }
+                    })
+                    .catch(err => {
+                      return sendError(res,500,101,err.message || `Some error occurred while updating ${quantity} ad(s) for the User.`, token);
+                    });
                 } else {
                   Ad.aggregate([{$match: {isVisible: true, isActive: true}}, {$sample: {size: parseInt(quantity, 10)}}])
                     .then(data => {
-                        return sendMessage(res, 11, data, token);
+                      let ids = []
+                      for(const i in data){ids.push(data[i]._id);}
+                      Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}})
+                        .then(dataUpdate => {
+                          if(dataUpdate && dataUpdate.modifiedCount === parseInt(quantity, 10)){
+                            return sendMessage(res, 11, data, token);
+                          } else {
+                            return sendError(res,500,101,`Some error occurred while updating ${quantity} ad(s) for the User.`, token);
+                          }
+                        })
+                        .catch(err => {
+                          return sendError(res,500,101,err.message || `Some error occurred while updating ${quantity} ad(s) for the User.`, token);
+                        });
                     })
                     .catch(err => {
                       return sendError(res,500,101,err.message || `Some error occurred while getting ${quantity} ad(s) for the User.`, token);
