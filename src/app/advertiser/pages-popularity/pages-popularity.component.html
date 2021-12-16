@@ -10,13 +10,13 @@
         <!-- Filter -->
         <div class="filtersContainer mat-elevation-z8">
 
-            <div style="font-weight: bold">Filtre</div>
+            <div style="font-weight: bold;">Filtre</div>
 
             <mat-divider></mat-divider><br>
 
             <div *ngIf="true; then colPeriode"></div>
 
-            <br><mat-divider></mat-divider><br>
+            <br><mat-divider style="width: 60%"></mat-divider><br>
 
             <div style="text-align: right; font-size: small;">
                 <button mat-button (click)="onApplyFilter()" style="font-size: small">Appliquer</button>
@@ -76,10 +76,11 @@
             <mat-option value="semaine">semaine</mat-option>
             <mat-option value="mois">mois</mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field><br>
+
 
     <!-- ads -->
-    <mat-select [formControl]="formControl" multiple style="padding-top: 10px;">
+    <mat-select [formControl]="formControl" multiple style="padding-top: 10px; width: 60%;">
         <mat-select-trigger>
             <span *ngIf="formControl.value?.length > 0">
                 <span *ngFor="let coupleNameViews of formControl.value"> {{coupleNameViews.name}}, </span>
@@ -87,5 +88,7 @@
         </mat-select-trigger>
         <mat-option *ngFor="let coupleNameViews of allCoupleNameViews" [value]="coupleNameViews">{{coupleNameViews.name}}</mat-option>
     </mat-select>
+    <button mat-button class="btnToutSelectionner" (click)="onSelectAll()">Tout sélectionner</button>
+    <button mat-button class="btnToutDeselectionner" (click)="onDeSelectAll()">Tout désélectionner</button>
 
 </ng-template>

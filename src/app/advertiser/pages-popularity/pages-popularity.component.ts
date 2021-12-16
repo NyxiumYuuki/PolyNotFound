@@ -294,4 +294,15 @@ export class PagesPopularityComponent implements OnInit
         return tabDate;
     }
 
+
+    onSelectAll(): void
+    {
+        this.formControl = new FormControl(this.allCoupleNameViews);
+    }
+
+    onDeSelectAll(): void
+    {
+        this.formControl = new FormControl([]);
+    }
+
 }

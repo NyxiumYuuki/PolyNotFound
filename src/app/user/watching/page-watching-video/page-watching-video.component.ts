@@ -138,11 +138,11 @@ export class PageWatchingVideoComponent implements OnInit
 
         // style
         if(this.from === 'search' || this.from === 'history') {
-            this.containerStyle = "margin: 0 auto; width: 64vw;"
+            this.containerStyle = "margin: 0 auto; width: 64vw;" ;
             this.iframeStyle = "width: 64vw; height: 60vh;" ;
         }
         else {
-            this.containerStyle = "margin: 0 auto; width: 48vw;"
+            this.containerStyle = "margin: 0 auto; width: 48vw;" ;
             this.iframeStyle = "width: 48vw; height: 45vh;" ;
         }
     }
