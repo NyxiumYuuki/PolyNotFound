@@ -70,6 +70,10 @@ export class VideoListComponent implements OnChanges
 
     onVideo(video: any): void
     {
+        this.messageService
+            .put("video/update/"+video._id, {watchedDate: true})
+            .subscribe(ret => this.onVideoCallback(ret), err => this.onVideoCallback(err));
+
         const params = {
             videoId: video.videoId,
             source: video.source,
@@ -77,6 +81,12 @@ export class VideoListComponent implements OnChanges
             from: "myPlaylists",
         };
         this.router.navigate(['/user/watching'], { queryParams: params });
+    }
+
+
+    onVideoCallback(retour: any): void
+    {
+        if(retour.status !== "success") console.log(retour);
     }
 
 }
