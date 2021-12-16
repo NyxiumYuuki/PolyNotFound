@@ -1,4 +1,4 @@
-import {Component, Input } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {VideoAll} from "../../../utils/interfaces/video";
 import {AddVideoToPlaylistsService} from "../../utils/services/addVideoToPlaylists/add-video-to-playlists.service";
 import {Router} from "@angular/router";
@@ -11,16 +11,31 @@ import {MessageService} from "../../../utils/services/message/message.service";
     templateUrl: './video-grid.component.html',
     styleUrls: ['./video-grid.component.scss']
 })
-export class VideoGridComponent
+export class VideoGridComponent implements OnChanges
 {
     @Input() tabVideo: VideoAll[] = [];
-    @Input() search: string = '';
-    indexPage: number = 0;
+    @Input() search: string = "";
+    @Input() sources: string = "";
+    @Input() indexPage: number = 0;
+    tabPage: number[] = [];
 
 
     constructor( private addVideoToPlaylistsService: AddVideoToPlaylistsService,
                  private router: Router,
                  private messageService: MessageService ) {}
+
+
+    ngOnChanges(changes: SimpleChanges): void
+    {
+        if(this.tabVideoExists())
+        {
+            const nbVideo = this.tabVideo.length;
+            let nbPage = Math.floor(nbVideo/9);
+            if((nbVideo%9) !== 0) nbPage += 1;
+            this.tabPage = [];
+            for(let i=1 ; i<=nbPage ; i++) this.tabPage.push(i);
+        }
+    }
 
 
     onAddToPlaylist(video: VideoAll): void
@@ -41,16 +56,26 @@ export class VideoGridComponent
         const data = { source: video.source, interest: video.interest };
         this.messageService
             .post("video/create/"+video.videoId, data)
-            .subscribe(ret => this.onVideoCallback(ret), err => this.onVideoCallback(err));
-
-        const url = '/user/watching/fromSearch/'+video.videoId+'/'+video.source+'/'+this.search;
-        this.router.navigateByUrl(url);
+            .subscribe(ret => this.onVideoCallback(ret,video), err => this.onVideoCallback(err,video));
     }
 
 
-    onVideoCallback(retour: any): void
+    onVideoCallback(retour: any, video: VideoAll): void
     {
-        if(retour.status !== "success") console.log(retour);
+        if(retour.status !== "success") {
+            console.log(retour);
+        }
+        else {
+            const params = {
+                videoId: video.videoId,
+                source: video.source,
+                from: "search",
+                search: this.search,
+                sources: this.sources,
+                indexPage: this.indexPage
+            };
+            this.router.navigate(['/user/watching'], { queryParams: params });
+        }
     }
 
 
@@ -91,6 +116,14 @@ export class VideoGridComponent
         const ellapsedTimeInYears = Math.trunc(ellapsedTimeInMonths / 12);
         if(ellapsedTimeInYears <= 1) return ellapsedTimeInYears + " an" ;
         else return ellapsedTimeInYears + " ans" ;
+    }
+
+
+    tabVideoExists(): boolean
+    {
+        if((this.tabVideo === null) || (this.tabVideo === undefined)) return false;
+        else if(this.tabVideo.length === 0) return false;
+        else return true;
     }
 
 }

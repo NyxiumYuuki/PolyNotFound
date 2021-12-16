@@ -2,7 +2,7 @@
 
 
 <!-- Grille -->
-<div style="height: 93%; background-color: white; padding-top: 7px;">
+<div style="height: 93%; background-color: white; padding-top: 7px;" *ngIf="tabVideoExists()">
     <mat-grid-list cols="3" rowHeight="33%">
         <mat-grid-tile colspan="1" rowspan="1" *ngFor="let k of [0,1,2,3,4,5,6,7,8]">
             <div class="myCell" *ngIf="indexPage+k < tabVideo.length" [title]="tabVideo[indexPage+k].title">
@@ -55,13 +55,13 @@
 
 
 <!-- Paginator -->
-<div class="paginatorContainer">
+<div class="paginatorContainer" *ngIf="tabVideoExists()">
 
     <!-- btn précédent -->
     <button mat-button class="btnPaginator" [disabled]="indexPage<=0" (click)="indexPage=indexPage-9"> < Précédent </button> &nbsp;
 
     <!-- numeros de page -->
-    <span *ngFor="let page of [1,2,3,4,5,6,7,8,9,10]" (click)="indexPage=(page-1)*9">
+    <span *ngFor="let page of tabPage" (click)="indexPage=(page-1)*9">
         <span *ngIf="page===((indexPage/9)+1)">
             <span style="text-decoration: underline; cursor: pointer;font-weight: bold;">{{page}}</span>&nbsp;
         </span>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {VideoAll} from "../../../utils/interfaces/video";
-import {Advert} from "../../../utils/interfaces/advert";
 import {MessageService} from "../../../utils/services/message/message.service";
 import {FictitiousVideosService} from "../../../utils/services/fictitiousDatas/fictitiousVideos/fictitious-videos.service";
 import {FictitiousAdvertsService} from "../../../utils/services/fictitiousDatas/fictitiousAdverts/fictitious-adverts.service";
@@ -28,6 +27,7 @@ let TAB_PLATEFORM = [
 export class PageWatchingVideoComponent implements OnInit
 {
     tabPlateform = TAB_PLATEFORM;
+    sources: string = "";
     video = {
         title: "",
         videoId: "",
@@ -38,12 +38,15 @@ export class PageWatchingVideoComponent implements OnInit
         interest: ""
     };
     search: string = "";
+
     ad1: any;
     ad2: any;
     from: string = "";
 
-    playlist: PlaylistDB;
+    playlist: any;
     videosInPlaylist: any[] = [];
+
+    paramsFromOldPage ;
 
     hiddenDescription: boolean = true;
     iframeStyle: string = "";
@@ -60,46 +63,81 @@ export class PageWatchingVideoComponent implements OnInit
                  private addVideoToPlaylistsService: AddVideoToPlaylistsService ) { }
 
 
+
     ngOnInit(): void
     {
         // Ask for videos
-        const videoId = this.activatedRoute.snapshot.paramMap.get('videoId');
-        let params1 = new HttpParams();
-        let source = "" ;
-        if(this.activatedRoute.snapshot.paramMap.get('source') === "Youtube") source = "yt" ;
-        else source = "dm"
-        params1 = params1.append("source", source);
-        this.messageService
-            .get("video/get/"+videoId, params1)
-            .subscribe(ret => this.findVideoCallback(ret), err => this.findVideoCallback(err));
+        this.activatedRoute
+            .queryParams
+            .subscribe(paramsFromOldPage => {
+
+                this.paramsFromOldPage = paramsFromOldPage;
+                const videoId = paramsFromOldPage.videoId;
+                let source = paramsFromOldPage.source;
+
+                let params = new HttpParams();
+                if(source === "Youtube") source = "yt";
+                else if(source === "Dailymotion") source = "dm" ;
+                params = params.append("source", source);
+                this.messageService
+                    .get("video/get/"+videoId, params)
+                    .subscribe(ret => this.findVideoCallback(ret), err => this.findVideoCallback(err));
+            });
+
 
         // Ask for adverts
-        let params2 = new HttpParams();
-        params2 = params2.append("quantity", 2);
+        let params = new HttpParams();
+        params = params.append("quantity", 2);
         this.messageService
-            .get("user/ad", params2)
+            .get("user/ad", params)
             .subscribe(ret => this.findAdCallback(ret), err => this.findAdCallback(err));
 
 
-        if(this.router.url.includes("fromSearch")) this.from = "search" ;
-        else if(this.router.url.includes("fromHistory")) this.from = "history";
-        else if(this.router.url.includes("fromMyPlaylists"))
+        // Si on vient de la page "search"
+        if(this.router.url.includes("search"))
+        {
+            this.from = "search" ;
+            this.activatedRoute
+                .queryParams
+                .subscribe(paramsFromOldPage => {
+                    if(paramsFromOldPage.hasOwnProperty("search")) this.search = paramsFromOldPage.search;
+                    if(paramsFromOldPage.hasOwnProperty("sources")) {
+                        this.sources = paramsFromOldPage.sources;
+                        if(this.sources === "yt") {
+                            this.tabPlateform[0].isSelected = true;
+                            this.tabPlateform[1].isSelected = false;
+                        }
+                        else if(this.sources === "dm") {
+                            this.tabPlateform[0].isSelected = false;
+                            this.tabPlateform[1].isSelected = true;
+                        }
+                        else if(this.sources === "yt,dm") {
+                            this.tabPlateform[0].isSelected = true;
+                            this.tabPlateform[1].isSelected = true;
+                        }
+                    }
+                });
+        }
+        // si on vient de la page "myPlaylists"
+        else if(this.router.url.includes("myPlaylists"))
         {
             this.from = "myPlaylists";
-            const _idPlaylist = this.activatedRoute.snapshot.paramMap.get('_idPlaylist');
-            this.playlist = this.fictitiousVideosService.getPlaylistBy_id(_idPlaylist);
-            const allVideo = this.fictitiousVideosService.get_TAB_VIDEO();
-            this.videosInPlaylist = [];
-            for(let _idVideo of this.playlist.videoIds)
-            {
-                const video = allVideo.find(video => video._id === _idVideo);
-                this.videosInPlaylist.push(video);
-            }
+            this.activatedRoute
+                .queryParams
+                .subscribe(paramsFromOldPage => {
+                    const _idPlaylist = paramsFromOldPage._idPlaylist;
+                    this.messageService
+                        .get("playlist/findOne/"+_idPlaylist)
+                        .subscribe(ret => this.afterReceivingPlaylistWithVideo(ret), err => this.afterReceivingPlaylistWithVideo(err));
+                });
+
         }
+        // si on vient de la page "history"
+        else if(this.router.url.includes("history")) this.from = "history";
+
 
         // style
-        if(this.from === 'search' || this.from === 'history')
-        {
+        if(this.from === 'search' || this.from === 'history') {
             this.containerStyle = "margin: 0 auto; width: 64vw;"
             this.iframeStyle = "width: 64vw; height: 60vh;" ;
         }
@@ -110,9 +148,11 @@ export class PageWatchingVideoComponent implements OnInit
     }
 
 
+
     findVideoCallback(retour: any): void
     {
         if(retour.status !== "success") {
+            console.log("findVideoCallback: ");
             console.log(retour);
         }
         else {
@@ -123,7 +163,8 @@ export class PageWatchingVideoComponent implements OnInit
 
     findAdCallback(retour: any): void
     {
-        if(retour !== "success") {
+        if(retour.status !== "success") {
+            console.log("findAdCallback: ");
             console.log(retour);
         }
         else {
@@ -133,9 +174,33 @@ export class PageWatchingVideoComponent implements OnInit
     }
 
 
+    afterReceivingPlaylistWithVideo(retour: any): void
+    {
+        if(retour.status !== "success") {
+            console.log("afterReceivingPlaylistWithVideo");
+            console.log(retour);
+        }
+        else {
+            this.playlist = retour.data;
+            this.videosInPlaylist = retour.data.videos;
+        }
+    }
+
+
     onSearch()
     {
-
+        if(this.tabPlateform[0].isSelected && this.tabPlateform[1].isSelected) this.sources = "yt,dm" ;
+        else if((!this.tabPlateform[0].isSelected) && this.tabPlateform[1].isSelected) this.sources = "dm" ;
+        else if(this.tabPlateform[0].isSelected && (!this.tabPlateform[1].isSelected)) this.sources = "yt" ;
+        else this.sources = "" ;
+        let options = {
+            queryParams: {
+                search: this.search,
+                sources: this.sources,
+                indexPage: 0,
+            }
+        };
+        this.router.navigate(['/user/search'], options);
     }
 
 
@@ -147,9 +212,24 @@ export class PageWatchingVideoComponent implements OnInit
 
     onRetour(): void
     {
-        if(this.from === 'search') this.router.navigateByUrl("/user/search");
-        else if(this.from === 'myPlaylists') this.router.navigateByUrl("/user/myPlaylists");
-        else if(this.from === 'history') this.router.navigateByUrl("/user/history");
+        let url: string[] = [];
+        let options = {};
+
+        if(this.from === 'search')
+        {
+            url = ['/user/search'];
+            options = {
+                queryParams: {
+                    search: this.paramsFromOldPage.search,
+                    sources: this.paramsFromOldPage.sources,
+                    indexPage: this.paramsFromOldPage.indexPage,
+                }
+            };
+        }
+        else if(this.from === 'myPlaylists') url = ["/user/myPlaylists"];
+        else if(this.from === 'history') url = ["/user/history"];
+
+        this.router.navigate(url, options);
     }
 
 
@@ -173,6 +253,12 @@ export class PageWatchingVideoComponent implements OnInit
     onEnterOnSearchBar(event)
     {
         if(event.key === 'Enter') this.onSearch();
+    }
+
+
+    playlistExists(): boolean
+    {
+        return ((this.playlist !== null) && (this.playlist !== undefined));
     }
 
 }

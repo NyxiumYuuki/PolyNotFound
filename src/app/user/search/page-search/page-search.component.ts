@@ -3,6 +3,7 @@ import {MessageService} from "../../../utils/services/message/message.service";
 import {VideoAll} from "../../../utils/interfaces/video";
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {HttpParams} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
 
 
 
@@ -25,28 +26,55 @@ export class PageSearchComponent implements OnInit
     search: string = "";
     ad1: any;
     ad2: any;
+    sources: string = "" ;
+    indexPage: number = 0;
 
 
     constructor( private messageService: MessageService,
-                 public themeService: ThemeService ) { }
+                 public themeService: ThemeService,
+                 private activatedRoute: ActivatedRoute ) { }
 
 
     ngOnInit(): void
     {
+        // parametre de la route
+        this.activatedRoute
+            .queryParams
+            .subscribe(paramsFromOldPage => {
+                if(paramsFromOldPage.hasOwnProperty("search")) this.search = paramsFromOldPage.search;
+                if(paramsFromOldPage.hasOwnProperty("sources"))
+                {
+                    this.sources = paramsFromOldPage.sources;
+                    if(this.sources === "yt") {
+                        this.tabPlateform[0].isSelected = true;
+                        this.tabPlateform[1].isSelected = false;
+                    }
+                    else if(this.sources === "dm") {
+                        this.tabPlateform[0].isSelected = false;
+                        this.tabPlateform[1].isSelected = true;
+                    }
+                    else if(this.sources === "yt,dm") {
+                        this.tabPlateform[0].isSelected = true;
+                        this.tabPlateform[1].isSelected = true;
+                    }
+                }
+                if(paramsFromOldPage.hasOwnProperty("indexPage")) this.indexPage = parseInt(paramsFromOldPage.indexPage, 10);
+                this.onSearch();
+            });
+
+        // Ask for ads
         let params = new HttpParams();
         params = params.append("quantity", 2);
         this.messageService
             .get("user/ad", params)
             .subscribe(ret => this.adCallback(ret), err => this.adCallback(err));
-
-        this.onSearch();
     }
 
 
     adCallback(retour: any): void
     {
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             this.ad1 = retour.data[0];
@@ -60,12 +88,11 @@ export class PageSearchComponent implements OnInit
         let params = new HttpParams();
         params = params.append('q', this.search);
 
-        let sources = "";
-        if(this.tabPlateform[0].isSelected && this.tabPlateform[1].isSelected) sources += "yt,dm" ;
-        else if((!this.tabPlateform[0].isSelected) && this.tabPlateform[1].isSelected) sources += "dm" ;
-        else if(this.tabPlateform[0].isSelected && (!this.tabPlateform[1].isSelected)) sources += "yt" ;
-        else sources += "" ;
-        params = params.append('sources', sources);
+        if(this.tabPlateform[0].isSelected && this.tabPlateform[1].isSelected) this.sources = "yt,dm" ;
+        else if((!this.tabPlateform[0].isSelected) && this.tabPlateform[1].isSelected) this.sources = "dm" ;
+        else if(this.tabPlateform[0].isSelected && (!this.tabPlateform[1].isSelected)) this.sources = "yt" ;
+        else this.sources = "" ;
+        params = params.append('sources', this.sources);
 
         this.messageService
             .get("video/search", params)

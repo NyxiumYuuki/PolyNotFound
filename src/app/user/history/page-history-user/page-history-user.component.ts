@@ -99,8 +99,12 @@ export class PageHistoryUserComponent implements AfterViewInit
             .put("video/update/"+video._id, {watchedDate: true})
             .subscribe(ret => this.onVideoCallback(ret), err => this.onVideoCallback(err));
 
-        const url = '/user/watching/fromHistory/'+video.videoId+'/'+video.source ;
-        this.router.navigateByUrl(url);
+        const params = {
+            videoId: video.videoId,
+            source: video.source,
+            from: "history",
+        };
+        this.router.navigate(['/user/watching'], { queryParams: params });
     }
 
 

@@ -70,8 +70,13 @@ export class VideoListComponent implements OnChanges
 
     onVideo(video: any): void
     {
-        const url = "user/watching/fromMyPlaylists/" + video.videoId + '/' + this.playlist._id;
-        this.router.navigateByUrl(url);
+        const params = {
+            videoId: video.videoId,
+            source: video.source,
+            _idPlaylist: this.playlist._id,
+            from: "myPlaylists",
+        };
+        this.router.navigate(['/user/watching'], { queryParams: params });
     }
 
 }

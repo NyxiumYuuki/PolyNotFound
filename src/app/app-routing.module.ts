@@ -28,9 +28,7 @@ const routes: Routes = [
     { path: 'user/myPlaylists', component: PageMyPlaylistsComponent },
     { path: 'user/history', component: PageHistoryUserComponent },
     { path: 'user/myProfil', component:  PageProfilUserComponent },
-    { path: 'user/watching/fromSearch/:videoId/:source/:search', component: PageWatchingVideoComponent },
-    { path: 'user/watching/fromMyPlaylists/:videoId/:_idPlaylist', component: PageWatchingVideoComponent },
-    { path: 'user/watching/fromHistory/:videoId/:source', component: PageWatchingVideoComponent },
+    { path: 'user/watching', component:  PageWatchingVideoComponent },
 
     // Advertiser
     { path: 'advertiser', component: PageAdListAdvertiserComponent },
