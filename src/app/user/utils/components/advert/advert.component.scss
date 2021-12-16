@@ -11,6 +11,7 @@
   max-height: 100%;
   border: solid 3px black;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .helper {
@@ -27,6 +28,7 @@
   border: solid 3px black;
   position: fixed;
   left: 1vw;
+  cursor: pointer;
 }
 
 #imgFromWatchingRight {
@@ -35,4 +37,5 @@
   border: solid 3px black;
   position: fixed;
   right: 1vw;
+  cursor: pointer;
 }

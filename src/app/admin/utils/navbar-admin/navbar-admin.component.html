@@ -23,7 +23,7 @@
 
 
     <!-- Mon profil -->
-    <img [src]=profilService.profileImageUrl
+    <img [src]=profilService.getProfileImageUrl()
          onerror="this.onerror=null; this.src='assets/profil.png'"
          [routerLink]="routes[3]"
          alt="">

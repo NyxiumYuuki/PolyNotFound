@@ -48,7 +48,7 @@ export class PageProfilAdvertiserComponent implements OnInit
     ngOnInit(): void
     {
         this.messageService
-            .get( "user/findOne/"+this.profilService.id)
+            .get( "user/findOne/"+this.profilService.getId())
             .subscribe( retour => this.ngOnInitCallback(retour), err => this.ngOnInitCallback(err) )
     }
 
@@ -60,7 +60,6 @@ export class PageProfilAdvertiserComponent implements OnInit
         }
         else {
             this.advertiser = retour.data;
-            this.profilService.id = retour.data.id;
         }
     }
 

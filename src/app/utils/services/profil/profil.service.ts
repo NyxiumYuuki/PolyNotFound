@@ -1,10 +1,30 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ProfilService
 {
-    public id: string = "" ;
-    public profileImageUrl: string = "";
+
+    getId(): string
+    {
+        return localStorage.getItem('id');
+    }
+
+    getProfileImageUrl(): string
+    {
+        return localStorage.getItem('profileImageUrl');
+    }
+
+    setId(id: string): void
+    {
+        localStorage.setItem('id', id);
+    }
+
+    setProfileImageUrl(profileImageUrl: string): void
+    {
+        localStorage.setItem('profileImageUrl', profileImageUrl);
+    }
+
 }

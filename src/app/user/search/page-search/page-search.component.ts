@@ -45,9 +45,6 @@ export class PageSearchComponent implements OnInit
 
     adCallback(retour: any): void
     {
-        console.log("adCallback retour:");
-        console.log(retour);
-
         if(retour.status !== "success") {
             //console.log(retour);
         }

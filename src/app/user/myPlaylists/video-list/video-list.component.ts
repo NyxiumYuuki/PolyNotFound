@@ -29,8 +29,6 @@ export class VideoListComponent implements OnChanges
 
     ngOnChanges(changes: SimpleChanges): void
     {
-        console.log("ngOnChanges:");
-        console.log(this.playlist);
         if((this.playlist !== null) && (this.playlist !== undefined)) this.videosInPlaylist = this.playlist.videos;
     }
 
@@ -57,11 +55,8 @@ export class VideoListComponent implements OnChanges
 
     onDeleteCallback(retour: any, indexVideo: number): void
     {
-        console.log("onDeleteCallback:" );
-        console.log(retour);
-
         if(retour.status !== "success") {
-            //console.log(retour);
+            console.log(retour);
         }
         else {
             this.playlist.videos.splice(indexVideo, 1);

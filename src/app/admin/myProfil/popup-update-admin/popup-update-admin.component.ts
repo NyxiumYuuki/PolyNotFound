@@ -67,7 +67,7 @@ export class PopupUpdateAdminComponent implements OnInit
                 profileImageUrl: this.adminCopy.profileImageUrl,
             };
             this.messageService
-                .put("user/update/"+this.profilService.id, data)
+                .put("user/update/"+this.profilService.getId(), data)
                 .subscribe( ret => this.onValiderCallback(ret), err => this.onValiderCallback(err) );
         }
     }
@@ -80,6 +80,7 @@ export class PopupUpdateAdminComponent implements OnInit
             this.dialogRef.close(null);
         }
         else {
+            this.profilService.setProfileImageUrl(this.adminCopy.profileImageUrl);
             this.dialogRef.close(this.adminCopy);
         }
     }

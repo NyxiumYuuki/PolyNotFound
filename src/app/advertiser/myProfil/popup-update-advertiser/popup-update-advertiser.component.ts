@@ -68,7 +68,7 @@ export class PopupUpdateAdvertiserComponent implements OnInit
                 company: this.advertiserCopy.company
             };
             this.messageService
-                .put("user/update/"+this.profilService.id, data)
+                .put("user/update/"+this.profilService.getId(), data)
                 .subscribe( ret => this.onValiderCallback(ret), err => this.onValiderCallback(err) );
         }
     }
@@ -81,6 +81,7 @@ export class PopupUpdateAdvertiserComponent implements OnInit
             this.dialogRef.close(null);
         }
         else {
+            this.profilService.setProfileImageUrl(this.advertiserCopy.profileImageUrl);
             this.dialogRef.close(this.advertiserCopy);
         }
     }

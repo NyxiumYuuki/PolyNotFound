@@ -32,7 +32,9 @@ export class AdvertComponent implements OnChanges
 
     onClick(): void
     {
-        if(this.ad.url !== "") document.location.href = this.ad.url;
+        if((this.ad.url !== "") && (this.ad.url !== null) && (this.ad.url !== undefined)) {
+            document.location.href = this.ad.url;
+        }
     }
 
 }

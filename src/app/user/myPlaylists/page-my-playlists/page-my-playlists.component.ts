@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ThemeService} from "../../../utils/services/theme/theme.service";
 import {Advert} from "../../../utils/interfaces/advert";
 import {MessageService} from "../../../utils/services/message/message.service";
-import {PlaylistDB} from "../../../utils/interfaces/playlist";
 import {HttpParams} from "@angular/common/http";
-import {subscribeOn} from "rxjs/operators";
 
 
 
@@ -35,7 +33,7 @@ export class PageMyPlaylistsComponent implements OnInit
 
     adCallback(retour: any): void
     {
-        if(retour !== "success") {
+        if(retour.status !== "success") {
             console.log(retour);
         }
         else {
