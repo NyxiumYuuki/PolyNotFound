@@ -278,11 +278,15 @@ exports.findOne = (req, res) => {
               data[0].videos[i].imageUrl = obj[0].snippet.thumbnails.medium.url ? obj[0].snippet.thumbnails.medium.url : null;
               data[0].videos[i].interest = obj[0].snippet.categoryId  ? await asyncInterest(obj[0].snippet.categoryId, youtube.name): null;
               data[0].videos[i].title = obj[0].snippet.title ? obj[0].snippet.title : null;
+              data[0].videos[i].views = obj[0].statistics.viewCount  ? parseInt(obj[0].statistics.viewCount) : null;
+              data[0].videos[i].publishedAt = obj[0].snippet.publishedAt  ?  obj[0].snippet.publishedAt : null;
             } else if (data[0].videos[i].source === dailymotion.name) {
               const obj = dm_results.filter(obj => obj.id === data[0].videos[i].videoId);
               data[0].videos[i].imageUrl = obj[0].thumbnail_480_url ? obj[0].thumbnail_480_url : null;
               data[0].videos[i].interest =  obj[0]['channel.name']  ? await asyncInterest( obj[0]['channel.name'], dailymotion.name) : null;
               data[0].videos[i].title = obj[0].title ? obj[0].title : null;
+              data[0].videos[i].views = obj[0].views_total ? parseInt(obj[0].views_total) : null;
+              data[0].videos[i].publishedAt = obj[0].created_time ? new Date(obj[0].created_time * 1000) : null
             }
           }
           return sendMessage(res, 12, data[0], token)
