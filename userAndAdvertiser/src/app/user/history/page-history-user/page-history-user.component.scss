@@ -1,0 +1,46 @@
+.myContainer {
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+table {
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+
+input {
+  width: 35%;
+  font-size: large;
+}
+
+// -------------------------------------------------------
+
+.imgsContainer {
+  position: relative;
+  width: 20vw;
+  height: 15vh;
+  cursor: pointer;
+}
+
+.imgPlay {
+  position: absolute;
+  margin-left: 9vw;
+  width: 3vw;
+  margin-top: 5vh;
+  height: 6vh;
+  padding: 0px 0px 0px 0px;
+}
+
+.imgVideo {
+  border: solid 1px black;
+  width: 20vw;
+  height: 15vh;
+  padding: 0px 0px 0px 0px;
+}

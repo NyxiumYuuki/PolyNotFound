@@ -1,0 +1,8 @@
+<mat-dialog-content class="mat-typography">
+    Êtes-vous sûr de vouloir supprimer <i>{{user.login}}</i> ?
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close();">Annuler</button>
+    <button mat-button (click)="onValidate()" cdkFocusInitial>Valider</button>
+</mat-dialog-actions>

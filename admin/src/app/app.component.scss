@@ -1,0 +1,24 @@
+::ng-deep snack-bar-container.custom-class {
+  //background: yellow;
+}
+::ng-deep .custom-class .mat-simple-snackbar {
+  //color: green;
+  justify-content: center;
+}
+
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: solid 1px black !important;
+  background-color: white !important;
+}

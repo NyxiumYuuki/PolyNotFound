@@ -1,0 +1,94 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+
+        <!-- Navbar -->
+        <app-navbar-advertiser></app-navbar-advertiser>
+
+
+
+        <!-- Filter -->
+        <div class="filtersContainer mat-elevation-z8">
+
+            <div style="font-weight: bold;">Filtre</div>
+
+            <mat-divider></mat-divider><br>
+
+            <div *ngIf="true; then colPeriode"></div>
+
+            <br><mat-divider style="width: 60%"></mat-divider><br>
+
+            <div style="text-align: right; font-size: small;">
+                <button mat-button (click)="onApplyFilter()" style="font-size: small">Appliquer</button>
+            </div>
+
+        </div>
+
+
+
+        <!-- chart -->
+        <div *ngIf="isDisplayable" class="chartContainer">
+            <canvas baseChart
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="chartOptions"
+                    [colors]="[]"
+                    [legend]="true"
+                    [chartType]="'line'">
+            </canvas>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+<ng-template #colPeriode>
+
+    <!-- startDate -->
+    <mat-form-field appearance="fill" style="width: 140px;">
+        <mat-label>début</mat-label>
+        <input matInput type="date" [ngModel] ="startDate | date:'yyyy-MM-dd'" (ngModelChange)="onNewStartDate($event);">
+    </mat-form-field>
+    &nbsp; - &nbsp;
+
+    <!-- endDate -->
+    <mat-form-field appearance="fill" style="width: 140px;">
+        <mat-label>fin</mat-label>
+        <input matInput type="date" [ngModel] ="endDate | date:'yyyy-MM-dd'" (ngModelChange)="onNewEndDate($event);">
+    </mat-form-field>
+    &nbsp; - &nbsp;
+
+    <!-- step -->
+    <mat-form-field appearance="fill" style="width: 140px;">
+        <mat-label>pas d'affichage</mat-label>
+        <input matInput type="number" [(ngModel)] =step>
+    </mat-form-field>
+    &nbsp; - &nbsp;
+
+    <!-- step unity -->
+    <mat-form-field appearance="fill">
+        <mat-label>unité du pas d'affichage</mat-label>
+        <mat-select [(ngModel)]="stepUnity">
+            <mat-option value="jour">jour</mat-option>
+            <mat-option value="semaine">semaine</mat-option>
+            <mat-option value="mois">mois</mat-option>
+        </mat-select>
+    </mat-form-field><br>
+
+
+    <!-- ads -->
+    <mat-select [formControl]="formControl" multiple style="padding-top: 10px; width: 60%;">
+        <mat-select-trigger>
+            <span *ngIf="formControl.value?.length > 0">
+                <span *ngFor="let coupleNameViews of formControl.value"> {{coupleNameViews.name}}, </span>
+            </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let coupleNameViews of allCoupleNameViews" [value]="coupleNameViews">{{coupleNameViews.name}}</mat-option>
+    </mat-select>
+    <button mat-button class="btnToutSelectionner" (click)="onSelectAll()">Tout sélectionner</button>
+    <button mat-button class="btnToutDeselectionner" (click)="onDeSelectAll()">Tout désélectionner</button>
+
+</ng-template>

@@ -1,0 +1,74 @@
+.myContainer {
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  font-size: small;
+}
+
+// ----------------------------------------------------------
+
+
+.filtersContainer {
+  width: 80%;
+  background-color: white;
+  padding: 10px 10px 10px 10px;
+  margin: 20px 3% 20px 3%
+}
+
+.myRow {
+  margin-left: 1%;
+}
+
+.textFilter {
+  width: 50%;
+  font-size: medium;
+  border-radius: 5px;
+}
+
+// ----------------------------------------------------------
+
+
+table {
+  margin: 0 auto;
+  width: 94%;
+  font-size: small;
+}
+.darkTheme table { border: solid 2px white; }
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+td {
+  font-size: small;
+}
+
+input {
+  width: 30%;
+  font-size: large;
+  border-radius: 5px;
+}
+
+
+// -------------------------------------------------------------------------
+
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: solid 1px black !important;
+  background-color: white !important;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked {
+  background-color: black !important;
+}

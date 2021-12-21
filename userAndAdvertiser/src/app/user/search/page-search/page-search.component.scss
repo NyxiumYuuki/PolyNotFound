@@ -1,0 +1,90 @@
+.lightTheme {
+  color: black;
+  border-color: black;
+}
+.darkTheme {
+  color: white;
+  border-color: white;
+}
+.myContainer {
+  text-align: center;
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+//--------------------------------------------------------------------------------------------
+
+.inputSearchBar {
+  width: 40%;
+  font-size: large;
+  border-bottom: 10px;
+  border-radius: 5px;
+}
+
+//--------------------------------------------------------------------------------------------
+
+.celluleGrilleVideo {
+  border: solid 2px;
+  border-radius: 5px;
+  width: 100%;
+}
+.lightTheme .celluleGrilleVideo{
+  border-color: black;
+  background-color: #f0f0f0;
+}
+.darkTheme .celluleGrilleVideo{
+  border-color: white;
+  background-color: #646464;
+}
+
+.conteneurVideosGrid {
+  height: 75vh;
+  width: 100%;
+}
+
+//--------------------------------------------------------------------------------------------
+
+.cellulePub {
+  padding: 0px 10px 0px 10px;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.conteneurPub {
+  height: 75vh;
+  text-align: center;
+  justify-content: center;
+  vertical-align: middle;
+  display: block;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+
+
+// -------------------------------------------------------------------------
+
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: solid 1px black !important;
+  background-color: white !important;
+}

@@ -1,0 +1,80 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Navbar -->
+        <div style="margin-bottom: 30px">
+            <app-navbar-user></app-navbar-user>
+        </div>
+
+
+        <!-- --------------------------------------------------------------------- -->
+
+
+        <!-- [Search bar] + [Sites de streaming] -->
+        <div style="width: 100%; margin: 0 auto;">
+
+            <!-- Search bar -->
+            <div class="input-group" style="width: 100%; margin: 0 auto;">
+                <div class="form-outline" style="width: 100%; margin: 0 auto;">
+                    <input type="search" placeholder="Rechercher..." class="inputSearchBar" [(ngModel)]="search" (keydown)="onEnterOnSearchBar($event)"/>
+                    <button mat-icon-button (click)="onSearch()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sites de streaming -->
+            <div style="margin-bottom: 20px">
+                <!-- youtube -->
+                <span>
+                    &nbsp;
+                    <mat-checkbox id="youtube" name="youtube" style="margin-left: 5px" [(ngModel)]="tabPlateform[0].isSelected"></mat-checkbox>
+                    <img src="/assets/logo_plateforms/youtube.png" alt="logo" width="30px" height="25px" style="margin-left: 5px">
+                    <label for="youtube" style="margin-left: 5px">Youtube</label>
+                    &nbsp;
+                </span>
+                <!-- dailymotion -->
+                <span>
+                    &nbsp;
+                    <mat-checkbox id="dailymotion" name="dailymotion" style="margin-left: 5px" [(ngModel)]="tabPlateform[1].isSelected"></mat-checkbox>
+                    <img src="/assets/logo_plateforms/dailymotion.png" alt="logo" width="25px" height="25px" style="margin-left: 5px">
+                    <label for="dailymotion" style="margin-left: 5px">Dailymotion</label>
+                    &nbsp;
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- --------------------------------------------------------------------- -->
+
+
+        <!-- [pub gauche] + [Grilles des videos] + [pub droite] -->
+        <mat-grid-list cols="11" rowHeight="75vh">
+
+            <!-- pub gauche -->
+            <mat-grid-tile colspan="2" rowspan="1" class="cellulePub">
+                <div class="conteneurPub">
+                    <app-advert [ad]="ad1"></app-advert>
+                </div>
+            </mat-grid-tile>
+
+            <!-- Grilles des videos -->
+            <mat-grid-tile colspan="7" rowspan="1" class="celluleGrilleVideo">
+                <div class="conteneurVideosGrid">
+                    <app-video-grid [tabVideo]="tabVideo" [search]="search" [sources]="sources" [indexPage]="indexPage"></app-video-grid>
+                </div>
+            </mat-grid-tile>
+
+            <!-- pub droite -->
+            <mat-grid-tile colspan="2" rowspan="1" class="cellulePub">
+                <div class="conteneurPub">
+                    <app-advert [ad]="ad1"></app-advert>
+                </div>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+        <br><br>
+
+    </div>
+</div>

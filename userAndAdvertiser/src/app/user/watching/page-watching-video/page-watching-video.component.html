@@ -1,0 +1,233 @@
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 1 -->
+
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Navbar -->
+        <div style="margin-bottom: 30px">
+            <app-navbar-user></app-navbar-user>
+        </div>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <!-- [Search bar] + [Sites de streaming] -->
+        <div style="width: 100%; margin: 0 auto;">
+
+            <!-- Search bar -->
+            <div class="input-group" style="width: 100%; margin: 0 auto;">
+                <div class="form-outline" style="width: 100%; margin: 0 auto;">
+                    <input type="search" placeholder="Rechercher..." class="inputSearchBar" [(ngModel)]="search" (keydown)="onEnterOnSearchBar($event)"/>
+                    <button mat-icon-button (click)="onSearch()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sites de streaming -->
+            <div style="margin-bottom: 20px">
+                <!-- youtube -->
+                <span>
+                    &nbsp;
+                    <mat-checkbox id="youtube" name="youtube" style="margin-left: 5px" [(ngModel)]="tabPlateform[0].isSelected"></mat-checkbox>
+                    <img src="/assets/logo_plateforms/youtube.png" alt="logo" width="30px" height="25px" style="margin-left: 5px">
+                    <label for="youtube" style="margin-left: 5px">Youtube</label>
+                    &nbsp;
+                </span>
+                <!-- dailymotion -->
+                <span>
+                    &nbsp;
+                    <mat-checkbox id="dailymotion" name="dailymotion" style="margin-left: 5px" [(ngModel)]="tabPlateform[1].isSelected"></mat-checkbox>
+                    <img src="/assets/logo_plateforms/dailymotion.png" alt="logo" width="25px" height="25px" style="margin-left: 5px">
+                    <label for="dailymotion" style="margin-left: 5px">Dailymotion</label>
+                    &nbsp;
+                </span>
+            </div>
+
+        </div>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <!-- [pub gauche] + [video] + [pub droite] -->
+        <div *ngIf="from==='search' || from==='history'; then videoFromSearchOrHistory"></div>
+
+        <!-- [pub gauche] + [video] + [playlist] -->
+        <div *ngIf="from==='myPlaylists'; then videoFromMyPlaylists"></div>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <br><br>
+
+    </div>
+</div>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 2: videoFromSearchOrHistory -->
+
+<ng-template #videoFromSearchOrHistory>
+    <div class="row">
+
+        <!-- pub gauche -->
+        <div class="col-2">
+            <app-advert [ad]="ad1" from="watchingLeft"></app-advert>
+        </div>
+
+        <!-- video -->
+        <div class="col-8" style="background-color: white; border: solid 1px black;">
+            <div *ngIf="true then rectangleCentral"></div>
+        </div>
+
+        <!-- pub droite -->
+        <div class="col-2">
+            <app-advert [ad]="ad2" from="watchingRight"></app-advert>
+        </div>
+
+    </div>
+</ng-template>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 2: videoFromMyPlaylists -->
+
+<ng-template #videoFromMyPlaylists>
+    <div class="row">
+
+        <!-- pub gauche -->
+        <div class="col-2">
+            <app-advert [ad]="ad1" from="watchingLeft"></app-advert>
+        </div>
+
+        <!-- rectangle central -->
+        <div class="col-6" style="background-color: white; border: solid 1px black;">
+            <div *ngIf="true then rectangleCentral"></div>
+        </div>
+
+        <!-- playlist -->
+        <div class="col-4">
+            <div *ngIf="true; then playlistHTML"></div>
+        </div>
+
+    </div>
+</ng-template>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 3: rectangleCentral -->
+
+<ng-template #rectangleCentral>
+
+    <!-- btnRetour + btnAdd -->
+    <div class="row" style="margin: 10px 0px 40px 0px">
+
+        <!-- btnRetour -->
+        <div class="col-6" style="text-align: left;">
+            <button mat-button style="border: solid 1px black" (click)="onRetour()">
+                <mat-icon>arrow_back_ios</mat-icon> Retour
+            </button>
+        </div>
+
+        <!-- btnAdd -->
+        <div class="col-6" style="text-align: right;">
+            <button mat-button style="border: solid 1px black" (click)="onAddToPlaylist()">
+                Ajouter à une playlist <mat-icon>add_circle</mat-icon>
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- logo + title + video + views + publishedAt + description -->
+    <div [style]=containerStyle>
+
+        <!-- logo + title -->
+        <div style="text-align: left">
+            <img *ngIf="video.source==='youtube'" src="/assets/logo_plateforms/youtube.png" alt="ytb" width="50px" height="30px" style="float: left">
+            <img *ngIf="video.source==='dailymotion'" src="/assets/logo_plateforms/dailymotion.png" alt="dlm" width="30px" height="30px" style="float: left">
+            <h5> &nbsp; {{video.title}}</h5>
+        </div>
+
+        <!-- video -->
+        <div style="width: 100%">
+            <iframe [src]="safeUrl(video.videoId,video.source)"
+                    [style]="iframeStyle"
+                    allowfullscreen></iframe>
+        </div>
+
+        <!-- views -->
+        <div style="text-align: left; margin: 5px 0px 0px 1px">
+            <span style="font-weight: bold">  Vues: </span>
+            {{video.views | number: '1.0-0'}}
+        </div>
+
+        <!-- publishedAt -->
+        <div style="text-align: left; margin: 5px 0px 0px 1px">
+            <span style="font-weight: bold"> Date de publication: </span>
+            {{ video.publishedAt | date:'dd/LL/YYYY à HH:mm:ss' }}
+        </div>
+
+        <!-- description -->
+        <div style="text-align: left; margin: 5px 0px 20px 1px">
+            <div style="font-weight: bold; display: flex; align-items: center; cursor: pointer" (click)="hiddenDescription = !hiddenDescription">
+                Description
+                <mat-icon *ngIf="hiddenDescription">expand_more</mat-icon>
+                <mat-icon *ngIf="!hiddenDescription">expand_less</mat-icon>
+            </div>
+            <div style="margin-left: 25px; padding-left: 5px; border-left: solid 1px #e6e6e6" [hidden]="hiddenDescription">
+                {{video.description}}
+            </div>
+        </div>
+
+    </div>
+
+</ng-template>
+
+
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- NIVEAU 3: playlist -->
+
+<ng-template #playlistHTML>
+    <div class="playlistContainer" *ngIf="playlistExists()">
+
+        <!-- Bordure haute -->
+        <div class="topBorder">
+            <span style="font-weight: bold"> {{playlist.name}} </span>
+        </div>
+
+
+        <!-- Liste des videos -->
+        <div class="listVideoContainer">
+            <div *ngFor="let video0 of videosInPlaylist; let i = index;">
+                <div [class]="getClassOfVideoCell(video0)" (click)="this.video = video0">
+                    <div class="imgsContainer">
+                        <img class="imgPlay" src="/assets/play.png">
+                        <img class="imgVideo" [src]="video0.imageUrl">
+                    </div>
+                    <div class="infoContainer">
+                        <div class="titleContainer">{{video0.title}}</div>
+                        <div class="viewsContainer">
+                            <!-- <span>{{video.views | number: '1.0-0'}}</span> <mat-icon>visibility</mat-icon> -->
+                            {{video.views | number: '1.0-0'}} vues
+                        </div>
+                        <span class="publishedAtContainer">
+                            Publiée le {{ video.publishedAt | date:'dd/LL/YYYY à HH:mm:ss' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bordure basse -->
+        <!--
+        <div class="bottomBorder">
+            <div style="visibility: hidden">a</div>
+        </div>
+        -->
+
+    </div>
+</ng-template>

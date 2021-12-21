@@ -1,0 +1,48 @@
+.lightTheme {
+  border-color: black;
+}
+.darkTheme {
+  border-color: white;
+}
+.myContainer {
+  text-align: center;
+  max-width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+// Liste des vidéos -------------------------------------------------
+
+.celluleListeVideo {
+  margin: 0px 0px 0px 0px;
+}
+
+// Liste des playlists ---------------------------------------------
+
+.celluleListePlaylist {
+  margin: 0px 0px 0px 0px;
+}
+
+// Pub -------------------------------------------------------------
+
+.cellulePub {
+  padding: 0px 10px 0px 10px;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.conteneurPub {
+  //height: 85vh;
+  text-align: center;
+  justify-content: center;
+  vertical-align: middle;
+  display: block;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

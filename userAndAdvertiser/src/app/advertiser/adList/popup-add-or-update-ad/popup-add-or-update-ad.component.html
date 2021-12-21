@@ -1,0 +1,83 @@
+<div class="myContainer1">
+    <div class="myContainer2">
+
+        <!-- titre popup -->
+        <h1 mat-dialog-title>{{title}}</h1>
+
+
+        <mat-divider></mat-divider><br>
+
+
+        <!-- tous les champs -->
+        <div class="row">
+
+            <!-- title + interests + comments + isVisible -->
+            <div class="col-6">
+
+                <!-- Title -->
+                <mat-form-field class="titleContainer" appearance="fill">
+                    <mat-label> Titre annonce </mat-label>
+                    <input matInput type="text" [(ngModel)]="advert.title" required>
+                </mat-form-field>
+
+                <!-- Interests -->
+                <app-input-interests-ad [myInterests]="advert.interests" (eventEmitter)="onEventInputTags($event)"></app-input-interests-ad>
+
+                <!-- Comments -->
+                <mat-form-field class="commentContainer" appearance="fill">
+                    <mat-label> Commentaire </mat-label>
+                    <textarea matInput [(ngModel)]="advert.comment" rows="5" style="resize: none;"></textarea>
+                </mat-form-field><br>
+
+                <!-- url -->
+                <mat-form-field class="commentContainer" appearance="fill">
+                    <mat-label> URL </mat-label>
+                    <input matInput [(ngModel)]="advert.url">
+                </mat-form-field><br>
+
+                <!-- IsVisible -->
+                <mat-checkbox [(ngModel)]="advert.isVisible"> Visible </mat-checkbox><br><br>
+
+                <!-- Images déjà présentes -->
+                <div *ngIf="advert.images.length !== 0">
+                    <div style="font-weight: bold; margin-bottom: 5px;">
+                        Images déjà associées:
+                    </div>
+                    <div style="margin-left: 20px; padding-left: 2px; border-left: solid 1px #a4a4a4">
+                        <div *ngFor="let image of advert.images" style="padding: 2px 0px 2px 0px;">
+                            <mat-chip [selectable]="true" [removable]="true" style="font-size: small;">
+                                {{image.description}}
+                                <button matChipRemove (click)="onRemoveImgAlreadyPresent(image)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- nouvelles images -->
+            <div class="col-6" style="overflow-x: hidden; overflow-y: scroll; max-height: 70vh;">
+                <app-drag-and-drop (eventEmitter)="onReceiveNewImages($event)"></app-drag-and-drop>
+            </div>
+
+        </div>
+
+
+        <br><mat-divider></mat-divider>
+
+        <!-- message d'erreur -->
+        <div *ngIf="hasError" style="text-align: center; margin-bottom: 20px;">
+            <span class="mat-error">{{errorMessage}}</span>
+        </div>
+
+        <!-- Actions -->
+        <mat-dialog-actions align="end">
+            <button mat-button (click)="dialogRef.close()">Annuler</button>
+            <button mat-button (click)="onValidate()">Valider</button>
+        </mat-dialog-actions>
+
+
+    </div>
+</div>

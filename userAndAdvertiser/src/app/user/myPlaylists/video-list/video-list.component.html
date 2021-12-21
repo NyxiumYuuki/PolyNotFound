@@ -1,0 +1,91 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Bordure haute -->
+        <div class="row topBorder">
+
+                <!-- PlaylistDB existe ? -->
+                <div *ngIf="(playlist !== null) && (playlist !== undefined); then ok1 else nope1"></div>
+
+                <!-- oui -->
+                <ng-template #ok1>
+                    <span class="spanPlayListTitle"> {{playlist.name}} </span>
+                </ng-template>
+
+                <!-- non -->
+                <ng-template #nope1>
+                    <span class="spanPlayListTitle"> Aucune playlist selectionnée </span>
+                </ng-template>
+
+        </div>
+
+
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- Liste des videos -->
+        <div class="row" style="margin: 0px; padding: 0px">
+            <div class="listVideoContainer">
+
+                <!-- 'playlist' existe ? -->
+                <div *ngIf="(playlist !== null) && (playlist !== undefined); then ok2 else nope2"></div>
+
+                <!-- oui, 'playlist' existe -->
+                <ng-template #ok2>
+                    <div *ngFor="let video of videosInPlaylist; let i = index;" class="videoContainer">
+
+                        <mat-grid-list cols="12" rowHeight="15vh">
+
+                            <!-- btnAdd -->
+                            <mat-grid-tile [colspan]="2" [rowspan]="1">
+                                <button mat-icon-button (click)="onAddToPlaylist(video)">
+                                    <mat-icon> add_circle </mat-icon>
+                                </button>
+                            </mat-grid-tile>
+
+                            <!-- imgVideo -->
+                            <mat-grid-tile [colspan]="8" [rowspan]="1">
+                                    <div style="margin: auto; width: 20vw; height: 15vh;">
+                                        <div class="imgsContainer" (click)="onVideo(video)">
+                                            <img class="imgPlay" src="/assets/play.png">
+                                            <img class="imgVideo" [src]="video.imageUrl">
+                                        </div>
+                                    </div>
+                            </mat-grid-tile>
+
+                            <!-- btnDelete -->
+                            <mat-grid-tile [colspan]="2" [rowspan]="1">
+                                <button mat-icon-button (click)="onDelete(video, i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-grid-tile>
+
+                        </mat-grid-list>
+
+                        <!-- titre video -->
+                        <span style="margin-top: 10px">
+                            {{video.title}}
+                        </span>
+
+                    </div>
+                </ng-template>
+
+                <!-- non, 'playlist' n'existe pas -->
+                <ng-template #nope2>
+                    <div></div>
+                </ng-template>
+
+            </div>
+        </div>
+
+
+        <!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- Bordure basse -->
+        <div class="row bottomBorder">
+            <div style="visibility: hidden">a</div>
+        </div>
+
+    </div>
+</div>

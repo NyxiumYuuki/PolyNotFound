@@ -1,0 +1,81 @@
+.myContainer {
+  font-size: small;
+}
+
+button {
+  font-size: small;
+}
+
+img {
+  margin: 0px 0px 10px 0px;
+  width: 5vw;
+  height: 5vw;
+  border: solid 2px black;
+  border-radius: 50%;
+  font-size: xxx-large;
+}
+
+.inputUrlImage {
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  font-size: small;
+  border-radius: 5px;
+}
+
+input {
+  font-size: small;
+}
+
+// -------------------------------------------------------------------------
+
+.myRow {
+  margin: 15px 0px 15px 0px;
+}
+.myLeftLabel {
+  text-align: right;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  font-weight: bold;
+}
+.myRightLabel {
+  text-align: left;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  font-weight: bold;
+}
+.myValue {
+  text-align: left;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+
+// -------------------------------------------------------------------------
+
+// aura
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: grey !important;
+}
+
+// contenu coche
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+// indeterminate
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  background-color: white !important;
+}
+
+// -------------------------------------------------------------------------
+
+::ng-deep .mat-radio-inner-circle {
+  color: black !important;
+  background-color: black !important;
+}
+
+::ng-deep .mat-radio-outer-circle{
+  color: black !important;
+  border: solid 1px gray !important;
+}

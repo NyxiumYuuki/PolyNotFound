@@ -1,0 +1,20 @@
+<div mat-dialog-title class="dialog-title">
+    <h2></h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+
+
+<mat-grid-list cols="12" rowHeight="500">
+    <mat-grid-tile colspan="1" rowspan="1" (click)="onPrecedent()">
+        <button> < </button>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="10" rowspan="1">
+        <img [src]="tabImages[index].base64" [alt]="tabImages[index].description">
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1" (click)="onSuivant()">
+        <button> > </button>
+    </mat-grid-tile>
+</mat-grid-list>

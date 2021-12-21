@@ -1,0 +1,26 @@
+<div *ngIf="(from==='search' || from==='myPlaylists') && (imageExist)"
+     class="myContainer">
+
+    <span class="helper"></span>
+    <img [src]="image.base64"
+         [alt]="image.description"
+         (click)="onClick()"
+         id="imgFromSearchOrMyPlaylists">
+
+</div>
+
+<!-- --------------------------------------------------------------------- -->
+
+<img *ngIf="from === 'watchingLeft' && (imageExist)"
+     [src]="image.base64"
+     [alt]="image.description"
+     (click)="onClick()"
+     id="imgFromWatchingLeft">
+
+<!-- --------------------------------------------------------------------- -->
+
+<img *ngIf="from === 'watchingRight' && (imageExist)"
+     [src]="image.base64"
+     [alt]="image.description"
+     (click)="onClick()"
+     id="imgFromWatchingRight">

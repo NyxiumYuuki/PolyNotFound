@@ -1,0 +1,35 @@
+<div [class]="themeService.getClassTheme()">
+    <div class="myContainer">
+
+        <!-- Navbar -->
+        <div>
+            <app-navbar-user></app-navbar-user>
+        </div>
+        <br>
+
+        <!-- --------------------------------------------------------------------- -->
+
+        <!-- [liste des videos] + [liste des playlist] + [pub] -->
+        <mat-grid-list cols="10" rowHeight="85vh">
+
+            <!-- liste des videos -->
+            <mat-grid-tile colspan="4" rowspan="1" class="celluleListeVideo">
+                <app-video-list [playlist]="playlist"></app-video-list>
+            </mat-grid-tile>
+
+            <!-- liste des playlist -->
+            <mat-grid-tile colspan="4" rowspan="1" class="celluleListePlaylist">
+                <app-playlist-list (eventEmitter)="transmitPlaylistToVideoList($event)"></app-playlist-list>
+            </mat-grid-tile>
+
+            <!-- pub -->
+            <mat-grid-tile colspan="2" rowspan="1" class="cellulePub">
+                <div class="conteneurPub">
+                    <app-advert [ad]="ad" from="myPlaylists"></app-advert>
+                </div>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+    </div>
+</div>

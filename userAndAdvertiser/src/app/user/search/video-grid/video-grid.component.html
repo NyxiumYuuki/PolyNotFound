@@ -1,0 +1,76 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<!-- Grille -->
+<div style="height: 93%; background-color: white; padding-top: 7px;" *ngIf="tabVideoExists()">
+    <mat-grid-list cols="3" rowHeight="33%">
+        <mat-grid-tile colspan="1" rowspan="1" *ngFor="let k of [0,1,2,3,4,5,6,7,8]">
+            <div class="myCell" *ngIf="indexPage+k < tabVideo.length" [title]="tabVideo[indexPage+k].title">
+
+
+                <!-- Image video -->
+                <div class="imgsContainer">
+                    <img class="imgPlay" src="/assets/play.png" (click)="onVideo(tabVideo[indexPage+k])">
+                    <img class="imgVideo" [src]="tabVideo[indexPage+k].imageUrl" (click)="onVideo(tabVideo[indexPage+k])">
+                </div>
+
+
+                <!-- Info video -->
+                <mat-grid-list cols="12" class="mat-grid-list-info-video">
+
+                    <!-- logo -->
+                    <mat-grid-tile [colspan]="2" [rowspan]="2" class="mat-grid-tile-info-video" (click)="onVideo(tabVideo[indexPage+k])">
+                        <img *ngIf="tabVideo[indexPage+k].source==='Youtube'" src="/assets/logo_plateforms/youtube.png" alt="ytb" width="20px" height="15px">
+                        <img *ngIf="tabVideo[indexPage+k].source==='Dailymotion'" src="/assets/logo_plateforms/dailymotion.png" alt="dlm" width="20px" height="20px">
+                    </mat-grid-tile>
+
+                    <!-- title + views + publishedAt -->
+                    <mat-grid-tile [colspan]="8" [rowspan]="2" class="mat-grid-tile-info-video" (click)="onVideo(tabVideo[indexPage+k])">
+                        <div style="position: absolute; left: 1px; text-align: left">
+                            {{tronquage(tabVideo[indexPage+k].title)}}
+                            <br>
+                            <span style="color: gray">
+                                {{tabVideo[indexPage+k].views | number: '1.0-0'}} vues.
+                                Il y a {{dateToElapsedTime(tabVideo[indexPage+k].publishedAt)}}.
+                            </span>
+                        </div>
+                    </mat-grid-tile>
+
+                    <!-- addButton -->
+                    <mat-grid-tile [colspan]="2" [rowspan]="2" class="mat-grid-tile-info-video">
+                        <button mat-icon-button (click)="onAddToPlaylist(tabVideo[indexPage+k])">
+                            <mat-icon>add_circle</mat-icon>
+                        </button>
+                    </mat-grid-tile>
+
+                </mat-grid-list>
+
+
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+
+
+
+<!-- Paginator -->
+<div class="paginatorContainer" *ngIf="tabVideoExists()">
+
+    <!-- btn précédent -->
+    <button mat-button class="btnPaginator" [disabled]="indexPage<=0" (click)="indexPage=indexPage-9"> < Précédent </button> &nbsp;
+
+    <!-- numeros de page -->
+    <span *ngFor="let page of tabPage" (click)="indexPage=(page-1)*9">
+        <span *ngIf="page===((indexPage/9)+1)">
+            <span style="text-decoration: underline; cursor: pointer;font-weight: bold;">{{page}}</span>&nbsp;
+        </span>
+        <span *ngIf="page!==((indexPage/9)+1)">
+            <span style="text-decoration: underline; cursor: pointer;">{{page}}</span>&nbsp;
+        </span>
+    </span> &nbsp;
+
+    <!-- btn suivant -->
+    <button mat-button class="btnPaginator" [disabled]="indexPage+9>=tabVideo.length" (click)="indexPage=indexPage+9"> Suivant > </button>
+
+</div>
