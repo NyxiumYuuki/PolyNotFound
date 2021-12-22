@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    debutUrl: "https://polynotfound.herokuapp.com/api/"
+    debutUrl: "https://api-polynotfound.herokuapp.com/api/"
 };
