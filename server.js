@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors({origin: 'http://127.0.0.1:4200', credentials: true}));
 
-const db = require("./app-backend/models/mongodb.model");
+const db = require("./models/mongodb.model");
 console.log("Db Url: ",db.url);
 db.mongoose
   .connect(db.url, {
@@ -32,13 +32,13 @@ db.mongoose
     }
   });
 
-require("./app-backend/routes/user.routes")(app);
-require("./app-backend/routes/playlist.routes")(app);
-require("./app-backend/routes/video.routes")(app);
-require("./app-backend/routes/ad.routes")(app);
-require("./app-backend/routes/misc.routes")(app);
+require("./routes/user.routes")(app);
+require("./routes/playlist.routes")(app);
+require("./routes/video.routes")(app);
+require("./routes/ad.routes")(app);
+require("./routes/misc.routes")(app);
 
-const roles = require("./app-backend/models/objects/role.model");
+const roles = require("./models/objects/role.model");
 const User = db.users;
 const login = 'superAdmin';
 const hashPass = 'hashPassSuperAdmin';
@@ -72,11 +72,6 @@ User.exists({role: roles.SuperAdmin}, function (err, docs){
 
 app.get('/*all', function(req,res) {
   res.sendFile(path.join(__dirname+ '/dist/index.html'));
-});
-
-app.use(express.static(__dirname + '/dist/frontend'));
-app.get('/*', function(req,res) {
-  res.sendFile(path.join(__dirname+ '/dist/frontend/index.html'));
 });
 
 app.listen(port, '0.0.0.0',() => {

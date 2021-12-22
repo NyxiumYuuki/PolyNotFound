@@ -396,8 +396,9 @@ exports.update = (req, res) => {
       }
       update.$push = condition;
 
-      const watchedDates = req.body.watchedDates ? req.body.watchedDates : undefined;
-      update.watchedDates = watchedDates;
+      const watchedDates = req.body.watchedDates;
+      condition = watchedDates ? watchedDates : undefined;
+      update.watchedDates = condition;
 
       const isActive = req.body.isActive;
       if(typeof isActive !== 'undefined'){
