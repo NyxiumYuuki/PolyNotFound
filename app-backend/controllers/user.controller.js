@@ -427,7 +427,7 @@ exports.ad = (req, res) => {
                 if(data.length > 0){
                   let ids = []
                   for(const i in data){ids.push(data[i]._id);}
-                  Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}})
+                  Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}}, {timestamps: false})
                     .then(dataUpdate => {
                       if(dataUpdate && dataUpdate.modifiedCount > 0){
                         return sendMessage(res, 11, data, token);
@@ -443,7 +443,7 @@ exports.ad = (req, res) => {
                     .then(data => {
                       let ids = []
                       for(const i in data){ids.push(data[i]._id);}
-                      Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}})
+                      Ad.updateMany({_id: {$in: ids}}, {$push: {views: [new Date()]}}, {timestamps: false})
                         .then(dataUpdate => {
                           if(dataUpdate && dataUpdate.modifiedCount > 0){
                             return sendMessage(res, 11, data, token);
