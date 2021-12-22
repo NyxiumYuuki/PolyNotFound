@@ -12,10 +12,7 @@ app.use(bodyParser.json());
 
 const cors = require('cors');
 app.use(cors({
-  origin: [
-    'https://polynotfound.herokuapp.com/', 'http://127.0.0.1:4200',
-    'https://admin-polynotfound.herokuapp.com/', 'http://127.0.0.1:4201'
-   ], 
+  origin: true,
   credentials: true
 }));
 
