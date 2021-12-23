@@ -9,6 +9,7 @@ const allowList = [
 ];
 
 const corsOptionsDelegate = function(req, callback) {
+    console.log(req.header('Origin'), allowList.indexOf(req.header('Origin')));
     let corsOptions;
     if (allowList.indexOf(req.header('Origin')) !== -1) {
         corsOptions = {
@@ -18,9 +19,10 @@ const corsOptionsDelegate = function(req, callback) {
     } else {
         corsOptions = {
             origin: false,
-            credentials: true
+            credentials: false
         }
     }
+    console.log(corsOptions);
     callback(null, corsOptions)
 }
 module.exports.options = corsOptionsDelegate;
