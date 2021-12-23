@@ -9,17 +9,6 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-const cors = require('cors');
-app.use(cors({
-  origin: [
-    'http://127.0.0.1:4200',
-    'http://127.0.0.1:4201',
-    'https://admin-polynotfound.herokuapp.com/',
-    'https://polynotfound.herokuapp.com/'
-  ],
-  credentials: true
-}));
-
 const db = require("./models/mongodb.model");
 console.log("Db Url: ",db.url);
 db.mongoose
