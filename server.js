@@ -15,6 +15,8 @@ app.use(cors({
   origin: [
     'http://127.0.0.1:4200',
     'http://127.0.0.1:4201',
+    'https://admin-polynotfound.herokuapp.com/',
+    'https://polynotfound.herokuapp.com/'
   ],
   credentials: true
 }));
