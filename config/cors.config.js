@@ -4,8 +4,8 @@ module.exports.cors = cors;
 const allowList = [
     'http://127.0.0.1:4200',
     'http://127.0.0.1:4201',
-    'https://admin-polynotfound.herokuapp.com/',
-    'https://polynotfound.herokuapp.com/'
+    'https://admin-polynotfound.herokuapp.com',
+    'https://polynotfound.herokuapp.com'
 ];
 
 const corsOptionsDelegate = function(req, callback) {
