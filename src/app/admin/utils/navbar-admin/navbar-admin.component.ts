@@ -33,6 +33,7 @@ export class NavbarAdminComponent
     onDeconnexionCallback(retour: any): void
     {
         if(retour.status !== "success") console.log(retour);
+        this.profilService.setId("");
     }
 
 }

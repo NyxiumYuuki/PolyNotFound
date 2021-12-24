@@ -5,6 +5,7 @@ import {PageRegisterComponent} from "./beforeConnexion/register/page-register/pa
 import {PageAdListAdminComponent} from "./admin/adList/page-ad-list-admin/page-ad-list-admin.component";
 import {PageProfilAdminComponent} from "./admin/myProfil/page-profil-admin/page-profil-admin.component";
 import {PageUserListComponent} from "./admin/userList/page-user-list/page-user-list.component";
+import {MyGuardGuard} from "./utils/my-guard/my-guard.guard";
 
 const routes: Routes = [
 
@@ -14,10 +15,10 @@ const routes: Routes = [
     { path: 'register', component: PageRegisterComponent },
 
     // Admin
-    { path: 'admin', component: PageUserListComponent },
-    { path: 'admin/userList', component: PageUserListComponent },
-    { path: 'admin/adList', component: PageAdListAdminComponent },
-    { path: 'admin/myProfil', component: PageProfilAdminComponent },
+    { path: 'admin', component: PageUserListComponent, canActivate: [MyGuardGuard] },
+    { path: 'admin/userList', component: PageUserListComponent, canActivate: [MyGuardGuard] },
+    { path: 'admin/adList', component: PageAdListAdminComponent, canActivate: [MyGuardGuard] },
+    { path: 'admin/myProfil', component: PageProfilAdminComponent, canActivate: [MyGuardGuard] },
 ];
 
 @NgModule({
