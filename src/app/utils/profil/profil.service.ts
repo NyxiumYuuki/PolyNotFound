@@ -6,23 +6,27 @@ import { Injectable } from '@angular/core';
 export class ProfilService
 {
 
-    getId(): string
-    {
+    getId(): string {
         return localStorage.getItem('id');
     }
 
-    getProfileImageUrl(): string
-    {
+    getRole(): string {
+        return localStorage.getItem('role');
+    }
+
+    getProfileImageUrl(): string {
         return localStorage.getItem('profileImageUrl');
     }
 
-    setId(id: string): void
-    {
+    setId(id: string): void {
         localStorage.setItem('id', id);
     }
 
-    setProfileImageUrl(profileImageUrl: string): void
-    {
+    setRole(role: string): void {
+        localStorage.setItem('role', role);
+    }
+
+    setProfileImageUrl(profileImageUrl: string): void {
         localStorage.setItem('profileImageUrl', profileImageUrl);
     }
 

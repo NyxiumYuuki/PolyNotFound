@@ -60,9 +60,15 @@ export class PageLoginComponent implements OnInit
         else {
             this.profilService.setId(retour.data.id);
             this.profilService.setProfileImageUrl(retour.data.profileImageUrl);
-            if(retour.data.role.name === "user") this.router.navigateByUrl( '/user/search');
-            else if(retour.data.role.name === "advertiser") this.router.navigateByUrl( '/advertiser/adList');
-            else if(retour.data.role.name === "admin" || retour.data.role.name === "superAdmin") this.router.navigateByUrl( '/admin/userList');
+            if(retour.data.role.name === "user") {
+                this.profilService.setRole("user");
+                this.router.navigateByUrl( '/user/search');
+            }
+            else if(retour.data.role.name === "advertiser") {
+                this.profilService.setRole("advertiser");
+                this.router.navigateByUrl( '/advertiser/adList');
+            }
+            //else if(retour.data.role.name === "admin" || retour.data.role.name === "superAdmin") this.router.navigateByUrl( '/admin/userList');
         }
     }
 

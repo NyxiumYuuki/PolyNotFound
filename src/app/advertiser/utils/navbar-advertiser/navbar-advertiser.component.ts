@@ -36,6 +36,7 @@ export class NavbarAdvertiserComponent
     onDeconnexionCallback(retour: any): void
     {
         if(retour.status !== "success") console.log(retour);
+        this.profilService.setRole("");
     }
 
 }
