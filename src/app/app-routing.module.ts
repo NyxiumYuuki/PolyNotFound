@@ -10,6 +10,8 @@ import {PageHistoryUserComponent} from "./user/history/page-history-user/page-hi
 import {PageAdListAdvertiserComponent} from "./advertiser/adList/page-ad-list-advertiser/page-ad-list-advertiser.component";
 import {PagesPopularityComponent} from "./advertiser/pages-popularity/pages-popularity.component";
 import {PageProfilAdvertiserComponent} from "./advertiser/myProfil/page-profil-advertiser/page-profil-advertiser.component";
+import {UserGuard} from "./utils/guards/user/user.guard";
+import {AdvertiserGuard} from "./utils/guards/advertiser/advertiser.guard";
 
 
 const routes: Routes = [
@@ -19,19 +21,19 @@ const routes: Routes = [
     { path: 'register', component: PageRegisterComponent },
 
     // User
-    { path: 'user', component: PageSearchComponent },
-    { path: 'user/search', component: PageSearchComponent },
-    { path: 'user/myPlaylists', component: PageMyPlaylistsComponent },
-    { path: 'user/history', component: PageHistoryUserComponent },
-    { path: 'user/myProfil', component:  PageProfilUserComponent },
-    { path: 'user/watching', component:  PageWatchingVideoComponent },
+    { path: 'user', component: PageSearchComponent, canActivate: [UserGuard] },
+    { path: 'user/search', component: PageSearchComponent, canActivate: [UserGuard] },
+    { path: 'user/myPlaylists', component: PageMyPlaylistsComponent, canActivate: [UserGuard] },
+    { path: 'user/history', component: PageHistoryUserComponent, canActivate: [UserGuard] },
+    { path: 'user/myProfil', component:  PageProfilUserComponent, canActivate: [UserGuard] },
+    { path: 'user/watching', component:  PageWatchingVideoComponent, canActivate: [UserGuard] },
 
     // Advertiser
-    { path: 'advertiser', component: PageAdListAdvertiserComponent },
-    { path: 'advertiser/adList', component: PageAdListAdvertiserComponent },
-    { path: 'advertiser/myProfil', component: PageProfilAdvertiserComponent },
-    { path: 'advertiser/adsPopularity', component: PagesPopularityComponent },
-    { path: 'advertiser/subjectsPopularity', component: PagesPopularityComponent },
+    { path: 'advertiser', component: PageAdListAdvertiserComponent, canActivate: [AdvertiserGuard] },
+    { path: 'advertiser/adList', component: PageAdListAdvertiserComponent, canActivate: [AdvertiserGuard] },
+    { path: 'advertiser/myProfil', component: PageProfilAdvertiserComponent, canActivate: [AdvertiserGuard] },
+    { path: 'advertiser/adsPopularity', component: PagesPopularityComponent, canActivate: [AdvertiserGuard] },
+    { path: 'advertiser/subjectsPopularity', component: PagesPopularityComponent, canActivate: [AdvertiserGuard] },
 ];
 
 @NgModule({
