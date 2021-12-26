@@ -1,27 +1,67 @@
-# Frontend
+# PolyNotFound - Partie Backend en local
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.7.
+## Lancement du Backend
 
-## Development server
+### 1.1 Installation des différentes librairies avec npm
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Si NodeJS est installé ([téléchargeable ici](https://nodejs.org/en/download/)), il suffit de faire un `npm install`.
 
-## Code scaffolding
-à
-Run `ng generate component component-title` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 1.2 Création d'une base de données MongoDB en local avec Docker
 
-## Build
+Il faudra **Docker** ([téléchargeable ici](https://docs.docker.com/desktop/#download-and-install))
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Puis dans un terminal, pour lancer le serveur MongoDB
 
-## Running unit tests
+`docker run -d -p 27017:27017 --ip 127.0.0.1 --name polynotfound-mongodb mongo:latest`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+_L'image de Mongo sera automatiquement téléchargé si elle n'existe pas en local._
 
-## Running end-to-end tests
+1. Si vous avez MongoDB Compass ([téléchargeable ici](https://www.mongodb.com/try/download/compass)):
+- Se connecter au serveur `mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false` 
+- Create Database : 
+  - Database Name : polynotfound
+  - Collection Name : users
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+2. Sinon avec MongoShell ([téléchargeable ici](https://www.mongodb.com/try/download/shell)):
+- Se connecter au serveur    
+  - Linux: `mongo mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false`
+  - Windows: `mongo.exe mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false`
+- Créer la base de données : `use polynotfound`
 
-## Further help
+### 1.3 Initialisation des variables d'environnements
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+5 variables d'environnements sont nécessaires pour lancer le backend correctement.
+- **DATABASE** : url de connexion à la base de données (utilisé seulement en production)
+  - Sur Windows : `set DATABASE=<url_bd>`
+  - Sur Linux : `export DATABASE=<url_bdd>`
+- Token de connexion
+  - **JWTRS256_PUBLIC_KEY** : clé publique pour les tokens de connexion
+  - **JWTRS256_PRIVATE_KEY** : clé privée pour les tokens de connexion
+  
+  Lancer le script de génération des clés `jwtRS256.sh`, un fichier `.env` sera créé.
+    Il faudra `set` ou `export` ces 2 variables dans vos variables d'environnements.
+    - Sur Windows : 
+      - `set JWTRS256_PUBLIC_KEY=<public_key>`
+      - `set JWTRS256_PRIVATE_KEY=<private_key>`
+    - Sur Linux : 
+      - `export JWTRS256_PUBLIC_KEY=<public_key>`
+      - `export JWTRS256_PRIVATE_KEY=<private_key>`
+
+- **YOUTUBE_API_KEY** : Clé de connexion à l'API Youtube ([récupérable ici](https://developers.google.com/youtube/v3/getting-started?hl=fr))
+- **DAILYMOTION_API_KEY** : Clé de connexion à l'API Dailymotion ([récupérable ici](https://www.dailymotion.com/profile/developer))
+    
+  _A noté que la clé d'API de Dailymotion n'est pas utilisée mais cela peut changer dans le temps._
+
+Après l'initialisation de ces variables d'environnements, il faudra surement redémarrer votre ordinateur. (Fermer et rouvrir un terminal peut être suffisant dans certain cas)
+
+#### 1.3.1 Lancement en mode développement
+
+Pour lancer le backend en mode développement, il faudra simplement exécuter dans un terminal:
+- Windows : `npm dev-win`
+- Linux & Mac : `npm dev-nix`
+
+#### 1.3.2 Lancement en mode production
+
+Pour lancer le backend en mode production, il faudra simplement exécuter dans un terminal:
+- Windows : `npm prod-win`
+- Linux & Mac : `npm prod-nix`
