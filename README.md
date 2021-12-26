@@ -1,27 +1,39 @@
-# Frontend
+# PolyNotFound
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.7.
 
-## Development server
+Le projet est séparé en 3 parties :
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- 2 Frontend :
+  - 1 partie Administrateur
+  - 1 partie pour les utilisateurs et les publicitaires
+- 1 Backend
 
-## Code scaffolding
-à
-Run `ng generate component component-title` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Nous avons décidé que chaque partie du projet a sa propre branche git et non leur propre répertoire git.
 
-## Build
+En effet, les branches concernées par le projet est :
+- Frontend partie Administrateur : `front-admin`
+- Frontend partie pour les utilisateurs et les publicitaires : `front-user-advertiser`
+- Backend : `backend`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Nous pouvons récupérer une branche git avec `git checkout <nom_branche>`.
 
-## Running unit tests
+# Lancer le projet en Local
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Pour lancer le projet en local dans son ensemble, il faut impérativement avoir les branches concernées dans leur propre dossier.
+Il faudra donc __clone__ le projet 3 fois.
 
-## Running end-to-end tests
+Dans un dossier nommé par exemple `Polynotfound`:
+- frontend-admin : `git clone --branch frontend-admin https://github.com/NyxiumYuuki/PolyNotFound.git polynotfound-frontend-admin`
+- front-user-advertiser : `git clone --branch front-user-advertiser https://github.com/NyxiumYuuki/PolyNotFound.git polynotfound-front-user-advertiser`
+- backend : `git clone --branch backend https://github.com/NyxiumYuuki/PolyNotFound.git polynotfound-backend`
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Un README est disponible pour chaque branche pour lancer le projet en local soit en mode **production** soit en mode **développement**. 
 
-## Further help
+# Lancer le projet en ligne avec Heroku
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Nous avons déployé le projet en ligne avec Heroku.
+
+Le projet est disponible sur ces URL :
+- Partie Utilisateurs et Publicitaires : https://polynotfound.herokuapp.com/
+- Partie Administrateur : https://admin-polynotfound.herokuapp.com/
+- API : https://api-polynotfound.herokuapp.com/
