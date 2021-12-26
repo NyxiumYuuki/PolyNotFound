@@ -1,6 +1,5 @@
 # PolyNotFound
 
-
 Le projet est séparé en 3 parties :
 
 - 2 Frontend :
@@ -18,6 +17,8 @@ En effet, les branches concernées par le projet est :
 Nous pouvons récupérer une branche git avec `git checkout <nom_branche>`.
 
 # Lancer le projet en Local
+
+Dans un premier temps, il est obligatoire d'avoir NodeJS (version >12 au minimum), [téléchargeable sur cette page](https://nodejs.org/en/download/).
 
 Pour lancer le projet en local dans son ensemble, il faut impérativement avoir les branches concernées dans leur propre dossier.
 Il faudra donc __clone__ le projet 3 fois.
