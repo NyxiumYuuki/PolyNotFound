@@ -10,6 +10,7 @@ const whitelist = [
 
 module.exports.corsOptions = {
     origin: function(origin, callback) {
+        console.log(whitelist, origin);
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
