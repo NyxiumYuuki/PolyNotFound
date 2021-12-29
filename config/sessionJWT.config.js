@@ -42,7 +42,7 @@ function createSessionCookie(req, res, payload) {
   else {
     jwtToken = createSessionJWT(payload.id, payload.email, payload.profileImageUrl, payload.role);
   }
-  res.cookie('SESSIONID', jwtToken, {httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production'});
+  res.cookie('SESSIONID', jwtToken, {httpOnly: true, sameSite: 'None', secure: process.env.NODE_ENV === 'production'});
 }
 
 function decodeSessionCookie(sessionid) {
