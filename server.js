@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 
 const cors = require('cors');
 app.use(cors({
-  origin: 'https://admin-polynotfound.herokuapp.com',
+  origin: '*',
   credentials: true
 }));
 
