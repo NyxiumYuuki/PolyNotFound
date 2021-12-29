@@ -2,11 +2,30 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-//const cors = require('cors');
-//app.use(cors({
-//  origin: 'https://admin-polynotfound.herokuapp.com',
-//  credentials: true
-//}));
+const cors = require('cors');
+const whitelist = [
+  'http://127.0.0.1:4200',
+  'http://127.0.0.1:4201',
+  'https://admin-polynotfound.herokuapp.com',
+  'https://polynotfound.herokuapp.com'
+];
+const corsOptionsDelegate = (req, callback) => {
+  let corsOptions;
+
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = {
+      origin: true,
+      credentials: true
+    }
+  } else {
+    corsOptions = {
+      origin: false,
+      credentials: true
+    }
+  }
+  callback(null, corsOptions)
+}
+app.use(cors(corsOptionsDelegate));
 
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());

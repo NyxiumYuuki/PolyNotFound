@@ -1,43 +1,43 @@
 const users = require("../controllers/user.controller");
-const {cors, corsOptions} = require("../config/cors.config");
+//const {cors, corsOptions} = require("../config/cors.config");
 module.exports = app => {
   let router = require("express").Router();
 
   // Authenticate a User
-  router.post("/user/auth", cors(corsOptions), users.auth);
+  router.post("/user/auth",  users.auth);
 
   // Logout a User
-  router.delete("/user/logout", cors(corsOptions), users.logout);
+  router.delete("/user/logout",  users.logout);
 
   // Request password reset with email
-  router.post("/user/resetPass", cors(corsOptions), users.resetPass);
+  router.post("/user/resetPass",  users.resetPass);
 
   // Create and Save a new User
-  router.post("/user/create", cors(corsOptions), users.create);
+  router.post("/user/create",  users.create);
 
   // Retrieve all Users if admin
-  router.get("/user/findAll", cors(corsOptions), users.findAll);
+  router.get("/user/findAll",  users.findAll);
 
   // Find single User from id if admin or session id
-  router.get("/user/findOne/:id", cors(corsOptions), users.findOne);
+  router.get("/user/findOne/:id",  users.findOne);
 
   // Update a User from id if admin or session id
-  router.put("/user/update/:id", cors(corsOptions), users.update);
+  router.put("/user/update/:id",  users.update);
 
   // Delete a User from id if admin or session id
-  router.delete("/user/delete/:id", cors(corsOptions), users.delete);
+  router.delete("/user/delete/:id",  users.delete);
 
   // Delete all Users if superAdmin
-  router.delete("/user/deleteAll", cors(corsOptions), users.deleteAll);
+  router.delete("/user/deleteAll",  users.deleteAll);
 
   // Get all Roles depending on the User session id
-  router.get("/user/roles", cors(corsOptions), users.roles);
+  router.get("/user/roles",  users.roles);
 
   // Get 1 or multiple ad adapted to the User session id
-  router.get("/user/ad", cors(corsOptions), users.ad);
+  router.get("/user/ad",  users.ad);
 
   // Get History
-  router.get("/user/history", cors(corsOptions), users.history);
+  router.get("/user/history",  users.history);
 
   app.use('/api', router);
 };
