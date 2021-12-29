@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors({credentials: true}));
 
 app.use(express.static(__dirname + '/dist/frontend-admin'));
 app.get('/*', function(req,res) {
