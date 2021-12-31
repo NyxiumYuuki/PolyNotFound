@@ -4,10 +4,12 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
-import {PopupDeleteUserComponent} from "../popup-delete-user/popup-delete-user.component";
 import {PopupCreateUserComponent} from "../popup-create-user/popup-create-user.component";
 import {ThemeService} from "../../../utils/theme/theme.service";
 import {MessageService} from "../../../utils/message/message.service";
+import {FormControl, FormGroup} from "@angular/forms";
+import {DatePipe} from "@angular/common";
+
 
 
 @Component({
@@ -19,7 +21,7 @@ export class PageUserListComponent implements AfterViewInit
 {
     displayedColumns: string[];
     displayedColumnsUser: string[] = [ 'isActive', 'login', 'email', 'dateOfBirth', 'age', 'sexe', 'interests', 'createdAt', 'lastConnexion' ];
-    displayedColumnsAdvertiser: string[] = [ 'isActive', 'login', 'email', 'createdAt', 'lastConnexion', 'isAccepted' ];
+    displayedColumnsAdvertiser: string[] = [ 'isActive', 'login', 'email', 'company', 'createdAt', 'lastConnexion', 'isAccepted' ];
     displayedColumnsAdmin: string[] = [ 'isActive', 'login', 'email', 'createdAt', 'lastConnexion' ];
 
     tabUser: any[] = [];
@@ -31,10 +33,14 @@ export class PageUserListComponent implements AfterViewInit
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    filteredText: string = "" ;
     active: boolean = true;
     noActive: boolean = false;
-    startDate: Date = null;
-    endDate: Date = null;
+    campaignOne = new FormGroup({
+        start: new FormControl(null),
+        end: new FormControl(null),
+    });
+
 
 
     constructor( public themeService: ThemeService,
@@ -61,6 +67,7 @@ export class PageUserListComponent implements AfterViewInit
             {
                 if(person.role.name === "user") {
                     person["age"] = this.getAge(person.dateOfBirth);
+                    delete person.profileImageUrl;
                     this.tabUser.push(person);
                 }
                 else if(person.role.name === "advertiser") this.tabAdvertiser.push(person);
@@ -68,40 +75,6 @@ export class PageUserListComponent implements AfterViewInit
             }
             this.onFilter();
         }
-    }
-
-
-    applyFilter(event: Event): void
-    {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-
-    onDelete(user: any): void
-    {
-        const config = {
-            data: { user: user }
-        };
-        this.dialog
-            .open(PopupDeleteUserComponent, config)
-            .afterClosed()
-            .subscribe( retour => {
-
-                const config = { duration: 1000, panelClass: "custom-class" };
-                let message = "" ;
-                if((retour === undefined) || (retour === null)) {
-                    message = "Opération annulée" ;
-                }
-                else {
-                    const index = this.dataSource.data.findIndex( elt => (elt.id === user.id));
-                    this.dataSource.data.splice(index, 1);
-                    this.dataSource.data = this.dataSource.data;
-                    this.dataSource = this.dataSource;
-                    message = user.login + " a bien été supprimée ✔" ;
-                }
-                this.snackBar.open(message, "", config);
-            });
     }
 
 
@@ -176,6 +149,9 @@ export class PageUserListComponent implements AfterViewInit
 
     onFilter(): void
     {
+        const startDate = this.campaignOne.get("start").value;
+        const endDate = this.campaignOne.get("end").value;
+
         let tab1 = [];
         if(this.roleName === "user") {
             this.displayedColumns = this.displayedColumnsUser;
@@ -193,21 +169,31 @@ export class PageUserListComponent implements AfterViewInit
         let tab2 = [];
         for(let user of tab1)
         {
-            let valide: boolean = true;
+            // filtre textuelle
+            let valide: boolean = this.isTextFiltrationValid(user);;
 
-            if(user.isActive && this.active) valide = true;
-            else if((!user.isActive) && this.noActive) valide = true;
-            else valide = false;
+            // filtre actif
             if(valide)
             {
-                if ((user.lastConnexion === null) && (this.startDate !== null)) valide = false;
-                else if ((user.lastConnexion === null) && (this.endDate !== null)) valide = false;
-                else if (this.startDate !== null)
+                if(user.isActive && this.active) valide = true;
+                else if((!user.isActive) && this.noActive) valide = true;
+                else valide = false;
+            }
+
+            // filtre date
+            if(valide)
+            {
+                if ((user.lastConnexion === null) && (startDate !== null)) valide = false;
+                else if ((user.lastConnexion === null) && (endDate !== null)) valide = false;
+                else if (startDate !== null)
                 {
-                    if(this.startDate.getTime() > user.lastConnexion.getTime()) valide = false;
-                    else if (this.endDate !== null)
+                    let timeLastConnexion = 0;
+                    if(user.lastConnexion !== null) timeLastConnexion = (new Date(user.lastConnexion)).getTime();
+
+                    if(startDate.getTime() > timeLastConnexion) valide = false;
+                    else if (endDate !== null)
                     {
-                        if(this.endDate.getTime() < user.lastConnexion.getTime()) valide = false;
+                        if(endDate.getTime() < timeLastConnexion) valide = false;
                     }
                 }
             }
@@ -221,12 +207,36 @@ export class PageUserListComponent implements AfterViewInit
     }
 
 
-    onNewStartDate(event): void {
-        this.startDate = new Date(event);
+    isTextFiltrationValid(user): boolean
+    {
+        let datePipe = new DatePipe('en-GB');
+        if(user.login.includes(this.filteredText)) return true;
+        if(user.email.includes(this.filteredText)) return true;
+        const createdAt = datePipe.transform(new Date(user.createdAt), 'dd/MM/yyyy à HH:mm:ss');
+        if(createdAt.includes(this.filteredText)) return true;
+        const lastConnexion = datePipe.transform(new Date(user.lastConnexion), 'dd/MM/yyyy à HH:mm:ss');
+        if(lastConnexion.includes(this.filteredText)) return true;
+
+        if(this.roleName === 'user')
+        {
+            const dateOfBirth = datePipe.transform(new Date(user.dateOfBirth), 'dd/MM/yyyy à HH:mm:ss');
+            if(dateOfBirth.includes(this.filteredText)) return true;
+            if(user.age.toString().includes(this.filteredText)) return true;
+            if((user.sexe === 'man') && (this.filteredText === 'M')) return true;
+            if((user.sexe === 'woman') && (this.filteredText === 'F')) return true;
+            if(user.interests.toString().includes(this.filteredText)) return true;
+        }
+        else if(this.roleName === 'advertiser')
+        {
+            if(user.company.includes(this.filteredText)) return true;
+        }
+        return false;
     }
 
-    onNewEndDate(event): void {
-        this.endDate = new Date(event);
+
+    onEffacerDate(): void {
+        this.campaignOne.setValue({start: null, end: null });
+        this.onFilter();
     }
 
 }

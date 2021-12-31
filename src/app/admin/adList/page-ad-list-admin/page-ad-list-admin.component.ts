@@ -6,10 +6,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
 import {PopupDeleteAdAdminComponent} from "../popup-delete-ad-admin/popup-delete-ad-admin.component";
 import {PopupVisualizeImagesAdminComponent} from "../popup-visualize-images-admin/popup-visualize-images-admin.component";
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {HttpParams} from "@angular/common/http";
 import {ThemeService} from "../../../utils/theme/theme.service";
 import {MessageService} from "../../../utils/message/message.service";
+import {DatePipe} from "@angular/common";
 
 
 
@@ -17,6 +18,7 @@ export interface AdvertWithCountViewsAndCompany {
     id: string,
     userId: string,
     company: string,
+    email: string,
     title: string,
     url: string,
     images: {
@@ -43,15 +45,18 @@ export class PageAdListAdminComponent implements AfterViewInit
 {
     tabAdvertWithCountViews: AdvertWithCountViewsAndCompany[] = [];
     tabAdvertiser: any[];
-    displayedColumns: string[] = [ 'title', 'company', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
+    displayedColumns: string[] = [ 'title', 'company', 'email', 'interests', 'createdAt', 'updatedAt', 'countViews', 'isVisible', 'actions' ];
     dataSource ;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    filteredText: string = "" ;
     visible: boolean = true;
     noVisible: boolean = true;
-    startDate: Date = null;
-    endDate: Date = null;
+    campaignOne = new FormGroup({
+        start: new FormControl(null),
+        end: new FormControl(null),
+    });
     formControlInterests = new FormControl();
     allInterests: string[] = [];
 
@@ -118,13 +123,6 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    applyFilter(event: Event): void
-    {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-
     onVisualizeImages(advert: AdvertWithCountViewsAndCompany)
     {
         if(advert.images.length !== 0)
@@ -176,29 +174,42 @@ export class PageAdListAdminComponent implements AfterViewInit
 
     onFilter(): void
     {
+        const startDate = this.campaignOne.get("start").value;
+        const endDate = this.campaignOne.get("end").value;
+
         this.dataSource.data = [];
         for(let advert of this.tabAdvertWithCountViews)
         {
-            let valide: boolean = true;
+            // filtre textuelle
+            let valide: boolean = this.isTextFiltrationValid(advert);;
 
-            if(advert.isVisible && this.visible) valide = true;
-            else if((!advert.isVisible) && this.noVisible) valide = true;
-            else valide = false;
-
+            // filtre actif
             if(valide)
             {
-                if ((advert.createdAt === null) && (this.startDate !== null)) valide = false;
-                else if ((advert.createdAt === null) && (this.endDate !== null)) valide = false;
-                else if (this.startDate !== null)
+                if(advert.isVisible && this.visible) valide = true;
+                else if((!advert.isVisible) && this.noVisible) valide = true;
+                else valide = false;
+            }
+
+            // filtre date
+            if(valide)
+            {
+                if ((advert.createdAt === null) && (startDate !== null)) valide = false;
+                else if ((advert.createdAt === null) && (endDate !== null)) valide = false;
+                else if (startDate !== null)
                 {
-                    if(this.startDate.getTime() > advert.createdAt.getTime()) valide = false;
-                    else if (this.endDate !== null)
+                    let timeCreatedAt = 0;
+                    if(advert.createdAt !== null) timeCreatedAt = (new Date(advert.createdAt)).getTime();
+
+                    if(startDate.getTime() > timeCreatedAt) valide = false;
+                    else if (endDate !== null)
                     {
-                        if(this.endDate.getTime() < advert.createdAt.getTime()) valide = false;
+                        if(endDate.getTime() < timeCreatedAt) valide = false;
                     }
                 }
             }
 
+            // filtre interests
             if(valide) {
                 if(this.formControlInterests.value !== null) {
                     for (let interest of this.formControlInterests.value) {
@@ -219,22 +230,30 @@ export class PageAdListAdminComponent implements AfterViewInit
     }
 
 
-    onNewStartDate(event): void {
-        this.startDate = new Date(event);
-    }
-
-    onNewEndDate(event): void {
-        this.endDate = new Date(event);
+    isTextFiltrationValid(advert): boolean
+    {
+        let datePipe = new DatePipe('en-GB');
+        if(advert.title.includes(this.filteredText)) return true;
+        if(advert.company.includes(this.filteredText)) return true;
+        if(advert.email.includes(this.filteredText)) return true;
+        const createdAt = datePipe.transform(new Date(advert.createdAt), 'dd/MM/yyyy à HH:mm:ss');
+        if(createdAt.includes(this.filteredText)) return true;
+        const updatedAt = datePipe.transform(new Date(advert.updatedAt), 'dd/MM/yyyy à HH:mm:ss');
+        if(updatedAt.includes(this.filteredText)) return true;
+        if(advert.countViews.toString().includes(this.filteredText)) return true;
+        return false;
     }
 
 
     advertToAdvertWithCountViewsAndCompany(advert): AdvertWithCountViewsAndCompany
     {
         let company0 = "company" ;
+        let email0 = "email" ;
         for(let advertiser of this.tabAdvertiser)
         {
             if(advert.userId === advertiser.id) {
                 company0 = advertiser.company;
+                email0 = advertiser.email;
                 break;
             }
         }
@@ -244,6 +263,7 @@ export class PageAdListAdminComponent implements AfterViewInit
             userId: advert.userId,
             title: advert.title,
             company: company0,
+            email: email0,
             url: advert.url,
             images: advert.images,
             interests: advert.interests,
@@ -255,6 +275,12 @@ export class PageAdListAdminComponent implements AfterViewInit
             createdAt: advert.createdAt,
             updatedAt: advert.updatedAt,
         }
+    }
+
+
+    onEffacerDate(): void {
+        this.campaignOne.setValue({start: null, end: null });
+        this.onFilter();
     }
 
 }

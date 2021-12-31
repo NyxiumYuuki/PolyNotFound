@@ -36,10 +36,11 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import { PageUserListComponent } from './admin/userList/page-user-list/page-user-list.component';
 import { InputInterestsAdminComponent } from './admin/userList/input-interests-admin/input-interests-admin.component';
 import { PopupCreateUserComponent } from './admin/userList/popup-create-user/popup-create-user.component';
-import { PopupDeleteUserComponent } from './admin/userList/popup-delete-user/popup-delete-user.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { NavbarAdminComponent } from './admin/utils/navbar-admin/navbar-admin.component';
 import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,6 @@ import {MatInputModule} from "@angular/material/input";
     PageUserListComponent,
     InputInterestsAdminComponent,
     PopupCreateUserComponent,
-    PopupDeleteUserComponent,
     NavbarAdminComponent
   ],
     imports: [
@@ -86,8 +86,10 @@ import {MatInputModule} from "@angular/material/input";
         MatPaginatorModule,
         MatGridListModule,
         MatSlideToggleModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
-  providers: [],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
