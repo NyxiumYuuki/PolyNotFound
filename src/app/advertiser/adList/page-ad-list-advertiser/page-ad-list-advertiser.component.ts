@@ -7,10 +7,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {PopupDeleteAdAdvertiserComponent} from "../popup-delete-ad-advertiser/popup-delete-ad-advertiser.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {PopupVisualizeImagesAdvertiserComponent} from "../popup-visualize-images-advertiser/popup-visualize-images-advertiser.component";
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {HttpParams} from "@angular/common/http";
 import {ThemeService} from "../../../utils/theme/theme.service";
 import {MessageService} from "../../../utils/message/message.service";
+import {DatePipe} from "@angular/common";
 
 
 
@@ -29,8 +30,11 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
 
     visible: boolean = true;
     noVisible: boolean = true;
-    startDate: Date = null;
-    endDate: Date = null;
+    filteredText: string = "" ;
+    campaignOne = new FormGroup({
+        start: new FormControl(null),
+        end: new FormControl(null),
+    });
     formControlInterests = new FormControl();
 
     allVideoCategorie = [];
@@ -86,13 +90,6 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
                 this.onFilter();
             }
         }
-    }
-
-
-    applyFilter(event: Event): void
-    {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
 
@@ -214,30 +211,43 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
 
     onFilter(): void
     {
+        const startDate = this.campaignOne.get("start").value;
+        const endDate = this.campaignOne.get("end").value;
+
         if(this.dataSource === null || this.dataSource === undefined) this.dataSource = new MatTableDataSource();
         this.dataSource.data = [];
         for(let advert of this.tabAdvertWithCountViews)
         {
-            let valide: boolean = true;
+            // filtre textuelle
+            let valide: boolean = this.isTextFiltrationValid(advert);
 
-            if(advert.isVisible && this.visible) valide = true;
-            else if((!advert.isVisible) && this.noVisible) valide = true;
-            else valide = false;
-
+            // filtre visible
             if(valide)
             {
-                if ((advert.createdAt === null) && (this.startDate !== null)) valide = false;
-                else if ((advert.createdAt === null) && (this.endDate !== null)) valide = false;
-                else if (this.startDate !== null)
+                if(advert.isVisible && this.visible) valide = true;
+                else if((!advert.isVisible) && this.noVisible) valide = true;
+                else valide = false;
+            }
+
+            // filtre date
+            if(valide)
+            {
+                if ((advert.createdAt === null) && (startDate !== null)) valide = false;
+                else if ((advert.createdAt === null) && (endDate !== null)) valide = false;
+                else if (startDate !== null)
                 {
-                    if(this.startDate.getTime() > advert.createdAt.getTime()) valide = false;
-                    else if (this.endDate !== null)
+                    let timeCreatedAt = 0;
+                    if(advert.createdAt !== null) timeCreatedAt = (new Date(advert.createdAt)).getTime();
+
+                    if(startDate.getTime() > timeCreatedAt) valide = false;
+                    else if (endDate !== null)
                     {
-                        if(this.endDate.getTime() < advert.createdAt.getTime()) valide = false;
+                        if(endDate.getTime() < timeCreatedAt) valide = false;
                     }
                 }
             }
 
+            // filtre interests
             if(valide) {
                 if(this.formControlInterests.value !== null) {
                     for (let interest of this.formControlInterests.value) {
@@ -258,12 +268,16 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
     }
 
 
-    onNewStartDate(event): void {
-        this.startDate = new Date(event);
-    }
-
-    onNewEndDate(event): void {
-        this.endDate = new Date(event);
+    isTextFiltrationValid(advert): boolean
+    {
+        let datePipe = new DatePipe('en-GB');
+        if(advert.title.includes(this.filteredText)) return true;
+        const createdAt = datePipe.transform(new Date(advert.createdAt), 'dd/MM/yyyy à HH:mm:ss');
+        if(createdAt.includes(this.filteredText)) return true;
+        const updatedAt = datePipe.transform(new Date(advert.updatedAt), 'dd/MM/yyyy à HH:mm:ss');
+        if(updatedAt.includes(this.filteredText)) return true;
+        if(advert.countViews.toString().includes(this.filteredText)) return true;
+        return false;
     }
 
 
@@ -299,6 +313,12 @@ export class PageAdListAdvertiserComponent implements AfterViewInit
             createdAt: advert.createdAt,
             updatedAt: advert.updatedAt,
         }
+    }
+
+
+    onEffacerDate(): void {
+        this.campaignOne.setValue({start: null, end: null });
+        this.onFilter();
     }
 
 }

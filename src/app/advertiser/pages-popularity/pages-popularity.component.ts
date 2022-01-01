@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {ChartDataSets} from "chart.js";
 import {Label} from "ng2-charts";
 import { Router} from "@angular/router";
@@ -28,13 +28,16 @@ export class PagesPopularityComponent implements OnInit
 
     allInterests: string[] = [];
 
-    startDate: Date = null;
-    endDate: Date = null;
+    oneDay: number = 24*60*60*1000;
+    oneWeek: number = 7*24*60*60*1000;
+
+    campaignOne = new FormGroup({
+        start: new FormControl(new Date(((new Date()).getTime() - this.oneWeek))),
+        end: new FormControl(new Date()),
+    });
     step: number = 1;
     stepUnity: string = "jour" ;
 
-    oneDay: number = 24*60*60*1000;
-    oneWeek: number = 7*24*60*60*1000;
 
     lineChartData: ChartDataSets[] = [];
     lineChartLabels: Label[] = [];
@@ -59,6 +62,18 @@ export class PagesPopularityComponent implements OnInit
 
     ngOnInit(): void
     {
+        // Initialisation de campaignOne
+        let today00h00Date = new Date();
+        today00h00Date.setHours(0);
+        today00h00Date.setMinutes(0);
+        today00h00Date.setSeconds(0);
+        today00h00Date.setMilliseconds(0);
+        this.campaignOne = new FormGroup({
+            start: new FormControl(new Date(today00h00Date.getTime() - this.oneWeek)),
+            end: new FormControl(today00h00Date),
+        });
+
+
         // Sera excuté si on est sur la page 'adsPopularity'
         // Remplie l'attribut 'allCoupleNameViews'
         if(this.router.url.includes("ads"))
@@ -69,6 +84,7 @@ export class PagesPopularityComponent implements OnInit
                 .get("ad/findAll", params )
                 .subscribe(ret => this.afterReceivingAds(ret), err => this.afterReceivingAds(err));
         }
+
 
         // Sera excuté si on est sur la page 'subjectsPopularity'
         // Remplie l'attribut 'allCoupleNameViews'
@@ -83,7 +99,6 @@ export class PagesPopularityComponent implements OnInit
                     }
                     else {
                         this.allInterests = retour.data.map(x => x.interest);
-                        this.allInterests.sort();
                         this.messageService
                             .get("video/findAll")
                             .subscribe(ret => this.afterReceivingVideos(ret), err => this.afterReceivingVideos(err));
@@ -164,18 +179,20 @@ export class PagesPopularityComponent implements OnInit
         this.lineChartData = [];
         this.lineChartLabels = [];
 
-        if(this.step <= 0) this.step = 0;
-        if((this.endDate === null) || (this.endDate === undefined)) this.endDate = new Date();
-        if((this.startDate === null) || (this.startDate === undefined)) this.startDate = new Date(this.endDate.getTime() - this.oneWeek); // date d'il y a une semaine
+        let startDate = this.campaignOne.get("start").value;
+        let endDate = this.campaignOne.get("end").value;
+        if(this.step <= 0) this.step = 1;
+        if((endDate === null) || (endDate === undefined)) endDate = new Date();
+        if((startDate === null) || (startDate === undefined)) startDate = new Date(endDate.getTime() - this.oneWeek); // date d'il y a une semaine
 
-        const startTime = this.startDate.getTime();
-        const endTime = this.endDate.getTime();
+        const startTime = startDate.getTime();
+        const endTime = endDate.getTime();
 
 
         // --- remplissage de 'lineChartLabels' ---
         let dataWithZeros = [];
         let time = startTime;
-        const intervals = [];
+        let intervals = [];
         while(time <= endTime)
         {
             dataWithZeros.push(0);
@@ -186,7 +203,7 @@ export class PagesPopularityComponent implements OnInit
         intervals.push(time);
 
 
-        // --- remplissage de 'lineChartLabels' ---
+        // --- remplissage de 'lineChartData' ---
         for(let coupleNameViews of this.formControl.value)
         {
             let data = dataWithZeros.slice();
@@ -197,11 +214,14 @@ export class PagesPopularityComponent implements OnInit
             {
                 const time0 = (new Date(date0)).getTime();
 
-                if(time0 > endTime) break;
+                if(time0 > (endTime+this.oneDay)) break;
 
-                if((startTime <= time0) && (time0 <= endTime))
+                if((startTime <= time0) && (time0 <= (endTime+this.oneDay)))
                 {
                     while((index < intervals.length) && (time0 >= intervals[index])) index += 1;
+                    console.log("index:" + index);
+                    //console.log("index < intervals.length : " + (index < intervals.length));
+                    //console.log("time0 >= intervals[index] : " + (time0 >= intervals[index]));
                     index = index - 1;
                     data[index] += 1;
                 }
@@ -210,16 +230,7 @@ export class PagesPopularityComponent implements OnInit
             this.lineChartData.push({"data": data.slice(), "label": label});
         }
         this.isDisplayable = true;
-    }
-
-
-    onNewStartDate(event): void {
-        this.startDate = new Date(event);
-    }
-
-
-    onNewEndDate(event): void {
-        this.endDate = new Date(event);
+        console.log(this.lineChartLabels);
     }
 
 
@@ -256,12 +267,13 @@ export class PagesPopularityComponent implements OnInit
             let newMonth = oldDate.getMonth() + this.step;
             const newYear = oldDate.getFullYear() +  (newMonth / 12);
             newMonth = newMonth % 12;
-            const day = this.startDate.getDate();
+            const startDate = this.campaignOne.get("start").value;
+            const day = startDate.getDate();
 
             if((newMonth === 1) && ([29, 30, 31].includes(day))) { // si fevrier et si jour n'existe pas
                 newDate = new Date(newYear, newMonth, 28);
             }
-            else if((day === 31) && ([3, 5, 9, 10].includes(newMonth))) { // si 31 et mois à 30 jours
+            else if((day === 31) && ([3, 5, 8, 10].includes(newMonth))) { // si 31 et mois à 30 jours
                 newDate = new Date(newYear, newMonth, 30);
             }
             else {

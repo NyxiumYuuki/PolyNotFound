@@ -59,6 +59,7 @@ import {PageRegisterComponent} from "./beforeConnexion/register/page-register/pa
 import {PopupConfirmationComponent} from "./beforeConnexion/register/popup-confirmation/popup-confirmation.component";
 import {NavbarBeforeConnexionComponent} from "./beforeConnexion/utils/navbar-before-connexion/navbar-before-connexion.component";
 import {MatStepperModule} from "@angular/material/stepper";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -123,9 +124,10 @@ import {MatStepperModule} from "@angular/material/stepper";
         MatPaginatorModule,
         MatDatepickerModule,
         ChartsModule,
-        MatStepperModule
+        MatStepperModule,
+        MatNativeDateModule
     ],
-  providers: [],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -25,7 +25,7 @@
 
                     <!-- filtre textuelle-->
                     <div style="margin: 10px 0px 20px 2%;">
-                        <input class="textFilter" (keyup)="applyFilter($event)" placeholder="filtre...">
+                        <input class="textFilter" [(ngModel)]="filteredText" (ngModelChange)="onFilter()" placeholder="Rechercher par mots-clés...">
                     </div>
 
                     <!-- role + actif + période -->
@@ -60,23 +60,24 @@
 
 
                         <!-- période -->
-                        <div class="col-6" style="text-align: right;">
-                            Période de création: &nbsp;
-                            <mat-form-field appearance="fill" style="width: 140px;">
-                                <mat-label>Date de début</mat-label>
-                                <input matInput type="date"
-                                       style="font-size: small; width: 140px;"
-                                       [ngModel] ="startDate | date:'yyyy-MM-dd'"
-                                       (ngModelChange)="onNewStartDate($event); onFilter();">
+                        <div class="col-6" style="text-align: right; font-size: small;">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Période de date de création</mat-label>
+                                <mat-date-range-input
+                                        [formGroup]="campaignOne"
+                                        [rangePicker]="campaignOnePicker">
+                                    <input matStartDate placeholder="Start date" formControlName="start" style="font-size: small;">
+                                    <input matEndDate placeholder="End date" formControlName="end" style="font-size: small;">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
                             </mat-form-field>
-                            &nbsp; - &nbsp;
-                            <mat-form-field appearance="fill" style="width: 140px;">
-                                <mat-label>Date de fin</mat-label>
-                                <input matInput type="date"
-                                       style="font-size: small; width: 140px;"
-                                       [ngModel] ="endDate | date:'yyyy-MM-dd'"
-                                       (ngModelChange)="onNewEndDate($event); onFilter();">
-                            </mat-form-field>
+                            <button mat-icon-button (click)="onFilter()">
+                                <mat-icon>keyboard_tab</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="onEffacerDate()">
+                                <mat-icon>close</mat-icon>
+                            </button>
                         </div>
 
                     </div>
@@ -171,9 +172,6 @@
             <!-- Directives -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4"> Aucune vidéo ne correspond au filtre: "{{input.value}}" </td>
-            </tr>
 
         </table>
         <div style="width: 94%; margin: auto auto">

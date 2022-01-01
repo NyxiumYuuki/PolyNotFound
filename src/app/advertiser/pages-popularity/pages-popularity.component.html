@@ -48,23 +48,23 @@
 <ng-template #colPeriode>
 
     <!-- startDate -->
-    <mat-form-field appearance="fill" style="width: 140px;">
-        <mat-label>début</mat-label>
-        <input matInput type="date" [ngModel] ="startDate | date:'yyyy-MM-dd'" (ngModelChange)="onNewStartDate($event);">
-    </mat-form-field>
-    &nbsp; - &nbsp;
-
-    <!-- endDate -->
-    <mat-form-field appearance="fill" style="width: 140px;">
-        <mat-label>fin</mat-label>
-        <input matInput type="date" [ngModel] ="endDate | date:'yyyy-MM-dd'" (ngModelChange)="onNewEndDate($event);">
+    <mat-form-field appearance="fill">
+        <mat-label>Période de date de création</mat-label>
+        <mat-date-range-input
+                [formGroup]="campaignOne"
+                [rangePicker]="campaignOnePicker">
+            <input matStartDate placeholder="Start date" formControlName="start" style="font-size: small;">
+            <input matEndDate placeholder="End date" formControlName="end" style="font-size: small;">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
     </mat-form-field>
     &nbsp; - &nbsp;
 
     <!-- step -->
     <mat-form-field appearance="fill" style="width: 140px;">
         <mat-label>pas d'affichage</mat-label>
-        <input matInput type="number" [(ngModel)] =step>
+        <input matInput type="number" [(ngModel)]=step min="1">
     </mat-form-field>
     &nbsp; - &nbsp;
 
