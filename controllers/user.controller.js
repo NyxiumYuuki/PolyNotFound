@@ -71,28 +71,12 @@ exports.create = (req, res) => {
           let user;
           let var_role;
           if(typeof req.body.role !== 'undefined'){
-            const token = checkLogin(req, res);
-            const role = roles.Admin;
             switch(req.body.role){
               case 'admin':
-                if(token && typeof token.role !== 'undefined' &&
-                    ((Array.isArray(role) && role.includes(token.role)) ||
-                        ( typeof role === 'object' && typeof token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
-                  var_role = roles.Admin;
-                  var_role.isAccepted = true;
-                } else {
-                  var_role = roles.Admin;
-                }
+                var_role = roles.Admin;
                 break;
               case 'advertiser':
-                if(token && typeof token.role !== 'undefined' &&
-                    ((Array.isArray(role) && role.includes(token.role)) ||
-                        ( typeof role === 'object' && typeof token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
-                  var_role = roles.Advertiser;
-                  var_role.isAccepted = true;
-                } else {
-                  var_role = roles.Advertiser;
-                }
+                var_role = roles.Advertiser;
                 break;
               default:
                 var_role = roles.User;
