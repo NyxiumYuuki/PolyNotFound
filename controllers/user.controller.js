@@ -71,10 +71,10 @@ exports.create = (req, res) => {
           let user;
           let var_role;
           if(typeof req.body.role !== 'undefined'){
+            const token = checkLogin(req, res);
+            const role = roles.Admin;
             switch(req.body.role){
               case 'admin':
-                const token = checkLogin(req, res);
-                const role = roles.Admin;
                 if(token && typeof token.role !== 'undefined' &&
                     ((Array.isArray(role) && role.includes(token.role)) ||
                         ( typeof role === 'object' && typeof token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
@@ -85,8 +85,6 @@ exports.create = (req, res) => {
                 }
                 break;
               case 'advertiser':
-                const token = checkLogin(req, res);
-                const role = roles.Admin;
                 if(token && typeof token.role !== 'undefined' &&
                     ((Array.isArray(role) && role.includes(token.role)) ||
                         ( typeof role === 'object' && typeof token.role.permission !== 'undefined' && token.role.permission >= role.permission && token.role.isAccepted === true))){
