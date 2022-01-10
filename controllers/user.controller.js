@@ -401,7 +401,7 @@ exports.ad = (req, res) => {
           {$sort: {watchedDates: -1}},
           {$limit: limit},
           {$unwind: '$interest'},
-          {$group: {_id: null, interests: {$push: '$interest'}}}
+          {$group: {_id: null, interests: {$addToSet: '$interest'}}}
         ])
           .then(data => {
             if(typeof data[0] !== 'undefined' &&
@@ -410,15 +410,13 @@ exports.ad = (req, res) => {
               data[0].interests !== null){
               interests = interests.concat(data[0].interests);
             }
-            let match, pick;
+            let match;
             if(interests.length > 0){
               match = {$match: {isVisible: true, isActive: true, interests: {$elemMatch: {interest: {$in: interests}}}}};
-              pick = {$limit: parseInt(quantity, 10)}
             } else {
               match = {$match: {isVisible: true, isActive: true}};
-              pick = {$sample: {size: parseInt(quantity, 10)}};
             }
-
+            const pick = {$sample: {size: parseInt(quantity, 10)}};
             Ad.aggregate([
                 match,
                 pick
